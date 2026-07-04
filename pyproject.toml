@@ -1,0 +1,16 @@
+[project]
+name = "english-exam-ai-tutor"
+version = "0.1.0"
+description = "Agent Skill plus automation toolkit for CET-4, CET-6, and postgraduate English preparation."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "English Exam AI Tutor Contributors" }]
+dependencies = []
+
+[tool.unittest]
+start-directory = "tests"
+
+[tool.english-exam-ai-tutor]
+skill-path = "skills/english-exam-ai-tutor"
+prompt-mode = "public-safe"
