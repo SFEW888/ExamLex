@@ -1,0 +1,18 @@
+[
+  {
+    "date": "2026-07-04",
+    "exam_type": "CET4",
+    "module": "reading",
+    "task_id": "cet4-reading-sample-001",
+    "duration_minutes": 25,
+    "total": 10,
+    "correct": 6,
+    "accuracy": 0.6,
+    "error_tags": [
+      "READING_PARAPHRASE_FAIL",
+      "READING_LONG_SENTENCE_FAIL"
+    ],
+    "notes": "同义替换识别不稳定，长难句主干定位较慢。",
+    "next_action": "复盘错题中的替换表达，明天补练2篇段落匹配。"
+  }
+]

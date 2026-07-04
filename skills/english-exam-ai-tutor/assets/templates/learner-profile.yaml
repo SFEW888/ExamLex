@@ -1,0 +1,8 @@
+{
+  "learner_id": "learner-id",
+  "exam_type": "CET4",
+  "foundation_level": "中等基础",
+  "target_band": "500~550",
+  "daily_time_budget_minutes": 60,
+  "exam_date": "YYYY-MM-DD"
+}
