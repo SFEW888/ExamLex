@@ -3,10 +3,10 @@
     "date": "2026-07-04",
     "exam_type": "CET4",
     "module": "reading",
-    "task_id": "cet4-reading-sample-001",
+    "task_id": "reading-true-question-001",
     "duration_minutes": 25,
-    "total": 10,
-    "correct": 6,
+    "total_items": 10,
+    "correct_items": 6,
     "accuracy": 0.6,
     "error_tags": [
       "READING_PARAPHRASE_FAIL",
