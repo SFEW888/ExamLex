@@ -25,7 +25,7 @@ Run scripts from the Skill directory or reference them by path from a project ro
    `python skills/english-exam-ai-tutor/scripts/generate_daily_plan.py --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json`
 3. Record practice and tag errors:
    `python skills/english-exam-ai-tutor/scripts/tag_error.py --module writing --text "..."`
-   `python skills/english-exam-ai-tutor/scripts/record_practice.py --ledger practice-ledger.json --record-json "{\"total_items\":10,\"correct_items\":7,\"error_tags\":[\"WRITING_ARTICLE_OMISSION\"]}"`
+   `python skills/english-exam-ai-tutor/scripts/record_practice.py --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module writing --task-id writing-article-drill --duration-minutes 20 --total-items 10 --correct-items 7 --error-tags WRITING_ARTICLE_OMISSION`
 4. Summarize errors:
    `python skills/english-exam-ai-tutor/scripts/summarize_errors.py --ledger practice-ledger.json --output error-summary.json`
 5. Update ability and analyze trends:
