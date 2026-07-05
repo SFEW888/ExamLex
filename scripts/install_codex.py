@@ -1,0 +1,47 @@
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
+from scripts.install_claude import SKILL_NAME, install_skill
+
+
+def default_dest() -> Path:
+    return Path.home() / ".codex" / "skills"
+
+
+def build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description="Install the English Exam AI Tutor Skill for Codex.")
+    parser.add_argument("--source", type=Path, default=Path(__file__).resolve().parents[1] / "skills" / SKILL_NAME)
+    parser.add_argument("--dest", type=Path, default=default_dest())
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument("--force", action="store_true")
+    parser.add_argument("--json", action="store_true")
+    return parser
+
+
+def main(argv: list[str] | None = None) -> int:
+    from scripts.install_claude import result_to_json
+
+    args = build_parser().parse_args(argv)
+    try:
+        result = install_skill(args.source, args.dest, dry_run=args.dry_run, force=args.force)
+    except (FileNotFoundError, FileExistsError) as exc:
+        if args.json:
+            import json
+
+            print(json.dumps({"ok": False, "error": str(exc)}))
+        else:
+            print(f"ERROR: {exc}")
+        return 1
+    if args.json:
+        print(result_to_json(result))
+    elif result.dry_run:
+        print(f"DRY RUN: would copy {result.source} to {result.target}")
+    else:
+        print(f"Installed {result.source} to {result.target}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
