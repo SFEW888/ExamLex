@@ -99,6 +99,7 @@ See [docs/prompt-policy.md](docs/prompt-policy.md).
 
 ## Documentation
 
+- [Chinese documentation](zh-CN/README.md)
 - [Design rationale](docs/design.md)
 - [Architecture](docs/architecture.md)
 - [Usage workflow](docs/usage.md)
