@@ -38,8 +38,8 @@ Summarize errors, update ability, and score writing:
 
 ```powershell
 python skills\english-exam-ai-tutor\scripts\summarize_errors.py --ledger practice-ledger.json --output error-summary.json
-python skills\english-exam-ai-tutor\scripts\update_ability_profile.py --ability ability-profile.json --ledger practice-ledger.json --output ability-profile.next.json
-python skills\english-exam-ai-tutor\scripts\score_writing_rubric.py --text-file essay.txt --exam-type CET4 --output writing-score.json
+python skills\english-exam-ai-tutor\scripts\update_ability_profile.py --ability examples\sample-ability-profile.yaml --ledger practice-ledger.json --output ability-profile.next.json
+python skills\english-exam-ai-tutor\scripts\score_writing_rubric.py --text "I think English study is important because it helps me read more and express ideas clearly." --exam-type CET4 --output writing-score.json
 ```
 
 ## Install

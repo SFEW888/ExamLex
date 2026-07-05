@@ -49,13 +49,13 @@ python skills\english-exam-ai-tutor\scripts\summarize_errors.py --ledger practic
 Update ability state:
 
 ```powershell
-python skills\english-exam-ai-tutor\scripts\update_ability_profile.py --ability ability-profile.json --ledger practice-ledger.json --output ability-profile.next.json
+python skills\english-exam-ai-tutor\scripts\update_ability_profile.py --ability examples\sample-ability-profile.yaml --ledger practice-ledger.json --output ability-profile.next.json
 ```
 
 Generate tomorrow's plan from updated evidence:
 
 ```powershell
-python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile learner-profile.json --ability ability-profile.next.json --errors error-summary.json --output daily-plan.next.json
+python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile examples\sample-learner-profile.yaml --ability ability-profile.next.json --errors error-summary.json --output daily-plan.next.json
 ```
 
 ## 5. Writing Loop
@@ -69,7 +69,7 @@ python skills\english-exam-ai-tutor\scripts\manage_writing_versions.py --file wr
 Score a draft with a deterministic rubric estimate:
 
 ```powershell
-python skills\english-exam-ai-tutor\scripts\score_writing_rubric.py --text-file essay.txt --exam-type POSTGRADUATE_ENGLISH --output writing-score.json
+python skills\english-exam-ai-tutor\scripts\score_writing_rubric.py --text "I will compare two views and explain why consistent practice matters for postgraduate English preparation." --exam-type POSTGRADUATE_ENGLISH --output writing-score.json
 ```
 
 Use the score to guide revision. Do not present it as official exam scoring.
