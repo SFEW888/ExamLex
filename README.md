@@ -18,8 +18,14 @@ Run commands from the repository root in PowerShell.
 
 ```powershell
 python scripts\validate_repo.py --root . --json
-python skills\english-exam-ai-tutor\scripts\validate_profile.py --profile learner-profile.json
-python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json
+python skills\english-exam-ai-tutor\scripts\validate_profile.py --profile examples\sample-learner-profile.yaml
+python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
+```
+
+After practice has produced an error summary, include it in the next plan:
+
+```powershell
+python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --errors error-summary.json --output daily-plan.next.json
 ```
 
 Record practice with PowerShell-friendly flags:

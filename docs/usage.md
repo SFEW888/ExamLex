@@ -21,10 +21,16 @@ Fix validation errors before planning.
 ## 3. Generate A Daily Plan
 
 ```powershell
-python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --errors error-summary.json --output daily-plan.json
+python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
 ```
 
 If no error summary exists yet, omit `--errors` for the first plan.
+
+After `summarize_errors.py` creates `error-summary.json`, feed it into the next plan:
+
+```powershell
+python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --errors error-summary.json --output daily-plan.next.json
+```
 
 ## 4. Daily Loop
 
