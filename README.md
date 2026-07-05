@@ -18,28 +18,36 @@ Run commands from the repository root in PowerShell.
 
 ```powershell
 python scripts\validate_repo.py --root . --json
-python skills\english-exam-ai-tutor\scripts\validate_profile.py --profile examples\sample-learner-profile.yaml
-python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
+python -m skills.english_exam_ai_tutor validate-profile --profile examples\sample-learner-profile.yaml
+python -m skills.english_exam_ai_tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
 ```
 
 After practice has produced an error summary, include it in the next plan:
 
 ```powershell
-python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --errors error-summary.json --output daily-plan.next.json
+python -m skills.english_exam_ai_tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --errors error-summary.json --output daily-plan.next.json
 ```
 
 Record practice with PowerShell-friendly flags:
 
 ```powershell
-python skills\english-exam-ai-tutor\scripts\record_practice.py --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module writing --task-id writing-article-drill --duration-minutes 20 --total-items 10 --correct-items 7 --error-tags WRITING_ARTICLE_OMISSION --print-record
+python -m skills.english_exam_ai_tutor record-practice --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module writing --task-id writing-article-drill --duration-minutes 20 --total-items 10 --correct-items 7 --error-tags WRITING_ARTICLE_OMISSION --print-record
 ```
 
 Summarize errors, update ability, and score writing:
 
 ```powershell
-python skills\english-exam-ai-tutor\scripts\summarize_errors.py --ledger practice-ledger.json --output error-summary.json
-python skills\english-exam-ai-tutor\scripts\update_ability_profile.py --ability examples\sample-ability-profile.yaml --ledger practice-ledger.json --output ability-profile.next.json
-python skills\english-exam-ai-tutor\scripts\score_writing_rubric.py --text "I think English study is important because it helps me read more and express ideas clearly." --exam-type CET4 --output writing-score.json
+python -m skills.english_exam_ai_tutor summarize-errors --ledger practice-ledger.json --output error-summary.json
+python -m skills.english_exam_ai_tutor update-ability --ability examples\sample-ability-profile.yaml --ledger practice-ledger.json --output ability-profile.next.json
+python -m skills.english_exam_ai_tutor score-writing --text "I think English study is important because it helps me read more and express ideas clearly." --exam-type CET4 --output writing-score.json
+```
+
+Install the package in editable mode to use the shorter console command:
+
+```powershell
+python -m pip install -e .
+english-exam-tutor validate-profile --profile examples\sample-learner-profile.yaml
+english-exam-tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
 ```
 
 ## Install

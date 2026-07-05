@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "english-exam-ai-tutor"
 version = "0.1.0"
@@ -7,6 +11,12 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "English Exam AI Tutor Contributors" }]
 dependencies = []
+
+[project.scripts]
+english-exam-tutor = "skills.english_exam_ai_tutor.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["skills*"]
 
 [tool.unittest]
 start-directory = "tests"
