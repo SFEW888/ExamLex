@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import json
+import subprocess
+import sys
 import unittest
 import uuid
 from contextlib import contextmanager
@@ -82,6 +85,56 @@ class InstallScriptTests(unittest.TestCase):
             self.assertTrue((result.target / "scripts" / "kept.py").exists())
             self.assertFalse((result.target / "scripts" / "__pycache__").exists())
             self.assertFalse((result.target / "scripts" / "ignored.pyc").exists())
+
+    def test_codex_installer_runs_as_standalone_cli_dry_run_json(self):
+        dest = PROJECT_ROOT / "test-artifacts" / "task8-cli-codex"
+
+        result = subprocess.run(
+            [
+                sys.executable,
+                "scripts/install_codex.py",
+                "--source",
+                "skills/english-exam-ai-tutor",
+                "--dest",
+                str(dest),
+                "--dry-run",
+                "--json",
+            ],
+            cwd=PROJECT_ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        payload = json.loads(result.stdout)
+
+        self.assertTrue(payload["dry_run"])
+        self.assertFalse(payload["copied"])
+        self.assertFalse((dest / "english-exam-ai-tutor").exists())
+
+    def test_cursor_installer_runs_as_standalone_cli_dry_run_json(self):
+        dest = PROJECT_ROOT / "test-artifacts" / "task8-cli-cursor"
+
+        result = subprocess.run(
+            [
+                sys.executable,
+                "scripts/install_cursor.py",
+                "--source",
+                "skills/english-exam-ai-tutor",
+                "--dest",
+                str(dest),
+                "--dry-run",
+                "--json",
+            ],
+            cwd=PROJECT_ROOT,
+            text=True,
+            capture_output=True,
+            check=True,
+        )
+        payload = json.loads(result.stdout)
+
+        self.assertTrue(payload["dry_run"])
+        self.assertFalse(payload["copied"])
+        self.assertFalse((dest / "english-exam-ai-tutor").exists())
 
 
 if __name__ == "__main__":

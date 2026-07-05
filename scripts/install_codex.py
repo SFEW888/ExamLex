@@ -3,7 +3,10 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from scripts.install_claude import SKILL_NAME, install_skill
+try:
+    from scripts.install_claude import SKILL_NAME, install_skill, result_to_json
+except ModuleNotFoundError:
+    from install_claude import SKILL_NAME, install_skill, result_to_json
 
 
 def default_dest() -> Path:
@@ -21,8 +24,6 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main(argv: list[str] | None = None) -> int:
-    from scripts.install_claude import result_to_json
-
     args = build_parser().parse_args(argv)
     try:
         result = install_skill(args.source, args.dest, dry_run=args.dry_run, force=args.force)

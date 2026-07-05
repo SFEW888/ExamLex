@@ -4,7 +4,10 @@ import argparse
 import json
 from pathlib import Path
 
-from scripts.install_claude import SKILL_NAME, install_skill, result_to_json
+try:
+    from scripts.install_claude import SKILL_NAME, install_skill, result_to_json
+except ModuleNotFoundError:
+    from install_claude import SKILL_NAME, install_skill, result_to_json
 
 
 def default_dest() -> Path:
