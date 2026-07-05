@@ -14,17 +14,26 @@ class SummarizeErrorsTests(unittest.TestCase):
                 [
                     {"module": "reading", "total_items": 10, "correct_items": 6, "error_tags": ["READING_PARAPHRASE_FAIL"]},
                     {"module": "reading", "total_items": 10, "correct_items": 7, "error_tags": ["READING_PARAPHRASE_FAIL"]},
+                    {
+                        "module": "reading",
+                        "total_items": 10,
+                        "correct_items": 7,
+                        "error_tags": ["READING_PARAPHRASE_FAIL", "READING_LONG_SENTENCE_FAIL"],
+                    },
                     {"module": "writing", "total_items": 1, "correct_items": 0, "error_tags": ["WRITING_ARTICLE_OMISSION"]},
                 ],
             )
 
             summary = summarize_errors.summarize_errors(ledger)
+            article_dimension = common.ERROR_TAG_TO_ABILITY["WRITING_ARTICLE_OMISSION"][1]
 
-            self.assertEqual(summary["total_records"], 3)
-            self.assertEqual(summary["by_tag"]["READING_PARAPHRASE_FAIL"]["count"], 2)
-            self.assertEqual(summary["by_tag"]["READING_PARAPHRASE_FAIL"]["percentage"], 0.67)
-            self.assertEqual(summary["by_module"]["reading"]["count"], 2)
-            self.assertEqual(summary["by_dimension"]["语言准确性"]["count"], 1)
+            self.assertEqual(summary["total_records"], 4)
+            self.assertEqual(summary["total_error_tags"], 5)
+            self.assertEqual(summary["by_tag"]["READING_PARAPHRASE_FAIL"]["count"], 3)
+            self.assertEqual(summary["by_tag"]["READING_PARAPHRASE_FAIL"]["percentage"], 0.6)
+            self.assertEqual(summary["by_module"]["reading"]["count"], 4)
+            self.assertEqual(summary["by_module"]["reading"]["percentage"], 0.8)
+            self.assertEqual(summary["by_dimension"][article_dimension]["count"], 1)
         finally:
             if ledger.exists():
                 ledger.unlink()
