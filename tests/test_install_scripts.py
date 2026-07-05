@@ -68,6 +68,18 @@ class InstallScriptTests(unittest.TestCase):
             self.assertFalse(marker.exists())
             self.assertTrue((result.target / "SKILL.md").exists())
 
+    def test_force_refuses_destination_that_aliases_source_parent(self):
+        with temp_dir() as temp:
+            source = Path(temp) / "skills" / "english-exam-ai-tutor"
+            source.mkdir(parents=True)
+            marker = source / "SKILL.md"
+            marker.write_text("---\nname: x\ndescription: Use when x.\n---\n", encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "Unsafe install target"):
+                install_claude.install_skill(source, source.parent, force=True)
+
+            self.assertTrue(marker.exists())
+
     def test_copy_excludes_pycache_and_pyc_files(self):
         with temp_dir() as temp:
             source = Path(temp) / "source" / "english-exam-ai-tutor"

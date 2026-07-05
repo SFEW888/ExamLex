@@ -35,6 +35,26 @@ def ignore_cache_files(directory: str, names: list[str]) -> set[str]:
     return ignored
 
 
+def path_is_relative_to(path: Path, parent: Path) -> bool:
+    try:
+        path.relative_to(parent)
+    except ValueError:
+        return False
+    return True
+
+
+def reject_unsafe_target(source_path: Path, target: Path) -> None:
+    resolved_source = source_path.resolve()
+    resolved_target = target.resolve(strict=False)
+
+    if resolved_target == resolved_source:
+        raise ValueError(f"Unsafe install target aliases the source: {target}")
+    if path_is_relative_to(resolved_target, resolved_source):
+        raise ValueError(f"Unsafe install target is inside the source: {target}")
+    if path_is_relative_to(resolved_source, resolved_target):
+        raise ValueError(f"Unsafe install target contains the source: {target}")
+
+
 def install_skill(
     source: str | Path | None = None,
     dest: str | Path | None = None,
@@ -50,6 +70,7 @@ def install_skill(
 
     if not source_path.is_dir():
         raise FileNotFoundError(f"Skill source does not exist: {source_path}")
+    reject_unsafe_target(source_path, target)
     if target.exists() and not force:
         raise FileExistsError(f"Destination exists: {target}. Re-run with --force to overwrite it.")
 
