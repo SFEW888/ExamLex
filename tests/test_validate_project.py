@@ -31,11 +31,11 @@ def copy_project():
 
 
 class ValidateProjectTests(unittest.TestCase):
-    def test_current_repo_is_valid_with_readme_warning_only(self):
+    def test_current_repo_is_valid_without_readme_warning(self):
         result = validate_repo.validate_project(PROJECT_ROOT)
 
         self.assertEqual([], result.errors)
-        self.assertTrue(any("README.md" in warning for warning in result.warnings))
+        self.assertEqual([], result.warnings)
 
     def test_reports_missing_required_portable_directory(self):
         with copy_project() as temp:
