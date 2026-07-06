@@ -1,0 +1,56 @@
+{
+  "error_patterns": [
+    {
+      "pattern_id": "CN-TR-CHN-001",
+      "tag": "TRANSLATION_CHINESE_ENGLISH",
+      "description_cn": "逐字直译：机械地将中文字词逐个翻译成英语，忽视英语语序和搭配",
+      "typical_examples": [
+        {"incorrect": "Study well, day day up.", "correct": "Study hard and make progress every day.", "note_cn": "典型中式翻译"},
+        {"incorrect": "People mountain people sea.", "correct": "There were huge crowds of people.", "note_cn": "人山人海的直译"}
+      ],
+      "exam_types": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM8"],
+      "frequency_in_corpus": "very_high",
+      "suggested_fix_strategy": "理解中文意思后用英语重新组织表达，不要对照中文词序",
+      "related_tags": ["TRANSLATION_WORD_CHOICE_FAIL", "TRANSLATION_SENTENCE_VARIETY_LOW"]
+    },
+    {
+      "pattern_id": "CN-TR-WORD-001",
+      "tag": "TRANSLATION_WORD_CHOICE_FAIL",
+      "description_cn": "选词不当：使用不准确的英语词汇对应中文语义",
+      "typical_examples": [
+        {"incorrect": "The price is expensive.", "correct": "The price is high. / It is expensive.", "note_cn": "price 不能用 expensive 修饰"},
+        {"incorrect": "I have something to do.", "correct": "I have things to attend to.", "note_cn": "泛指有事时应用 things"}
+      ],
+      "exam_types": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"],
+      "frequency_in_corpus": "high",
+      "suggested_fix_strategy": "积累常用搭配，如 price + high/low，population + large/small",
+      "related_tags": ["TRANSLATION_CHINESE_ENGLISH"]
+    },
+    {
+      "pattern_id": "CN-TR-GRAM-001",
+      "tag": "TRANSLATION_GRAMMAR_FAIL",
+      "description_cn": "被动语态误用：中文被动结构不明显，翻译时忽视英语被动需求",
+      "typical_examples": [
+        {"incorrect": "The book can borrow from the library.", "correct": "The book can be borrowed from the library.", "note_cn": "书被借→被动"},
+        {"incorrect": "It is said he is rich.", "correct": "He is said to be rich.", "note_cn": "据说→固定被动结构"}
+      ],
+      "exam_types": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"],
+      "frequency_in_corpus": "high",
+      "suggested_fix_strategy": "分析中文原句的主宾关系，判断是否需要被动语态",
+      "related_tags": ["TRANSLATION_CHINESE_ENGLISH"]
+    },
+    {
+      "pattern_id": "CN-TR-VAR-001",
+      "tag": "TRANSLATION_SENTENCE_VARIETY_LOW",
+      "description_cn": "句式单一：全部使用简单句，不会使用复合句或从句",
+      "typical_examples": [
+        {"incorrect": "I like reading. Reading makes me happy.", "correct": "I like reading because it makes me happy.", "note_cn": "可合并为复合句"},
+        {"incorrect": "She is a girl. She studies hard.", "correct": "She is a girl who studies hard.", "note_cn": "可合并为定语从句"}
+      ],
+      "exam_types": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"],
+      "frequency_in_corpus": "medium",
+      "suggested_fix_strategy": "练习使用连词 and/but/because/which/who 连接短句",
+      "related_tags": ["TRANSLATION_GRAMMAR_FAIL"]
+    }
+  ]
+}

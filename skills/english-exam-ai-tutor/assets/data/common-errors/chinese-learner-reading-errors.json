@@ -1,0 +1,55 @@
+{
+  "error_patterns": [
+    {
+      "pattern_id": "CN-RD-SPEED-001",
+      "tag": "READING_SPEED_LOW",
+      "description_cn": "阅读速度慢：逐词阅读而非按意群阅读，回读频繁",
+      "typical_examples": [
+        {"incorrect": "一个一个单词读，每个词都翻译成中文", "correct": "以意群为单位阅读，如 'the rapid development / of artificial intelligence / has transformed'", "note_cn": "意群阅读法"}
+      ],
+      "exam_types": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"],
+      "frequency_in_corpus": "very_high",
+      "suggested_fix_strategy": "用笔尖引导视线，减少回读；每日计时阅读训练（目标 80-100 wpm）",
+      "related_tags": ["READING_LOCATION_FAIL"]
+    },
+    {
+      "pattern_id": "CN-RD-LOC-001",
+      "tag": "READING_LOCATION_FAIL",
+      "description_cn": "定位失败：无法快速找到题目对应的原文位置",
+      "typical_examples": [
+        {"incorrect": "通读全文后才开始做题，忘记了前面内容", "correct": "先看题干关键词→读文章→看到关键词附近精读", "note_cn": "题干关键词定位法"},
+        {"incorrect": "不认识同义替换词导致找不到对应位置", "correct": "题目用 conclusion，原文用 draw a summary（同义替换）", "note_cn": "同义替换识别"}
+      ],
+      "exam_types": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"],
+      "frequency_in_corpus": "high",
+      "suggested_fix_strategy": "练习先读题再看文章；积累常见的同义替换表达",
+      "related_tags": ["READING_SPEED_LOW", "READING_PARAPHRASE_FAIL"]
+    },
+    {
+      "pattern_id": "CN-RD-LONG-001",
+      "tag": "READING_LONG_SENTENCE_FAIL",
+      "description_cn": "长难句理解困难：看到大段从句嵌套就放弃或理解错误",
+      "typical_examples": [
+        {"incorrect": "遇到 30 词以上的句子就跳过去不读", "correct": "拆解步骤：找主句谓语→识别从句类型→去除修饰成分→理解主干", "note_cn": "长句分析步骤"},
+        {"incorrect": "定语从句和同位语从句混淆", "correct": "定语从句修饰名词，同位语从句解释名词内容", "note_cn": "从句类型区分"}
+      ],
+      "exam_types": ["CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"],
+      "frequency_in_corpus": "high",
+      "suggested_fix_strategy": "每日分析 2-3 个真题长难句，先找主干再处理修饰成分",
+      "related_tags": ["READING_INFERENCE_FAIL"]
+    },
+    {
+      "pattern_id": "CN-RD-INFER-001",
+      "tag": "READING_INFERENCE_FAIL",
+      "description_cn": "推理题错误：选择原文直接陈述而非合理推论，或过度推理",
+      "typical_examples": [
+        {"incorrect": "原文说'气温升高 2 度'，选'气温大幅上升'", "correct": "不是所有变化都是 dramatic，需看原文修饰词", "note_cn": "避免过度推理"},
+        {"incorrect": "infer 题选了原文的原句", "correct": "推论题答案必须是基于原文但非原文直接陈述的结论", "note_cn": "推论 vs 复述"}
+      ],
+      "exam_types": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"],
+      "frequency_in_corpus": "high",
+      "suggested_fix_strategy": "区分 fact（原文事实）和 inference（基于事实的推论）；推论不能超出合理范围",
+      "related_tags": ["READING_LONG_SENTENCE_FAIL"]
+    }
+  ]
+}
