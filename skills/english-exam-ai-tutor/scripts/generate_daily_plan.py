@@ -17,6 +17,7 @@ def generate_daily_plan(
     profile: dict[str, Any],
     ability_profile: dict[str, Any],
     error_summary: dict[str, Any] | None = None,
+    strategies: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     budget = profile.get("daily_time_budget_minutes")
     if not isinstance(budget, int) or isinstance(budget, bool) or budget <= 0:
@@ -62,6 +63,38 @@ def generate_daily_plan(
                 "reason": "default constrained allocation",
             }
         )
+
+    # Attach matching strategies from strategy library
+    exam_type = profile.get("exam_type", "")
+    if strategies and tasks:
+        strategy_list = strategies.get("strategies", []) if isinstance(strategies, dict) else []
+        if isinstance(strategy_list, list):
+            for task in tasks:
+                module = task.get("module", "")
+                focus = task.get("focus", "")
+                matches = [
+                    s for s in strategy_list
+                    if isinstance(s, dict)
+                    and module in s.get("modules", [])
+                    and exam_type in s.get("exam_types", [])
+                ]
+                # Sort by Darwin score descending, then take top 3
+                matches.sort(key=lambda s: s.get("darwin_score", 0.0), reverse=True)
+                if matches:
+                    task["strategy_hints"] = [
+                        {
+                            "strategy_id": s.get("strategy_id"),
+                            "title": s.get("title"),
+                            "darwin_score": s.get("darwin_score"),
+                            "source_type": s.get("source_type", "text"),
+                            "distillation_method": s.get("distillation_method", "direct"),
+                            "trigger_scenario": (s.get("ria_structure", {}).get("a2_trigger", "") or
+                                                 s.get("heuristic", {}).get("scenario", "") or ""),
+                            "execution_steps": (s.get("ria_structure", {}).get("e_execution", []) or
+                                                s.get("steps", [])),
+                        }
+                        for s in matches[:3]
+                    ]
 
     return {
         "learner_id": profile.get("learner_id"),
@@ -132,10 +165,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ability", required=True, help="Path to ability profile JSON.")
     parser.add_argument("--output", required=True, help="Path to write the generated plan JSON.")
     parser.add_argument("--errors", help="Optional summarized error JSON input.")
+    parser.add_argument("--strategies", help="Optional strategy library JSON for method hints.")
     args = parser.parse_args(argv)
 
     errors = common.load_data(args.errors) if args.errors else None
-    plan = generate_daily_plan(common.load_data(args.profile), common.load_data(args.ability), errors)
+    strategies = common.load_data(args.strategies) if args.strategies else None
+    plan = generate_daily_plan(common.load_data(args.profile), common.load_data(args.ability), errors, strategies)
     common.save_data(args.output, plan)
     return 0
 

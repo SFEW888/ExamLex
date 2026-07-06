@@ -1,4 +1,4 @@
-from __future__ import annotations
+﻿from __future__ import annotations
 
 import argparse
 import ast
@@ -11,6 +11,16 @@ from pathlib import Path
 
 SKILL_NAME = "english-exam-ai-tutor"
 IMPORTABLE_NAME = "english_exam_ai_tutor"
+SKILL_ALIASES = {
+    "culture-guide",
+    "grammar-corrector",
+    "learning-planner",
+    "polish-wizard",
+    "reading-navigator",
+    "scenario-dialog",
+    "structure-planner",
+    "vocabulary-builder",
+}
 FORBIDDEN_PRIVATE_PROMPT = " ".join(("Act as a strict", "but helpful English", "grammar teacher"))
 EXPECTED_REFERENCES = {
     "assistant-roster.md",
@@ -22,15 +32,87 @@ EXPECTED_REFERENCES = {
 }
 EXPECTED_AUTOMATION_SCRIPTS = {
     "analyze_trends.py",
+    "backup_data.py",
     "common.py",
     "generate_daily_plan.py",
+    "ingest_strategy.py",
+    "list_strategies.py",
     "manage_writing_versions.py",
     "record_practice.py",
     "score_writing_rubric.py",
     "summarize_errors.py",
     "tag_error.py",
     "update_ability_profile.py",
+    "validate_strategy.py",
     "validate_profile.py",
+}
+EXPECTED_GITHUB_HEALTH_FILES = {
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+}
+EXPECTED_GITHUB_ISSUE_TEMPLATES = {
+    ".github/ISSUE_TEMPLATE/bug_report.yml",
+    ".github/ISSUE_TEMPLATE/feature_request.yml",
+    ".github/ISSUE_TEMPLATE/question.yml",
+}
+EXPECTED_GITHUB_WORKFLOWS = {
+    ".github/workflows/codeql.yml",
+    ".github/workflows/ci.yml",
+}
+EXPECTED_PROJECT_QUALITY_FILES = {
+    ".editorconfig",
+    ".env.example",
+}
+EXPECTED_QUALITY_DOCS = {
+    "docs/configuration.md",
+    "docs/development.md",
+    "docs/getting-started.md",
+    "docs/release.md",
+    "docs/roadmap.md",
+    "docs/troubleshooting.md",
+}
+EXPECTED_README_SECTIONS = {
+    "## Features",
+    "## Requirements",
+    "## Quick Start",
+    "## Configuration",
+    "## Usage",
+    "## Repository Layout",
+    "## Testing And Validation",
+    "## Roadmap",
+    "## Contributing",
+    "## License",
+}
+EXPECTED_README_SKILL_INSTALL_MARKERS = {
+    "npx skills add",
+    "install.sh",
+    "install.ps1",
+    "$HOME\\.agents\\skills",
+    ".agents\\skills",
+    "$HOME\\.claude\\skills",
+    ".claude\\skills",
+    "skills\\english-exam-ai-tutor",
+}
+EXPECTED_README_AGENT_CALL_MARKERS = {
+    "/english-exam-ai-tutor",
+    "/grammar-corrector",
+    "/learning-planner",
+}
+FORBIDDEN_AGENT_CALL_MARKERS = {
+    "$" + "english-exam-ai-tutor",
+    "$" + "grammar-corrector",
+    "$" + "learning-planner",
+    "$" + "vocabulary-builder",
+    "$" + "reading-navigator",
+    "$" + "structure-planner",
+    "$" + "polish-wizard",
+    "$" + "scenario-dialog",
+    "$" + "culture-guide",
+}
+FORBIDDEN_PUBLIC_PATH_MARKERS = {
+    "D:\\Codex_project",
+    "C:\\Users\\Lenovo",
 }
 
 
@@ -50,6 +132,7 @@ def sha256(path: Path) -> str:
 
 
 def parse_front_matter(text: str) -> dict[str, str]:
+    text = text.lstrip("\ufeff")
     if not text.startswith("---\n"):
         return {}
     end = text.find("\n---", 4)
@@ -112,11 +195,45 @@ def validate_project(root: str | Path) -> ValidationResult:
     errors = result.errors
     warnings = result.warnings
 
-    for filename in ("LICENSE", "pyproject.toml"):
+    for filename in ("LICENSE", "pyproject.toml", "SKILL.md", "install.sh", "install.ps1", "cli-reference.md"):
         if not (root_path / filename).is_file():
             errors.append(f"Missing required root file: {filename}")
+    for relative in ("bin/tutor", "bin/tutor.ps1"):
+        if not (root_path / relative).is_file():
+            errors.append(f"Missing user CLI wrapper: {relative}")
     if not (root_path / "README.md").is_file():
         warnings.append("README.md is not present yet; Task 9 may add it, so this is a warning only.")
+    else:
+        readme_text = (root_path / "README.md").read_text(encoding="utf-8")
+        for section in sorted(EXPECTED_README_SECTIONS):
+            if section not in readme_text:
+                errors.append(f"README.md must include {section}.")
+        for marker in sorted(EXPECTED_README_SKILL_INSTALL_MARKERS):
+            if marker not in readme_text:
+                errors.append(f"README.md Quick Start must explain Skill installation marker: {marker}")
+        for marker in sorted(EXPECTED_README_AGENT_CALL_MARKERS):
+            if marker not in readme_text:
+                errors.append(f"README.md must explain Agent Skill invocation marker: {marker}")
+        for marker in sorted(FORBIDDEN_AGENT_CALL_MARKERS):
+            if marker in readme_text:
+                errors.append(f"README.md must use slash Skill invocation, not {marker}.")
+    for filename in sorted(EXPECTED_PROJECT_QUALITY_FILES):
+        if not (root_path / filename).is_file():
+            errors.append(f"Missing project quality file: {filename}")
+    for relative in sorted(EXPECTED_QUALITY_DOCS):
+        if not (root_path / relative).is_file():
+            errors.append(f"Missing quality documentation: {relative}")
+    for filename in sorted(EXPECTED_GITHUB_HEALTH_FILES):
+        if not (root_path / filename).is_file():
+            errors.append(f"Missing GitHub health file: {filename}")
+    for relative in sorted(EXPECTED_GITHUB_ISSUE_TEMPLATES):
+        if not (root_path / relative).is_file():
+            errors.append(f"Missing GitHub issue template: {relative}")
+    for relative in sorted(EXPECTED_GITHUB_WORKFLOWS):
+        if not (root_path / relative).is_file():
+            errors.append(f"Missing GitHub workflow: {relative}")
+    if not (root_path / ".github" / "PULL_REQUEST_TEMPLATE.md").is_file():
+        errors.append("Missing GitHub pull request template: .github/PULL_REQUEST_TEMPLATE.md")
 
     skill_dir = root_path / "skills" / SKILL_NAME
     importable_dir = root_path / "skills" / IMPORTABLE_NAME
@@ -153,6 +270,21 @@ def validate_project(root: str | Path) -> ValidationResult:
     else:
         skill_text = ""
 
+    for alias in sorted(SKILL_ALIASES):
+        alias_file = root_path / "skills" / alias / "SKILL.md"
+        if not alias_file.is_file():
+            errors.append(f"Missing shortcut Skill: skills/{alias}/SKILL.md")
+            continue
+        alias_text = alias_file.read_text(encoding="utf-8")
+        alias_metadata = parse_front_matter(alias_text)
+        if alias_metadata.get("name") != alias:
+            errors.append(f"Shortcut Skill {alias} must have matching name metadata.")
+        description = alias_metadata.get("description", "")
+        if not description.startswith("Use when"):
+            errors.append(f"Shortcut Skill {alias} description must start with 'Use when'.")
+        if "english-exam-ai-tutor" not in alias_text:
+            errors.append(f"Shortcut Skill {alias} must route back to english-exam-ai-tutor.")
+
     for path in root_path.rglob("*"):
         if "test-artifacts" in path.parts or path.is_dir():
             continue
@@ -162,6 +294,13 @@ def validate_project(root: str | Path) -> ValidationResult:
             continue
         if FORBIDDEN_PRIVATE_PROMPT in text:
             errors.append(f"Found forbidden private prompt sentence in {path.relative_to(root_path).as_posix()}.")
+        for marker in sorted(FORBIDDEN_AGENT_CALL_MARKERS):
+            if marker in text:
+                errors.append(f"Found forbidden dollar-style Skill call in {path.relative_to(root_path).as_posix()}: {marker}")
+        if path.suffix.lower() in {".md", ".yml", ".yaml", ".toml", ".json"}:
+            for marker in sorted(FORBIDDEN_PUBLIC_PATH_MARKERS):
+                if marker in text:
+                    errors.append(f"Found local machine path in public documentation must not include local machine path: {path.relative_to(root_path).as_posix()}")
 
     prompt_mode = read_pyproject_prompt_mode(root_path / "pyproject.toml")
     if prompt_mode != "public-safe":

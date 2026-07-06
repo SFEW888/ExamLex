@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 .pytest_cache/
+.tmp-test/
 .coverage
 dist/
 build/
@@ -9,5 +10,13 @@ build/
 venv/
 .DS_Store
 Thumbs.db
+.env
+.env.*
+!.env.example
 local/
 *.local.yaml
+.obsidian/
+.task8-test-tmp/
+test-artifacts/
+sessions/
+_research/

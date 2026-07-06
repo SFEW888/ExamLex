@@ -108,3 +108,31 @@ Fields include:
 - `dimensions`
 
 The score is deterministic and useful for revision guidance. It is not official exam scoring.
+
+## Strategy Library
+
+Produced by `scripts/ingest_strategy.py`. Path: `strategy-library.json`.
+
+Required fields per strategy entry:
+
+- `strategy_id`: unique identifier (`{exam}-{module}-{digest}-{seq}`)
+- `title`: strategy name
+- `source_file`: originating file name
+- `source_type`: one of `text`, `book`, `video`, `podcast`, `person`, `course`, `conversation`
+- `distillation_method`: one of `direct`, `structural`, `ria`, `cognitive`, `manual`
+- `added_at`: ISO 8601 date
+- `exam_types`: list of applicable exam type identifiers
+- `modules`: list of ability module identifiers
+- `content`: core method description (min 20 chars, max 5000)
+
+Optional fields:
+
+- `source_url`: original source URL (video link, book ISBN, person profile)
+- `ability_nodes`: list of specific ability nodes this strategy targets
+- `steps`: ordered list of executable steps extracted from content
+- `tags`: arbitrary string labels for categorization and search
+- `ria_structure`: RIA++ distillation output — r_reading, i_interpretation, a1_past, a2_trigger, e_execution, b_boundary
+- `mental_model`: cognitive extraction output — name, one_liner, evidence, application, limitations
+- `heuristic`: cognitive extraction output — name, rule, scenario, example
+
+The strategy library is global — one file serves all learner profiles. Pass to `generate_daily_plan.py` via `--strategies` to attach relevant methods to planned tasks. See [multi-source-distillation.md](multi-source-distillation.md) for the ingestion workflow.

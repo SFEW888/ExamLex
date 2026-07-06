@@ -1,20 +1,28 @@
-# Codex CLI Integration
+﻿# Codex CLI Integration
 
 Install the Skill for Codex CLI:
 
-```powershell
-python scripts\install_codex.py --dry-run --json
-python scripts\install_codex.py --force
+```bash
+npx skills add your-org/english-exam-ai-tutor
 ```
 
-Then use the installed `english-exam-ai-tutor` Skill for CET-4, CET-6, or postgraduate English tasks. For repository-local work, run scripts directly from this checkout.
-
-Useful commands:
+For the main Skill plus shortcut Skills:
 
 ```powershell
-python scripts\validate_repo.py --root . --json
-python skills\english-exam-ai-tutor\scripts\summarize_errors.py --ledger practice-ledger.json --output error-summary.json
-python skills\english-exam-ai-tutor\scripts\update_ability_profile.py --ability ability-profile.json --ledger practice-ledger.json --output ability-profile.next.json
+.\install.ps1 codex
 ```
+
+Then use the installed `english-exam-ai-tutor` Skill for CET-4, CET-6, or postgraduate English tasks.
+
+Use Skill calls inside Codex:
+
+```text
+/english-exam-ai-tutor Build today's plan from my learner profile and ability profile.
+/learning-planner Make a CET4 550+ weekly plan.
+/grammar-corrector Check this paragraph and return a correction report.
+/reading-navigator Break down this reading passage.
+```
+
+For repository maintenance, validate the checkout with `python scripts\validate_repo.py --root . --json`.
 
 Keep public-safe output in commits and pull requests.

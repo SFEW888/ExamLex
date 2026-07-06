@@ -1,0 +1,32 @@
+name: Question
+description: Ask how to install, run, adapt, or contribute to the project.
+title: "[Question]: "
+labels: ["question"]
+body:
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What are you trying to do?
+    validations:
+      required: true
+  - type: dropdown
+    id: context
+    attributes:
+      label: Context
+      options:
+        - Claude Code
+        - Codex CLI
+        - Codex App
+        - Cursor
+        - Command line
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: commands
+    attributes:
+      label: Commands or files
+      description: Include public-safe commands, file names, or validation output.
+      render: text

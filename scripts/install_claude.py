@@ -8,6 +8,17 @@ from pathlib import Path
 
 
 SKILL_NAME = "english-exam-ai-tutor"
+SKILL_ALIASES = (
+    "learning-planner",
+    "vocabulary-builder",
+    "reading-navigator",
+    "structure-planner",
+    "grammar-corrector",
+    "polish-wizard",
+    "scenario-dialog",
+    "culture-guide",
+)
+DEFAULT_SKILL_NAMES = (SKILL_NAME, *SKILL_ALIASES)
 
 
 @dataclass(frozen=True)
@@ -20,7 +31,7 @@ class InstallResult:
 
 
 def default_source() -> Path:
-    return Path(__file__).resolve().parents[1] / "skills" / SKILL_NAME
+    return Path(__file__).resolve().parents[1] / "skills"
 
 
 def default_dest() -> Path:
@@ -84,14 +95,57 @@ def install_skill(
     return InstallResult(source_path, dest_path, target, False, True)
 
 
-def result_to_json(result: InstallResult) -> str:
+def is_skill_dir(path: Path) -> bool:
+    return path.is_dir() and (path / "SKILL.md").is_file()
+
+
+def discover_skill_sources(source: str | Path | None = None) -> list[Path]:
+    source_path = Path(source) if source is not None else default_source()
+    source_path = source_path.expanduser().resolve()
+    if is_skill_dir(source_path):
+        return [source_path]
+    if not source_path.is_dir():
+        raise FileNotFoundError(f"Skill source does not exist: {source_path}")
+
+    sources: list[Path] = []
+    for name in DEFAULT_SKILL_NAMES:
+        candidate = source_path / name
+        if is_skill_dir(candidate):
+            sources.append(candidate)
+    if not sources:
+        raise FileNotFoundError(f"No Skill directories with SKILL.md found in: {source_path}")
+    return sources
+
+
+def install_skills(
+    source: str | Path | None = None,
+    dest: str | Path | None = None,
+    *,
+    dry_run: bool = False,
+    force: bool = False,
+) -> list[InstallResult]:
+    return [
+        install_skill(skill_source, dest, dry_run=dry_run, force=force)
+        for skill_source in discover_skill_sources(source)
+    ]
+
+
+def _result_dict(result: InstallResult) -> dict[str, str | bool]:
     data = asdict(result)
-    return json.dumps({key: str(value) if isinstance(value, Path) else value for key, value in data.items()})
+    return {key: str(value) if isinstance(value, Path) else value for key, value in data.items()}
+
+
+def result_to_json(result: InstallResult | list[InstallResult]) -> str:
+    if isinstance(result, list):
+        if len(result) == 1:
+            return json.dumps(_result_dict(result[0]))
+        return json.dumps({"skills": [_result_dict(item) for item in result]})
+    return json.dumps(_result_dict(result))
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Install the English Exam AI Tutor Skill for Claude Code.")
-    parser.add_argument("--source", type=Path, default=default_source(), help="Portable Skill directory to copy.")
+    parser.add_argument("--source", type=Path, default=default_source(), help="Skill directory or skills root to copy.")
     parser.add_argument("--dest", type=Path, default=default_dest(), help="Destination skills directory.")
     parser.add_argument("--dry-run", action="store_true", help="Report the copy target without writing files.")
     parser.add_argument("--force", action="store_true", help="Overwrite an existing installed Skill directory.")
@@ -102,7 +156,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
-        result = install_skill(args.source, args.dest, dry_run=args.dry_run, force=args.force)
+        results = install_skills(args.source, args.dest, dry_run=args.dry_run, force=args.force)
     except (FileNotFoundError, FileExistsError) as exc:
         if args.json:
             print(json.dumps({"ok": False, "error": str(exc)}))
@@ -111,11 +165,13 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     if args.json:
-        print(result_to_json(result))
-    elif result.dry_run:
-        print(f"DRY RUN: would copy {result.source} to {result.target}")
+        print(result_to_json(results))
+    elif args.dry_run:
+        for result in results:
+            print(f"DRY RUN: would copy {result.source} to {result.target}")
     else:
-        print(f"Installed {result.source} to {result.target}")
+        for result in results:
+            print(f"Installed {result.source} to {result.target}")
     return 0
 
 

@@ -35,6 +35,7 @@ flowchart LR
 ## Main Components
 
 - `skills/english-exam-ai-tutor/SKILL.md`: portable Skill entry point.
+- `skills/learning-planner/`, `skills/grammar-corrector/`, and the other shortcut directories: lightweight Agent Skill entry points for direct scenario calls.
 - `skills/english-exam-ai-tutor/references/`: public-safe policy, workflow, data model, exam profiles, assistant roster, and error taxonomy.
 - `skills/english-exam-ai-tutor/assets/`: templates and JSON schemas.
 - `skills/english-exam-ai-tutor/scripts/`: portable script entry points.

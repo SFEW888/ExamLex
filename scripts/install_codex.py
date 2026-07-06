@@ -4,18 +4,18 @@ import argparse
 from pathlib import Path
 
 try:
-    from scripts.install_claude import SKILL_NAME, install_skill, result_to_json
+    from scripts.install_claude import install_skill, install_skills, result_to_json
 except ModuleNotFoundError:
-    from install_claude import SKILL_NAME, install_skill, result_to_json
+    from install_claude import install_skill, install_skills, result_to_json
 
 
 def default_dest() -> Path:
-    return Path.home() / ".codex" / "skills"
+    return Path.home() / ".agents" / "skills"
 
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Install the English Exam AI Tutor Skill for Codex.")
-    parser.add_argument("--source", type=Path, default=Path(__file__).resolve().parents[1] / "skills" / SKILL_NAME)
+    parser.add_argument("--source", type=Path, default=Path(__file__).resolve().parents[1] / "skills")
     parser.add_argument("--dest", type=Path, default=default_dest())
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument("--force", action="store_true")
@@ -26,7 +26,7 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv: list[str] | None = None) -> int:
     args = build_parser().parse_args(argv)
     try:
-        result = install_skill(args.source, args.dest, dry_run=args.dry_run, force=args.force)
+        results = install_skills(args.source, args.dest, dry_run=args.dry_run, force=args.force)
     except (FileNotFoundError, FileExistsError) as exc:
         if args.json:
             import json
@@ -36,11 +36,13 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR: {exc}")
         return 1
     if args.json:
-        print(result_to_json(result))
-    elif result.dry_run:
-        print(f"DRY RUN: would copy {result.source} to {result.target}")
+        print(result_to_json(results))
+    elif args.dry_run:
+        for result in results:
+            print(f"DRY RUN: would copy {result.source} to {result.target}")
     else:
-        print(f"Installed {result.source} to {result.target}")
+        for result in results:
+            print(f"Installed {result.source} to {result.target}")
     return 0
 
 

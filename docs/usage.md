@@ -1,96 +1,48 @@
-# Usage
+﻿# Usage
 
-This workflow assumes PowerShell from the repository root.
+Use this project through an Agent Skill first. `SKILL.md` is not a terminal program, and `python -m skills.english_exam_ai_tutor ...` is only the internal automation CLI for development or debugging.
 
-## 1. Validate The Repository
+## Agent Skill Calls
 
-```powershell
-python scripts\validate_repo.py --root . --json
+Use slash calls in Agent chat:
+
+```text
+/english-exam-ai-tutor Create today's CET4 550+ plan from my learner profile, ability profile, and latest error summary.
+/learning-planner Build a 30-day plan for a weak-foundation learner targeting CET4 550+.
+/grammar-corrector Check this paragraph and return a correction report.
+/reading-navigator Break down this long sentence and identify the evidence for the answer.
 ```
 
-## 2. Validate A Learner Profile
+## Shortcut Skills
 
-Start from `examples\sample-learner-profile.yaml` or `skills\english-exam-ai-tutor\assets\templates\learner-profile.json`.
+| Scenario | Slash call |
+| --- | --- |
+| Full tutor workflow | `/english-exam-ai-tutor` |
+| Learning plan | `/learning-planner` |
+| Vocabulary | `/vocabulary-builder` |
+| Reading | `/reading-navigator` |
+| Writing structure | `/structure-planner` |
+| Grammar correction | `/grammar-corrector` |
+| Polishing | `/polish-wizard` |
+| Scenario dialogue | `/scenario-dialog` |
+| Cultural context | `/culture-guide` |
+
+## Learning Loop
+
+1. Use `/english-exam-ai-tutor` for intake and diagnosis.
+2. Use `/learning-planner` to generate the stage plan and daily tasks.
+3. Use shortcut Skills for practice: vocabulary, reading, grammar, polishing, dialogue, or culture.
+4. Let the Agent record practice, tag errors, summarize repeated issues, update ability, and revise the next plan with the automation scripts.
+5. Keep writing drafts versioned and treat writing scores as deterministic rubric estimates, not official exam scores.
+
+## Internal CLI
+
+The Agent may run the internal CLI after the Skill has interpreted the task. Humans can run it for debugging:
 
 ```powershell
+python -m skills.english_exam_ai_tutor --help
 python -m skills.english_exam_ai_tutor validate-profile --profile examples\sample-learner-profile.yaml
-```
-
-Fix validation errors before planning.
-
-## 3. Generate A Daily Plan
-
-```powershell
 python -m skills.english_exam_ai_tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
 ```
 
-If no error summary exists yet, omit `--errors` for the first plan.
-
-After `summarize_errors.py` creates `error-summary.json`, feed it into the next plan:
-
-```powershell
-python -m skills.english_exam_ai_tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --errors error-summary.json --output daily-plan.next.json
-```
-
-## 4. Daily Loop
-
-Record each practice result with explicit counts and tags:
-
-```powershell
-python -m skills.english_exam_ai_tutor record-practice --ledger practice-ledger.json --date 2026-07-05 --exam-type CET6 --module reading --task-id reading-long-sentence-01 --duration-minutes 25 --total-items 12 --correct-items 8 --error-tags READING_LONG_SENTENCE_FAIL READING_PARAPHRASE_FAIL --print-record
-```
-
-Summarize the ledger:
-
-```powershell
-python -m skills.english_exam_ai_tutor summarize-errors --ledger practice-ledger.json --output error-summary.json
-```
-
-Update ability state:
-
-```powershell
-python -m skills.english_exam_ai_tutor update-ability --ability examples\sample-ability-profile.yaml --ledger practice-ledger.json --output ability-profile.next.json
-```
-
-Generate tomorrow's plan from updated evidence:
-
-```powershell
-python -m skills.english_exam_ai_tutor daily-plan --profile examples\sample-learner-profile.yaml --ability ability-profile.next.json --errors error-summary.json --output daily-plan.next.json
-```
-
-## 5. Writing Loop
-
-Append writing versions instead of overwriting drafts:
-
-```powershell
-python -m skills.english_exam_ai_tutor writing-version --file writing-versions.json --writing-id essay-001 --text "First draft text"
-```
-
-Score a draft with a deterministic rubric estimate:
-
-```powershell
-python -m skills.english_exam_ai_tutor score-writing --text "I will compare two views and explain why consistent practice matters for postgraduate English preparation." --exam-type POSTGRADUATE_ENGLISH --output writing-score.json
-```
-
-Use the score to guide revision. Do not present it as official exam scoring.
-
-## 6. Weekly Review
-
-At the end of a week, summarize errors and trends:
-
-```powershell
-python -m skills.english_exam_ai_tutor summarize-errors --ledger practice-ledger.json --output weekly-error-summary.json
-python -m skills.english_exam_ai_tutor analyze-trends --ledger practice-ledger.json --history ability-history.json --output weekly-trends.json
-```
-
-## Optional Installed Command
-
-For the shortest command names, install the package in editable mode:
-
-```powershell
-python -m pip install -e .
-english-exam-tutor validate-profile --profile examples\sample-learner-profile.yaml
-english-exam-tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
-```
-
-Use `skills\english-exam-ai-tutor\assets\templates\weekly-review.md` to write the learner-facing review. Anchor comments in completed tasks, repeated error tags, and ability changes.
+Generated local files such as plans, ledgers, `.env`, and private prompt assets should stay untracked.

@@ -1,124 +1,411 @@
 # English Exam AI Tutor
 
-English Exam AI Tutor is a public-safe agent Skill plus automation toolkit for CET-4, CET-6, and postgraduate English preparation. It combines eight tutor roles with deterministic scripts for profile validation, constrained daily planning, practice logging, error attribution, ability updates, trend analysis, and writing rubric estimates.
+[![CI](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/codeql.yml/badge.svg)](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![Skills](https://img.shields.io/badge/Skills-9-brightgreen.svg)](#tutor-roles)
+[![Platforms](https://img.shields.io/badge/Platforms-4-blue.svg)](#platform-integration)
 
-The repository is designed for local use with Claude Code, Codex, Codex App, and Cursor. Public files contain role descriptions and prompt placeholders only; private local prompt bodies are not published here.
+> CET-4 / CET-6 / Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning
+>
+> **In one sentence**: Turn the pain of "I don't know where to start with English prep" into a deterministic learning loop — ingest knowledge → diagnose → plan → practice → attribute errors → update → iterate. Every strategy and method you feed in gets absorbed and used in your next study session.
 
-## Supported Learners
+See [zh-CN/README.md](zh-CN/README.md) for the Chinese version.
 
-- Foundation levels: weak foundation, middle foundation, strong foundation.
-- CET-4 and CET-6 target bands: `425~499`, `500~550`, `550+`, `600+`.
-- Postgraduate English target bands: `50+`, `70~80`, `80+`, `90+`.
+---
 
-The scripts help keep daily work realistic for the learner's time budget. They do not guarantee official exam scores.
+## Who This Is For
+
+- University students preparing for CET-4 or CET-6 who need a systematic review plan, not scattered practice.
+- Postgraduate English candidates who need evidence-based daily task allocation and weakness tracking.
+- Self-learners who want AI-assisted planning for themselves or others.
+- Agent Skill developers who want to study the public-safe Skill design pattern.
+- Users with exam strategies, technique files, or essay templates who want AI to absorb and apply them automatically.
+- Claude Code / Codex / Cursor users who want a one-click installable English prep Skill.
+
+---
 
 ## Quick Start
 
-Run commands from the repository root in PowerShell.
+> **Two usage modes — don't mix them up:**
+> - **As Agent Skill** (invoke via `/english-exam-ai-tutor` in chat) → `git clone` to your skills directory. Full assistant experience.
+> - **Standalone CLI** (command-line only) → `pip install` then use `tutor` or `english-exam-tutor`. Scripts only, no Agent Skill registration.
 
-```powershell
-python scripts\validate_repo.py --root . --json
-python -m skills.english_exam_ai_tutor validate-profile --profile examples\sample-learner-profile.yaml
-python -m skills.english_exam_ai_tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
+### Requirements
+
+- Python 3.10+
+- Git
+- One of: Claude Code / Codex CLI / Codex App / Cursor
+
+### Optional Tools by Distillation Method
+
+| Method | Tools | Install (Windows) | Install (macOS/Linux) |
+|--------|-------|-------------------|----------------------|
+| `text` | None | — | — |
+| `person` | None | — | — |
+| `book` (PDF) | pdftotext | `winget install poppler` | `brew install poppler` / `apt install poppler-utils` |
+| `book` (DOCX) | python-docx | `pip install python-docx` | `pip3 install python-docx` |
+| `book` (EPUB DRM) | calibre | `winget install calibre` | `brew install calibre` |
+| `video` (download) | yt-dlp | `pip install yt-dlp` | `pip3 install yt-dlp` |
+| `video` (audio) | ffmpeg | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
+| `video` (ASR) | whisper or SILICONFLOW_API_KEY | `pip install openai-whisper` | `pip3 install openai-whisper` |
+
+Run `bin/tutor check-deps` to see what's installed.
+
+### As Agent Skill (recommended)
+
+One-line install:
+```bash
+npx skills add your-org/english-exam-ai-tutor
 ```
 
-After practice has produced an error summary, include it in the next plan:
+Or clone manually to `skills\english-exam-ai-tutor` under your platform's skills directory:
 
-```powershell
-python -m skills.english_exam_ai_tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --errors error-summary.json --output daily-plan.next.json
+```bash
+# Claude Code
+git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.claude/skills/english-exam-ai-tutor
+
+# Codex CLI / Codex App
+git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.agents/skills/english-exam-ai-tutor
+
+# Cursor
+git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.cursor/skills/english-exam-ai-tutor
 ```
 
-Record practice with PowerShell-friendly flags:
-
-```powershell
-python -m skills.english_exam_ai_tutor record-practice --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module writing --task-id writing-article-drill --duration-minutes 20 --total-items 10 --correct-items 7 --error-tags WRITING_ARTICLE_OMISSION --print-record
+Or use the installer scripts:
+```bash
+./install.sh claude    # or: codex, cursor
+.\install.ps1 claude   # PowerShell
 ```
 
-Summarize errors, update ability, and score writing:
-
-```powershell
-python -m skills.english_exam_ai_tutor summarize-errors --ledger practice-ledger.json --output error-summary.json
-python -m skills.english_exam_ai_tutor update-ability --ability examples\sample-ability-profile.yaml --ledger practice-ledger.json --output ability-profile.next.json
-python -m skills.english_exam_ai_tutor score-writing --text "I think English study is important because it helps me read more and express ideas clearly." --exam-type CET4 --output writing-score.json
+Restart your agent, then invoke:
+```text
+/english-exam-ai-tutor Create a 30-day CET4 plan for a weak-foundation learner targeting 550+.
+/learning-planner Give me a 30-day plan for a CET4 550+ learner with weak foundation.
+/grammar-corrector Check this essay and give me a correction report.
 ```
 
-Install the package in editable mode to use the shorter console command:
+### Standalone CLI (optional)
 
-```powershell
-python -m pip install -e .
-english-exam-tutor validate-profile --profile examples\sample-learner-profile.yaml
-english-exam-tutor daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
+```bash
+git clone https://github.com/your-org/english-exam-ai-tutor.git
+cd english-exam-ai-tutor
+pip install -e .
 ```
 
-## Install
-
-Preview the copy target first:
-
-```powershell
-python scripts\install_claude.py --dry-run --json
-python scripts\install_codex.py --dry-run --json
-python scripts\install_cursor.py --dry-run --json
+Then use:
+```bash
+tutor plan learner-profile.json --ability ability-profile.json
+tutor errors practice-ledger.json --days 30
+english-exam-tutor daily-plan --profile learner-profile.json --ability ability-profile.json
 ```
 
-Install for each platform:
+> `pip install -e .` installs only the script engine. Agent conversation features still require `git clone` to a skills directory.
 
-```powershell
-python scripts\install_claude.py --force
-python scripts\install_codex.py --force
-python scripts\install_cursor.py --force
+---
+
+## Features
+
+### Tutor Roles
+
+Eight built-in tutor assistants covering all English prep scenarios. Public repository publishes role boundaries and placeholders; private prompt bodies stay on the user's machine.
+
+| Tutor | Shortcut Skill | Core Responsibility |
+|------|:---------:|---------------------|
+| Learning Planner | `learning-planner` | Evidence-based plans from profiles, ability scores, and error stats |
+| Vocabulary Builder | `vocabulary-builder` | Word meaning, spelling, audio recognition, collocation, exam-context usage |
+| Reading Navigator | `reading-navigator` | Reading speed, evidence location, long sentences, inference, paraphrase |
+| Structure Planner | `structure-planner` | Essay, paragraph, translation, and answer structure planning |
+| Grammar Corrector | `grammar-corrector` | Diagnose and fix articles, tense, agreement, clauses, sentence patterns |
+| Polish Wizard | `polish-wizard` | Elevate clarity, expression richness, and exam appropriateness |
+| Scenario Dialog | `scenario-dialog` | Create and guide exam-related situational dialogues |
+| Culture Guide | `culture-guide` | Explain cultural context, idioms, allusions, and cross-cultural expression |
+
+### Shortcut Skills
+
+| Scenario | Skill | Invocation |
+|----------|-------|-----------|
+| Full workflow | `english-exam-ai-tutor` | `/english-exam-ai-tutor` |
+| Study planning | `learning-planner` | `/learning-planner` |
+| Vocabulary | `vocabulary-builder` | `/vocabulary-builder` |
+| Reading | `reading-navigator` | `/reading-navigator` |
+| Writing structure | `structure-planner` | `/structure-planner` |
+| Grammar | `grammar-corrector` | `/grammar-corrector` |
+| Polish | `polish-wizard` | `/polish-wizard` |
+| Dialog | `scenario-dialog` | `/scenario-dialog` |
+| Culture | `culture-guide` | `/culture-guide` |
+
+### Automation Scripts
+
+| Stage | Script | Description |
+|:-----:|--------|-------------|
+| Diagnose | `validate_profile.py` | Validate learner profile: exam type, foundation level, target band, time budget |
+| Plan | `generate_daily_plan.py` | Constraint-solve daily tasks: time budget × ability state × error evidence |
+| Record | `record_practice.py` | Structured practice logging (`total_items` / `correct_items`) with error tag attribution |
+| Attribute | `tag_error.py` + `summarize_errors.py` | Count repeated errors by tag, module, and ability dimension |
+| Update | `update_ability_profile.py` + `analyze_trends.py` | Update ability profile from evidence; analyze trends when enough data |
+| Writing | `manage_writing_versions.py` + `score_writing_rubric.py` | Versioned drafts; deterministic rubric estimate for revision guidance |
+| Iterate | Back to Plan | Feed updated ability profile and error summary into next plan |
+
+### Continuous Learning — Multi-Source Distillation
+
+Three knowledge management scripts enable continuous learning:
+
+| Script | Description |
+|:------:|-------------|
+| `ingest_strategy.py` | Extract structured strategies from uploaded files into the strategy library |
+| `list_strategies.py` | List/search strategy library entries by exam, module, or keyword |
+| `validate_strategy.py` | Validate strategy library integrity |
+
+New pipeline commands for advanced distillation:
+```bash
+tutor extract --input <url|file|name> [--type auto|video|book|text|person]
+tutor validate --artifacts-dir <path>
+tutor commit --artifacts-dir <path> --library strategy-library.json
+tutor ops-check    # 13-point operational readiness check
 ```
 
-Platform-specific notes live in:
+Five distillation methods: `direct` (text), `book` (PDF/EPUB/DOCX), `video` (B站/YouTube + ASR), `person` (cognitive extraction), `manual` (conversation notes). Each strategy is automatically scored on a 9-dimension Darwin rubric (100 points). Strategies below 70 enter hill-climb optimization (max 3 rounds).
 
-- [Claude Code](integrations/claude-code/README.md)
-- [Codex CLI](integrations/codex-cli/README.md)
-- [Codex App](integrations/codex-app/README.md)
-- [Cursor](integrations/cursor/README.md)
+See [skills/english-exam-ai-tutor/references/multi-source-distillation.md](skills/english-exam-ai-tutor/references/multi-source-distillation.md) for full documentation.
+
+---
+
+## Usage
+
+### Quick Examples
+
+```bash
+# Diagnose
+tutor check examples/sample-learner-profile.yaml
+
+# Plan
+tutor plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
+
+# Ingest strategy
+tutor ingest reading-strategy.md --library strategy-library.json --exam-types CET4,CET6 --modules reading
+
+# Search strategies
+tutor strategies --library strategy-library.json --search reading
+
+# Full pipeline
+tutor extract --input ./cet4-guide.pdf --type book
+tutor validate --artifacts-dir <path>
+tutor commit --artifacts-dir <path> --library strategy-library.json
+
+# Dependencies
+tutor check-deps
+tutor ops-check
+```
+
+### CLI Wrappers
+
+The project provides `bin/tutor` (bash) and `bin/tutor.ps1` (PowerShell) wrappers:
+
+| Command | Equivalent |
+|---------|-----------|
+| `tutor check <file>` | Validate learner profile |
+| `tutor plan <file> --ability ...` | Generate daily plan |
+| `tutor errors <file>` | Summarize error tags |
+| `tutor trends <file>` | Analyze practice trends |
+| `tutor score <essay>` | Estimate writing score |
+| `tutor ingest <file>` | Ingest strategy file |
+| `tutor extract --input <url>` | Extract from video/book/text |
+| `tutor check-deps` | Check tool dependencies |
+| `tutor ops-check` | 13-point operational check |
+
+---
+
+## Configuration
+
+### Skill Installation Paths
+
+| Platform | Personal skills root | Project-local root |
+|----------|---------------------|-------------------|
+| Claude Code | `$HOME\.claude\skills` | `.claude\skills` |
+| Codex CLI / Codex App | `$HOME\.agents\skills` | `.agents\skills` |
+| Cursor | `$HOME\.cursor\skills` | `.cursor\skills` |
+
+### Environment Variables
+
+Copy `.env.example` to `.env`:
+
+| Variable | Required | Default | Description |
+|----------|:--------:|---------|-------------|
+| `SILICONFLOW_API_KEY` | No | — | Cloud ASR key (SenseVoiceSmall, alternative to local whisper) |
+| `TUTOR_PYTHON` | No | `python` | Python interpreter for the `tutor` wrapper |
+
+---
+
+## Architecture
+
+### Architecture Overview
+
+```
+Agent Layer (Claude Code / Codex / Cursor)
+    │
+    ▼
+┌─────────────────────────────────────────────────────────┐
+│  Skill Layer (skills/english-exam-ai-tutor/)            │
+│  Tutor roles · Reference docs · Templates · Schemas     │
+│  8 shortcut Skills (skills/*/)                           │
+└───────────────────────┬─────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────┐
+│  Script Layer (skills/english_exam_ai_tutor/)            │
+│  extractors/  validators/  optimizers/  prompts/         │
+│  validate · daily-plan · record · tag-error · summarize  │
+│  update-ability · analyze-trends · writing-version       │
+│  score-writing · ops-check · CLI entry point              │
+└───────────────────────┬─────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────────┐
+│  Data Layer                                              │
+│  Learner profile · Ability profile · Practice ledger     │
+│  Error summary · Writing versions · Strategy library     │
+│  JSON/YAML compatible · Field-compatible with scripts    │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Does Continuous Learning Increase Project Size?
+
+No. All five distillation paths are implemented in ~25 Python files within the project. The five reference projects (cangjie-skill, nuwa-skill, book-to-skill, video-downloader, darwin-skill) were studied for methodology only — their code is NOT bundled. Heavy tools (yt-dlp, ffmpeg, whisper, Docling, calibre) are optional and lazy-loaded. `text` and `person` distillation import nothing beyond the Python standard library. The entire project is ~1.9 MB.
+
+### Repository Layout
+
+```
+.
+├── SKILL.md                         # Root-level Skill entry (npx skills add compatible)
+├── install.sh / install.ps1         # Cross-platform installer scripts
+│
+├── skills/english-exam-ai-tutor/    # Portable public-safe Skill package
+│   ├── SKILL.md                     #   Main Skill definition
+│   ├── assets/schemas/              #   JSON Schemas
+│   ├── assets/templates/            #   YAML/JSON/Markdown templates
+│   ├── references/                  #   Reference docs
+│   └── scripts/
+│       ├── extractors/              #   video.py, book.py, text.py
+│       ├── validators/              #   format_checker.py, darwin_structure.py
+│       ├── optimizers/              #   ratchet.py
+│       ├── prompts/                 #   ria.py, cognitive.py, effect.py, climb.py
+│       ├── ops.py                   #   13-point operational check
+│       └── ...                      #   11 exam-prep scripts
+│
+├── skills/english_exam_ai_tutor/    # Importable Python mirror (tests + CLI)
+├── skills/*/                        # 8 shortcut Skills
+├── integrations/                    # Platform adapters
+├── docs/                            # English docs
+├── zh-CN/                           # Chinese docs
+├── examples/                        # Sample profiles, ledgers, etc.
+├── tests/                           # 210+ tests
+├── scripts/                         # Repo validators and installers
+├── .github/                         # CI/CD, issue/PR templates
+└── pyproject.toml                   # Package metadata
+```
+
+---
+
+## Supported Learners
+
+| Exam | ID | Target Bands |
+|------|----|-------------|
+| CET-4 | `CET4` | `425~499`, `500~550`, `550+`, `600+` |
+| CET-6 | `CET6` | `425~499`, `500~550`, `550+`, `600+` |
+| Postgraduate English | `POSTGRADUATE_ENGLISH` | `50+`, `70~80`, `80+`, `90+` |
+| TEM-4 | `TEM4` | `60~69`, `70~79`, `80+` |
+| TEM-8 | `TEM8` | `60~69`, `70~79`, `80+` |
+
+Foundation levels: `基础偏弱` (weak) / `中等基础` (moderate) / `基础较好` (strong).
+
+---
+
+## Error Taxonomy
+
+| Module | Example Tags | Dimensions |
+|--------|-------------|------------|
+| Vocabulary | `VOCAB_MEANING_RECOGNITION_FAIL`, `VOCAB_SPELLING_FAIL` | Meaning, spelling, audio recognition, context use |
+| Listening | `LISTENING_KEYWORD_MISS`, `LISTENING_NUMBER_DATE_FAIL` | Keywords, linking/weak forms, numbers/dates, main idea |
+| Reading | `READING_LONG_SENTENCE_FAIL`, `READING_PARAPHRASE_FAIL` | Speed, locating, long sentences, inference |
+| Translation | `TRANSLATION_GRAMMAR_FAIL`, `TRANSLATION_CHINESE_ENGLISH` | Grammar, word choice, Chinese-English transfer, variety |
+| Writing | `WRITING_ARTICLE_OMISSION`, `WRITING_LANGUAGE_ACCURACY_FAIL` | Task response, structure, accuracy, expression richness |
+
+See [skills/english-exam-ai-tutor/references/error-taxonomy.md](skills/english-exam-ai-tutor/references/error-taxonomy.md).
+
+---
+
+## Platform Integration
+
+| Platform | Invocation | Shortcut Prefix | Adapter |
+|----------|-----------|:--------------:|--------|
+| Claude Code | `/english-exam-ai-tutor` | `/` | [Guide](integrations/claude-code/README.md) |
+| Codex CLI | `/english-exam-ai-tutor` | `/` | [Guide](integrations/codex-cli/README.md) |
+| Codex App | `/english-exam-ai-tutor` | `/` | [Guide](integrations/codex-app/README.md) |
+| Cursor | Via Skill directory config | — | [Guide](integrations/cursor/README.md) |
+
+---
 
 ## Prompt Modes
 
-- Public-safe mode is the default for GitHub, examples, documentation, and shared artifacts. It includes assistant names, role boundaries, script interfaces, templates, schemas, and placeholders such as `[PRIVATE_PROMPT_PLACEHOLDER: grammar-corrector]`.
-- Full-local mode may route to private prompt assets on the user's machine, but those assets stay outside this public repository.
-- The original eight tutor prompt bodies are not published here and must not be rewritten into public docs, examples, adapters, or generated release artifacts.
+| Mode | Use Case | Description |
+|------|----------|-------------|
+| `public-safe` (default) | GitHub, examples, docs, demos, releases | Role boundaries, placeholders, templates, schemas, script interfaces only |
+| `full-local` | User's private machine | May route to private prompt assets outside the repository |
 
-See [docs/prompt-policy.md](docs/prompt-policy.md).
+> **Important**: Original eight tutor prompt bodies are not published, rewritten, or reconstructed into any public file. Placeholders like `[PRIVATE_PROMPT_PLACEHOLDER: grammar-corrector]` are interface markers only.
 
-## Repository Layout
+---
 
-```text
-.
-|-- docs/                         Project, architecture, usage, and exam guidance.
-|-- examples/                     Sample learner, ability, ledger, and writing files.
-|-- integrations/                 Platform adapter notes and minimal configs.
-|-- scripts/                      Repo validation and installer scripts.
-|-- skills/english-exam-ai-tutor/ Portable public-safe Skill package.
-|-- skills/english_exam_ai_tutor/ Importable mirror used by tests and scripts.
-|-- tests/                        Unit tests for installers, validators, and automation.
-`-- pyproject.toml                Package metadata and public-safe prompt mode flag.
-```
+## FAQ
 
-## Documentation
+**"Are script outputs official exam scores?"**
+No. All script outputs are deterministic calculations or rubric estimates based on your data. `score_writing_rubric.py` is a rubric estimate, not official scoring.
 
-- [Chinese documentation](zh-CN/README.md)
-- [Design rationale](docs/design.md)
-- [Architecture](docs/architecture.md)
-- [Usage workflow](docs/usage.md)
-- [Prompt policy](docs/prompt-policy.md)
-- [Contributing](docs/contributing.md)
-- [CET-4 guide](docs/cet4.md)
-- [CET-6 guide](docs/cet6.md)
-- [Postgraduate English guide](docs/postgraduate.md)
+**"Do I have to run CLI commands manually?"**
+No. In most cases you speak natural language in your Agent chat. The Agent reads the workflow from SKILL.md and calls scripts as needed. CLI and `tutor` wrappers are mainly for debugging, scripting, and standalone use.
+
+**"Will strategy library data be uploaded to the cloud?"**
+No. The strategy library is a local JSON file. Extraction and analysis happen on your machine. If your Agent model runs in the cloud, the text you send follows that provider's standard data terms.
+
+**"Can I share my strategy library?"**
+Your own exam strategies — yes. Strategies extracted from copyrighted books — do not publish them publicly. Same rules as handwritten study notes: your notes are yours, but don't republish someone else's book content.
+
+**"Does continuous learning increase the project size?"**
+No. All five distillation paths are ~25 built-in Python files. The five reference projects were studied for methodology, not bundled. Heavy tools are optional and lazy-loaded. The project is ~1.9 MB.
+
+---
 
 ## Testing And Validation
 
-```powershell
-python scripts\validate_repo.py --root . --json
-python -m unittest discover -s tests
-git diff --check
+```bash
+python -m pytest tests/                    # 210+ tests
+python scripts/validate_repo.py --root .   # Repository integrity check
+tutor check-deps                           # Tool dependency check
+tutor ops-check                            # 13-point operational readiness check
 ```
 
-For prompt-safety checks, search for any private prompt text before committing and confirm the portable Skill directory does not contain root-style install docs:
+---
 
-```powershell
-Get-ChildItem -Name skills\english-exam-ai-tutor | Where-Object { $_ -in @('README.md','INSTALL.md') }
-```
+## Roadmap
+
+- [x] CET-4 / CET-6 / Postgraduate English exam profiles
+- [x] TEM-4 / TEM-8 support
+- [x] Multi-source continuous learning (text/book/video/person/manual)
+- [x] Darwin 9-dimension quality scoring with auto-optimization
+- [x] 13-point operational readiness check (`tutor ops-check`)
+- [ ] IELTS / TOEFL support
+- [ ] Web UI for strategy library browsing
+
+---
+
+## Contributing
+
+Contributions should keep the project public-safe and deterministically verifiable. Start from [CONTRIBUTING.md](CONTRIBUTING.md).
+
+---
+
+## License
+
+MIT. See [LICENSE](LICENSE).

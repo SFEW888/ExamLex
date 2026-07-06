@@ -2,6 +2,18 @@
 
 Use this loop for CET-4, CET-6, and postgraduate English tutoring sessions.
 
+## 0. Knowledge Ingestion (optional, multi-source)
+
+Before or alongside the main loop, ingest exam strategies from books, videos, people, and conversations into the strategy library. See [multi-source-distillation.md](multi-source-distillation.md) for full reference.
+
+- **Direct text**: `ingest_strategy.py --source-type text --distillation-method direct`
+- **Book/PDF**: Agent reads content → structural extraction (frameworks+verification+structuring) → `ingest_strategy.py --source-type book --distillation-method book`
+- **Video/Podcast transcript**: Agent applies RIA++ pipeline internally (analysis→extraction→triple verification→RIA++ construction) → `ingest_strategy.py --source-type video --distillation-method video`
+- **Person/Teacher**: Agent applies cognitive extraction (multi-angle collection→triple verification→5-layer extraction) → `ingest_strategy.py --source-type person --distillation-method person`
+- **Conversation**: extract methods from dialog → `ingest_strategy.py --source-type conversation --distillation-method manual`
+
+Post-ingestion: `validate_strategy.py` then `list_strategies.py`.
+
 ## 1. Diagnosis
 
 Collect or load a learner profile with:
@@ -17,10 +29,10 @@ Validate it with `scripts/validate_profile.py`. If validation fails, fix the pro
 
 ## 2. Plan
 
-Generate a daily plan from the learner profile, ability profile, and optional error summary:
+Generate a daily plan from the learner profile, ability profile, and optional error summary. Pass `--strategies strategy-library.json` to attach relevant user-ingested exam methods to planned modules:
 
 ```bash
-python skills/english-exam-ai-tutor/scripts/generate_daily_plan.py --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json
+python skills/english-exam-ai-tutor/scripts/generate_daily_plan.py --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --strategies strategy-library.json --output daily-plan.json
 ```
 
 Use the generated tasks as the baseline. Adapt wording for the learner, but keep module, focus, minutes, and reasons consistent unless the user changes constraints.

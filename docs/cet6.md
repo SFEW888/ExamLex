@@ -1,4 +1,4 @@
-# CET-6 Guide
+﻿# CET-6 Guide
 
 CET-6 preparation usually needs more attention to inference, paraphrase recognition, listening detail capture, word choice, and output quality.
 
@@ -9,10 +9,11 @@ Supported target bands:
 - `550+`: reduce recurring high-impact errors and raise expression richness.
 - `600+`: emphasize timing, precision, advanced vocabulary use, and polished writing or translation.
 
-Example practice record:
+Example Agent calls:
 
-```powershell
-python skills\english-exam-ai-tutor\scripts\record_practice.py --ledger cet6-ledger.json --date 2026-07-05 --exam-type CET6 --module listening --task-id listening-keyword-01 --duration-minutes 20 --total-items 15 --correct-items 11 --error-tags LISTENING_KEYWORD_MISS --print-record
+```text
+/english-exam-ai-tutor Update my CET6 plan after today's listening and reading practice.
+/reading-navigator Help me analyze why I missed this inference question.
 ```
 
 Treat all generated plans and writing scores as study guidance. The toolkit does not promise an official CET-6 score.

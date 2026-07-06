@@ -3,17 +3,20 @@
 Install Cursor-compatible local rules:
 
 ```powershell
-python scripts\install_cursor.py --dry-run --json
-python scripts\install_cursor.py --force
+.\install.ps1 cursor
 ```
 
 Cursor should use the public-safe Skill instructions and repository docs for learner workflows. Keep generated plans anchored in profile, ability, ledger, and error-summary files.
 
-For daily operation:
+Use short scenario prompts in Cursor chat or rules:
 
-```powershell
-python skills\english-exam-ai-tutor\scripts\record_practice.py --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module vocabulary --task-id vocab-context-01 --duration-minutes 15 --total-items 20 --correct-items 16 --error-tags VOCAB_CONTEXT_MISUSE --print-record
-python skills\english-exam-ai-tutor\scripts\summarize_errors.py --ledger practice-ledger.json --output error-summary.json
+```text
+english-exam-ai-tutor: Build today's plan from my learner profile and ability profile.
+learning-planner: Make a CET4 550+ weekly plan.
+grammar-corrector: Check this paragraph and return a correction report.
+reading-navigator: Break down this reading passage.
 ```
+
+Python scripts are internal automation helpers. Cursor can run them after the Skill instructions have interpreted the task.
 
 Do not paste private prompt bodies into Cursor rules or committed files.

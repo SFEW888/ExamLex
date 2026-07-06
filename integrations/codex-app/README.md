@@ -1,20 +1,28 @@
-# Codex App Integration
+﻿# Codex App Integration
 
 Install the Skill for Codex:
 
+```bash
+npx skills add your-org/english-exam-ai-tutor
+```
+
+For the main Skill plus shortcut Skills:
+
 ```powershell
-python scripts\install_codex.py --dry-run --json
-python scripts\install_codex.py --force
+.\install.ps1 codex
 ```
 
 The optional adapter config in `agents\openai.yaml` documents a minimal public-safe agent entry. It contains no secrets and should be treated as an example for local Codex App routing.
 
-Use the same evidence loop in Codex App:
+Use Skill calls inside Codex App:
 
-```powershell
-python scripts\validate_repo.py --root . --json
-python skills\english-exam-ai-tutor\scripts\validate_profile.py --profile learner-profile.json
-python skills\english-exam-ai-tutor\scripts\generate_daily_plan.py --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json
+```text
+/english-exam-ai-tutor Build today's plan from my learner profile and ability profile.
+/learning-planner Make a CET4 550+ weekly plan.
+/grammar-corrector Check this paragraph and return a correction report.
+/reading-navigator Break down this reading passage.
 ```
+
+Python scripts are internal automation helpers. Codex App can run them after the Skill has interpreted the task.
 
 Do not copy private prompt text into adapter configs or shared transcripts.

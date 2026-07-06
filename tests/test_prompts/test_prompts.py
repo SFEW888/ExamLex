@@ -1,0 +1,98 @@
+"""Tests for prompt guides — verify rendering, schema validity, and content completeness."""
+import unittest
+
+from skills.english_exam_ai_tutor.scripts.prompts.ria import RIAGuide
+from skills.english_exam_ai_tutor.scripts.prompts.cognitive import CognitiveGuide
+from skills.english_exam_ai_tutor.scripts.prompts.effect import EffectGuide
+from skills.english_exam_ai_tutor.scripts.prompts.climb import ClimbGuide
+from skills.english_exam_ai_tutor.scripts.prompts.base import triple_verify_guide
+
+
+class RIAGuideTests(unittest.TestCase):
+    def setUp(self):
+        self.guide = RIAGuide()
+
+    def test_distill_instructions_contain_key_sections(self):
+        text = self.guide.stage_instructions("distill", {"artifacts_dir": "/tmp/test"})
+        self.assertIn("Phase 0", text)
+        self.assertIn("Phase 1", text)
+        self.assertIn("Phase 1.5", text)
+        self.assertIn("Phase 2", text)
+        self.assertIn("Phase 3", text)
+        self.assertIn("RIA++", text)
+        self.assertIn("Execution", text)
+        self.assertIn("Boundary", text)
+
+    def test_output_schema_is_valid(self):
+        schema = self.guide.output_schema()
+        self.assertEqual(schema["type"], "object")
+        self.assertIn("strategies", schema["required"])
+        self.assertIn("pipeline_report", schema["required"])
+
+
+class CognitiveGuideTests(unittest.TestCase):
+    def setUp(self):
+        self.guide = CognitiveGuide()
+
+    def test_distill_instructions_contain_person_name(self):
+        text = self.guide.stage_instructions("distill", {"person_name": "赖世雄"})
+        self.assertIn("赖世雄", text)
+
+    def test_instructions_contain_five_layers(self):
+        text = self.guide.stage_instructions("distill", {"person_name": "Test"})
+        self.assertIn("Expression patterns", text)
+        self.assertIn("Mental models", text)
+        self.assertIn("Decision heuristics", text)
+        self.assertIn("Anti-patterns", text)
+        self.assertIn("Honesty boundary", text)
+
+    def test_output_schema_has_mental_model(self):
+        schema = self.guide.output_schema()
+        props = schema["properties"]["strategies"]["items"]["properties"]
+        self.assertIn("mental_model", props)
+        self.assertIn("heuristic", props)
+
+
+class EffectGuideTests(unittest.TestCase):
+    def setUp(self):
+        self.guide = EffectGuide()
+
+    def test_instructions_contain_both_dimensions(self):
+        text = self.guide.stage_instructions("evaluate")
+        self.assertIn("Dimension 7", text)
+        self.assertIn("Dimension 8", text)
+
+    def test_output_schema_requires_dimensions(self):
+        schema = self.guide.output_schema()
+        item_props = schema["properties"]["strategies"]["items"]["required"]
+        self.assertIn("dim7_architecture", item_props)
+        self.assertIn("dim8_performance", item_props)
+
+
+class ClimbGuideTests(unittest.TestCase):
+    def setUp(self):
+        self.guide = ClimbGuide()
+
+    def test_instructions_contain_anti_patterns(self):
+        text = self.guide.stage_instructions("optimize", {"strategy_id": "test-001"})
+        self.assertIn("Anti-pattern blacklist", text)
+        self.assertIn("independent judge", text)
+
+    def test_output_schema_decisions(self):
+        schema = self.guide.output_schema()
+        self.assertIn("decision", schema["required"])
+
+
+class TripleVerifyTests(unittest.TestCase):
+    def test_guide_contains_three_checks(self):
+        text = triple_verify_guide()
+        self.assertIn("V1", text)
+        self.assertIn("V2", text)
+        self.assertIn("V3", text)
+        self.assertIn("Cross-domain", text)
+        self.assertIn("Predictive power", text)
+        self.assertIn("Uniqueness", text)
+
+
+if __name__ == "__main__":
+    unittest.main()

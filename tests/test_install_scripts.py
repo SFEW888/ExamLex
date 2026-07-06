@@ -48,6 +48,17 @@ class InstallScriptTests(unittest.TestCase):
             self.assertTrue((result.target / "SKILL.md").exists())
             self.assertTrue((result.target / "references" / "workflow.md").exists())
 
+    def test_installs_all_default_skills_from_skills_root(self):
+        with temp_dir() as temp:
+            dest = Path(temp) / "skills"
+
+            results = install_claude.install_skills(PROJECT_ROOT / "skills", dest, dry_run=True)
+
+            installed_names = {result.target.name for result in results}
+            self.assertIn("english-exam-ai-tutor", installed_names)
+            self.assertIn("grammar-corrector", installed_names)
+            self.assertIn("learning-planner", installed_names)
+
     def test_refuses_overwrite_without_force(self):
         with temp_dir() as temp:
             dest = Path(temp) / "skills"

@@ -1,0 +1,49 @@
+name: Bug report
+description: Report a reproducible problem in scripts, installers, docs, or Skill packaging.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not paste private prompt bodies or learner-identifying data.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What failed?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: Include exact commands when possible.
+      placeholder: |
+        1. Run ...
+        2. See ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform
+      placeholder: Windows 11, PowerShell, Python 3.12
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation output
+      description: Paste safe output from validate_repo or unit tests.
+      render: text
