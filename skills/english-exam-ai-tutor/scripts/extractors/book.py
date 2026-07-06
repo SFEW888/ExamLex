@@ -126,19 +126,21 @@ class BookExtractor(BaseExtractor):
         # Try pdftotext first (fast, good for text PDFs)
         pdftotext = shutil.which("pdftotext")
         if pdftotext:
-            result = subprocess.run(
-                [pdftotext, "-layout", str(source), "-"],
-                capture_output=True, text=True, timeout=300,
-            )
+            try:
+                result = subprocess.run(
+                    [pdftotext, "-layout", str(source), "-"],
+                    capture_output=True, text=True, timeout=300,
+                )
+            except subprocess.TimeoutExpired:
+                raise RuntimeError(
+                    f"pdftotext timed out after 300s while processing {source.name}"
+                )
             if result.returncode == 0 and result.stdout.strip():
                 return result.stdout.strip()
-        # Fallback: try python-based extraction
-        try:
-            from importlib.util import find_spec
-            if find_spec("docling"):
-                return self._extract_pdf_docling(source)
-        except (ImportError, ModuleNotFoundError):
-            pass
+        # Fallback: try python-based extraction (find_spec returns None if absent)
+        from importlib.util import find_spec
+        if find_spec("docling"):
+            return self._extract_pdf_docling(source)
         raise RuntimeError(
             "Cannot extract PDF: pdftotext not found and docling not installed. "
             "Install poppler-utils (brew install poppler) or docling (pip install docling)."
@@ -173,10 +175,15 @@ class BookExtractor(BaseExtractor):
             with tempfile.NamedTemporaryFile(suffix=".txt", delete=False) as tmp:
                 tmp_path = Path(tmp.name)
             try:
-                result = subprocess.run(
-                    [calibre, str(source), str(tmp_path)],
-                    capture_output=True, text=True, timeout=300,
-                )
+                try:
+                    result = subprocess.run(
+                        [calibre, str(source), str(tmp_path)],
+                        capture_output=True, text=True, timeout=300,
+                    )
+                except subprocess.TimeoutExpired:
+                    raise RuntimeError(
+                        f"ebook-convert timed out after 300s while processing {source.name}"
+                    )
                 if result.returncode == 0 and tmp_path.exists():
                     return tmp_path.read_text(encoding="utf-8", errors="replace")
             finally:
@@ -192,8 +199,12 @@ class BookExtractor(BaseExtractor):
             for name in sorted(zf.namelist()):
                 if name.endswith((".html", ".htm", ".xhtml")):
                     html = zf.read(name).decode("utf-8", errors="replace")
-                    text = re.sub(r"<[^>]+>", " ", html)
-                    text = re.sub(r"\s+", " ", text)
+                    # Turn block-level tags into newlines before stripping the rest,
+                    # so paragraph/heading structure survives.
+                    text = re.sub(r"</?(?:p|div|br|h[1-6]|li|tr)\b[^>]*>", "\n", html, flags=re.I)
+                    text = re.sub(r"<[^>]+>", " ", text)
+                    text = re.sub(r"[ \t]*\n[ \t]*", "\n", text)
+                    text = re.sub(r" {2,}", " ", text)
                     parts.append(text.strip())
         return "\n\n".join(parts)
 
@@ -208,7 +219,10 @@ class BookExtractor(BaseExtractor):
     def _extract_rtf(self, source: Path) -> str:
         try:
             from striprtf.striprtf import rtf_to_text
-            return rtf_to_text(source.read_text(encoding="utf-8", errors="replace"))
+            # RTF is ANSI/ASCII-based; decode as latin-1 to preserve raw control
+            # bytes rather than corrupting them with U+FFFD replacements.
+            raw = source.read_bytes()
+            return rtf_to_text(raw.decode("latin-1", errors="replace"))
         except ImportError:
             raise RuntimeError("striprtf is not installed. Run: pip install striprtf")
 
@@ -222,10 +236,15 @@ class BookExtractor(BaseExtractor):
         with tempfile.NamedTemporaryFile(suffix=".txt", delete=False) as tmp:
             tmp_path = Path(tmp.name)
         try:
-            result = subprocess.run(
-                [calibre, str(source), str(tmp_path)],
-                capture_output=True, text=True, timeout=300,
-            )
+            try:
+                result = subprocess.run(
+                    [calibre, str(source), str(tmp_path)],
+                    capture_output=True, text=True, timeout=300,
+                )
+            except subprocess.TimeoutExpired:
+                raise RuntimeError(
+                    f"ebook-convert timed out after 300s while processing {source.name}"
+                )
             if result.returncode == 0 and tmp_path.exists():
                 return tmp_path.read_text(encoding="utf-8", errors="replace")
             raise RuntimeError(f"calibre conversion failed: {result.stderr[:300]}")

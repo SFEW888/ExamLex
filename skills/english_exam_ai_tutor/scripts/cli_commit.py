@@ -74,6 +74,11 @@ def main(argv: list[str] | None = None) -> int:
 
     for strategy in strategies:
         sid = strategy.get("strategy_id")
+        if sid is None:
+            # A missing id would silently fall back to 0.0 scores and could
+            # match the wrong existing strategy — skip and report instead.
+            skipped.append({"strategy_id": None, "reason": "missing strategy_id"})
+            continue
         structure = val_scores.get(sid, 0.0)
         effect = eval_scores.get(sid, 0.0)
         total_score = structure + effect

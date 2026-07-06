@@ -43,6 +43,11 @@ class Session:
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
         state_path = self.artifacts_dir / "pipeline_state.json"
+        if not self.artifacts_dir.exists():
+            raise FileNotFoundError(
+                f"Artifacts directory missing: {self.artifacts_dir}. "
+                "It may have been deleted or moved; create a new session."
+            )
         state_path.write_text(
             json.dumps(state, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
@@ -104,7 +109,9 @@ class SessionManager:
     def create(self, source_type: str) -> Session:
         """Start a new session with a unique ID and fresh artifacts directory."""
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        session_id = str(uuid.uuid4())[:8]
+        # Use the full UUID; truncating to 8 hex chars leaves only 32 bits of
+        # entropy and risks silent collisions (birthday paradox ~50% at ~77k IDs).
+        session_id = str(uuid.uuid4())
         artifacts_dir = self.sessions_root / today / session_id
         artifacts_dir.mkdir(parents=True, exist_ok=True)
 
@@ -118,14 +125,21 @@ class SessionManager:
 
     def resume(self, session_id: str) -> Session:
         """Resume an existing session from its pipeline_state.json."""
-        # Search for the session directory
-        for date_dir in sorted(self.sessions_root.iterdir()):
+        # Search newest date directory first (ISO date names sort lexically),
+        # so that if the same id exists under multiple dates we resume the most
+        # recent session rather than the oldest.
+        for date_dir in sorted(self.sessions_root.iterdir(), reverse=True):
             if not date_dir.is_dir():
                 continue
             candidate = date_dir / session_id
             state_file = candidate / "pipeline_state.json"
             if state_file.exists():
-                state = json.loads(state_file.read_text(encoding="utf-8"))
+                try:
+                    state = json.loads(state_file.read_text(encoding="utf-8"))
+                except json.JSONDecodeError as exc:
+                    raise ValueError(
+                        f"Corrupted pipeline state in {state_file}: {exc}"
+                    ) from exc
                 return Session(
                     session_id=session_id,
                     artifacts_dir=candidate,

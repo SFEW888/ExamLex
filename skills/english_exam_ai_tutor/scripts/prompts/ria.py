@@ -17,9 +17,8 @@ class RIAGuide(BasePromptGuide):
     def stage_instructions(self, stage: str, context: dict | None = None) -> str:
         ctx = context or {}
         artifacts_dir = ctx.get("artifacts_dir", "<artifacts_dir>")
-        from ..common import DEFAULT_EXAM_TYPES
+        from ..common import DEFAULT_EXAM_TYPES, ABILITY_TREE
         exam_types = ctx.get("exam_types", DEFAULT_EXAM_TYPES)
-        from ..common import ABILITY_TREE
         modules = ctx.get("modules", sorted(ABILITY_TREE.keys()))
 
         if stage == "distill":
@@ -37,8 +36,8 @@ You are distilling a video/podcast/course transcript into exam strategies.
 ## Input
 - Transcript: {artifacts_dir}/transcript.txt
 - Post caption: {artifacts_dir}/post_caption.txt (if available)
-- Target exams: {', '.join(exam_types)}
-- Target modules: {', '.join(modules)}
+- Target exams: {', '.join(exam_types) if exam_types else ', '.join(DEFAULT_EXAM_TYPES)}
+- Target modules: {', '.join(modules) if modules else 'all'}
 
 ## Phase 0 — Whole-content analysis
 Read the full transcript. Identify:
@@ -110,8 +109,16 @@ Write evaluation results to {artifacts_dir}/evaluation.json.
                                 "type": "object",
                                 "required": ["r_reading", "i_interpretation", "a1_past",
                                             "a2_trigger", "e_execution", "b_boundary"],
+                                "properties": {
+                                    "r_reading": {"type": "string"},
+                                    "i_interpretation": {"type": "string"},
+                                    "a1_past": {"type": "string"},
+                                    "a2_trigger": {"type": "string"},
+                                    "e_execution": {"type": "string"},
+                                    "b_boundary": {"type": "string"},
+                                },
                             },
-                            "related_strategies": {"type": "array"},
+                            "related_strategies": {"type": "array", "items": {"type": "string"}},
                         },
                     },
                 },

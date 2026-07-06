@@ -135,7 +135,15 @@ def _refresh_level_and_status(node: dict[str, Any]) -> None:
 
 
 def _int_value(value: Any) -> int:
-    return value if isinstance(value, int) and not isinstance(value, bool) else 0
+    if isinstance(value, bool):
+        return 0
+    if isinstance(value, int):
+        return value
+    # Preserve whole-number floats (e.g. 15.0 from manual edits or other tools)
+    # instead of silently discarding accumulated stats.
+    if isinstance(value, float) and value == int(value):
+        return int(value)
+    return 0
 
 
 def main(argv: list[str] | None = None) -> int:

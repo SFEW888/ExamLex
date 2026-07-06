@@ -175,17 +175,34 @@ class TutorConfig:
     def to_dict(self) -> dict:
         d = asdict(self)
         d["sessions_root"] = str(d["sessions_root"])
+        # Redact sensitive values so the dict is safe to log or serialize.
+        if d.get("siliconflow_api_key") is not None:
+            d["siliconflow_api_key"] = "<redacted>"
         # Exclude None values
         return {k: v for k, v in d.items() if v is not None}
 
     @classmethod
     def from_dict(cls, data: dict) -> TutorConfig:
-        if "sessions_root" in data:
+        if "sessions_root" in data and data["sessions_root"] is not None:
             data["sessions_root"] = Path(data["sessions_root"])
         return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})
 
+    # Map a tool name to the config attribute holding its explicit path.
+    _TOOL_TO_PATH_ATTR = {
+        "yt-dlp": "yt_dlp_path",
+        "ffmpeg": "ffmpeg_path",
+        "whisper": "whisper_path",
+        "pdftotext": "pdftotext_path",
+        "ebook-convert": "calibre_ebook_convert",
+    }
+
     def check_dependency(self, tool: str) -> bool:
-        """Check if a single CLI tool is available on PATH."""
+        """Check if a single CLI tool is available (explicit path or PATH)."""
+        attr = self._TOOL_TO_PATH_ATTR.get(tool)
+        if attr:
+            explicit = getattr(self, attr, None)
+            if explicit:
+                return Path(explicit).exists()
         return shutil.which(tool) is not None
 
     def check_all_dependencies(self) -> DependencyReport:
@@ -204,6 +221,8 @@ class TutorConfig:
             ("pdftotext", self.pdftotext_path, "PDF book extraction",
              "winget install poppler  or  choco install poppler",
              "brew install poppler", "apt install poppler-utils"),
+            ("ebook-convert", self.calibre_ebook_convert, "e-book conversion",
+             "winget install calibre", "brew install calibre", "apt install calibre"),
         ]
 
         for name, explicit_path, feature, inst_win, inst_mac, inst_linux in _TOOLS:

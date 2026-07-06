@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -15,6 +16,8 @@ except ImportError:  # pragma: no cover - supports direct script execution.
 DIMENSIONS = ("task_completion", "structure_logic", "language_accuracy", "expression_richness")
 MAX_DIMENSION_SCORE = 25
 MAX_SCORE = MAX_DIMENSION_SCORE * len(DIMENSIONS)
+# NOTE: "first"/"second"/"third" are counted as connectors but may appear as
+# ordinals ("the first reason"), which can inflate connector_count.
 CONNECTORS = {
     "first",
     "second",
@@ -30,12 +33,15 @@ CONNECTORS = {
     "as a result",
 }
 GRAMMAR_RISK_PATTERNS = (
-    r"\bi\s+go\b",
-    r"\bhe\s+go\b",
-    r"\bshe\s+go\b",
+    # WARNING: also matches correct subjunctive ("I suggest that he go…").
+    # "I go" is correct; only third-person "he/she go" misses the -s.
+    r"\b(he|she)\s+go\b",
+    # NOTE: may false-match "does it have", "will it have", etc.
     r"\bit\s+have\b",
     r"\bpeople\s+is\b",
     r"\bstudents\s+is\b",
+    # WARNING: these article patterns match letters, not sounds, so they yield
+    # false positives ("a European", "a university", "an hour", "an MBA").
     r"\ba\s+[aeiouAEIOU]",
     r"\ban\s+[^aeiouAEIOU\W]",
 )
@@ -43,14 +49,37 @@ TARGET_WORD_RANGES = {
     "CET4": (100, 180),
     "CET6": (140, 220),
     "POSTGRADUATE_ENGLISH": (160, 260),
+    "TEM4": (150, 200),
+    "TEM8": (200, 300),
 }
 
 
 def score_writing(text: str, exam_type: str) -> dict[str, Any]:
     if exam_type not in common.EXAM_TYPES:
         raise ValueError(f"unknown exam type: {exam_type}")
+    if exam_type not in TARGET_WORD_RANGES:
+        raise ValueError(f"no word range defined for exam type: {exam_type}")
     words = _words(text)
     word_count = len(words)
+    if word_count == 0:
+        return {
+            "label": "rubric_estimate",
+            "exam_type": exam_type,
+            "total_score": 0,
+            "max_score": MAX_SCORE,
+            "normalized_score": 0.0,
+            "signals": {
+                "word_count": 0,
+                "paragraph_count": 0,
+                "connector_count": 0,
+                "grammar_risk_count": 0,
+                "vocabulary_variety_ratio": 0.0,
+            },
+            "dimensions": {
+                dimension: _dimension(0, "no scorable text was provided")
+                for dimension in DIMENSIONS
+            },
+        }
     paragraphs = [part.strip() for part in re.split(r"\n\s*\n", text.strip()) if part.strip()]
     connector_count = _connector_count(text)
     grammar_risks = _grammar_risk_count(text)
@@ -122,9 +151,9 @@ def _expression_richness(unique_ratio: float, word_count: int) -> dict[str, Any]
         return _dimension(0, "no scorable text was provided")
     if unique_ratio >= 0.65 and word_count >= 80:
         score = 23
-    elif unique_ratio >= 0.50:
+    elif unique_ratio >= 0.50 and word_count >= 50:
         score = 18
-    elif unique_ratio >= 0.35:
+    elif unique_ratio >= 0.35 and word_count >= 30:
         score = 14
     else:
         score = 10
@@ -136,7 +165,7 @@ def _dimension(score: int, rationale: str) -> dict[str, Any]:
 
 
 def _words(text: str) -> list[str]:
-    return re.findall(r"[A-Za-z]+(?:'[A-Za-z]+)?", text)
+    return re.findall(r"[A-Za-z]+(?:[-'][A-Za-z]+)*", text)
 
 
 def _connector_count(text: str) -> int:
@@ -157,8 +186,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", help="Optional output path. Defaults to stdout.")
     args = parser.parse_args(argv)
 
-    text = Path(args.text_file).read_text(encoding="utf-8") if args.text_file else args.text
-    result = score_writing(text, args.exam_type)
+    try:
+        text = Path(args.text_file).read_text(encoding="utf-8") if args.text_file else args.text
+        result = score_writing(text, args.exam_type)
+    except (FileNotFoundError, ValueError, KeyError, TypeError, PermissionError, OSError) as exc:
+        print(f"error: {exc}", file=sys.stderr)
+        return 1
+
     if args.output:
         output = Path(args.output)
         output.parent.mkdir(parents=True, exist_ok=True)

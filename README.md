@@ -191,7 +191,7 @@ tutor plan examples/sample-learner-profile.yaml \
 # Record timed practice
 tutor log practice-ledger.json \
   --date 2026-07-06 --exam-type CET4 --module reading \
-  --task-id timed-001 --duration 42 --total 20 --correct 14 \
+  --task-id timed-001 --duration-minutes 42 --total-items 20 --correct-items 14 \
   --timed --overtime-items 3 --overtime-correct 1
 
 # Estimate vocabulary

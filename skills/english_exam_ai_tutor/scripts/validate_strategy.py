@@ -16,6 +16,9 @@ except ImportError:  # pragma: no cover - supports direct script execution.
 
 STRATEGY_ID_RE = re.compile(r"^[a-z0-9]+-[a-z-]+-[a-z0-9-]+-\d{3}$")
 
+# Precompute once; common.ABILITY_TREE is constant across strategies.
+_KNOWN_ABILITY_NODES = {node for nodes in common.ABILITY_TREE.values() for node in nodes}
+
 
 @dataclass
 class Check:
@@ -121,7 +124,7 @@ def _validate_strategy(strategy: Any, seen: set[str], index: int) -> list[Check]
 
     ability_nodes = strategy.get("ability_nodes", [])
     if isinstance(ability_nodes, list):
-        known_nodes = {node for nodes in common.ABILITY_TREE.values() for node in nodes}
+        known_nodes = _KNOWN_ABILITY_NODES
         for node in ability_nodes:
             status = "PASS" if node in known_nodes else "WARN"
             checks.append(Check("ability_nodes", status, f"{node} is {'known' if status == 'PASS' else 'unknown'}"))
@@ -173,7 +176,15 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true", help="Print JSON output.")
     args = parser.parse_args(argv)
 
-    result = validate_library(common.load_data(args.library), strict=args.strict)
+    try:
+        library = common.load_data(args.library)
+    except (FileNotFoundError, PermissionError, OSError, json.JSONDecodeError) as exc:
+        if args.json:
+            _print_json({"file": args.library, "fatal": str(exc)})
+        else:
+            print(f"ERROR: Cannot load '{args.library}': {exc}", file=sys.stderr)
+        return 2
+    result = validate_library(library, strict=args.strict)
     result["file"] = args.library
     if args.json:
         _print_json(result)

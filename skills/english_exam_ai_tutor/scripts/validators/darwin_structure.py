@@ -79,7 +79,8 @@ class DarwinStructureScorer:
             raw -= 2
         # Check for "空话" in content ending
         content = str(s.get("content", ""))
-        if content.rstrip().endswith(("灵活应用", "根据情况判断", "视情况而定")):
+        stripped = re.sub(r'[，。！？、；："\'）\)\s]+$', "", content.rstrip())
+        if stripped.endswith(("灵活应用", "根据情况判断", "视情况而定")):
             issues.append("Content ends with vague placeholder phrase")
             raw -= 2
         return DimensionScore("dim1_frontmatter", "Frontmatter quality", 7,
@@ -124,7 +125,7 @@ class DarwinStructureScorer:
             text += " " + boundary
 
         # Check for if-then patterns
-        if_then = len(re.findall(r"(如果|若|if|when)\s+.+\s+(则|那[么麼]|就|应|then)", text, re.IGNORECASE))
+        if_then = len(re.findall(r"(如果|若|if|when)\s*.+?\s*(则|那[么麼]|就|应|then)", text, re.IGNORECASE | re.DOTALL))
         if if_then == 0:
             issues.append("No if-then fallback patterns found")
             raw -= 5
@@ -145,7 +146,8 @@ class DarwinStructureScorer:
         issues = []
         raw = 10
         content = str(s.get("content", ""))
-        steps_text = " ".join(str(step) for step in s.get("steps", []))
+        steps_list = s.get("steps") if isinstance(s.get("steps"), list) else []
+        steps_text = " ".join(str(step) for step in steps_list)
         combined = content + " " + steps_text
 
         has_checkpoint = bool(re.search(r"[🔴🛑⏸️]|STOP|CHECKPOINT|检查点|确认", combined))
@@ -165,6 +167,11 @@ class DarwinStructureScorer:
             (r"建议(可以)?", "建议"),
             (r"可以考虑", "可以考虑"),
             (r"根据情况", "根据情况"),
+            (r"可能", "可能"),
+            (r"大概|大约", "大概/大约"),
+            (r"通常|一般.?情况", "通常/一般"),
+            (r"尽量|尽可能", "尽量"),
+            (r"适[当當]", "适当"),
         ]
         vague_count = 0
         for pat, label in vague_patterns:
@@ -194,13 +201,13 @@ class DarwinStructureScorer:
         issues = []
         raw = 10
         source_file = s.get("source_file", "")
-        if not source_file:
-            issues.append("No source_file")
-            raw -= 3
-
-        # Check if source_file or source_url is a valid reference
         source_url = s.get("source_url", "")
-        if not source_url and not source_file:
+        # Treat source_file and source_url symmetrically as valid references
+        if not source_file and not source_url:
+            issues.append("No source_file or source_url")
+            raw -= 5
+        elif not source_file or not source_url:
+            issues.append("Missing source_file or source_url")
             raw -= 2
 
         # Check for tags as resource metadata

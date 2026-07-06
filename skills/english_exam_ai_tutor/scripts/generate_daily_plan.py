@@ -31,6 +31,10 @@ def generate_daily_plan(
     strategies: dict[str, Any] | None = None,
     vocab_pool: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
+    if not isinstance(profile, dict):
+        raise TypeError(f"profile must be a dict, got {type(profile).__name__}")
+    if not isinstance(ability_profile, dict):
+        raise TypeError(f"ability_profile must be a dict, got {type(ability_profile).__name__}")
     budget = profile.get("daily_time_budget_minutes")
     if not isinstance(budget, int) or isinstance(budget, bool) or budget <= 0:
         raise ValueError("daily_time_budget_minutes must be a positive integer")
@@ -113,17 +117,19 @@ def generate_daily_plan(
         )
 
     # Attach vocabulary tasks from vocab pool
-    if vocab_pool and tasks:
+    if vocab_pool and tasks and remaining >= MIN_TASK_MINUTES:
         vocab_count = max(5, remaining // 2) if remaining > 0 else 10
         selected_vocab = select_daily_vocab(vocab_pool, ability_profile, budget, count=vocab_count)
         if selected_vocab:
+            vocab_minutes = min(MIN_TASK_MINUTES, remaining)
             tasks.append({
                 "module": "vocabulary",
                 "focus": "word study",
-                "minutes": min(MIN_TASK_MINUTES, budget),
+                "minutes": vocab_minutes,
                 "reason": "vocab pool selection",
                 "vocab_items": selected_vocab,
             })
+            remaining -= vocab_minutes
 
     # Attach matching strategies from strategy library
     exam_type = profile.get("exam_type", "")
@@ -136,8 +142,8 @@ def generate_daily_plan(
                 matches = [
                     s for s in strategy_list
                     if isinstance(s, dict)
-                    and module in s.get("modules", [])
-                    and exam_type in s.get("exam_types", [])
+                    and isinstance(s.get("modules"), list) and module in s["modules"]
+                    and isinstance(s.get("exam_types"), list) and exam_type in s["exam_types"]
                 ]
                 # Sort by Darwin score descending, then take top 3
                 matches.sort(key=lambda s: s.get("darwin_score", 0.0), reverse=True)
@@ -149,9 +155,9 @@ def generate_daily_plan(
                             "darwin_score": s.get("darwin_score"),
                             "source_type": s.get("source_type", "text"),
                             "distillation_method": s.get("distillation_method", "direct"),
-                            "trigger_scenario": (s.get("ria_structure", {}).get("a2_trigger", "") or
-                                                 s.get("heuristic", {}).get("scenario", "") or ""),
-                            "execution_steps": (s.get("ria_structure", {}).get("e_execution", []) or
+                            "trigger_scenario": ((s.get("ria_structure") or {}).get("a2_trigger", "") or
+                                                 (s.get("heuristic") or {}).get("scenario", "") or ""),
+                            "execution_steps": ((s.get("ria_structure") or {}).get("e_execution", []) or
                                                 s.get("steps", [])),
                         }
                         for s in matches[:3]

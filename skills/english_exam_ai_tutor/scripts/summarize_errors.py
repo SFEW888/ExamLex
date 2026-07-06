@@ -19,8 +19,10 @@ def summarize_errors(ledger_path: str | Path, window_days: int = 30) -> dict[str
 
     today = datetime.date.today()
     total_records = len(ledger)
+    # Count only string tags so the percentage denominator matches the per-tag
+    # counting below (which skips non-string tags).
     total_error_tags = sum(
-        len(record.get("error_tags", []))
+        sum(1 for tag in record.get("error_tags", []) if isinstance(tag, str))
         for record in ledger
         if isinstance(record, dict) and isinstance(record.get("error_tags", []), list)
     )
@@ -56,10 +58,12 @@ def summarize_errors(ledger_path: str | Path, window_days: int = 30) -> dict[str
     # Speed analysis: aggregate timed practice records
     timed_records = [r for r in ledger if isinstance(r, dict) and r.get("timed")]
     if timed_records:
-        total_overtime_items = sum(r.get("overtime_items", 0) for r in timed_records)
-        total_overtime_correct = sum(r.get("overtime_correct", 0) for r in timed_records)
+        total_overtime_items = sum(_as_number(r.get("overtime_items", 0)) for r in timed_records)
+        total_overtime_correct = sum(_as_number(r.get("overtime_correct", 0)) for r in timed_records)
         overtime_accuracy = (
-            round(total_overtime_correct / total_overtime_items, 3)
+            # Clamp to 1.0: inconsistent records (overtime_correct > overtime_items)
+            # must not produce an accuracy above 100%.
+            round(min(total_overtime_correct / total_overtime_items, 1.0), 3)
             if total_overtime_items > 0 else 0.0
         )
         # Per-module speed breakdown
@@ -70,8 +74,8 @@ def summarize_errors(ledger_path: str | Path, window_days: int = 30) -> dict[str
                 "timed_sessions": 0, "overtime_items": 0, "overtime_correct": 0,
             })
             entry["timed_sessions"] += 1
-            entry["overtime_items"] += r.get("overtime_items", 0)
-            entry["overtime_correct"] += r.get("overtime_correct", 0)
+            entry["overtime_items"] += _as_number(r.get("overtime_items", 0))
+            entry["overtime_correct"] += _as_number(r.get("overtime_correct", 0))
 
         summary["speed_analysis"] = {
             "timed_sessions": len(timed_records),
@@ -86,6 +90,19 @@ def summarize_errors(ledger_path: str | Path, window_days: int = 30) -> dict[str
         }
 
     return summary
+
+
+def _as_number(value: Any) -> int | float:
+    """Return numeric values unchanged; coerce booleans and non-numerics to 0.
+
+    Guards aggregation against malformed ledger records that store strings,
+    ``None``, or other non-numeric values in the overtime fields.
+    """
+    if isinstance(value, bool):
+        return 0
+    if isinstance(value, (int, float)):
+        return value
+    return 0
 
 
 def _add(bucket: dict[str, Any], key: str, total_error_tags: int, **extra: str) -> None:
@@ -128,10 +145,24 @@ def compute_review_urgency(
 
     # Recent frequency within window
     recent_count = sum(1 for d in dates if (today - d).days <= window_days)
+
+    def _days_since(record: dict) -> int | None:
+        # Exclude records with missing or malformed dates from the window count
+        # (instead of defaulting them to "today", which would inflate urgency)
+        # and never let a bad date string crash the whole summary.
+        date_str = record.get("date")
+        if not isinstance(date_str, str):
+            return None
+        try:
+            return (today - datetime.date.fromisoformat(date_str)).days
+        except ValueError:
+            return None
+
     total_records_in_window = sum(
         1 for r in ledger
         if isinstance(r, dict)
-        and (today - datetime.date.fromisoformat(str(r.get("date", today.isoformat())))).days <= window_days
+        and (_ds := _days_since(r)) is not None
+        and _ds <= window_days
     )
     error_freq = recent_count / total_records_in_window if total_records_in_window > 0 else 0.0
 

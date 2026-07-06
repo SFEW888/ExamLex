@@ -15,9 +15,10 @@ class ClimbGuide(BasePromptGuide):
 
     def stage_instructions(self, stage: str, context: dict | None = None) -> str:
         ctx = context or {}
-        strategy_id = ctx.get("strategy_id", "<strategy_id>")
-        current_score = ctx.get("current_score", 0.0)
-        weakest = ctx.get("weakest_dimension", "unknown")
+        # Escape curly braces to prevent f-string ValueError on untrusted input.
+        strategy_id = str(ctx.get("strategy_id", "<strategy_id>")).replace('{', '{{').replace('}', '}}')
+        current_score = float(ctx.get("current_score", 0.0))
+        weakest = str(ctx.get("weakest_dimension", "unknown")).replace('{', '{{').replace('}', '}}')
 
         return f"""# Hill-Climbing Optimization Guide
 

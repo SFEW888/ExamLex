@@ -16,11 +16,17 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--library", help="Path to strategy-library.json (for business result check)")
     parser.add_argument("--json", action="store_true", help="JSON output")
-    parser.add_argument("--quick", action="store_true", help="Quick mode: skip network + dry-run")
     args = parser.parse_args(argv)
 
     cfg = TutorConfig()
-    report = run_all_checks(cfg, args.library)
+    try:
+        report = run_all_checks(cfg, args.library)
+    except Exception as exc:
+        if args.json:
+            print(json.dumps({"error": str(exc)}, ensure_ascii=False))
+        else:
+            print(f"[FAIL] Check execution failed: {exc}", file=sys.stderr)
+        return 2
 
     if args.json:
         output = {
@@ -49,8 +55,8 @@ def main(argv: list[str] | None = None) -> int:
     print(f"Operational Readiness Report")
     print(f"Host: {report.hostname} | Platform: {report.platform}")
     print(f"Python: {report.python_version} | Time: {report.timestamp}")
-    print(f"Summary: {report.summary['pass']} pass, {report.summary['warn']} warn, "
-          f"{report.summary['fail']} fail, {report.summary['skip']} skip")
+    print(f"Summary: {report.summary.get('pass', 0)} pass, {report.summary.get('warn', 0)} warn, "
+          f"{report.summary.get('fail', 0)} fail, {report.summary.get('skip', 0)} skip")
     print()
 
     for check in report.checks:
@@ -63,6 +69,6 @@ def main(argv: list[str] | None = None) -> int:
     if report.all_pass():
         print("All critical checks passed. System is ready.")
     else:
-        print(f"WARNING: {report.summary['fail']} checks failed. Review and fix before deployment.")
+        print(f"WARNING: {report.summary.get('fail', 0)} checks failed. Review and fix before deployment.")
 
     return 0 if report.all_pass() else 1

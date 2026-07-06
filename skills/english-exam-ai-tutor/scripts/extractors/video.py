@@ -44,6 +44,18 @@ SILICONFLOW_URL = "https://api.siliconflow.cn/v1/audio/transcriptions"
 SILICONFLOW_MODEL = "FunAudioLLM/SenseVoiceSmall"
 
 
+def _cookie_retry_enabled() -> bool:
+    """Whether to retry yt-dlp with browser cookies.
+
+    Off by default: `--cookies-from-browser chrome` sends the user's Chrome
+    session cookies to the target URL, which a crafted/compromised URL could
+    exfiltrate. Enable explicitly by setting TUTOR_YTDLP_COOKIES_FROM_BROWSER=1.
+    """
+    return os.environ.get("TUTOR_YTDLP_COOKIES_FROM_BROWSER", "").strip().lower() in (
+        "1", "true", "yes",
+    )
+
+
 # ── Extractor ──────────────────────────────────────
 
 
@@ -69,6 +81,16 @@ class VideoExtractor(BaseExtractor):
 
         # 2. Download video + metadata via yt-dlp
         metadata = self._extract_metadata(input_ref)
+
+        # Validate duration before any expensive download/ASR work
+        duration = metadata.get("duration") or 0
+        if duration > 14400:  # 4h
+            raise ValueError(
+                f"Video too long ({duration}s, >4h). Refusing to process."
+            )
+        if duration > 7200:  # 2h
+            warnings.append(f"Video is {duration}s (>2h). Transcription may be slow.")
+
         item_id = self._item_id(metadata)
         video_path = self._download_video(input_ref, output_dir, metadata, item_id)
 
@@ -114,14 +136,6 @@ class VideoExtractor(BaseExtractor):
             except RuntimeError as exc:
                 warnings.append(f"ASR failed ({backend}): {exc}")
 
-        duration = metadata.get("duration") or 0
-        if duration > 14400:  # 4h
-            raise ValueError(
-                f"Video too long ({duration}s, >4h). Refusing to process."
-            )
-        if duration > 7200:  # 2h
-            warnings.append(f"Video is {duration}s (>2h). Transcription may be slow.")
-
         return ExtractionResult(
             source_type="video",
             input_ref=input_ref,
@@ -156,11 +170,15 @@ class VideoExtractor(BaseExtractor):
     # ── yt-dlp wrappers ──
 
     def _extract_metadata(self, url: str) -> dict:
-        yt_dlp = shutil.which("yt-dlp") or "yt-dlp"
+        yt_dlp = shutil.which("yt-dlp")
+        if not yt_dlp:
+            raise FileNotFoundError(
+                "yt-dlp is required but not found. Install it and retry."
+            )
         cmd = [yt_dlp, "--no-playlist", "--dump-single-json", url]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-        if result.returncode != 0:
-            # Retry with cookies
+        if result.returncode != 0 and _cookie_retry_enabled():
+            # Opt-in retry with browser cookies (see _cookie_retry_enabled)
             cmd2 = [yt_dlp, "--cookies-from-browser", "chrome", "--no-playlist",
                     "--dump-single-json", url]
             result = subprocess.run(cmd2, capture_output=True, text=True, timeout=120)
@@ -170,7 +188,11 @@ class VideoExtractor(BaseExtractor):
 
     def _download_video(self, url: str, folder: Path,
                         metadata: dict, item_id: str) -> Path:
-        yt_dlp = shutil.which("yt-dlp") or "yt-dlp"
+        yt_dlp = shutil.which("yt-dlp")
+        if not yt_dlp:
+            raise FileNotFoundError(
+                "yt-dlp is required but not found. Install it and retry."
+            )
         stem = _safe_filename(metadata.get("title"), item_id)
         output_path = folder / f"{stem}.mp4"
         cmd = [
@@ -178,12 +200,14 @@ class VideoExtractor(BaseExtractor):
             "--merge-output-format", "mp4", "-o", str(output_path), url,
         ]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
-        if result.returncode != 0:
-            # Retry with cookies
+        if result.returncode != 0 and _cookie_retry_enabled():
+            # Opt-in retry with browser cookies (see _cookie_retry_enabled)
             cmd2 = [yt_dlp, "--cookies-from-browser", "chrome", "--no-playlist",
                     "-f", "bv*+ba/b", "--merge-output-format", "mp4",
                     "-o", str(output_path), url]
             result = subprocess.run(cmd2, capture_output=True, text=True, timeout=600)
+        if result.returncode != 0:
+            raise RuntimeError(f"yt-dlp download failed: {result.stderr[:500]}")
         if output_path.exists():
             return output_path
         matches = sorted(folder.glob(f"{stem}.*"))
@@ -197,7 +221,9 @@ class VideoExtractor(BaseExtractor):
         for key in ("id", "display_id", "webpage_url_basename"):
             value = metadata.get(key)
             if value:
-                return re.sub(r"[^A-Za-z0-9_.-]+", "-", str(value)).strip("-")
+                sanitized = re.sub(r"[^A-Za-z0-9_.-]+", "-", str(value)).strip("-")
+                if sanitized:
+                    return sanitized
         return "unknown"
 
     def _post_caption(self, metadata: dict) -> str:
@@ -323,6 +349,13 @@ def _transcribe_siliconflow(audio_path: Path, transcript_path: Path,
     api_key = os.environ.get("SILICONFLOW_API_KEY")
     if not api_key:
         raise RuntimeError("SILICONFLOW_API_KEY not set")
+
+    file_size = audio_path.stat().st_size
+    max_size = 200 * 1024 * 1024  # 200 MB safety limit
+    if file_size > max_size:
+        raise RuntimeError(
+            f"Audio file too large ({file_size} bytes, >{max_size})"
+        )
 
     boundary = f"----tutor-{uuid.uuid4().hex}"
     body_parts = [

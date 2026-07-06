@@ -4,13 +4,13 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
-from typing import Any
+from typing import Any, Literal
 
 
 @dataclass
 class ValidationIssue:
     field: str
-    severity: str       # "ERROR" | "WARN"
+    severity: Literal["ERROR", "WARN"]
     message: str
     remedy: str | None = None
 
@@ -28,5 +28,5 @@ class BaseValidator(ABC):
     """Abstract validator for strategy entries."""
 
     @abstractmethod
-    def validate(self, strategy: dict) -> ValidationReport:
+    def validate(self, strategy: dict[str, Any]) -> ValidationReport:
         ...

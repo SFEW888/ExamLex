@@ -25,7 +25,14 @@ SCHEMA_DIR = ROOT / "assets" / "schemas"
 
 def load_schema() -> dict:
     schema_path = SCHEMA_DIR / "vocab-entry.schema.json"
-    return json.loads(schema_path.read_text(encoding="utf-8"))
+    try:
+        return json.loads(schema_path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        print(f"ERROR: Schema file not found: {schema_path}", file=sys.stderr)
+        sys.exit(1)
+    except json.JSONDecodeError as exc:
+        print(f"ERROR: Invalid JSON in schema file {schema_path}: {exc}", file=sys.stderr)
+        sys.exit(1)
 
 
 def validate_entry(entry: dict, schema: dict) -> list[str]:
@@ -47,6 +54,12 @@ def validate_entry(entry: dict, schema: dict) -> list[str]:
         valid = {"CET4", "CET6", "POSTGRADUATE", "TEM4", "TEM8"}
         if entry["cet_level"] not in valid:
             errors.append(f"cet_level 不在合法值内: {entry['cet_level']!r}")
+    for field in ("collocations", "synonyms", "confusable_words"):
+        if field in entry and not isinstance(entry[field], list):
+            errors.append(f"{field} 必须是列表: {entry[field]!r}")
+    for field in ("example", "phonetic", "pos"):
+        if field in entry and not isinstance(entry[field], str):
+            errors.append(f"{field} 必须是字符串: {entry[field]!r}")
     return errors
 
 
@@ -323,42 +336,57 @@ try:
         CET4_WORDS, CET6_WORDS, POSTGRAD_WORDS, TEM4_WORDS, TEM8_WORDS,
     )
 except ImportError:
-    from vocab_data import (  # type: ignore[no-redef]
-        CET4_WORDS, CET6_WORDS, POSTGRAD_WORDS, TEM4_WORDS, TEM8_WORDS,
-    )
+    try:
+        from vocab_data import (  # type: ignore[no-redef]
+            CET4_WORDS, CET6_WORDS, POSTGRAD_WORDS, TEM4_WORDS, TEM8_WORDS,
+        )
+    except ImportError:
+        # Expanded data unavailable; fall back to embedded lists only.
+        CET4_WORDS = CET6_WORDS = POSTGRAD_WORDS = TEM4_WORDS = TEM8_WORDS = []
+
+
+def _merge_words(embedded: list, imported: list) -> list:
+    """Merge embedded and imported word lists, deduplicating by word string.
+
+    Embedded entries take precedence and keep their order; imported entries whose
+    word already appears in the embedded list are dropped.
+    """
+    seen = {w[0] for w in embedded}
+    return embedded + [w for w in imported if w[0] not in seen]
+
 
 LEVEL_CONFIG = {
     "CET4": {
         "filename": "cet4-core-2000.json",
-        "words": _WORDS_CET4 + CET4_WORDS,
+        "words": _merge_words(_WORDS_CET4, CET4_WORDS),
         "exam_types": ["CET4"],
         "description": "四级高频核心词汇，按真题出现频率降序排列",
         "source": "基于 CET-4 历年真题词频统计（public domain 数据源）",
     },
     "CET6": {
         "filename": "cet6-core-1500.json",
-        "words": _WORDS_CET6 + CET6_WORDS,
+        "words": _merge_words(_WORDS_CET6, CET6_WORDS),
         "exam_types": ["CET6"],
         "description": "六级增量高频词汇，假设用户已掌握四级词表",
         "source": "基于 CET-6 历年真题词频统计",
     },
     "POSTGRADUATE": {
         "filename": "postgraduate-core-1000.json",
-        "words": _WORDS_POSTGRAD + POSTGRAD_WORDS,
+        "words": _merge_words(_WORDS_POSTGRAD, POSTGRAD_WORDS),
         "exam_types": ["POSTGRADUATE_ENGLISH"],
         "description": "考研英语增量高频词汇",
         "source": "基于考研英语(一/二)历年真题词频统计",
     },
     "TEM4": {
         "filename": "tem4-core-2000.json",
-        "words": _WORDS_TEM4 + TEM4_WORDS,
+        "words": _merge_words(_WORDS_TEM4, TEM4_WORDS),
         "exam_types": ["TEM4"],
         "description": "英语专业四级高频词汇",
         "source": "基于 TEM-4 历年真题词频统计",
     },
     "TEM8": {
         "filename": "tem8-core-2000.json",
-        "words": _WORDS_TEM8 + TEM8_WORDS,
+        "words": _merge_words(_WORDS_TEM8, TEM8_WORDS),
         "exam_types": ["TEM8"],
         "description": "英语专业八级高频进阶词汇",
         "source": "基于 TEM-8 历年真题词频统计",
@@ -434,6 +462,33 @@ def generate_all():
     return index_path
 
 
+def _rebuild_index() -> Path:
+    """Rebuild index.json from the vocabulary files currently on disk.
+
+    Keeps the index consistent after generating a single level, using the actual
+    on-disk entry counts for every level file that exists.
+    """
+    index = {}
+    for level, config in LEVEL_CONFIG.items():
+        path = VOCAB_DIR / config["filename"]
+        if not path.exists():
+            continue
+        try:
+            data = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            continue
+        index[config["filename"].replace(".json", "")] = {
+            "path": config["filename"],
+            "count": len(data),
+            "exam_types": config["exam_types"],
+            "description": config["description"],
+            "source": config["source"],
+        }
+    index_path = VOCAB_DIR / "index.json"
+    write_json(index, index_path)
+    return index_path
+
+
 def validate_existing():
     """Validate existing vocabulary files against the schema."""
     schema = load_schema()
@@ -498,6 +553,9 @@ def main():
             path = VOCAB_DIR / config["filename"]
             write_json(entries, path)
             print(f"  Written {len(entries)} entries to {path.name}")
+            # Keep index.json in sync after writing a single level.
+            _rebuild_index()
+            print("  Rebuilt index.json")
         else:
             print(f"Unknown level: {level}. Valid: {list(LEVEL_CONFIG)}")
             sys.exit(1)

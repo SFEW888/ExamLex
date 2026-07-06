@@ -72,8 +72,9 @@ Extract exam strategies from any source — text files, books, videos, people, c
 Each distillation follows a 5-stage pipeline orchestrated by the Agent:
 
 1. **Extract**: `tutor extract --input <url|file|name>` — downloads and extracts raw materials.
-2. **Distill**: Agent follows the methodology guide (`prompts/ria.py` for video, `prompts/cognitive.py` for people) to produce structured strategies → `distilled.json`.
+2. **Distill**: Agent follows the methodology guide (`scripts/prompts/ria.py` for video, `scripts/prompts/cognitive.py` for people) to produce structured strategies → `distilled.json`.
 3. **Validate**: `tutor validate --artifacts-dir <path>` — runs format checks + Darwin 6-dimension structure scoring (59 pts).
+   Also run `tutor validate-strategy` to validate the strategy library JSON file itself after manual edits.
 4. **Evaluate**: Agent runs test prompts to score effectiveness (35 pts) → `evaluation.json`.
 5. **Commit**: `tutor commit --artifacts-dir <path> --library strategy-library.json` — ratchet check + atomic write.
 
@@ -93,7 +94,7 @@ For exam prep books (PDF/EPUB/DOCX/TXT/HTML):
 ```bash
 tutor extract --input <book-file> --type book
 # Extracts full text + chapter structure + glossary
-# → Agent follows prompts/ria.py for RIA-TV++ distillation
+# → Agent follows scripts/prompts/ria.py for RIA-TV++ distillation
 tutor validate --artifacts-dir <path>
 tutor commit --artifacts-dir <path> --library strategy-library.json
 ```
@@ -104,7 +105,7 @@ For B站/YouTube URLs or subtitle files:
 ```bash
 tutor extract --input <video-url> --type video
 # yt-dlp download → ffmpeg audio → SenseVoiceSmall/whisper ASR
-# → Agent follows prompts/ria.py for RIA-TV++ distillation
+# → Agent follows scripts/prompts/ria.py for RIA-TV++ distillation
 tutor validate --artifacts-dir <path>
 tutor commit --artifacts-dir <path> --library strategy-library.json
 ```
@@ -114,7 +115,7 @@ Requires: yt-dlp + ffmpeg (run `tutor check-deps`).
 For distilling a teacher's methodology:
 ```bash
 tutor extract --input <person-name> --type person
-# → Agent follows prompts/cognitive.py for 5-layer cognitive extraction
+# → Agent follows scripts/prompts/cognitive.py for 5-layer cognitive extraction
 # → 6 parallel research agents → triple verification
 tutor validate --artifacts-dir <path>
 tutor commit --artifacts-dir <path> --library strategy-library.json
@@ -128,7 +129,7 @@ tutor commit --artifacts-dir <path> --library strategy-library.json
 ```
 
 ### 7f. Darwin scoring & optimization (automatic)
-- Structure (59 pts): auto-scored by `tutor validate` via `validators/darwin_structure.py`
+- Structure (59 pts): auto-scored by `tutor validate` via `scripts/validators/darwin_structure.py`
 - Effectiveness (35 pts): Agent-evaluated via test prompts (see `references/darwin-rubric.md`)
 - Meta-skill (6 pts): anti-pattern blacklist check
 - Score < 70 → automatic hill-climb optimization (max 3 rounds)

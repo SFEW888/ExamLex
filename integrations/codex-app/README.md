@@ -3,7 +3,7 @@
 Install the Skill for Codex:
 
 ```bash
-npx skills add your-org/english-exam-ai-tutor
+npx skills add your-org/english-exam-ai-tutor  # 替换为你的组织名/用户名 (replace with your org/username)
 ```
 
 For the main Skill plus shortcut Skills:

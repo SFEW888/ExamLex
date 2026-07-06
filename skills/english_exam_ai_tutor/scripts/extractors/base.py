@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import shutil
 from abc import ABC, abstractmethod
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -28,9 +29,9 @@ class BaseExtractor(ABC):
     and produces artifact files in the session's artifacts_dir.
     """
 
-    # Override in subclasses
-    SUPPORTED_INPUTS: list[str] = []
-    REQUIRED_TOOLS: list[str] = []
+    # Override in subclasses (assign a new list/tuple when overriding)
+    SUPPORTED_INPUTS: tuple[str, ...] = ()
+    REQUIRED_TOOLS: tuple[str, ...] = ()
 
     @abstractmethod
     def extract(self, input_ref: str, output_dir: Path) -> ExtractionResult:
@@ -39,9 +40,12 @@ class BaseExtractor(ABC):
 
     @classmethod
     def check_dependencies(cls) -> list[str]:
-        """Return list of missing tool names (empty = all available)."""
-        import shutil
-        missing = []
+        """Return list of missing tool names (empty = all available).
+
+        Note: REQUIRED_TOOLS must be set as a class attribute (not as an
+        instance attribute in __init__), otherwise this method will not see it.
+        """
+        missing: list[str] = []
         for tool in cls.REQUIRED_TOOLS:
             if shutil.which(tool) is None:
                 missing.append(tool)

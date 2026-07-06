@@ -60,23 +60,7 @@ class StrategyRatchet:
         old_score = old_strategy.get("darwin_score", 0.0)
         delta = round(new_score - old_score, 1)
 
-        if delta > 0:
-            return RatchetResult(
-                decision=RatchetDecision.KEEP,
-                old_score=old_score,
-                new_score=new_score,
-                delta=delta,
-                reason=f"Score improved by {delta} points",
-            )
-        elif delta == 0:
-            return RatchetResult(
-                decision=RatchetDecision.KEEP,
-                old_score=old_score,
-                new_score=new_score,
-                delta=delta,
-                reason="Score unchanged — keeping current version",
-            )
-        else:
+        if delta < 0:
             return RatchetResult(
                 decision=RatchetDecision.REVERT,
                 old_score=old_score,
@@ -84,6 +68,27 @@ class StrategyRatchet:
                 delta=delta,
                 reason=f"Score decreased by {abs(delta)} points — reverting",
             )
+
+        # Keep (delta >= 0). Compute the touch-top signal from the projected
+        # history so callers relying on RatchetResult.should_stop actually see it.
+        history = old_strategy.get("score_history", [])
+        projected = [h for h in history if isinstance(h, dict)]
+        projected.append({"status": RatchetDecision.KEEP.value, "delta": delta})
+        stop = self.should_stop(projected)
+
+        reason = (
+            f"Score improved by {delta} points"
+            if delta > 0
+            else "Score unchanged — keeping current version"
+        )
+        return RatchetResult(
+            decision=RatchetDecision.KEEP,
+            old_score=old_score,
+            new_score=new_score,
+            delta=delta,
+            reason=reason,
+            should_stop=stop,
+        )
 
     def should_stop(self, history: list[dict]) -> bool:
         """Check touch-top signal: last 2 rounds both had delta < threshold."""
@@ -97,14 +102,34 @@ class StrategyRatchet:
 
     def apply(self, new_strategy: dict, library: dict, old_strategy: dict | None,
               score: float, dimensions: dict | None = None) -> dict:
-        """Apply ratchet check and update the library with the new or reverted strategy."""
+        """Apply ratchet check and update the library with the new or reverted strategy.
+
+        WARNING: this mutates ``library`` in place — its ``"strategies"`` list is
+        updated with the resulting strategy. Callers reuse the passed ``library``
+        dict and persist it via ``atomic_save``, so the side effect is intentional;
+        do not share the same dict across independent update flows.
+        """
         if old_strategy is None:
             # First time — set baseline
             updated = self.baseline(new_strategy, score, dimensions)
         else:
             result = self.compare(old_strategy, new_strategy, score, dimensions)
             if result.decision == RatchetDecision.REVERT:
-                updated = old_strategy  # keep old version
+                # Keep the old version but record the failed attempt for audit.
+                updated = copy.deepcopy(old_strategy)
+                history = updated.get("score_history")
+                if not isinstance(history, list):
+                    history = []
+                    updated["score_history"] = history
+                history.append({
+                    "version": len(history) + 1,
+                    "score": score,
+                    "dimensions": dimensions or {},
+                    "changed_at": date.today().isoformat(),
+                    "delta": result.delta,
+                    "status": RatchetDecision.REVERT.value,
+                    "note": f"Attempted score {score}; reverted to v{len(history)}",
+                })
             else:
                 history = old_strategy.get("score_history", [])
                 next_version = len(history) + 1
@@ -149,6 +174,15 @@ class StrategyRatchet:
 
         # Atomic write
         tmp = path.with_suffix(path.suffix + ".tmp")
-        tmp.write_text(text, encoding="utf-8")
-        os.replace(str(tmp), str(path))
+        try:
+            tmp.write_text(text, encoding="utf-8")
+            os.replace(str(tmp), str(path))
+        finally:
+            # Clean up an orphaned temp file if the write/replace failed
+            # (on success it has already been renamed away).
+            if tmp.exists():
+                try:
+                    tmp.unlink()
+                except OSError:
+                    pass
         return path

@@ -12,7 +12,7 @@ This roadmap captures planned work from the external optimization specification.
 
 ## Next Priorities
 
-1. Add TEM-4 and TEM-8 support behind tests before advertising them as supported.
+1. (Done) TEM-4 and TEM-8 are already supported — see `docs/tem4.md` and `docs/tem8.md`. Remaining work: deepen test coverage for both exam types.
 2. Add vocabulary-size estimation with a checked reference word pool.
 3. Add timed-practice metadata and spaced-review scheduling.
 4. Add progress visualization as generated HTML.

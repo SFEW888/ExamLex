@@ -99,9 +99,9 @@ This tutor supports five exam types:
 - **Spaced Repetition**: automatic review urgency scoring in error summaries
 - **Progress Visualization**: `tutor report` — standalone HTML with SVG radar/trend/error charts
 - **Vocabulary Pool**: built-in 650 words across 5 exam levels
-- **Common Error Library**: 22 curated error patterns with examples
+- **Common Error Library**: 21 curated error patterns with examples
 - **Model Essay Library**: scored sample essays for rubric anchoring
-- **Incremental Backup**: `tutor backup --incremental` with integrity verification
+- **Backup & Restore**: `tutor backup` / `tutor restore` with tar.gz support
 
 ## Run The Optional CLI
 
@@ -110,7 +110,7 @@ Use these wrappers when you want to run the deterministic tools directly from a 
 ```bash
 bin/tutor check examples/sample-learner-profile.yaml
 bin/tutor plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
-bin/tutor strategies --library strategy-library.json
+bin/tutor strategies --library strategy-library.json  # 需要你创建/积累的策略库文件 (create/accumulate your own strategy library file)
 ```
 
 PowerShell:

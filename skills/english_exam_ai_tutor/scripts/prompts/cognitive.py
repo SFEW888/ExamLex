@@ -6,9 +6,11 @@ The Agent reads these instructions and executes them during the DISTILL stage.
 
 from __future__ import annotations
 
+import re
 from typing import Any
 
 from .base import BasePromptGuide, triple_verify_guide
+from ..common import DEFAULT_EXAM_TYPES
 
 
 class CognitiveGuide(BasePromptGuide):
@@ -17,8 +19,10 @@ class CognitiveGuide(BasePromptGuide):
     def stage_instructions(self, stage: str, context: dict | None = None) -> str:
         ctx = context or {}
         artifacts_dir = ctx.get("artifacts_dir", "<artifacts_dir>")
-        person_name = ctx.get("person_name", "the person")
-        from ..common import DEFAULT_EXAM_TYPES
+        # Sanitize user-supplied name: strip control chars, escape f-string braces,
+        # limit length to prevent prompt injection.
+        raw_name = ctx.get("person_name", "the person")
+        person_name = re.sub(r'[\n\r`{}]', '', str(raw_name))[:100]
         exam_types = ctx.get("exam_types", DEFAULT_EXAM_TYPES)
 
         if stage == "distill":
@@ -74,7 +78,7 @@ Read distilled strategies from {artifacts_dir}/distilled.json.
 Quality checks:
 1. **Sanity check**: Do 3 known public statements align with extracted models?
 2. **Edge case**: Test 1 unstated problem — does the model make reasonable predictions?
-3. **Voice check**: Write 100-word analysis — can you recognize {artifacts_dir} in the style?
+3. **Voice check**: Write 100-word analysis — can you recognize {person_name} in the style?
 
 Write results to {artifacts_dir}/evaluation.json.
 """

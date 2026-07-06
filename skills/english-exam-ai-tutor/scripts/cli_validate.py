@@ -33,7 +33,30 @@ def main(argv: list[str] | None = None) -> int:
             print(f"ERROR: {output['message']}")
         return 2
 
-    data = json.loads(distilled.read_text(encoding="utf-8"))
+    try:
+        data = json.loads(distilled.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError) as exc:
+        output = {
+            "status": "error",
+            "message": f"Failed to parse distilled.json: {exc}",
+        }
+        if args.json:
+            print(json.dumps(output, ensure_ascii=False, indent=2))
+        else:
+            print(f"ERROR: {output['message']}")
+        return 2
+
+    if not isinstance(data, dict):
+        output = {
+            "status": "error",
+            "message": "distilled.json must contain a JSON object.",
+        }
+        if args.json:
+            print(json.dumps(output, ensure_ascii=False, indent=2))
+        else:
+            print(f"ERROR: {output['message']}")
+        return 2
+
     strategies = data.get("strategies", [])
 
     if not strategies:
@@ -57,8 +80,28 @@ def main(argv: list[str] | None = None) -> int:
     all_passed = True
 
     for strategy in strategies:
-        format_report = checker.validate(strategy)
-        structure_score = scorer.score(strategy)
+        try:
+            format_report = checker.validate(strategy)
+            structure_score = scorer.score(strategy)
+        except Exception as exc:  # noqa: BLE001 - isolate one bad strategy
+            sid = strategy.get("strategy_id", "unknown") if isinstance(strategy, dict) else "unknown"
+            title = strategy.get("title", "") if isinstance(strategy, dict) else ""
+            results.append({
+                "strategy_id": sid,
+                "title": title,
+                "format_passed": False,
+                "format_errors": 1,
+                "format_warnings": 0,
+                "structure_score": 0,
+                "structure_passed": False,
+                "dimensions": [],
+                "format_issues": [
+                    {"field": "_internal", "severity": "ERROR",
+                     "message": f"Validation crashed: {exc}"}
+                ],
+            })
+            all_passed = False
+            continue
 
         entry = {
             "strategy_id": strategy.get("strategy_id", "unknown"),
@@ -95,7 +138,10 @@ def main(argv: list[str] | None = None) -> int:
 
     # Write report
     report_path = artifacts / "validation_report.json"
-    report_path.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    try:
+        report_path.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    except OSError as exc:
+        print(f"WARNING: Could not write validation report to {report_path}: {exc}", file=sys.stderr)
 
     if args.json:
         print(json.dumps(output, ensure_ascii=False, indent=2))

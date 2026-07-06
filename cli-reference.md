@@ -34,8 +34,11 @@
 
 | 快捷命令 | 底层命令 | 触发 | 说明 |
 |----------|----------|:--:|------|
+| `tutor extract --input <url\|file\|name> [opts]` | `extract` | 🤖 | 从 URL/文件/人名提取原始素材（多源学习的第 1 阶段） |
 | `tutor ingest <file> [opts]` | `ingest-strategy` | 👤 | 从文件提取策略写入策略库 |
 | `tutor strategies [opts]` | `list-strategies` | 👤 | 列出/搜索已摄入的策略 |
+| `tutor validate --artifacts-dir <path>` | `validate-strategies` | 🤖 | 验证蒸馏策略格式并计算 Darwin 6 维结构评分（第 3 阶段） |
+| `tutor commit --artifacts-dir <path> --library <path>` | `commit-strategies` | 🤖 | 通过 ratchet 检查将策略原子写入策略库（第 5 阶段） |
 
 ### 💾 数据管理
 
@@ -55,6 +58,8 @@
 
 | 底层命令 | 触发 | 说明 |
 |----------|:--:|------|
+| `check-deps` | 🔧 | 检查外部工具依赖（ffmpeg、yt-dlp 等） |
+| `ops-check` | 🔧 | 运行 13 项运维就绪检查 |
 | `validate-strategy` | 🔧 | 校验策略库文件 |
 | `validate_repo.py` | 🔧 | 仓库完整性校验（非 CLI 命令） |
 
@@ -65,11 +70,10 @@
 ### `tutor check` — 校验档案
 
 ```bash
-tutor check <profile> [--json]
+tutor check <profile>
 
 # 示例
 tutor check learner-profile.json
-tutor check learner-profile.json --json
 ```
 
 ### `tutor plan` — 生成每日计划
@@ -77,10 +81,9 @@ tutor check learner-profile.json --json
 ```bash
 tutor plan <profile>
   --ability <path>            # 能力画像（必填）
+  --output <path>             # 输出路径（必填）
   [--errors <path>]           # 错误汇总（可选，有则用于优化计划）
   [--strategies <path>]       # 策略库（可选，有则附加方法论建议）
-  [--output <path>]           # 输出路径
-  [--json]
 
 # 示例
 tutor plan learner-profile.json \
@@ -97,11 +100,11 @@ tutor log <ledger>
   --exam-type <CET4|CET6|POSTGRADUATE_ENGLISH>
   --module <vocabulary|listening|reading|translation|writing>
   --task-id <id>
-  --duration <minutes>
-  --total <n>
-  --correct <n>
-  [--timed]                   # 计时训练模式
-  [--time-limit <minutes>]    # 考试规定时间
+  --duration-minutes <minutes>
+  --total-items <n>
+  --correct-items <n>
+  [--timed]                        # 计时训练模式
+  [--time-limit-minutes <minutes>] # 考试规定时间
   [--overtime-items <n>]
   [--overtime-correct <n>]
   [--error-tags <tag1,tag2>]
@@ -112,25 +115,25 @@ tutor log practice-ledger.json \
   --exam-type CET4 \
   --module reading \
   --task-id timed-reading-001 \
-  --duration 40 --total 20 --correct 14 \
-  --timed --time-limit 35 \
+  --duration-minutes 40 --total-items 20 --correct-items 14 \
+  --timed --time-limit-minutes 35 \
   --error-tags READING_SPEED_LOW,READING_INFERENCE_FAIL
 ```
 
 ### `tutor tag` — 错误归因
 
 ```bash
-tutor tag <text> [--module <module>] [--output <path>] [--json]
+tutor tag <text> [--module <module>] [--output <path>]
 
 # 示例
-tutor tag "I went to store." --module writing --json
+tutor tag "I went to store." --module writing
 # → ["WRITING_ARTICLE_OMISSION"]
 ```
 
 ### `tutor errors` — 错误汇总
 
 ```bash
-tutor errors <ledger> [--output <path>] [--days <n>] [--json]
+tutor errors <ledger> [--output <path>]
 
 # 示例
 tutor errors practice-ledger.json --days 30 --output errors.json
@@ -139,7 +142,7 @@ tutor errors practice-ledger.json --days 30 --output errors.json
 ### `tutor update` — 更新能力画像
 
 ```bash
-tutor update <ability-profile> <ledger> [--json]
+tutor update <ability-profile> <ledger>
 
 # 示例
 tutor update ability-profile.json practice-ledger.json
@@ -151,8 +154,6 @@ tutor update ability-profile.json practice-ledger.json
 tutor trends <ledger>
   [--history <ability-history>]
   [--output <path>]
-  [--days <n>]
-  [--json]
 
 # 示例
 tutor trends practice-ledger.json --history ability-history.json --days 90
@@ -180,14 +181,13 @@ tutor write essay-001 \
 ### `tutor score` — 作文评分
 
 ```bash
-tutor score <essay-file>
-  [--exam-type <CET4|CET6|POSTGRADUATE_ENGLISH>]
-  [--reference-samples <dir>]
+tutor score
+  --text-file <path> | --text <string>
+  --exam-type <CET4|CET6|POSTGRADUATE_ENGLISH|TEM4|TEM8>
   [--output <path>]
-  [--json]
 
 # 示例
-tutor score my-essay.txt --exam-type CET4 --json
+tutor score --text-file my-essay.txt --exam-type CET4
 ```
 
 ### `tutor ingest` — 摄入策略
@@ -206,7 +206,7 @@ tutor ingest "四级阅读技巧.md" --library strategy-library.json
 ### `tutor strategies` — 策略库
 
 ```bash
-tutor strategies [--library <path>] [--search <keyword>] [--json]
+tutor strategies --library <path> [--search <keyword>] [--json]
 
 # 示例
 tutor strategies --search 阅读
@@ -261,6 +261,69 @@ tutor vocab --wordlist <answers.json> [--output <path>]
 # 示例
 tutor vocab --interactive --output vocab-result.json
 ```
+
+### `tutor extract` — 提取原始素材
+
+```bash
+tutor extract --input <url|file|name>
+  [--type auto|video|book|text|person]   # 强制指定输入类型（默认自动检测）
+  [--output-dir <dir>]                   # 覆盖会话输出目录
+  [--json]                               # JSON 格式输出
+
+# 示例
+tutor extract --input 四级阅读技巧.md --type text
+tutor extract --input https://www.bilibili.com/video/BVxxx --type video
+```
+
+### `tutor validate` — 验证蒸馏策略
+
+```bash
+tutor validate --artifacts-dir <path>
+  [--json]                               # JSON 格式输出
+
+# 示例
+tutor validate --artifacts-dir ./sessions/session-001
+```
+
+底层命令：`validate-strategies`。执行格式校验和 Darwin 6 维结构评分（满分 59 分），结果写入 `validation_report.json`。
+
+### `tutor commit` — 提交策略到库
+
+```bash
+tutor commit --artifacts-dir <path>
+  --library <strategy-library.json>
+  [--json]                               # JSON 格式输出
+
+# 示例
+tutor commit --artifacts-dir ./sessions/session-001 --library strategy-library.json
+```
+
+底层命令：`commit-strategies`。执行 ratchet 检查（新策略 Darwin 分需超过已有记录），原子写入策略库。
+
+### `tutor check-deps` — 检查依赖
+
+```bash
+tutor check-deps
+
+# 示例
+tutor check-deps
+```
+
+底层命令：`check-deps`。检查 ffmpeg、yt-dlp 等外部工具是否可用，用于视频/音频提取前的环境验证。
+
+### `tutor ops-check` — 运维检查
+
+```bash
+tutor ops-check
+  [--library <strategy-library.json>]    # 可选，用于业务结果检查
+  [--json]                               # JSON 格式输出
+
+# 示例
+tutor ops-check
+tutor ops-check --library strategy-library.json --json
+```
+
+底层命令：`ops-check`。运行 13 项运维就绪检查（环境、配置、数据完整性等），返回通过/警告/失败报告。
 
 ---
 

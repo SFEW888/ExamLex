@@ -18,12 +18,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--input", required=True, help="URL, file path, or person name")
     parser.add_argument("--type", choices=["auto", "video", "book", "text", "person"],
                         default="auto", help="Force input type")
-    parser.add_argument("--output-dir", help="Override session artifacts directory")
+    parser.add_argument("--output-dir", help="Override sessions root directory (session artifacts are created under here)")
     parser.add_argument("--json", action="store_true", help="JSON output")
     args = parser.parse_args(argv)
 
     cfg = TutorConfig()
-    sessions_root = Path(args.output_dir).parent if args.output_dir else cfg.sessions_root
+    sessions_root = Path(args.output_dir) if args.output_dir else cfg.sessions_root
     mgr = SessionManager(sessions_root)
 
     input_type = resolve_input(args.input)
@@ -39,7 +39,33 @@ def main(argv: list[str] | None = None) -> int:
     if input_type == InputType.LOCAL_TEXT:
         session = mgr.create(source_type="text")
         extractor = TextExtractor()
-        result = extractor.extract(args.input, session.artifacts_dir)
+        # Resolve early so non-existent files fail with a clean message instead
+        # of an unhandled traceback further down.
+        resolved = Path(args.input).expanduser().resolve()
+        if not resolved.is_file():
+            output = {
+                "status": "error",
+                "message": f"Input file not found: {resolved}",
+                "session_id": session.session_id,
+            }
+            if args.json:
+                print(json.dumps(output, ensure_ascii=False, indent=2))
+            else:
+                print(f"Error: {output['message']}", file=sys.stderr)
+            return 1
+        try:
+            result = extractor.extract(str(resolved), session.artifacts_dir)
+        except (FileNotFoundError, IsADirectoryError, PermissionError, OSError, UnicodeDecodeError, ValueError) as exc:
+            output = {
+                "status": "error",
+                "message": f"Failed to extract text: {exc}",
+                "session_id": session.session_id,
+            }
+            if args.json:
+                print(json.dumps(output, ensure_ascii=False, indent=2))
+            else:
+                print(f"Error: {exc}", file=sys.stderr)
+            return 1
         session.checkpoint("extract")
         output = {
             "status": "ok",
@@ -89,6 +115,8 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Extraction complete. Session: {output.get('session_id')}")
             print(f"Artifacts: {output.get('artifacts_dir')}")
             print(f"Next stage: {output.get('next_stage')}")
+            for warning in output.get("summary", {}).get("warnings", []):
+                print(f"Warning: {warning}", file=sys.stderr)
         else:
             print(f"Status: {output['status']} -- {output.get('message', '')}")
 

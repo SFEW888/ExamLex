@@ -82,25 +82,25 @@ COMMAND="$1"
 shift
 
 case "$COMMAND" in
-    # 备考闭环
-    check)    run_python validate-profile "$@" ;;
-    plan)     run_python daily-plan "$@" ;;
-    log)      run_python record-practice "$@" ;;
-    tag)      run_python tag-error "$@" ;;
-    errors)   run_python summarize-errors "$@" ;;
-    update)   run_python update-ability "$@" ;;
-    trends)   run_python analyze-trends "$@" ;;
-    write)    run_python writing-version "$@" ;;
-    score)    run_python score-writing "$@" ;;
+    # 备考闭环 — 别名命令走 cli.py 的 ALIASES 以触发选项预添加
+    check)    run_python check "$@" ;;
+    plan)     run_python plan "$@" ;;
+    log)      run_python log "$@" ;;
+    tag)      run_python tag "$@" ;;
+    errors)   run_python errors "$@" ;;
+    update)   run_python update "$@" ;;
+    trends)   run_python trends "$@" ;;
+    write)    run_python write "$@" ;;
+    score)    run_python score "$@" ;;
 
     # 知识管理
-    ingest)      run_python ingest-strategy "$@" ;;
-    strategies)  run_python list-strategies "$@" ;;
+    ingest)      run_python ingest "$@" ;;
+    strategies)  run_python strategies "$@" ;;
     extract)     run_python extract "$@" ;;
     validate)    run_python validate-strategies "$@" ;;
     commit)      run_python commit-strategies "$@" ;;
     check-deps)  run_python check-deps "$@" ;;
-    ops-check)    run_python ops-check "$@" ;;
+    ops-check)   run_python ops-check "$@" ;;
 
     # 数据管理
     backup)   run_python backup "$@" ;;

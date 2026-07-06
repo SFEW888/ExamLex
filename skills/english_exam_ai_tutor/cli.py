@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import sys
 from collections.abc import Callable
 
 from .scripts import (
@@ -30,8 +31,12 @@ CommandMain = Callable[[list[str] | None], int]
 
 
 def _check_deps_main(argv: list[str] | None = None) -> int:
-    cfg = TutorConfig()
-    report = cfg.check_all_dependencies()
+    try:
+        cfg = TutorConfig()
+        report = cfg.check_all_dependencies()
+    except Exception as exc:
+        print(f"Failed to check dependencies: {exc}", file=sys.stderr)
+        return 1
     if report.all_available():
         print("All external dependencies are available.")
         return 0
@@ -66,9 +71,14 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
 }
 
 
+def _option_present(values: list[str], option: str) -> bool:
+    """Detect an option in either "--opt value" or combined "--opt=value" form."""
+    return any(value == option or value.startswith(option + "=") for value in values)
+
+
 def _prepend_option(args: list[str] | None, option: str) -> list[str]:
     values = list(args or [])
-    if not values or values[0].startswith("-") or option in values:
+    if not values or values[0].startswith("-") or _option_present(values, option):
         return values
     return [option, values[0], *values[1:]]
 
@@ -76,6 +86,8 @@ def _prepend_option(args: list[str] | None, option: str) -> list[str]:
 def _prepend_two_options(args: list[str] | None, first: str, second: str) -> list[str]:
     values = list(args or [])
     if len(values) < 2 or values[0].startswith("-") or values[1].startswith("-"):
+        return values
+    if _option_present(values, first) or _option_present(values, second):
         return values
     return [first, values[0], second, values[1], *values[2:]]
 
@@ -96,7 +108,15 @@ ALIASES: dict[str, tuple[str, Callable[[list[str] | None], list[str]]]] = {
     "restore-data": ("restore", lambda args: _prepend_two_options(args, "--input", "--data-dir")),
 }
 
-ALL_COMMANDS = {**COMMANDS, **{alias: COMMANDS[target] for alias, (target, _) in ALIASES.items()}}
+_alias_commands: dict[str, tuple[str, CommandMain]] = {}
+for _alias, (_target, _) in ALIASES.items():
+    if _target not in COMMANDS:
+        raise ValueError(
+            f"Alias '{_alias}' references unknown command '{_target}'. "
+            f"Available commands: {sorted(COMMANDS)}"
+        )
+    _alias_commands[_alias] = COMMANDS[_target]
+ALL_COMMANDS = {**COMMANDS, **_alias_commands}
 
 
 def main(argv: list[str] | None = None) -> int:

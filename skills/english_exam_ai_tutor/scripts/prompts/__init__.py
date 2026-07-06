@@ -1,8 +1,8 @@
-"""Prompt guides for Agent-driven distillation and evaluation.
+"""Prompt guides for Agent-driven distillation, evaluation, and optimization.
 
 Each module provides structured instructions that the Agent reads and follows
-during the DISTILL and EVALUATE stages of the pipeline. These are NOT
-executable Python scripts — they are Agent SOP guides.
+during the DISTILL, EVALUATE, and OPTIMIZE stages of the pipeline. These are
+NOT executable Python scripts — they are Agent SOP guides.
 """
 
 from __future__ import annotations

@@ -6,7 +6,7 @@ from typing import Any
 
 EXAM_TYPES = {"CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"}
 ALL_EXAMS = frozenset(EXAM_TYPES)
-DEFAULT_EXAM_TYPES = sorted(EXAM_TYPES)  # ["CET4","CET6","POSTGRADUATE_ENGLISH","TEM4","TEM8"]
+DEFAULT_EXAM_TYPES: tuple[str, ...] = tuple(sorted(EXAM_TYPES))  # ("CET4","CET6","POSTGRADUATE_ENGLISH","TEM4","TEM8")
 FOUNDATION_LEVELS = {"基础偏弱", "中等基础", "基础较好"}
 CET_TARGET_BANDS = {"425~499", "500~550", "550+", "600+"}
 POSTGRADUATE_TARGET_BANDS = {"50+", "70~80", "80+", "90+"}
@@ -60,13 +60,47 @@ ERROR_TAG_TO_ABILITY = {
 
 
 def load_data(path: str | Path) -> Any:
-    text = Path(path).read_text(encoding="utf-8")
-    return json.loads(text)
+    """Load JSON data from a file.
+
+    Raises:
+        FileNotFoundError: If the file does not exist.
+        json.JSONDecodeError: If the file contains malformed JSON.
+        PermissionError: If the file cannot be read.
+        OSError: For other I/O errors.
+    """
+    try:
+        text = Path(path).read_text(encoding="utf-8")
+        return json.loads(text)
+    except FileNotFoundError:
+        raise FileNotFoundError(f"Data file not found: {path}")
+    except json.JSONDecodeError:
+        raise
+    except PermissionError:
+        raise PermissionError(f"Permission denied reading: {path}")
+    except OSError as e:
+        raise OSError(f"Error reading data file '{path}': {e}") from e
 
 
 def save_data(path: str | Path, data: Any) -> None:
-    text = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
-    Path(path).write_text(text, encoding="utf-8")
+    """Save JSON data to a file, creating parent directories if needed.
+
+    Raises:
+        TypeError: If the data is not JSON-serializable.
+        PermissionError: If the file cannot be written.
+        OSError: For other I/O errors.
+    """
+    try:
+        text = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+    except TypeError as e:
+        raise TypeError(f"Data is not JSON-serializable: {e}")
+    p = Path(path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        p.write_text(text, encoding="utf-8")
+    except PermissionError:
+        raise PermissionError(f"Permission denied writing: {path}")
+    except OSError as e:
+        raise OSError(f"Error writing data file '{path}': {e}") from e
 
 
 def target_bands_for(exam_type: str) -> set[str]:
@@ -80,6 +114,11 @@ def target_bands_for(exam_type: str) -> set[str]:
 
 
 def validate_error_tags(tags: list[str]) -> list[str]:
+    """Return the *unrecognized* tags (those absent from ERROR_TAG_TO_ABILITY).
+
+    An empty result means every tag is valid. Callers use this to report which
+    tags failed validation.
+    """
     return [tag for tag in tags if tag not in ERROR_TAG_TO_ABILITY]
 
 

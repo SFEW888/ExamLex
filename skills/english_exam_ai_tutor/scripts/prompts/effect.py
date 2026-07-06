@@ -15,7 +15,7 @@ class EffectGuide(BasePromptGuide):
 
     def stage_instructions(self, stage: str, context: dict | None = None) -> str:
         ctx = context or {}
-        artifacts_dir = ctx.get("artifacts_dir", "<artifacts_dir>")
+        artifacts_dir = ctx.get("artifacts_dir") or "<artifacts_dir>"
 
         return f"""# Darwin Effect Scoring Guide
 
@@ -73,11 +73,22 @@ Write to {artifacts_dir}/evaluation.json with structure:
                     "items": {
                         "type": "object",
                         "required": ["strategy_id", "dim7_architecture", "dim8_performance", "effect_total"],
+                        "properties": {
+                            "strategy_id": {"type": "string"},
+                            "dim7_architecture": {"type": "object"},
+                            "dim8_performance": {"type": "object"},
+                            "effect_total": {"type": "number"},
+                        },
                     },
                 },
                 "summary": {
                     "type": "object",
                     "required": ["average_effect_score", "dry_run_ratio", "dry_run_warning"],
+                    "properties": {
+                        "average_effect_score": {"type": "number"},
+                        "dry_run_ratio": {"type": "number"},
+                        "dry_run_warning": {"type": "boolean"},
+                    },
                 },
             },
         }

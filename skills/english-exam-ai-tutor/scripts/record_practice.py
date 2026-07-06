@@ -49,12 +49,51 @@ def _validate_record(record: dict[str, Any]) -> None:
     if unknown:
         raise ValueError(f"unknown error tags: {', '.join(unknown)}")
 
+    duration_minutes = record.get("duration_minutes")
+    if duration_minutes is not None and (
+        not isinstance(duration_minutes, int)
+        or isinstance(duration_minutes, bool)
+        or duration_minutes <= 0
+    ):
+        raise ValueError("duration_minutes must be a positive integer")
+
+    overtime_items = record.get("overtime_items")
+    overtime_correct = record.get("overtime_correct")
+    if overtime_items is not None and (
+        not isinstance(overtime_items, int)
+        or isinstance(overtime_items, bool)
+        or overtime_items < 0
+    ):
+        raise ValueError("overtime_items must be a non-negative integer")
+    if overtime_correct is not None and (
+        not isinstance(overtime_correct, int)
+        or isinstance(overtime_correct, bool)
+        or overtime_correct < 0
+    ):
+        raise ValueError("overtime_correct must be a non-negative integer")
+    if (
+        overtime_items is not None
+        and overtime_correct is not None
+        and overtime_correct > overtime_items
+    ):
+        raise ValueError("overtime_correct cannot exceed overtime_items")
+
 
 def _record_from_args(args: argparse.Namespace) -> dict[str, Any]:
     if args.record_json:
         record = json.loads(args.record_json)
         if not isinstance(record, dict):
             raise ValueError("--record-json must decode to an object")
+        allowed_keys = {
+            "date", "exam_type", "module", "task_id", "duration_minutes",
+            "total_items", "correct_items", "error_tags",
+            "timed", "time_limit_minutes", "overtime_items", "overtime_correct",
+        }
+        unknown = set(record) - allowed_keys
+        if unknown:
+            raise ValueError(
+                f"unknown fields in --record-json: {', '.join(sorted(unknown))}"
+            )
         return record
 
     record: dict[str, Any] = {

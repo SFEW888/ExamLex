@@ -26,35 +26,50 @@ def sync_scripts(check_only: bool = False) -> list[str]:
         root_path = Path(root)
         rel = root_path.relative_to(src)
         for fname in files:
-            if not fname.endswith(".py") and fname != "__init__.py":
+            if not fname.endswith(".py"):  # __init__.py is already covered by .py suffix
                 continue
             src_file = root_path / fname
             dst_file = dst / rel / fname
-            if not dst_file.exists():
-                mismatches.append(f"missing: {dst_file}")
-                if not check_only:
-                    dst_file.parent.mkdir(parents=True, exist_ok=True)
-                    dst_file.write_text(src_file.read_text(encoding="utf-8"), encoding="utf-8")
-            elif not filecmp.cmp(str(src_file), str(dst_file), shallow=False):
-                mismatches.append(f"mismatch: {rel / fname}")
-                if not check_only:
-                    dst_file.write_text(src_file.read_text(encoding="utf-8"), encoding="utf-8")
+            try:
+                if not dst_file.exists():
+                    mismatches.append(f"missing: {dst_file}")
+                    if not check_only:
+                        _mirror_file(src_file, dst_file)
+                elif not filecmp.cmp(str(src_file), str(dst_file), shallow=False):
+                    mismatches.append(f"mismatch: {rel / fname}")
+                    if not check_only:
+                        _mirror_file(src_file, dst_file)
+            except OSError as exc:
+                mismatches.append(f"error: {rel / fname}: {exc}")
 
     return mismatches
 
 
+def _mirror_file(src_file: Path, dst_file: Path) -> None:
+    """Copy src_file to dst_file, creating parent directories as needed."""
+    dst_file.parent.mkdir(parents=True, exist_ok=True)
+    dst_file.write_text(src_file.read_text(encoding="utf-8"), encoding="utf-8")
+
+
 def sync_cli(check_only: bool = False) -> list[str]:
-    """Sync cli.py and __main__.py."""
+    """Sync cli.py."""
     mismatches = []
     for fname in ("cli.py",):
         src = HYPHENATED / fname
         dst = UNDERSCORED / fname
-        if not src.exists() or not dst.exists():
+        if not src.exists():
             continue
-        if not filecmp.cmp(str(src), str(dst), shallow=False):
-            mismatches.append(f"mismatch: {fname}")
-            if not check_only:
-                dst.write_text(src.read_text(encoding="utf-8"), encoding="utf-8")
+        try:
+            if not dst.exists():
+                mismatches.append(f"missing: {dst}")
+                if not check_only:
+                    _mirror_file(src, dst)
+            elif not filecmp.cmp(str(src), str(dst), shallow=False):
+                mismatches.append(f"mismatch: {fname}")
+                if not check_only:
+                    _mirror_file(src, dst)
+        except OSError as exc:
+            mismatches.append(f"error: {fname}: {exc}")
     return mismatches
 
 
@@ -71,9 +86,13 @@ def main(argv: list[str] | None = None) -> int:
             print(f"  {m}")
         if check_only:
             print(f"\n{len(all_mismatches)} mismatches found. Run without --check to fix.")
-        else:
-            print(f"\n{len(all_mismatches)} files synced.")
-        return 1
+            return 1
+        errors = [m for m in all_mismatches if m.startswith("error:")]
+        print(f"\n{len(all_mismatches) - len(errors)} files synced.")
+        if errors:
+            print(f"{len(errors)} errors — see above.")
+            return 1
+        return 0
     else:
         print("Mirror is in sync.")
         return 0

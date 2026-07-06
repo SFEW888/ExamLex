@@ -14,6 +14,8 @@ except ImportError:  # pragma: no cover - supports direct script execution.
 
 def list_strategies(library_path: str | Path, *, search: str | None = None) -> dict[str, Any]:
     library = common.load_data(library_path)
+    if not isinstance(library, dict):
+        raise ValueError("strategy library must be a JSON object")
     strategies = library.get("strategies", [])
     if not isinstance(strategies, list):
         raise ValueError("strategy library must contain a strategies list")
@@ -31,6 +33,7 @@ def list_strategies(library_path: str | Path, *, search: str | None = None) -> d
     by_module: dict[str, int] = {}
     for strategy in strategies:
         if not isinstance(strategy, dict):
+            print(f"Warning: skipping non-dict strategy entry: {strategy!r}", file=sys.stderr)
             continue
         for exam in strategy.get("exam_types", []):
             if isinstance(exam, str):
@@ -54,7 +57,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
 
-    result = list_strategies(args.library, search=args.search)
+    try:
+        result = list_strategies(args.library, search=args.search)
+    except (OSError, ValueError) as exc:
+        print(f"Error loading strategy library: {exc}", file=sys.stderr)
+        return 1
     if args.json:
         _print_json(result)
     else:
@@ -72,4 +79,12 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def _print_json(data: Any) -> None:
-    sys.stdout.buffer.write((json.dumps(data, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+    text = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
+    buffer = getattr(sys.stdout, "buffer", None)
+    if buffer is not None:
+        # Force UTF-8 bytes so non-ASCII output is stable regardless of the
+        # console's default encoding (e.g. GBK on Windows).
+        buffer.write(text.encode("utf-8"))
+    else:
+        # Captured stdout (e.g. io.StringIO in tests) has no binary buffer.
+        sys.stdout.write(text)

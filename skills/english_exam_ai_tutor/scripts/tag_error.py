@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 from typing import Any
 
 try:
@@ -22,6 +23,22 @@ RULES: tuple[tuple[str | None, tuple[str, ...], str], ...] = (
 )
 
 
+def _keyword_in_text(keyword: str, text: str) -> bool:
+    """Word-aware containment test.
+
+    Avoids ASCII substring false positives (e.g. keyword ``"an "`` matching
+    inside ``"than "``) by requiring that a keyword is not flanked by other
+    ASCII letters. Non-ASCII keywords (e.g. Chinese) have no ASCII word
+    boundaries, so the guards are always satisfied and the check degrades to
+    plain containment, preserving the original behavior for them.
+    """
+    keyword = keyword.lower().strip()
+    if not keyword:
+        return False
+    pattern = r"(?<![a-z])" + re.escape(keyword) + r"(?![a-z])"
+    return re.search(pattern, text) is not None
+
+
 def tag_error(text: str, module: str | None = None) -> dict[str, Any]:
     normalized_text = f" {text.lower()} "
     normalized_module = module.lower() if module else None
@@ -30,7 +47,7 @@ def tag_error(text: str, module: str | None = None) -> dict[str, Any]:
     for rule_module, keywords, tag in RULES:
         if rule_module is not None and normalized_module not in {None, rule_module}:
             continue
-        if any(keyword.lower() in normalized_text for keyword in keywords):
+        if any(_keyword_in_text(keyword, normalized_text) for keyword in keywords):
             tags.append(tag)
 
     unknown = common.validate_error_tags(tags)

@@ -59,8 +59,8 @@ python -m skills.english_exam_ai_tutor visualize --ability-history ability-histo
 
 # Data management
 python -m skills.english_exam_ai_tutor backup --data-dir ./data --output backup.tar.gz
-python -m skills.english_exam_ai_tutor backup --verify backup.tar.gz
-python -m skills.english_exam_ai_tutor backup --data-dir ./data --incremental --output incremental.tar.gz
+python -m skills.english_exam_ai_tutor backup --list backup.tar.gz
+python -m skills.english_exam_ai_tutor restore --data-dir ./data --input backup.tar.gz
 ```
 
 Generated local files such as plans, ledgers, `.env`, and private prompt assets should stay untracked.

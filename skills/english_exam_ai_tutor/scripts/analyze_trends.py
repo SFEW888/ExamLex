@@ -31,6 +31,9 @@ def analyze_trends(
             continue
         if not isinstance(correct_items, int) or isinstance(correct_items, bool):
             continue
+        # Reject inconsistent records: an accuracy ratio must stay within [0, 1].
+        if correct_items < 0 or correct_items > total_items:
+            continue
         module_series.setdefault(module, []).append(correct_items / total_items)
 
     for snapshot in history or []:

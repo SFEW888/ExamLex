@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import html
 import json
+import math
 import sys
 from pathlib import Path
 from typing import Any
@@ -45,12 +47,6 @@ def _svg_radar(modules_data: dict[str, float], width=400, height=400) -> str:
     # Axes
     for i in range(n):
         angle = -90 + i * (360 / n)
-        rad = angle * 3.14159 / 180
-        ex = cx + r * (rad * 0.001 + 1) * 0
-        ex = cx + r * (0 if abs(angle - 90) < 0.01 else (1 if abs(angle + 90) < 0.01 else 0)) * 0
-        ex = cx + r * (0 if abs(angle % 180) < 0.1 else (1 if angle < 0 else -1))  # simplified
-        # Proper trig:
-        import math
         ex_real = cx + r * math.cos(math.radians(angle))
         ey_real = cy + r * math.sin(math.radians(angle))
         parts.append(f'<line x1="{cx:.1f}" y1="{cy:.1f}" x2="{ex_real:.1f}" y2="{ey_real:.1f}" '
@@ -64,7 +60,7 @@ def _svg_radar(modules_data: dict[str, float], width=400, height=400) -> str:
         elif lx > cx + 20:
             anchor = "start"
         parts.append(f'<text x="{lx:.1f}" y="{ly:.1f}" text-anchor="{anchor}" '
-                     f'font-size="12" fill="#333">{labels[i]}</text>')
+                     f'font-size="12" fill="#333">{html.escape(str(labels[i]))}</text>')
 
     # Data polygon
     points = []
@@ -93,8 +89,6 @@ def _svg_radar(modules_data: dict[str, float], width=400, height=400) -> str:
 def _svg_trends(dates: list[str], accuracy_by_module: dict[str, list[float]],
                 width=700, height=300) -> str:
     """Generate inline SVG line chart for practice accuracy trends."""
-    import math
-
     if not dates or len(dates) < 2:
         return '<svg width="700" height="100"><text x="10" y="30">Not enough data for trend chart</text></svg>'
 
@@ -119,7 +113,7 @@ def _svg_trends(dates: list[str], accuracy_by_module: dict[str, list[float]],
         if n_dates <= 10 or i % max(1, n_dates // 8) == 0:
             x = margin["left"] + plot_w * i / max(1, n_dates - 1)
             parts.append(f'<text x="{x:.1f}" y="{height - 10:.1f}" text-anchor="middle" '
-                         f'font-size="9" fill="#999">{d[5:]}</text>')
+                         f'font-size="9" fill="#999">{html.escape(str(d)[5:])}</text>')
 
     # Lines
     mods = list(accuracy_by_module.keys())
@@ -136,7 +130,7 @@ def _svg_trends(dates: list[str], accuracy_by_module: dict[str, list[float]],
         # Label at end
         last_x = margin["left"] + plot_w
         last_y = margin["top"] + plot_h * (1 - vals[-1] / 100)
-        parts.append(f'<text x="{last_x + 5:.1f}" y="{last_y:.1f}" font-size="10" fill="{color}">{mod}</text>')
+        parts.append(f'<text x="{last_x + 5:.1f}" y="{last_y:.1f}" font-size="10" fill="{color}">{html.escape(str(mod))}</text>')
 
     # Y-axis label
     parts.append(f'<text x="15" y="{height/2:.1f}" text-anchor="middle" '
@@ -222,12 +216,17 @@ def generate_report(
     today = datetime.date.today()
     cutoff = today - datetime.timedelta(days=days)
 
-    # Filter ledger to recent days
-    recent_ledger = [
-        r for r in ledger
-        if isinstance(r, dict)
-        and datetime.date.fromisoformat(str(r.get("date", today.isoformat()))) >= cutoff
-    ]
+    # Filter ledger to recent days (skip records with invalid/missing dates)
+    recent_ledger: list[dict] = []
+    for r in ledger:
+        if not isinstance(r, dict):
+            continue
+        try:
+            rec_date = datetime.date.fromisoformat(str(r.get("date", today.isoformat())))
+        except (ValueError, TypeError):
+            continue
+        if rec_date >= cutoff:
+            recent_ledger.append(r)
 
     levels = _compute_ability_levels(ability_history)
     dates, trends = _compute_trend_data(recent_ledger)
@@ -251,15 +250,16 @@ def generate_report(
       <div class="stat-label">计时训练次数</div>
     </div>
     <div class="stat">
-      <div class="stat-value">{sa.get('verdict', 'N/A')}</div>
+      <div class="stat-value">{html.escape(str(sa.get('verdict', 'N/A')))}</div>
       <div class="stat-label">速度诊断</div>
     </div>"""
 
+    title_esc = html.escape(str(title))
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="utf-8">
-<title>{title}</title>
+<title>{title_esc}</title>
 <style>
 * {{ margin: 0; padding: 0; box-sizing: border-box; }}
 body {{ font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f7fa; color: #333; padding: 20px; }}
@@ -280,7 +280,7 @@ th {{ background: #f9fafb; font-weight: 600; }}
 </head>
 <body>
 <div class="container">
-<h1>{title}</h1>
+<h1>{title_esc}</h1>
 <p class="date">生成日期: {today} &nbsp;|&nbsp; 统计范围: 最近 {days} 天</p>
 
 <div class="stats">
@@ -326,11 +326,16 @@ def _error_table(error_summary: dict | None) -> str:
     if not by_tag:
         return "<p>No error data available.</p>"
     rows = []
-    for tag, data in sorted(by_tag.items(), key=lambda x: -(x[1].get("count", 0))):
+    for tag, data in sorted(
+        by_tag.items(),
+        key=lambda x: -(x[1].get("count", 0) if isinstance(x[1], dict) else 0),
+    ):
+        if not isinstance(data, dict):
+            continue
         count = data.get("count", 0)
         pct = data.get("percentage", 0)
         urgency = data.get("review_urgency", 0)
-        rows.append(f"<tr><td>{tag}</td><td>{count}</td><td>{pct:.0%}</td>"
+        rows.append(f"<tr><td>{html.escape(str(tag))}</td><td>{count}</td><td>{pct:.0%}</td>"
                     f"<td>{urgency:.2f}</td></tr>")
     header = "<tr><th>Error Tag</th><th>Count</th><th>%</th><th>Urgency</th></tr>"
     return f'<table>{header}{"".join(rows)}</table>'
@@ -346,9 +351,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--title", default="英语备考进度报告", help="Report title.")
     args = parser.parse_args(argv)
 
-    ability_history = common.load_data(args.ability_history)
-    ledger = common.load_data(args.ledger)
-    error_summary = common.load_data(args.error_summary) if args.error_summary else None
+    try:
+        ability_history = common.load_data(args.ability_history)
+        ledger = common.load_data(args.ledger)
+        error_summary = common.load_data(args.error_summary) if args.error_summary else None
+    except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
+        print(f"Error loading data: {exc}", file=sys.stderr)
+        return 1
 
     if not isinstance(ability_history, list):
         ability_history = [ability_history]

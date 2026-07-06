@@ -11,6 +11,9 @@ from .base import BaseValidator, ValidationIssue, ValidationReport
 # strategy_id pattern: {exam-abbr}-{module}-{keyword}-{seq}
 _STRATEGY_ID_RE = re.compile(r"^[a-z0-9]+-[a-z-]+-[a-z0-9-]+-\d{3}$")
 
+# Prefixes that mark source_file as a remote/identifier reference (not a local path)
+_REMOTE_PREFIXES = ("http://", "https://", "nuwa-", "bilibili-", "youtube-")
+
 # Step numbering patterns: "1. " or "1) " or "Step 1:" or "- " or "* "
 _STEP_LINE_RE = re.compile(
     r"^(\s*(\d+[\.\)、]\s|[-*]\s|Step\s+\d+[\s:]))"
@@ -20,7 +23,7 @@ _STEP_LINE_RE = re.compile(
 _VAGUE_PATTERNS = [
     re.compile(p, re.IGNORECASE)
     for p in [
-        r"建议(可以)?",
+        r"建议(?:可以)?",
         r"可以考虑",
         r"根据情况",
         r"灵活[把握处理]",
@@ -33,6 +36,14 @@ class FormatChecker(BaseValidator):
     """Validate a strategy dict against format and content rules."""
 
     def validate(self, strategy: dict) -> ValidationReport:
+        if not isinstance(strategy, dict):
+            return ValidationReport(
+                passed=False,
+                errors=[ValidationIssue("strategy", "ERROR", "Input must be a dict")],
+                warnings=[],
+                score=0.0,
+            )
+
         errors: list[ValidationIssue] = []
         warnings: list[ValidationIssue] = []
 
@@ -71,13 +82,20 @@ class FormatChecker(BaseValidator):
         source_file = strategy.get("source_file")
         if not isinstance(source_file, str) or not source_file.strip():
             errors.append(ValidationIssue("source_file", "ERROR", "source_file is required"))
-        elif not source_file.startswith(("http://", "https://", "nuwa-", "bilibili-", "youtube-")):
+        elif not source_file.startswith(_REMOTE_PREFIXES):
             # Looks like a local file path
-            path = Path(source_file)
-            if not path.exists():
+            try:
+                path = Path(source_file)
+                exists = path.exists()
+            except ValueError:
                 warnings.append(ValidationIssue("source_file", "WARN",
-                    f"source_file '{source_file}' is not accessible at this path",
-                    remedy="Verify the file exists or use a URL/identifier"))
+                    f"source_file '{source_file}' contains invalid path characters",
+                    remedy="Remove null bytes or other invalid path characters"))
+            else:
+                if not exists:
+                    warnings.append(ValidationIssue("source_file", "WARN",
+                        f"source_file '{source_file}' is not accessible at this path",
+                        remedy="Verify the file exists or use a URL/identifier"))
 
         # 6. exam_types
         exam_types = strategy.get("exam_types", [])
@@ -95,7 +113,7 @@ class FormatChecker(BaseValidator):
         ria = strategy.get("ria_structure")
         if isinstance(ria, dict):
             expected = ["r_reading", "i_interpretation", "a1_past", "a2_trigger", "e_execution", "b_boundary"]
-            missing = [k for k in expected if not ria.get(k)]
+            missing = [k for k in expected if not str(ria.get(k) or "").strip()]
             if missing:
                 errors.append(ValidationIssue("ria_structure", "ERROR",
                     f"RIA++ structure missing: {', '.join(missing)}",

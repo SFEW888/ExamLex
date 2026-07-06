@@ -15,6 +15,7 @@ import argparse
 import datetime
 import json
 import math
+import random
 import sys
 from pathlib import Path
 from typing import Any
@@ -41,17 +42,28 @@ def get_band_size(band_label: str) -> int:
     """Parse band label like '1-1000' or '5000+' to get the band size."""
     band_label = band_label.strip()
     if band_label.endswith("+"):
-        # "5000+" maps to 1000 (same as other bands)
-        return 1000
+        # "5000+" is an open-ended top band; use a larger default so advanced
+        # learners are not capped by the same 1000-word span as bounded bands.
+        return 5000
     parts = band_label.split("-")
     if len(parts) == 2:
         try:
             low = int(parts[0].strip())
             high = int(parts[1].strip())
+            if low > high:
+                raise ValueError(
+                    f"Invalid band label '{band_label}': low ({low}) > high ({high})"
+                )
             return high - low + 1
         except ValueError:
-            return 0
-    return 0
+            raise ValueError(
+                f"Unrecognized band label '{band_label}': "
+                f"expected format like '1-1000' or '5000+'"
+            ) from None
+    raise ValueError(
+        f"Unrecognized band label '{band_label}': "
+        f"expected format like '1-1000' or '5000+'"
+    )
 
 
 def estimate(bands_data: dict, answers: list[dict], learner_id: str = "") -> dict[str, Any]:
@@ -113,9 +125,22 @@ def estimate(bands_data: dict, answers: list[dict], learner_id: str = "") -> dic
             "estimated": estimated_band,
         }
 
-    # 95% confidence interval (Wald method approximation)
-    overall_adjusted = total_estimated / sum(get_band_size(b) for b in band_results) if band_results else 0
-    se = math.sqrt(total_estimated * (1 - overall_adjusted)) if overall_adjusted > 0 else 0
+    # 95% confidence interval (Wald approximation). The total estimate is a sum
+    # of independent per-band count estimates, so its variance is the sum of the
+    # per-band variances: Var(band_size * adjusted) ≈ band_size² * adjusted *
+    # (1 - adjusted) / tested_real.
+    # TODO: Use the delta method for proper variance estimation: adj = (H-FA)/(1-FA)
+    # is a ratio of two binomial proportions; the current simplification ignores
+    # the uncertainty contributed by FA, yielding systematically narrow CI when FA>0.
+    # See: Var(adj) ≈ (1/(1-FA)²)²·H(1-H)/n_real + ((H-1)/(1-FA)²)²·FA(1-FA)/n_fake
+    total_var = 0.0
+    for band_label, br in band_results.items():
+        band_size = get_band_size(band_label)
+        adj = br["adjusted_rate"]
+        n = br["tested"]
+        if n > 0 and adj > 0:
+            total_var += (band_size ** 2) * adj * (1 - adj) / n
+    se = math.sqrt(total_var)
     ci_low = max(0, round(total_estimated - 1.96 * se))
     ci_high = round(total_estimated + 1.96 * se)
 
@@ -158,19 +183,28 @@ def generate_interactive_quiz(
 
     for band_label in target_bands:
         if band_label not in all_bands:
+            print(f"Warning: band '{band_label}' not found in reference data, skipping.", file=sys.stderr)
             continue
         band = all_bands[band_label]
         real_words = band.get("real_words", [])
         non_words = band.get("non_words", [])
 
-        # Select real words (random-ish by index)
-        selected_real = real_words[:samples_per_band] if len(real_words) >= samples_per_band else real_words
-        selected_fake = non_words[:nonwords_per_band] if len(non_words) >= nonwords_per_band else non_words
+        # Randomly sample to avoid systematic bias from a frequency/difficulty
+        # ordering in the reference file.
+        selected_real = random.sample(real_words, min(samples_per_band, len(real_words)))
+        selected_fake = random.sample(non_words, min(nonwords_per_band, len(non_words)))
 
-        for w in selected_real:
-            quiz.append({"word": w, "band": band_label, "is_real": True, "known": None})
-        for w in selected_fake:
-            quiz.append({"word": w, "band": band_label, "is_real": False, "known": None})
+        band_items = [
+            {"word": w, "band": band_label, "is_real": True, "known": None}
+            for w in selected_real
+        ] + [
+            {"word": w, "band": band_label, "is_real": False, "known": None}
+            for w in selected_fake
+        ]
+        # Interleave real and fake words so the learner cannot infer answers
+        # from an ordering cue (all real words followed by all fake words).
+        random.shuffle(band_items)
+        quiz.extend(band_items)
 
     return quiz
 
@@ -180,7 +214,14 @@ def load_reference(path: str | None = None) -> dict:
         ref_path = Path(path)
     else:
         ref_path = _DEFAULT_REF
-    return json.loads(ref_path.read_text(encoding="utf-8"))
+    try:
+        return json.loads(ref_path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        print(f"Reference file not found: {ref_path}", file=sys.stderr)
+        raise SystemExit(1)
+    except (json.JSONDecodeError, PermissionError) as exc:
+        print(f"Failed to load reference file {ref_path}: {exc}", file=sys.stderr)
+        raise SystemExit(1)
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -197,10 +238,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--reference", help="Path to test word reference file.")
     args = parser.parse_args(argv)
 
+    if args.samples_per_band <= 0:
+        print("error: --samples-per-band must be positive", file=sys.stderr)
+        return 1
+    if args.nonwords_per_band < 0:
+        print("error: --nonwords-per-band must be non-negative", file=sys.stderr)
+        return 1
+
     reference = load_reference(args.reference)
 
     if args.interactive:
-        band_list = args.bands.split(",") if args.bands else None
+        band_list = [b.strip() for b in args.bands.split(",")] if args.bands else None
         quiz = generate_interactive_quiz(
             reference, band_list, args.samples_per_band, args.nonwords_per_band
         )
@@ -213,7 +261,11 @@ def main(argv: list[str] | None = None) -> int:
             ),
         }
     elif args.wordlist:
-        data = common.load_data(args.wordlist)
+        try:
+            data = common.load_data(args.wordlist)
+        except (FileNotFoundError, json.JSONDecodeError, PermissionError, OSError) as exc:
+            print(f"error: failed to load wordlist: {exc}", file=sys.stderr)
+            return 1
         answers = data.get("answers", [])
         learner_id = data.get("learner_id", "")
         result = estimate(reference, answers, learner_id)
@@ -222,7 +274,7 @@ def main(argv: list[str] | None = None) -> int:
         return 1
 
     if args.output:
-        write_json(args.output, result)
+        write_json(result, args.output)
     else:
         print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0

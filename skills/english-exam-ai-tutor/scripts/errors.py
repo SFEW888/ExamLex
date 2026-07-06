@@ -6,6 +6,8 @@ so the Agent (or CLI user) can determine whether to retry or abort.
 
 from __future__ import annotations
 
+from typing import Any
+
 
 class TutorError(Exception):
     """Base error for the tutor pipeline."""
@@ -27,7 +29,7 @@ class TutorError(Exception):
     def __str__(self) -> str:
         return f"[{self.code}] {self.message}"
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "code": self.code,
             "message": self.message,

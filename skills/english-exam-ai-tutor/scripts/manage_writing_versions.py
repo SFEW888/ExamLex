@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 import re
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -65,6 +66,10 @@ def _next_version(records: list[dict[str, Any]], writing_id: str) -> str:
 def _load_records(path: Path) -> list[dict[str, Any]]:
     if not path.exists():
         return []
+    # NOTE: concurrent invocations against the same file are not serialized.
+    # This read-modify-write is not locked; if lost updates from parallel
+    # writers become a concern, guard the file with an OS-level lock
+    # (msvcrt.locking on Windows / fcntl.flock on POSIX) or a .lock sentinel.
     data = common.load_data(path)
     if not isinstance(data, list):
         raise ValueError("writing versions file must contain a JSON list")
@@ -86,18 +91,26 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     source = Path(args.file)
-    records = _load_records(source)
-    updated, record = add_writing_version(
-        records,
-        writing_id=args.writing_id,
-        text=args.text,
-        version=args.version,
-        source_version=args.source_version,
-        changes=args.changes,
-    )
+    try:
+        records = _load_records(source)
+        updated, record = add_writing_version(
+            records,
+            writing_id=args.writing_id,
+            text=args.text,
+            version=args.version,
+            source_version=args.source_version,
+            changes=args.changes,
+        )
+    except (OSError, ValueError) as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
     output = Path(args.output) if args.output else source
     output.parent.mkdir(parents=True, exist_ok=True)
-    common.save_data(output, updated)
+    # Atomic write: write to a temp file then rename over the target so an
+    # interrupted run cannot leave a truncated/corrupt JSON file behind.
+    tmp = output.with_suffix(output.suffix + ".tmp")
+    common.save_data(tmp, updated)
+    tmp.replace(output)
     if args.print_record:
         print(json.dumps(record, ensure_ascii=False))
     return 0

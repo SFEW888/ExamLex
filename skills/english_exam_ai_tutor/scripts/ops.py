@@ -202,7 +202,7 @@ def check_ports() -> CheckResult:
         detail["memory_check"] = "psutil not installed (pip install psutil for memory check)"
 
     status = "warn" if issues else "pass"
-    return CheckResult("resources", status,
+    return CheckResult("ports_and_disk", status,
                        f"Disk: {detail.get('disk_free_gb', '?')} GB free" if "disk_free_gb" in detail else "Disk check ok",
                        detail, "; ".join(issues) if issues else "")
 
@@ -273,6 +273,7 @@ def check_dry_run(cfg: TutorConfig, library_path: str | None = None) -> CheckRes
         from .optimizers.ratchet import StrategyRatchet
 
         # 1. Test extraction
+        detail["last_step"] = "extraction"
         tmpdir = Path(tempfile.mkdtemp())
         test_file = tmpdir / "test_strategy.md"
         test_file.write_text("# Test Strategy\n\nA test strategy for dry run.\n\n1. Step one\n2. Step two\n", encoding="utf-8")
@@ -282,6 +283,7 @@ def check_dry_run(cfg: TutorConfig, library_path: str | None = None) -> CheckRes
         detail["extraction_warnings"] = result.warnings
 
         # 2. Test validation
+        detail["last_step"] = "validation"
         test_strategy = {
             "strategy_id": "dry-run-test-001",
             "title": "Dry Run Test Strategy",
@@ -296,30 +298,41 @@ def check_dry_run(cfg: TutorConfig, library_path: str | None = None) -> CheckRes
         fmt_report = checker.validate(test_strategy)
         detail["format_check"] = "pass" if fmt_report.passed else f"fail: {len(fmt_report.errors)} errors"
 
+        detail["last_step"] = "scoring"
         scorer = DarwinStructureScorer()
         structure = scorer.score(test_strategy)
         detail["darwin_structure_score"] = round(structure.total, 1)
 
         # 3. Test ratchet + save (if library path provided)
         if library_path:
+            detail["last_step"] = "library_write"
             lib_path = Path(library_path)
             ratchet = StrategyRatchet()
             test_strategy["distillation_method"] = "direct"
             test_strategy["source_type"] = "text"
             scored = ratchet.baseline(test_strategy, structure.total)
             lib = load_data(lib_path) if lib_path.exists() else {"strategies": []}
-            ratchet.apply(scored, lib, None, structure.total)
-            StrategyRatchet.atomic_save(lib, lib_path)
-            detail["library_write"] = "ok"
-            # Remove test entry
-            loaded = load_data(lib_path)
-            loaded["strategies"] = [s for s in loaded.get("strategies", []) if s.get("strategy_id") != "dry-run-test-001"]
-            StrategyRatchet.atomic_save(loaded, lib_path)
+            try:
+                ratchet.apply(scored, lib, None, structure.total)
+                StrategyRatchet.atomic_save(lib, lib_path)
+                detail["library_write"] = "ok"
+            finally:
+                # Always remove the dummy test entry, even if the write above
+                # failed partway, so it never persists in the real library.
+                try:
+                    loaded = load_data(lib_path) if lib_path.exists() else {"strategies": []}
+                    loaded["strategies"] = [
+                        s for s in loaded.get("strategies", [])
+                        if not (isinstance(s, dict) and s.get("strategy_id") == "dry-run-test-001")
+                    ]
+                    StrategyRatchet.atomic_save(loaded, lib_path)
+                except Exception as cleanup_err:
+                    detail["library_cleanup"] = f"failed to remove test entry: {cleanup_err}"
 
         import shutil as _shutil
         _shutil.rmtree(str(tmpdir), ignore_errors=True)
 
-    except Exception as e:
+    except (ImportError, OSError, json.JSONDecodeError, RuntimeError, ValueError) as e:
         errors.append(f"Dry run failed at {detail.get('last_step', 'start')}: {e}")
 
     status = "fail" if errors else "pass"
@@ -422,10 +435,13 @@ def check_logs(cfg: TutorConfig) -> CheckResult:
                 updated = state.get("updated_at", "")
                 if updated:
                     try:
-                        age_h = (datetime.now(timezone.utc) - datetime.fromisoformat(updated)).total_seconds() / 3600
+                        parsed = datetime.fromisoformat(updated)
+                        if parsed.tzinfo is None:
+                            parsed = parsed.replace(tzinfo=timezone.utc)
+                        age_h = (datetime.now(timezone.utc) - parsed).total_seconds() / 3600
                         if age_h > 24 and stage not in ("committed", "failed"):
                             stuck.append(f"{s.parent.name} ({stage}, {age_h:.0f}h old)")
-                    except ValueError:
+                    except (ValueError, TypeError):
                         pass
             except (json.JSONDecodeError, OSError):
                 pass
@@ -479,7 +495,7 @@ def check_business_results(library_path: str | None = None) -> CheckResult:
                 if not isinstance(s, dict):
                     continue
                 hist = s.get("score_history", [])
-                if hist and s.get("darwin_score", 0) != hist[-1].get("score", 0):
+                if hist and isinstance(hist[-1], dict) and s.get("darwin_score", 0) != hist[-1].get("score", 0):
                     broken_history.append(s.get("strategy_id"))
             if broken_history:
                 issues.append(f"{len(broken_history)} strategies have mismatched score_history")

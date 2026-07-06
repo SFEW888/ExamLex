@@ -73,20 +73,20 @@ if (-not $Command -or $Command -eq "--help" -or $Command -eq "-h" -or $Command -
 $RemainingArgs = $Args
 
 switch ($Command) {
-    # 备考闭环
-    "check"    { Invoke-Tutor validate-profile @RemainingArgs }
-    "plan"     { Invoke-Tutor daily-plan @RemainingArgs }
-    "log"      { Invoke-Tutor record-practice @RemainingArgs }
-    "tag"      { Invoke-Tutor tag-error @RemainingArgs }
-    "errors"   { Invoke-Tutor summarize-errors @RemainingArgs }
-    "update"   { Invoke-Tutor update-ability @RemainingArgs }
-    "trends"   { Invoke-Tutor analyze-trends @RemainingArgs }
-    "write"    { Invoke-Tutor writing-version @RemainingArgs }
-    "score"    { Invoke-Tutor score-writing @RemainingArgs }
+    # 备考闭环 — 别名命令走 cli.py ALIASES 以触发选项预添加
+    "check"    { Invoke-Tutor check @RemainingArgs }
+    "plan"     { Invoke-Tutor plan @RemainingArgs }
+    "log"      { Invoke-Tutor log @RemainingArgs }
+    "tag"      { Invoke-Tutor tag @RemainingArgs }
+    "errors"   { Invoke-Tutor errors @RemainingArgs }
+    "update"   { Invoke-Tutor update @RemainingArgs }
+    "trends"   { Invoke-Tutor trends @RemainingArgs }
+    "write"    { Invoke-Tutor write @RemainingArgs }
+    "score"    { Invoke-Tutor score @RemainingArgs }
 
     # 知识管理
-    "ingest"     { Invoke-Tutor ingest-strategy @RemainingArgs }
-    "strategies" { Invoke-Tutor list-strategies @RemainingArgs }
+    "ingest"     { Invoke-Tutor ingest @RemainingArgs }
+    "strategies" { Invoke-Tutor strategies @RemainingArgs }
     "extract"    { Invoke-Tutor extract @RemainingArgs }
     "validate"   { Invoke-Tutor validate-strategies @RemainingArgs }
     "commit"     { Invoke-Tutor commit-strategies @RemainingArgs }

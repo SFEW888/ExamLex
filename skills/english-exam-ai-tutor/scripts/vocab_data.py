@@ -1087,6 +1087,13 @@ TEM8_WORDS_EXTENDED = [
 ]
 
 # Aliases for easier imports
+#
+# NOTE: Some words appear intentionally in more than one exam-level list (e.g.
+# 'articulate' in CET6/POSTGRAD/TEM4, 'depict'/'deteriorate' in CET4/POSTGRAD).
+# This is by design: each level keeps its own level-specific frequency_rank and
+# emphasis, so a word can legitimately recur across levels. Consumers that span
+# multiple levels should therefore key entries by the composite (cet_level, word)
+# rather than by word alone; deduplicating by word string will lose level context.
 CET4_WORDS = CET4_WORDS_EXTENDED + CET4_WORDS_EXTENDED2
 CET6_WORDS = CET6_WORDS_EXTENDED
 POSTGRAD_WORDS = POSTGRAD_WORDS_EXTENDED

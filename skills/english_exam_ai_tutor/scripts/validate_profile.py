@@ -23,6 +23,14 @@ CET_TARGET_BANDS = ("425~499", "500~550", "550+", "600+")
 POSTGRADUATE_TARGET_BANDS = ("50+", "70~80", "80+", "90+")
 TEM_TARGET_BANDS = ("60~69", "70~79", "80+")
 
+EXAM_TARGET_BANDS: dict[str, tuple[str, ...]] = {
+    "CET4": CET_TARGET_BANDS,
+    "CET6": CET_TARGET_BANDS,
+    "POSTGRADUATE_ENGLISH": POSTGRADUATE_TARGET_BANDS,
+    "TEM4": TEM_TARGET_BANDS,
+    "TEM8": TEM_TARGET_BANDS,
+}
+
 
 def validate_profile(profile: dict[str, Any]) -> list[str]:
     errors: list[str] = []
@@ -30,6 +38,10 @@ def validate_profile(profile: dict[str, Any]) -> list[str]:
     for field in REQUIRED_FIELDS:
         if field not in profile:
             errors.append(f"{field} is required")
+
+    learner_id = profile.get("learner_id")
+    if "learner_id" in profile and (not isinstance(learner_id, str) or not learner_id.strip()):
+        errors.append("learner_id must be a non-empty string")
 
     exam_type = profile.get("exam_type")
     foundation_level = profile.get("foundation_level")
@@ -42,11 +54,14 @@ def validate_profile(profile: dict[str, Any]) -> list[str]:
     if "foundation_level" in profile and foundation_level not in FOUNDATION_LEVELS:
         errors.append("foundation_level must be one of 基础偏弱, 中等基础, 基础较好")
 
-    if "target_band" in profile and exam_type in EXAM_TYPES:
-        allowed_bands = _target_bands_for(str(exam_type))
-        if target_band not in allowed_bands:
-            allowed = ", ".join(allowed_bands)
-            errors.append(f"target_band must be one of {allowed} for {exam_type}")
+    if "target_band" in profile:
+        if exam_type in EXAM_TYPES:
+            allowed_bands = _target_bands_for(str(exam_type))
+            if target_band not in allowed_bands:
+                allowed = ", ".join(allowed_bands)
+                errors.append(f"target_band must be one of {allowed} for {exam_type}")
+        else:
+            errors.append("target_band provided but exam_type is missing or invalid")
 
     if "daily_time_budget_minutes" in profile and (
         not isinstance(daily_time_budget_minutes, int)
@@ -59,13 +74,7 @@ def validate_profile(profile: dict[str, Any]) -> list[str]:
 
 
 def _target_bands_for(exam_type: str) -> tuple[str, ...]:
-    if exam_type in {"CET4", "CET6"}:
-        return CET_TARGET_BANDS
-    if exam_type == "POSTGRADUATE_ENGLISH":
-        return POSTGRADUATE_TARGET_BANDS
-    if exam_type in {"TEM4", "TEM8"}:
-        return TEM_TARGET_BANDS
-    return ()
+    return EXAM_TARGET_BANDS.get(exam_type, ())
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -73,7 +82,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--profile", required=True, help="Path to a JSON profile file.")
     args = parser.parse_args(argv)
 
-    profile = common.load_data(args.profile)
+    try:
+        profile = common.load_data(args.profile)
+    except (FileNotFoundError, PermissionError, OSError, ValueError) as exc:
+        print(f"Failed to load profile: {exc}", file=sys.stderr)
+        return 1
+    if not isinstance(profile, dict):
+        print("Profile must be a JSON object (dict).", file=sys.stderr)
+        return 1
     errors = validate_profile(profile)
     if errors:
         for error in errors:
@@ -85,4 +101,4 @@ def main(argv: list[str] | None = None) -> int:
 
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    sys.exit(main())

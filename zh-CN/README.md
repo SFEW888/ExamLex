@@ -233,8 +233,7 @@ python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json
 | 脚本 | 说明 |
 |:----:|------|
 | 📥 **`ingest_strategy.py`** | Agent 读取用户上传的文件后，提取结构化策略（标题/适用考试/模块/方法步骤）并写入策略库 |
-| 🔍 **`search_strategies.py`** | 按考试类型、模块、能力节点检索策略库中匹配的方法论 |
-| 📋 **`list_strategies.py`** | 列出策略库概况：策略总数、按考试/模块分布、最近添加条目 |
+| 📋 **`list_strategies.py`** | 列出/搜索策略库：支持按关键词检索、按考试/模块分布统计、最新条目 |
 
 **联动机制**：`generate_daily_plan.py` 新增可选 `--strategies` 参数——生成每日计划时自动检索策略库，为每个模块附上用户沉淀的对应方法论。详见下方「持续学习」章节。
 

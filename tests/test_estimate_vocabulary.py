@@ -138,8 +138,9 @@ class TestEstimateVocabulary(unittest.TestCase):
         self.assertEqual(get_band_size("3001-4000"), 1000)
         self.assertEqual(get_band_size("4001-5000"), 1000)
         self.assertEqual(get_band_size("5001-6000"), 1000)
-        self.assertEqual(get_band_size("5000+"), 1000)
-        self.assertEqual(get_band_size("invalid"), 0)
+        self.assertEqual(get_band_size("5000+"), 5000)
+        with self.assertRaises(ValueError):
+            get_band_size("invalid")
 
     def test_interactive_quiz_generation(self):
         """Interactive mode generates quiz words with correct structure."""

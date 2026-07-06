@@ -76,7 +76,9 @@ def restore_backup(
                 continue
             restored.append(member.name)
             if not dry_run:
-                archive.extract(member, destination)
+                # filter='data' (Python 3.12+) blocks absolute paths, ".." traversal,
+                # device/FIFO members, and symlinks escaping the destination.
+                archive.extract(member, destination, filter="data")
     return {"restored": restored, "skipped": skipped, "dry_run": dry_run}
 
 
@@ -123,7 +125,7 @@ def backup_main(argv: list[str] | None = None) -> int:
     if args.json:
         _print_json(result)
     else:
-        _print_json(result)
+        _print_human(result)
     return 0
 
 
@@ -145,9 +147,25 @@ def restore_main(argv: list[str] | None = None) -> int:
     if not data_dir:
         parser.error("--data-dir or data directory positional argument is required")
     result = restore_backup(input_path, data_dir, force=args.force, dry_run=args.dry_run)
-    _print_json(result)
+    if args.json:
+        _print_json(result)
+    else:
+        _print_human(result)
     return 0
 
 
 def _print_json(data: Any) -> None:
     sys.stdout.buffer.write((json.dumps(data, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+
+
+def _print_human(data: Any) -> None:
+    if not isinstance(data, dict):
+        print(data)
+        return
+    for key, value in data.items():
+        if isinstance(value, list):
+            print(f"{key}: {len(value)}")
+            for item in value:
+                print(f"  - {item}")
+        else:
+            print(f"{key}: {value}")
