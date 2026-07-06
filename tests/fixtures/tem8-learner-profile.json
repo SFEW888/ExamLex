@@ -1,0 +1,10 @@
+{
+  "learner_id": "tem8-test-learner",
+  "exam_type": "TEM8",
+  "foundation_level": "基础较好",
+  "target_band": "80+",
+  "daily_time_budget_minutes": 120,
+  "weekly_days": 6,
+  "start_date": "2026-07-06",
+  "notes": "TEM-8 test fixture"
+}

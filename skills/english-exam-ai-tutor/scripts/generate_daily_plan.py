@@ -11,6 +11,17 @@ except ImportError:  # pragma: no cover - supports direct script execution.
 
 MIN_TASK_MINUTES = 10
 MODULE_ORDER = ("listening", "reading", "writing", "translation", "vocabulary")
+TEM_MODULE_ORDER = (
+    "listening", "reading", "writing", "translation", "vocabulary",
+    "language-knowledge", "proofreading", "dictation",
+)
+
+
+def _module_order_for(exam_type: str) -> tuple[str, ...]:
+    """Return the module order appropriate for a given exam type."""
+    if exam_type in {"TEM4", "TEM8"}:
+        return TEM_MODULE_ORDER
+    return MODULE_ORDER
 
 
 def generate_daily_plan(
@@ -56,10 +67,11 @@ def generate_daily_plan(
         remaining -= minutes
 
     if not tasks and remaining > 0:
+        exam = profile.get("exam_type", "")
+        fallback_module = _module_order_for(str(exam))[0]
         tasks.append(
             {
-                "module": MODULE_ORDER[0],
-                "focus": "baseline review",
+                "module": fallback_module,
                 "minutes": min(MIN_TASK_MINUTES, remaining),
                 "reason": "default constrained allocation",
             }
@@ -145,7 +157,9 @@ def _ability_candidates(ability_profile: dict[str, Any]) -> list[dict[str, Any]]
         return []
 
     candidates: list[dict[str, Any]] = []
-    for module in MODULE_ORDER:
+    # Use all ability tree modules to cover CET and TEM exams
+    all_modules = list(modules.keys()) if modules else list(common.ABILITY_TREE.keys())
+    for module in all_modules:
         nodes = modules.get(module, [])
         if not isinstance(nodes, list):
             continue

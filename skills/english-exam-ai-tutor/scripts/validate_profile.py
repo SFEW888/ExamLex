@@ -17,10 +17,11 @@ REQUIRED_FIELDS = [
     "daily_time_budget_minutes",
 ]
 
-EXAM_TYPES = ("CET4", "CET6", "POSTGRADUATE_ENGLISH")
+EXAM_TYPES = ("CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8")
 FOUNDATION_LEVELS = ("基础偏弱", "中等基础", "基础较好")
 CET_TARGET_BANDS = ("425~499", "500~550", "550+", "600+")
 POSTGRADUATE_TARGET_BANDS = ("50+", "70~80", "80+", "90+")
+TEM_TARGET_BANDS = ("60~69", "70~79", "80+")
 
 
 def validate_profile(profile: dict[str, Any]) -> list[str]:
@@ -36,7 +37,7 @@ def validate_profile(profile: dict[str, Any]) -> list[str]:
     daily_time_budget_minutes = profile.get("daily_time_budget_minutes")
 
     if "exam_type" in profile and exam_type not in EXAM_TYPES:
-        errors.append("exam_type must be one of CET4, CET6, POSTGRADUATE_ENGLISH")
+        errors.append("exam_type must be one of CET4, CET6, POSTGRADUATE_ENGLISH, TEM4, TEM8")
 
     if "foundation_level" in profile and foundation_level not in FOUNDATION_LEVELS:
         errors.append("foundation_level must be one of 基础偏弱, 中等基础, 基础较好")
@@ -62,6 +63,8 @@ def _target_bands_for(exam_type: str) -> tuple[str, ...]:
         return CET_TARGET_BANDS
     if exam_type == "POSTGRADUATE_ENGLISH":
         return POSTGRADUATE_TARGET_BANDS
+    if exam_type in {"TEM4", "TEM8"}:
+        return TEM_TARGET_BANDS
     return ()
 
 

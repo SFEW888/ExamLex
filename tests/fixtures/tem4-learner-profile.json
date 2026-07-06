@@ -1,0 +1,10 @@
+{
+  "learner_id": "tem4-test-learner",
+  "exam_type": "TEM4",
+  "foundation_level": "中等基础",
+  "target_band": "70~79",
+  "daily_time_budget_minutes": 90,
+  "weekly_days": 5,
+  "start_date": "2026-07-06",
+  "notes": "TEM-4 test fixture"
+}

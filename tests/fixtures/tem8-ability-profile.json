@@ -1,0 +1,42 @@
+{
+  "learner_id": "tem8-test-learner",
+  "exam_type": "TEM8",
+  "last_updated": "2026-07-06",
+  "modules": {
+    "vocabulary": [
+      {"node": "词义识别", "status": "maintaining", "level": 7},
+      {"node": "拼写", "status": "maintaining", "level": 6},
+      {"node": "听音辨词", "status": "maintaining", "level": 7},
+      {"node": "语境使用", "status": "needs_work", "level": 5}
+    ],
+    "listening": [
+      {"node": "关键词捕捉", "status": "maintaining", "level": 7},
+      {"node": "连读弱读", "status": "maintaining", "level": 6},
+      {"node": "数字时间", "status": "maintaining", "level": 8},
+      {"node": "主旨推断", "status": "needs_work", "level": 5}
+    ],
+    "reading": [
+      {"node": "阅读速度", "status": "priority", "level": 4},
+      {"node": "定位能力", "status": "maintaining", "level": 6},
+      {"node": "长难句", "status": "needs_work", "level": 5},
+      {"node": "推理判断", "status": "needs_work", "level": 4}
+    ],
+    "translation": [
+      {"node": "语法准确度", "status": "maintaining", "level": 6},
+      {"node": "词汇选择", "status": "needs_work", "level": 5},
+      {"node": "中式英语", "status": "priority", "level": 3},
+      {"node": "句式多样性", "status": "needs_work", "level": 4}
+    ],
+    "writing": [
+      {"node": "任务完成度", "status": "maintaining", "level": 6},
+      {"node": "结构逻辑", "status": "needs_work", "level": 5},
+      {"node": "语言准确性", "status": "needs_work", "level": 5},
+      {"node": "表达丰富度", "status": "priority", "level": 4}
+    ],
+    "proofreading": [
+      {"node": "冠词错误", "status": "priority", "level": 3},
+      {"node": "搭配错误", "status": "needs_work", "level": 4},
+      {"node": "逻辑错误", "status": "needs_work", "level": 5}
+    ]
+  }
+}
