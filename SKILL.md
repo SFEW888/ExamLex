@@ -1,6 +1,6 @@
 ---
 name: english-exam-ai-tutor
-description: Use when an agent needs an English exam AI tutor for CET-4, CET-6, or postgraduate English preparation, including study planning, vocabulary, reading, writing structure, grammar correction, polishing, scenario dialogue, and cultural context.
+description: Use when an agent needs an English exam AI tutor for CET-4, CET-6, TEM-4, TEM-8, or postgraduate English preparation, including study planning, vocabulary estimation, spaced repetition review, reading, writing structure, grammar correction, polishing, scenario dialogue, timed practice, progress visualization, and cultural context.
 ---
 
 # English Exam AI Tutor

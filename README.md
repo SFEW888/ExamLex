@@ -140,12 +140,14 @@ Eight built-in tutor assistants covering all English prep scenarios. Public repo
 
 | Stage | Script | Description |
 |:-----:|--------|-------------|
-| Diagnose | `validate_profile.py` | Validate learner profile: exam type, foundation level, target band, time budget |
-| Plan | `generate_daily_plan.py` | Constraint-solve daily tasks: time budget × ability state × error evidence |
-| Record | `record_practice.py` | Structured practice logging (`total_items` / `correct_items`) with error tag attribution |
-| Attribute | `tag_error.py` + `summarize_errors.py` | Count repeated errors by tag, module, and ability dimension |
+| Diagnose | `validate_profile.py` | Validate learner profile: CET4/6/TEM4/8/Postgraduate, foundation level, target band |
+| Vocab | `estimate_vocabulary.py` | Yes/No sampling vocabulary size estimation with false-alarm correction |
+| Plan | `generate_daily_plan.py` | Constraint-solve daily tasks + vocabulary pool + spaced repetition review |
+| Record | `record_practice.py` | Structured practice logging with optional timed mode and overtime tracking |
+| Attribute | `tag_error.py` + `summarize_errors.py` | Count errors by tag; adds review urgency (spaced repetition) and speed analysis |
 | Update | `update_ability_profile.py` + `analyze_trends.py` | Update ability profile from evidence; analyze trends when enough data |
-| Writing | `manage_writing_versions.py` + `score_writing_rubric.py` | Versioned drafts; deterministic rubric estimate for revision guidance |
+| Writing | `manage_writing_versions.py` + `score_writing_rubric.py` | Versioned drafts; deterministic rubric estimate with model essay anchoring |
+| Review | `visualize.py` | Generate standalone HTML progress report with radar chart, trends, and error table |
 | Iterate | Back to Plan | Feed updated ability profile and error summary into next plan |
 
 ### Continuous Learning — Multi-Source Distillation
@@ -177,26 +179,35 @@ See [skills/english-exam-ai-tutor/references/multi-source-distillation.md](skill
 ### Quick Examples
 
 ```bash
-# Diagnose
+# Diagnose (supports CET4, CET6, TEM4, TEM8, POSTGRADUATE_ENGLISH)
 tutor check examples/sample-learner-profile.yaml
 
-# Plan
-tutor plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
+# Plan with vocab pool and spaced repetition
+tutor plan examples/sample-learner-profile.yaml \
+  --ability examples/sample-ability-profile.yaml \
+  --vocab-pool skills/english-exam-ai-tutor/assets/data/vocabulary/cet4-core-2000.json \
+  --output daily-plan.json
+
+# Record timed practice
+tutor log practice-ledger.json \
+  --date 2026-07-06 --exam-type CET4 --module reading \
+  --task-id timed-001 --duration 42 --total 20 --correct 14 \
+  --timed --overtime-items 3 --overtime-correct 1
+
+# Estimate vocabulary
+tutor vocab --interactive --output vocab-estimate.json
+
+# Visualize progress
+tutor report --ability-history ability-history.json \
+  --ledger practice-ledger.json --days 30 --output report.html
 
 # Ingest strategy
 tutor ingest reading-strategy.md --library strategy-library.json --exam-types CET4,CET6 --modules reading
-
-# Search strategies
-tutor strategies --library strategy-library.json --search reading
 
 # Full pipeline
 tutor extract --input ./cet4-guide.pdf --type book
 tutor validate --artifacts-dir <path>
 tutor commit --artifacts-dir <path> --library strategy-library.json
-
-# Dependencies
-tutor check-deps
-tutor ops-check
 ```
 
 ### CLI Wrappers

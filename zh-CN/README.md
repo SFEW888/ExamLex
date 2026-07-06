@@ -7,10 +7,10 @@
 [![Skills](https://img.shields.io/badge/Skills-9-brightgreen.svg)](#八个助教角色)
 [![Platforms](https://img.shields.io/badge/Platforms-4-blue.svg)](#平台集成)
 
-> **四级 / 六级 / 考研英语备考一站式 AI Agent Skill 与自动化工具包——支持上传策略文件持续学习进化**
-> *CET-4 · CET-6 · Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning*
+> **四级 / 六级 / 专四 / 专八 / 考研英语备考一站式 AI Agent Skill 与自动化工具包——支持上传策略文件持续学习进化**
+> *CET-4 · CET-6 · TEM-4 · TEM-8 · Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning*
 
-**一句话**：把"英语备考不知道从哪开始"的痛点，变成「摄入知识 → 诊断 → 计划 → 练习 → 归因 → 更新 → 迭代」的确定性学习闭环——你喂给它的每一份策略和方法，都会被吸收并在下一次备考中使用。
+**一句话**：把"英语备考不知道从哪开始"的痛点，变成「词汇估算 → 摄入知识 → 诊断 → 计划（含词汇池+间隔复习） → 计时练习 → 归因 → 更新 → 进度可视化 → 迭代」的确定性学习闭环——你喂给它的每一份策略和方法，都会被吸收并在下一次备考中使用。
 
 ---
 
@@ -210,18 +210,20 @@ python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json
 
 > Claude Code、Codex CLI、Codex App、Cursor 均使用 `/` 前缀调用 Skill。
 
-### 七大自动化脚本
+### 九大自动化脚本
 
 确定性脚本覆盖学习闭环关键节点，所有输出可审计、可复现：
 
 | 阶段 | 脚本 | 说明 |
 |:----:|------|------|
-| 🔬 **诊断** | `validate_profile.py` | 校验学习者档案：考试类型、基础水平、目标区间、时间预算 |
-| 📋 **计划** | `generate_daily_plan.py` | 约束求解每日计划：时间预算 × 能力状态 × 错误证据 → 模块分配 |
-| 📊 **记录** | `record_practice.py` | 结构化记录练习数据（`total_items` / `correct_items`），支持错误标签归因 |
-| 🏷️ **归因** | `tag_error.py` + `summarize_errors.py` | 按标签、模块和能力维度统计重复错误 |
+| 🔬 **诊断** | `validate_profile.py` | 校验学习者档案：CET4/6/TEM4/8/考研、基础水平、目标区间 |
+| 📚 **词汇** | `estimate_vocabulary.py` | Yes/No 抽样法估算词汇量，含虚报校正和置信区间 |
+| 📋 **计划** | `generate_daily_plan.py` | 约束求解每日计划 + 词汇池分配 + 间隔复习任务加权 |
+| 📊 **记录** | `record_practice.py` | 结构化记录练习数据，支持计时训练模式（超时统计） |
+| 🏷️ **归因** | `tag_error.py` + `summarize_errors.py` | 按标签统计错误，输出间隔复习紧迫度和速度分析 |
 | 📈 **更新** | `update_ability_profile.py` + `analyze_trends.py` | 从练习证据更新能力画像，积累足够数据后分析趋势 |
-| ✍️ **作文** | `manage_writing_versions.py` + `score_writing_rubric.py` | 版本化管理作文草稿，确定性评分参考用于修改指导 |
+| ✍️ **作文** | `manage_writing_versions.py` + `score_writing_rubric.py` | 版本化管理作文草稿，支持范文库锚定评分 |
+| 📊 **可视化** | `visualize.py` | 生成独立 HTML 进度报告（雷达图+趋势折线图+错误统计表） |
 | 🔄 **迭代** | 回到计划阶段 | 将更新的能力画像和错误统计反馈至下一轮计划 |
 
 ### 知识摄入与持续学习

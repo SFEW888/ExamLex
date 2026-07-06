@@ -1,87 +1,173 @@
 ---
 name: english-exam-ai-tutor
-description: 用于支持四级、六级和考研英语备考，包括能力诊断、每日计划、错误归因、词汇/听力/阅读/翻译/写作练习、作文评分与版本管理，以及 public-safe/full-local 提示词模式选择。
+description: Use when supporting CET-4, CET-6, TEM-4, TEM-8, or postgraduate English prep, including learner diagnosis, daily planning, error attribution, vocabulary estimation, spaced repetition review, timed practice, vocabulary/listening/reading/translation/writing/dictation/proofreading practice, writing scoring/versioning, multi-source continuous learning (extract exam strategies from books/videos/people/conversations via embedded distillation methodologies), progress visualization, and choosing public-safe or full-local prompt modes.
 ---
 
-# 英语考试 AI 助教 Skill
+# English Exam AI Tutor
 
-使用本 Skill 运行一个可移植的英语考试助教工作区，服务四级、六级和考研英语学习者。工作流必须基于证据：校验学习者档案，生成受约束计划，记录练习和错误标签，更新能力画像，再根据观察数据调整下一次计划。
+Use this Skill to operate the portable English exam tutoring workspace for CET-4, CET-6, TEM-4, TEM-8, and postgraduate English learners. Keep the loop evidence-based: validate the learner profile, estimate vocabulary, generate a constrained plan with vocabulary pool assignments, record practice with error tags and timed metrics, summarize errors with spaced-repetition review urgency, update the ability profile, visualize progress, and revise the next plan from observed data.
 
-## 模式选择
+## Mode Selection
 
-- Public-safe 模式：只使用八个助教的占位符和公开描述。不要发布完整私有或原始提示词。
-- Full-local 模式：如果用户在公开仓库之外有本地私有提示词资产，可以在本机使用。运行时也不能改写原始八个助教提示词。
-- 不确定时，默认使用 public-safe 模式；在读取或使用本地私有提示词资产前先确认。
+- Public-safe mode: use only placeholders and public descriptions for the eight tutor assistants. Do not publish full private/original prompts.
+- Full-local mode: use the user's local private prompt assets if they exist outside this public-safe release. Do not rewrite the original eight tutor prompts while operating in this mode.
+- When unsure, default to public-safe mode and ask before using any private local prompt source.
 
-发布、打包或同步 Skill 之前，阅读 [references/prompt-modes.md](references/prompt-modes.md)。选择助教角色时，阅读 [references/assistant-roster.md](references/assistant-roster.md)。
+Read [references/prompt-modes.md](references/prompt-modes.md) before publishing, packaging, or syncing the Skill outside the local machine. Read [references/assistant-roster.md](references/assistant-roster.md) when selecting tutor roles.
 
-## 运行流程
+## User-Facing Invocation
 
-可以从 Skill 目录运行脚本，也可以从项目根目录按路径引用。
+The user invokes this Skill from an Agent interface:
 
-1. 校验输入：
-   `python -m skills.english_exam_ai_tutor validate-profile --profile learner-profile.json`
-2. 生成每日计划：
-   `python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json`
-3. 记录练习并标记错误：
-   `python -m skills.english_exam_ai_tutor tag-error --module writing --text "..."`
-   `python -m skills.english_exam_ai_tutor record-practice --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module writing --task-id writing-article-drill --duration-minutes 20 --total-items 10 --correct-items 7 --error-tags WRITING_ARTICLE_OMISSION`
-4. 统计错误：
-   `python -m skills.english_exam_ai_tutor summarize-errors --ledger practice-ledger.json --output error-summary.json`
-5. 更新能力并分析趋势：
-   `python -m skills.english_exam_ai_tutor update-ability --ability ability-profile.json --ledger practice-ledger.json`
-   `python -m skills.english_exam_ai_tutor analyze-trends --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json`
-6. 管理作文草稿并估算作文质量：
-   `python -m skills.english_exam_ai_tutor writing-version --file writing-versions.json --writing-id essay-001 --text "..."`
-   `python -m skills.english_exam_ai_tutor score-writing --text-file essay.txt --exam-type CET4 --output writing-score.json`
+- Codex: `/english-exam-ai-tutor`
+- Claude Code: `/english-exam-ai-tutor`
 
-学习闭环见 [references/workflow.md](references/workflow.md)，文件结构见 [references/data-model.md](references/data-model.md)。
+Shortcut Skills may also be installed for direct scenario calls: `learning-planner`, `vocabulary-builder`, `reading-navigator`, `structure-planner`, `grammar-corrector`, `polish-wizard`, `scenario-dialog`, and `culture-guide`.
 
-## 多源持续学习
+Do not ask the user to run Python commands unless they explicitly ask for developer or CLI debugging instructions. Python scripts are internal automation helpers that the Agent may run after interpreting the learner's request.
 
-从任意来源提取备考策略并写入 `strategy-library.json`。五种蒸馏方式全部内置，无需外部 Skill。
+## Operating Workflow
 
-### 蒸馏管线
+After this Skill is invoked, parse the user's natural-language request, choose the relevant tutor role, and use scripts from the Skill directory only when deterministic state changes or validation are needed.
 
-1. **提取**: `tutor extract --input <url|file|name>` — 下载/解析原始材料
-2. **蒸馏**: Agent 按方法论指南执行推理 → 写入 `distilled.json`
-3. **校验**: `tutor validate --artifacts-dir <path>` — 格式检查 + Darwin 6维评分
-4. **评估**: Agent 运行测试 prompt 评分效果维度 → 写入 `evaluation.json`
-5. **提交**: `tutor commit --artifacts-dir <path> --library strategy-library.json` — 棘轮检查 + 原子写入
+0. Estimate vocabulary (optional first step):
+   `python skills/english-exam-ai-tutor/scripts/estimate_vocabulary.py --interactive --output vocab-estimate.json`
+   Or batch mode: `python skills/english-exam-ai-tutor/scripts/estimate_vocabulary.py --wordlist answers.json --output result.json`
 
-### 蒸馏方式
+1. Validate intake:
+   `python skills/english-exam-ai-tutor/scripts/validate_profile.py --profile learner-profile.json`
+   Supports CET4, CET6, POSTGRADUATE_ENGLISH, TEM4, TEM8.
 
-| 方法 | 输入类型 | 说明 |
-|------|---------|------|
-| `direct` | 文本/Markdown | 直接读取提取 |
-| `book` | PDF/EPUB/DOCX | 结构化提取→章节+术语表+模式库 |
-| `video` | B站/YouTube URL | yt-dlp下载→ASR→RIA-TV++蒸馏 |
-| `person` | 教师/专家姓名 | 六路调研→五层认知提取 |
-| `manual` | 对话笔记 | Agent识别可操作方法 |
+2. Generate the daily plan:
+   `python skills/english-exam-ai-tutor/scripts/generate_daily_plan.py --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json`
+   Optionally pass `--strategies strategy-library.json` to attach relevant user-ingested exam methods to planned modules.
+   Optionally pass `--vocab-pool skills/english-exam-ai-tutor/assets/data/vocabulary/cet4-core-2000.json` for vocabulary assignments.
+   The plan automatically includes spaced-repetition review tasks for error tags with high review urgency.
 
-### Darwin 评分
+3. Record practice and tag errors (supports timed practice):
+   `python skills/english-exam-ai-tutor/scripts/tag_error.py --module writing --text "..."`
+   `python skills/english-exam-ai-tutor/scripts/record_practice.py --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module reading --task-id timed-reading-001 --duration-minutes 40 --total-items 20 --correct-items 14 --timed --time-limit-minutes 35 --overtime-items 3 --overtime-correct 1 --error-tags READING_SPEED_LOW`
 
-每条策略自动进行 9 维评分（满分 100）。低于 70 分自动触发爬山优化（最多 3 轮）。高分策略在生成每日计划时优先引用。详见 [references/darwin-rubric.md](../skill/references/darwin-rubric.md)。
+4. Summarize errors (includes spaced-repetition review urgency and speed analysis):
+   `python skills/english-exam-ai-tutor/scripts/summarize_errors.py --ledger practice-ledger.json --output error-summary.json --days 30`
 
+5. Update ability and analyze trends:
+   `python skills/english-exam-ai-tutor/scripts/update_ability_profile.py --ability ability-profile.json --ledger practice-ledger.json`
+   `python skills/english-exam-ai-tutor/scripts/analyze_trends.py --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json`
+
+6. Manage writing drafts, score with rubric, and anchor against model essays:
+   `python skills/english-exam-ai-tutor/scripts/manage_writing_versions.py --file writing-versions.json --writing-id essay-001 --text "..."`
+   `python skills/english-exam-ai-tutor/scripts/score_writing_rubric.py --text-file essay.txt --exam-type CET4 --output writing-score.json`
+   Optionally pass `--reference-samples skills/english-exam-ai-tutor/assets/data/sample-essays/` to anchor scoring against model essays.
+
+7. Visualize progress (generates standalone HTML report with SVG charts):
+   `python skills/english-exam-ai-tutor/scripts/visualize.py --ability-history ability-history.json --ledger practice-ledger.json --error-summary error-summary.json --output progress-report.html --days 30`
+
+## Multi-Source Continuous Learning
+
+Extract exam strategies from any source — text files, books, videos, people, conversations — and write them into `strategy-library.json`. All five distillation paths are built-in (`direct`, `book`, `video`, `person`, `manual`): no external skills needed. See [references/multi-source-distillation.md](references/multi-source-distillation.md) for the complete methodology reference.
+
+### Pipeline Overview
+
+Each distillation follows a 5-stage pipeline orchestrated by the Agent:
+
+1. **Extract**: `tutor extract --input <url|file|name>` — downloads and extracts raw materials.
+2. **Distill**: Agent follows the methodology guide (`prompts/ria.py` for video, `prompts/cognitive.py` for people) to produce structured strategies → `distilled.json`.
+3. **Validate**: `tutor validate --artifacts-dir <path>` — runs format checks + Darwin 6-dimension structure scoring (59 pts).
+4. **Evaluate**: Agent runs test prompts to score effectiveness (35 pts) → `evaluation.json`.
+5. **Commit**: `tutor commit --artifacts-dir <path> --library strategy-library.json` — ratchet check + atomic write.
+
+Total Darwin score < 70 triggers automatic hill-climb optimization (max 3 rounds).
+
+### 7a. Direct text ingestion — `distillation-method direct`
+For plain-text strategy notes:
 ```bash
-tutor check-deps      # 查看依赖状态
-tutor ops-check       # 13项运维检查
+tutor extract --input <note> --type text
+# → Agent reads methodology guide → distill
+tutor validate --artifacts-dir <path>
+tutor commit --artifacts-dir <path> --library strategy-library.json
 ```
 
-## 约束
+### 7b. Book / PDF — built-in `book`
+For exam prep books (PDF/EPUB/DOCX/TXT/HTML):
+```bash
+tutor extract --input <book-file> --type book
+# Extracts full text + chapter structure + glossary
+# → Agent follows prompts/ria.py for RIA-TV++ distillation
+tutor validate --artifacts-dir <path>
+tutor commit --artifacts-dir <path> --library strategy-library.json
+```
+Methodology: scan for frameworks → triple-verify → RIA++: R(原文≤150字)/I(自述)/A1(案例)/A2(触发)/E(步骤)/B(边界).
 
-- 不要在 full-local 模式中改写原始八个助教提示词。
-- 公开发布必须使用 public-safe 占位符，不能包含完整私有或原始提示词。
-- 作文评分是确定性评分参考，不是官方考试评分。
-- 练习记录必须使用 `total_items` 和 `correct_items`，不要使用 `total` 或 `correct`。
-- 即使模板使用 YAML 或 Markdown，持久数据也要保持 JSON 兼容。
-- 面向学习者的建议必须绑定四级、六级或考研英语目标区间，以及学习者诊断出的基础水平。
+### 7c. Video / Podcast — built-in `video`
+For B站/YouTube URLs or subtitle files:
+```bash
+tutor extract --input <video-url> --type video
+# yt-dlp download → ffmpeg audio → SenseVoiceSmall/whisper ASR
+# → Agent follows prompts/ria.py for RIA-TV++ distillation
+tutor validate --artifacts-dir <path>
+tutor commit --artifacts-dir <path> --library strategy-library.json
+```
+Requires: yt-dlp + ffmpeg (run `tutor check-deps`).
 
-## 参考资料和模板
+### 7d. Person / Teacher — built-in `person`
+For distilling a teacher's methodology:
+```bash
+tutor extract --input <person-name> --type person
+# → Agent follows prompts/cognitive.py for 5-layer cognitive extraction
+# → 6 parallel research agents → triple verification
+tutor validate --artifacts-dir <path>
+tutor commit --artifacts-dir <path> --library strategy-library.json
+```
 
-- [references/assistant-roster.md](references/assistant-roster.md)：八个助教、角色边界和 public-safe 占位符。
-- [references/error-taxonomy.md](references/error-taxonomy.md)：模块/维度树和有效错误标签。
-- [references/exam-profiles.md](references/exam-profiles.md)：支持的考试类型、基础水平和目标区间。
-- [references/prompt-modes.md](references/prompt-modes.md)：public-safe 与 full-local 的发布规则。
-- [references/workflow.md](references/workflow.md)：从诊断到下一阶段计划的闭环。
-- [references/data-model.md](references/data-model.md)：学习者档案、能力画像、练习记录、作文版本和统计摘要。
+### 7e. Conversation / manual notes — `distillation-method manual`
+```bash
+tutor extract --input <notes-file> --type text
+tutor validate --artifacts-dir <path>
+tutor commit --artifacts-dir <path> --library strategy-library.json
+```
+
+### 7f. Darwin scoring & optimization (automatic)
+- Structure (59 pts): auto-scored by `tutor validate` via `validators/darwin_structure.py`
+- Effectiveness (35 pts): Agent-evaluated via test prompts (see `references/darwin-rubric.md`)
+- Meta-skill (6 pts): anti-pattern blacklist check
+- Score < 70 → automatic hill-climb optimization (max 3 rounds)
+- Check deps: `tutor check-deps`
+
+## Constraints
+
+- Do not rewrite the original eight tutor prompts in full-local mode.
+- Public release must use public-safe prompt placeholders and must not include full private/original prompts.
+- Writing score output is a deterministic rubric estimate, not official exam scoring.
+- Practice records must use `total_items` and `correct_items`; do not use `total` or `correct`.
+- Timed practice records must include `timed: true`; `time_limit_minutes` is auto-looked-up from `EXAM_TIME_LIMITS` if omitted.
+- Keep data JSON-compatible even when a template is authored as YAML or Markdown.
+- Keep generated learner-facing advice tied to the learner's exam type target bands (CET 425-600+, Postgraduate 50-90+, TEM 60-80+) and foundation level.
+- Vocabulary estimation uses Yes/No sampling with false-alarm correction; results are estimates, not official measurements.
+- Distillation methodologies (structural, RIA++, cognitive) are executed by the Agent internally — the user never needs to install external tools.
+
+## References and Templates
+
+- [references/assistant-roster.md](references/assistant-roster.md): eight assistants, role boundaries, public-safe placeholders.
+- [references/error-taxonomy.md](references/error-taxonomy.md): module/dimension tree and valid error tags.
+- [references/exam-profiles.md](references/exam-profiles.md): supported exam types, foundation levels, target bands.
+- [references/prompt-modes.md](references/prompt-modes.md): public-safe versus full-local publishing rules.
+- [references/workflow.md](references/workflow.md): diagnosis-to-next-plan loop.
+- [references/data-model.md](references/data-model.md): learner profile, ability profile, practice ledger, writing versions, summaries, strategy library.
+- [references/multi-source-distillation.md](references/multi-source-distillation.md): complete distillation methodology reference (structural / RIA++ / cognitive extraction).
+- `assets/templates/learner-profile.json` and `assets/templates/learner-profile.yaml`: learner intake starter.
+- `assets/templates/ability-profile.yaml`: ability profile starter.
+- `assets/templates/exercise-record.json` and `assets/templates/exercise-record.yaml`: practice record starter.
+- `assets/templates/error-log.yaml`: error capture starter.
+- `assets/templates/daily-plan.md` and `assets/templates/daily-task-query.md`: plan/task presentation starters.
+- `assets/templates/writing-version-record.yaml`: writing version metadata starter.
+- `assets/templates/weekly-review.md` and `assets/templates/initial-diagnosis.md`: learner-facing review starters.
+- `assets/data/vocabulary/`: built-in vocabulary pools (CET4/6/Postgraduate/TEM4/TEM8) with frequency-ranked entries.
+- `assets/data/vocab-test-words.json`: Yes/No sampling word list with 6 frequency bands and non-word traps for vocabulary estimation.
+- `assets/data/common-errors/`: common error patterns for Chinese learners (writing/translation/listening/reading/vocabulary).
+- `assets/data/sample-essays/`: model essays with rubric scores and annotations for scoring anchor reference.
+- `assets/schemas/`: JSON Schema files for vocab-entry, vocab-estimate-result, error-pattern, strategy-library, and sample-essay.
+- [references/darwin-rubric.md](references/darwin-rubric.md): Darwin 6-dimension strategy quality scoring rubric (59 pts).
+- `scripts/vocab_generator.py`: generate vocabulary pool JSON files from embedded word database.
+- `scripts/estimate_vocabulary.py`: Yes/No sampling vocabulary size estimation engine.
+- `scripts/visualize.py`: generate standalone HTML progress reports with inline SVG charts.
