@@ -67,6 +67,21 @@ def _record_from_args(args: argparse.Namespace) -> dict[str, Any]:
         "correct_items": args.correct_items,
         "error_tags": args.error_tags or [],
     }
+
+    # Timed practice fields
+    if args.timed:
+        record["timed"] = True
+        if args.time_limit_minutes is not None:
+            record["time_limit_minutes"] = args.time_limit_minutes
+        elif args.exam_type and args.module:
+            auto_limit = common.get_time_limit(args.exam_type, args.module)
+            if auto_limit is not None:
+                record["time_limit_minutes"] = auto_limit
+        if args.overtime_items is not None:
+            record["overtime_items"] = args.overtime_items
+        if args.overtime_correct is not None:
+            record["overtime_correct"] = args.overtime_correct
+
     return {key: value for key, value in record.items() if value is not None}
 
 
@@ -82,6 +97,11 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--total-items", type=int)
     parser.add_argument("--correct-items", type=int)
     parser.add_argument("--error-tags", nargs="*")
+    parser.add_argument("--timed", action="store_true", help="Mark this record as timed practice.")
+    parser.add_argument("--time-limit-minutes", type=int,
+                        help="Time limit in minutes (auto-looked up from EXAM_TIME_LIMITS if omitted).")
+    parser.add_argument("--overtime-items", type=int, help="Number of items completed after time expired.")
+    parser.add_argument("--overtime-correct", type=int, help="Number of overtime items answered correctly.")
     parser.add_argument("--print-record", action="store_true", help="Print the appended record as JSON.")
     args = parser.parse_args(argv)
 

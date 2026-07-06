@@ -45,6 +45,38 @@ def summarize_errors(ledger_path: str | Path) -> dict[str, Any]:
             _add(summary["by_module"], dimension, total_error_tags)
             _add(summary["by_dimension"], ability, total_error_tags)
 
+    # Speed analysis: aggregate timed practice records
+    timed_records = [r for r in ledger if isinstance(r, dict) and r.get("timed")]
+    if timed_records:
+        total_overtime_items = sum(r.get("overtime_items", 0) for r in timed_records)
+        total_overtime_correct = sum(r.get("overtime_correct", 0) for r in timed_records)
+        overtime_accuracy = (
+            round(total_overtime_correct / total_overtime_items, 3)
+            if total_overtime_items > 0 else 0.0
+        )
+        # Per-module speed breakdown
+        by_module_speed: dict[str, dict[str, Any]] = {}
+        for r in timed_records:
+            mod = str(r.get("module", "unknown"))
+            entry = by_module_speed.setdefault(mod, {
+                "timed_sessions": 0, "overtime_items": 0, "overtime_correct": 0,
+            })
+            entry["timed_sessions"] += 1
+            entry["overtime_items"] += r.get("overtime_items", 0)
+            entry["overtime_correct"] += r.get("overtime_correct", 0)
+
+        summary["speed_analysis"] = {
+            "timed_sessions": len(timed_records),
+            "total_overtime_items": total_overtime_items,
+            "overtime_accuracy": overtime_accuracy,
+            "verdict": (
+                "速度是主要瓶颈" if overtime_accuracy > 0.6
+                else "知识缺口是主要瓶颈" if overtime_accuracy < 0.3
+                else "速度与知识均需提升"
+            ),
+            "by_module": by_module_speed,
+        }
+
     return summary
 
 
