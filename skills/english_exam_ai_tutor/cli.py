@@ -6,6 +6,7 @@ from collections.abc import Callable
 from .scripts import (
     analyze_trends,
     backup_data,
+    estimate_vocabulary,
     generate_daily_plan,
     ingest_strategy,
     list_strategies,
@@ -59,6 +60,7 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
     "commit-strategies": ("Commit strategies to library with ratchet check.", commit_main),
     "check-deps": ("Check external tool dependencies.", _check_deps_main),
     "ops-check": ("Run 13-point operational readiness check.", ops_main),
+    "vocab-estimate": ("Estimate vocabulary size via Yes/No sampling.", estimate_vocabulary.main),
 }
 
 

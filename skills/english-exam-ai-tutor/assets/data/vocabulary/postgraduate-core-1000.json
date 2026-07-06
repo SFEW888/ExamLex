@@ -1,0 +1,403 @@
+[
+  {
+    "word": "abolish",
+    "phonetic": "/əˈbɒlɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "废除；废止",
+    "frequency_rank": 1,
+    "example": "The law was finally abolished after decades of protest.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "abolish the death penalty",
+      "abolish slavery"
+    ],
+    "synonyms": [
+      "eliminate",
+      "annul",
+      "do away with"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "abound",
+    "phonetic": "/əˈbaʊnd/",
+    "pos": "v.",
+    "meaning_cn": "充满；大量存在",
+    "frequency_rank": 2,
+    "example": "Opportunities abound in the tech industry.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "abound in",
+      "abound with"
+    ],
+    "synonyms": [
+      "thrive",
+      "flourish",
+      "teem"
+    ],
+    "confusable_words": [
+      "lack"
+    ]
+  },
+  {
+    "word": "abstain",
+    "phonetic": "/əbˈsteɪn/",
+    "pos": "v.",
+    "meaning_cn": "弃权；戒除",
+    "frequency_rank": 3,
+    "example": "Several members abstained from voting.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "abstain from",
+      "abstain from alcohol"
+    ],
+    "synonyms": [
+      "refrain",
+      "withhold",
+      "forgo"
+    ],
+    "confusable_words": [
+      "indulge"
+    ]
+  },
+  {
+    "word": "acclaim",
+    "phonetic": "/əˈkleɪm/",
+    "pos": "v./n.",
+    "meaning_cn": "称赞；喝彩",
+    "frequency_rank": 4,
+    "example": "The book was widely acclaimed by critics.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "critically acclaimed",
+      "public acclaim"
+    ],
+    "synonyms": [
+      "praise",
+      "applaud",
+      "commend"
+    ],
+    "confusable_words": [
+      "criticize"
+    ]
+  },
+  {
+    "word": "accord",
+    "phonetic": "/əˈkɔːd/",
+    "pos": "n./v.",
+    "meaning_cn": "一致；协议；给予",
+    "frequency_rank": 5,
+    "example": "They reached an accord on trade issues.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "in accord with",
+      "of one's own accord",
+      "peace accord"
+    ],
+    "synonyms": [
+      "agreement",
+      "harmony",
+      "grant"
+    ],
+    "confusable_words": [
+      "discord"
+    ]
+  },
+  {
+    "word": "accountability",
+    "phonetic": "/əˌkaʊntəˈbɪləti/",
+    "pos": "n.",
+    "meaning_cn": "问责制；责任",
+    "frequency_rank": 6,
+    "example": "Corporate accountability has improved recently.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "political accountability",
+      "demand accountability"
+    ],
+    "synonyms": [
+      "responsibility",
+      "answerability"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "acquisition",
+    "phonetic": "/ˌækwɪˈzɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "获得；收购",
+    "frequency_rank": 7,
+    "example": "The company announced a major acquisition.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "merger and acquisition",
+      "language acquisition"
+    ],
+    "synonyms": [
+      "obtaining",
+      "procurement",
+      "takeover"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adhere",
+    "phonetic": "/ədˈhɪə/",
+    "pos": "v.",
+    "meaning_cn": "坚持；遵守；粘附",
+    "frequency_rank": 8,
+    "example": "All members must adhere to the code of conduct.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "adhere to",
+      "strictly adhere"
+    ],
+    "synonyms": [
+      "stick to",
+      "comply with",
+      "follow"
+    ],
+    "confusable_words": [
+      "deviate"
+    ]
+  },
+  {
+    "word": "adjacent",
+    "phonetic": "/əˈdʒeɪsnt/",
+    "pos": "adj.",
+    "meaning_cn": "邻近的；毗连的",
+    "frequency_rank": 9,
+    "example": "The hotel is adjacent to the train station.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "adjacent to",
+      "adjacent rooms"
+    ],
+    "synonyms": [
+      "neighboring",
+      "next to",
+      "bordering"
+    ],
+    "confusable_words": [
+      "distant"
+    ]
+  },
+  {
+    "word": "administer",
+    "phonetic": "/ədˈmɪnɪstə/",
+    "pos": "v.",
+    "meaning_cn": "管理；执行；给予",
+    "frequency_rank": 10,
+    "example": "The fund is administered by a board of trustees.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "administer a trust",
+      "administer medication"
+    ],
+    "synonyms": [
+      "manage",
+      "execute",
+      "supervise"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adolescence",
+    "phonetic": "/ˌædəˈlesns/",
+    "pos": "n.",
+    "meaning_cn": "青春期",
+    "frequency_rank": 11,
+    "example": "Adolescence is a time of great change.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "during adolescence",
+      "early adolescence"
+    ],
+    "synonyms": [
+      "youth",
+      "teenage years",
+      "puberty"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "advent",
+    "phonetic": "/ˈædvent/",
+    "pos": "n.",
+    "meaning_cn": "到来；出现",
+    "frequency_rank": 12,
+    "example": "The advent of the internet changed everything.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "the advent of",
+      "with the advent of"
+    ],
+    "synonyms": [
+      "arrival",
+      "emergence",
+      "dawn"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adversary",
+    "phonetic": "/ˈædvəsəri/",
+    "pos": "n.",
+    "meaning_cn": "对手；敌手",
+    "frequency_rank": 13,
+    "example": "He faced a formidable adversary in court.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "political adversary",
+      "worthy adversary"
+    ],
+    "synonyms": [
+      "opponent",
+      "rival",
+      "enemy"
+    ],
+    "confusable_words": [
+      "ally"
+    ]
+  },
+  {
+    "word": "advocacy",
+    "phonetic": "/ˈædvəkəsi/",
+    "pos": "n.",
+    "meaning_cn": "倡导；支持",
+    "frequency_rank": 14,
+    "example": "She is known for her advocacy of human rights.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "public advocacy",
+      "advocacy group"
+    ],
+    "synonyms": [
+      "support",
+      "championship",
+      "promotion"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "affiliate",
+    "phonetic": "/əˈfɪlieɪt/",
+    "pos": "v./n.",
+    "meaning_cn": "隶属；附属机构",
+    "frequency_rank": 15,
+    "example": "The hospital is affiliated with the university.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "affiliated with",
+      "affiliate member"
+    ],
+    "synonyms": [
+      "associate",
+      "subsidiary",
+      "branch"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "affluent",
+    "phonetic": "/ˈæfluənt/",
+    "pos": "adj.",
+    "meaning_cn": "富裕的；富足的",
+    "frequency_rank": 16,
+    "example": "They live in an affluent neighborhood.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "affluent society",
+      "affluent family"
+    ],
+    "synonyms": [
+      "wealthy",
+      "prosperous",
+      "rich"
+    ],
+    "confusable_words": [
+      "impoverished"
+    ]
+  },
+  {
+    "word": "alleviate",
+    "phonetic": "/əˈliːvieɪt/",
+    "pos": "v.",
+    "meaning_cn": "减轻；缓解",
+    "frequency_rank": 17,
+    "example": "The medicine helped alleviate her pain.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "alleviate suffering",
+      "alleviate poverty"
+    ],
+    "synonyms": [
+      "relieve",
+      "ease",
+      "lessen"
+    ],
+    "confusable_words": [
+      "aggravate"
+    ]
+  },
+  {
+    "word": "allocate",
+    "phonetic": "/ˈæləkeɪt/",
+    "pos": "v.",
+    "meaning_cn": "分配；拨出",
+    "frequency_rank": 18,
+    "example": "The government allocated funds for education.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "allocate resources",
+      "allocate to"
+    ],
+    "synonyms": [
+      "assign",
+      "distribute",
+      "apportion"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "ambiguous",
+    "phonetic": "/æmˈbɪɡjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "模棱两可的；模糊的",
+    "frequency_rank": 19,
+    "example": "The wording of the contract is ambiguous.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "ambiguous statement",
+      "deliberately ambiguous"
+    ],
+    "synonyms": [
+      "vague",
+      "unclear",
+      "equivocal"
+    ],
+    "confusable_words": [
+      "clear",
+      "unambiguous"
+    ]
+  },
+  {
+    "word": "amend",
+    "phonetic": "/əˈmend/",
+    "pos": "v.",
+    "meaning_cn": "修改；修正",
+    "frequency_rank": 20,
+    "example": "The constitution was amended in 2020.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "amend the law",
+      "amend a document"
+    ],
+    "synonyms": [
+      "revise",
+      "modify",
+      "correct"
+    ],
+    "confusable_words": []
+  }
+]

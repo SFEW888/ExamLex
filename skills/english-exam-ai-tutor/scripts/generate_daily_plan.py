@@ -18,6 +18,7 @@ def generate_daily_plan(
     ability_profile: dict[str, Any],
     error_summary: dict[str, Any] | None = None,
     strategies: dict[str, Any] | None = None,
+    vocab_pool: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     budget = profile.get("daily_time_budget_minutes")
     if not isinstance(budget, int) or isinstance(budget, bool) or budget <= 0:
@@ -63,6 +64,19 @@ def generate_daily_plan(
                 "reason": "default constrained allocation",
             }
         )
+
+    # Attach vocabulary tasks from vocab pool
+    if vocab_pool and tasks:
+        vocab_count = max(5, remaining // 2) if remaining > 0 else 10
+        selected_vocab = select_daily_vocab(vocab_pool, ability_profile, budget, count=vocab_count)
+        if selected_vocab:
+            tasks.append({
+                "module": "vocabulary",
+                "focus": "word study",
+                "minutes": min(MIN_TASK_MINUTES, budget),
+                "reason": "vocab pool selection",
+                "vocab_items": selected_vocab,
+            })
 
     # Attach matching strategies from strategy library
     exam_type = profile.get("exam_type", "")
@@ -159,6 +173,62 @@ def _ability_candidates(ability_profile: dict[str, Any]) -> list[dict[str, Any]]
     return candidates
 
 
+def select_daily_vocab(
+    vocab_pool: list[dict[str, Any]],
+    ability_profile: dict[str, Any],
+    daily_time_budget: int,
+    count: int = 20,
+) -> list[dict[str, Any]]:
+    """Select daily vocabulary tasks from pool based on ability needs.
+
+    Prioritizes words related to ability nodes marked as 'needs_work' or 'priority',
+    then fills remaining slots with lowest-frequency-rank words.
+    """
+    if not vocab_pool:
+        return []
+
+    # Collect ability nodes that need work
+    weak_dimensions: set[str] = set()
+    modules = ability_profile.get("modules", {})
+    if isinstance(modules, dict):
+        for nodes in modules.values():
+            if not isinstance(nodes, list):
+                continue
+            for node in nodes:
+                if not isinstance(node, dict):
+                    continue
+                if node.get("status") in ("needs_work", "priority"):
+                    weak_dimensions.add(str(node.get("node", "")).lower())
+
+    # Score each word: higher score = higher priority
+    scored: list[tuple[int, dict[str, Any]]] = []
+    for entry in vocab_pool:
+        if not isinstance(entry, dict):
+            continue
+        score = 0
+        # Boost words whose synonyms, collocations, or POS match weak dimensions
+        entry_text = (
+            str(entry.get("word", "")) + " "
+            + str(entry.get("pos", "")) + " "
+            + " ".join(entry.get("synonyms", [])) + " "
+            + " ".join(entry.get("collocations", []))
+        ).lower()
+        for dim in weak_dimensions:
+            if dim in entry_text:
+                score += 10
+        # Prefer lower frequency rank (less common = more likely unknown)
+        rank = entry.get("frequency_rank", 9999)
+        if isinstance(rank, int) and rank > 0:
+            score += max(0, 5000 - rank) // 500
+        scored.append((score, entry))
+
+    # Sort: highest score first, then lower frequency_rank
+    scored.sort(key=lambda item: (-item[0], item[1].get("frequency_rank", 9999)))
+
+    selected = [entry for _, entry in scored[:count]]
+    return selected
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Generate a deterministic constrained daily plan.")
     parser.add_argument("--profile", required=True, help="Path to learner profile JSON.")
@@ -166,11 +236,13 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--output", required=True, help="Path to write the generated plan JSON.")
     parser.add_argument("--errors", help="Optional summarized error JSON input.")
     parser.add_argument("--strategies", help="Optional strategy library JSON for method hints.")
+    parser.add_argument("--vocab-pool", help="Optional vocabulary pool JSON for word assignments.")
     args = parser.parse_args(argv)
 
     errors = common.load_data(args.errors) if args.errors else None
     strategies = common.load_data(args.strategies) if args.strategies else None
-    plan = generate_daily_plan(common.load_data(args.profile), common.load_data(args.ability), errors, strategies)
+    vocab_pool = common.load_data(args.vocab_pool) if args.vocab_pool else None
+    plan = generate_daily_plan(common.load_data(args.profile), common.load_data(args.ability), errors, strategies, vocab_pool)
     common.save_data(args.output, plan)
     return 0
 

@@ -1,0 +1,424 @@
+[
+  {
+    "word": "abate",
+    "phonetic": "/əˈbeɪt/",
+    "pos": "v.",
+    "meaning_cn": "减弱；减轻",
+    "frequency_rank": 1,
+    "example": "The storm abated by morning.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abate pollution",
+      "the rain abated"
+    ],
+    "synonyms": [
+      "subside",
+      "diminish",
+      "decrease"
+    ],
+    "confusable_words": [
+      "intensify"
+    ]
+  },
+  {
+    "word": "aberration",
+    "phonetic": "/ˌæbəˈreɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "异常；偏差",
+    "frequency_rank": 2,
+    "example": "The incident was considered an aberration.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "statistical aberration",
+      "temporary aberration"
+    ],
+    "synonyms": [
+      "anomaly",
+      "deviation",
+      "irregularity"
+    ],
+    "confusable_words": [
+      "norm"
+    ]
+  },
+  {
+    "word": "abject",
+    "phonetic": "/ˈæbdʒekt/",
+    "pos": "adj.",
+    "meaning_cn": "悲惨的；卑下的",
+    "frequency_rank": 3,
+    "example": "They lived in abject poverty.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abject poverty",
+      "abject failure",
+      "abject misery"
+    ],
+    "synonyms": [
+      "wretched",
+      "miserable",
+      "hopeless"
+    ],
+    "confusable_words": [
+      "prosperous"
+    ]
+  },
+  {
+    "word": "abnegation",
+    "phonetic": "/ˌæbnɪˈɡeɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "放弃；自我克制",
+    "frequency_rank": 4,
+    "example": "Monastic life requires self-abnegation.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "self-abnegation",
+      "abnegation of responsibility"
+    ],
+    "synonyms": [
+      "renunciation",
+      "self-denial",
+      "sacrifice"
+    ],
+    "confusable_words": [
+      "indulgence"
+    ]
+  },
+  {
+    "word": "abominate",
+    "phonetic": "/əˈbɒmɪneɪt/",
+    "pos": "v.",
+    "meaning_cn": "痛恨；憎恶",
+    "frequency_rank": 5,
+    "example": "She abominates cruelty to animals.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abominate violence",
+      "utterly abominate"
+    ],
+    "synonyms": [
+      "detest",
+      "loathe",
+      "hate"
+    ],
+    "confusable_words": [
+      "adore",
+      "love"
+    ]
+  },
+  {
+    "word": "abrogate",
+    "phonetic": "/ˈæbrəɡeɪt/",
+    "pos": "v.",
+    "meaning_cn": "废除；取消",
+    "frequency_rank": 6,
+    "example": "The government abrogated the treaty.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abrogate a law",
+      "abrogate an agreement"
+    ],
+    "synonyms": [
+      "abolish",
+      "annul",
+      "repeal"
+    ],
+    "confusable_words": [
+      "ratify",
+      "uphold"
+    ]
+  },
+  {
+    "word": "abstemious",
+    "phonetic": "/əbˈstiːmiəs/",
+    "pos": "adj.",
+    "meaning_cn": "有节制的；饮食有度的",
+    "frequency_rank": 7,
+    "example": "He led an abstemious life.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abstemious lifestyle",
+      "abstemious diet"
+    ],
+    "synonyms": [
+      "moderate",
+      "temperate",
+      "restrained"
+    ],
+    "confusable_words": [
+      "indulgent"
+    ]
+  },
+  {
+    "word": "acarpous",
+    "phonetic": "/eɪˈkɑːpəs/",
+    "pos": "adj.",
+    "meaning_cn": "不结果的",
+    "frequency_rank": 8,
+    "example": "The acarpous tree provided only shade.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "acarpous plant"
+    ],
+    "synonyms": [
+      "sterile",
+      "barren",
+      "unfruitful"
+    ],
+    "confusable_words": [
+      "fruitful",
+      "fertile"
+    ]
+  },
+  {
+    "word": "acerbic",
+    "phonetic": "/əˈsɜːbɪk/",
+    "pos": "adj.",
+    "meaning_cn": "尖刻的；酸的",
+    "frequency_rank": 9,
+    "example": "His acerbic wit offended some guests.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "acerbic comment",
+      "acerbic tone"
+    ],
+    "synonyms": [
+      "sharp",
+      "biting",
+      "caustic"
+    ],
+    "confusable_words": [
+      "mild",
+      "gentle"
+    ]
+  },
+  {
+    "word": "acquiescent",
+    "phonetic": "/ˌækwiˈesnt/",
+    "pos": "adj.",
+    "meaning_cn": "默许的；顺从的",
+    "frequency_rank": 10,
+    "example": "The acquiescent workers accepted the pay cut.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "acquiescent attitude",
+      "acquiescent silence"
+    ],
+    "synonyms": [
+      "compliant",
+      "submissive",
+      "resigned"
+    ],
+    "confusable_words": [
+      "resistant"
+    ]
+  },
+  {
+    "word": "adumbrate",
+    "phonetic": "/ˈædʌmbreɪt/",
+    "pos": "v.",
+    "meaning_cn": "预示；概述",
+    "frequency_rank": 11,
+    "example": "The report adumbrates future policy changes.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "adumbrate a plan",
+      "adumbrate the future"
+    ],
+    "synonyms": [
+      "foreshadow",
+      "outline",
+      "sketch"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aegis",
+    "phonetic": "/ˈiːdʒɪs/",
+    "pos": "n.",
+    "meaning_cn": "庇护；支持",
+    "frequency_rank": 12,
+    "example": "The program operates under the aegis of the UN.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "under the aegis of",
+      "under the aegis"
+    ],
+    "synonyms": [
+      "protection",
+      "auspices",
+      "sponsorship"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "afflatus",
+    "phonetic": "/əˈfleɪtəs/",
+    "pos": "n.",
+    "meaning_cn": "灵感；神感",
+    "frequency_rank": 13,
+    "example": "The poet claimed divine afflatus.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "creative afflatus",
+      "poetic afflatus"
+    ],
+    "synonyms": [
+      "inspiration",
+      "muse",
+      "revelation"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aggrandize",
+    "phonetic": "/əˈɡrændaɪz/",
+    "pos": "v.",
+    "meaning_cn": "扩大；增强",
+    "frequency_rank": 14,
+    "example": "He used the position to aggrandize himself.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "self-aggrandizing",
+      "aggrandize power"
+    ],
+    "synonyms": [
+      "enlarge",
+      "magnify",
+      "exalt"
+    ],
+    "confusable_words": [
+      "diminish"
+    ]
+  },
+  {
+    "word": "alacritous",
+    "phonetic": "/əˈlækrɪtəs/",
+    "pos": "adj.",
+    "meaning_cn": "乐意的；敏捷的",
+    "frequency_rank": 15,
+    "example": "The team responded with alacritous enthusiasm.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "alacritous response",
+      "alacritous manner"
+    ],
+    "synonyms": [
+      "eager",
+      "willing",
+      "prompt"
+    ],
+    "confusable_words": [
+      "reluctant",
+      "slow"
+    ]
+  },
+  {
+    "word": "amalgamate",
+    "phonetic": "/əˈmælɡəmeɪt/",
+    "pos": "v.",
+    "meaning_cn": "合并；混合",
+    "frequency_rank": 16,
+    "example": "The two companies amalgamated last year.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "amalgamate into",
+      "amalgamate with"
+    ],
+    "synonyms": [
+      "merge",
+      "combine",
+      "unite"
+    ],
+    "confusable_words": [
+      "separate",
+      "split"
+    ]
+  },
+  {
+    "word": "anathema",
+    "phonetic": "/əˈnæθəmə/",
+    "pos": "n.",
+    "meaning_cn": "诅咒；令人厌恶的事物",
+    "frequency_rank": 17,
+    "example": "Racism is anathema to a civilized society.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "anathema to",
+      "declare anathema"
+    ],
+    "synonyms": [
+      "curse",
+      "abomination",
+      "taboo"
+    ],
+    "confusable_words": [
+      "blessing"
+    ]
+  },
+  {
+    "word": "antediluvian",
+    "phonetic": "/ˌæntidɪˈluːviən/",
+    "pos": "adj.",
+    "meaning_cn": "古老的；过时的",
+    "frequency_rank": 18,
+    "example": "The office uses antediluvian computer systems.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "antediluvian methods",
+      "antediluvian attitudes"
+    ],
+    "synonyms": [
+      "ancient",
+      "outdated",
+      "prehistoric"
+    ],
+    "confusable_words": [
+      "modern"
+    ]
+  },
+  {
+    "word": "aplomb",
+    "phonetic": "/əˈplɒm/",
+    "pos": "n.",
+    "meaning_cn": "沉着；自信",
+    "frequency_rank": 19,
+    "example": "She handled the crisis with remarkable aplomb.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "with aplomb",
+      "great aplomb"
+    ],
+    "synonyms": [
+      "poise",
+      "composure",
+      "confidence"
+    ],
+    "confusable_words": [
+      "anxiety",
+      "nervousness"
+    ]
+  },
+  {
+    "word": "apocryphal",
+    "phonetic": "/əˈpɒkrɪfl/",
+    "pos": "adj.",
+    "meaning_cn": "不足凭信的；伪造的",
+    "frequency_rank": 20,
+    "example": "The story is probably apocryphal.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "apocryphal story",
+      "apocryphal account"
+    ],
+    "synonyms": [
+      "doubtful",
+      "unverified",
+      "fictitious"
+    ],
+    "confusable_words": [
+      "authentic",
+      "verified"
+    ]
+  }
+]

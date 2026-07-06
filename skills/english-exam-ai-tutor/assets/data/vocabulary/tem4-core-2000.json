@@ -1,0 +1,421 @@
+[
+  {
+    "word": "abdomen",
+    "phonetic": "/ˈæbdəmən/",
+    "pos": "n.",
+    "meaning_cn": "腹部",
+    "frequency_rank": 1,
+    "example": "The patient complained of pain in the abdomen.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "lower abdomen",
+      "abdomen pain"
+    ],
+    "synonyms": [
+      "belly",
+      "stomach",
+      "midsection"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "abreast",
+    "phonetic": "/əˈbrest/",
+    "pos": "adv.",
+    "meaning_cn": "并肩地；并排地",
+    "frequency_rank": 2,
+    "example": "They walked abreast down the street.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "keep abreast of",
+      "walk abreast"
+    ],
+    "synonyms": [
+      "alongside",
+      "side by side"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "abstinence",
+    "phonetic": "/ˈæbstɪnəns/",
+    "pos": "n.",
+    "meaning_cn": "节制；禁欲",
+    "frequency_rank": 3,
+    "example": "The program promotes abstinence from alcohol.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "abstinence from",
+      "total abstinence"
+    ],
+    "synonyms": [
+      "self-restraint",
+      "temperance",
+      "moderation"
+    ],
+    "confusable_words": [
+      "indulgence"
+    ]
+  },
+  {
+    "word": "accede",
+    "phonetic": "/əkˈsiːd/",
+    "pos": "v.",
+    "meaning_cn": "同意；加入；就任",
+    "frequency_rank": 4,
+    "example": "The government acceded to public demands.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "accede to",
+      "accede to the throne"
+    ],
+    "synonyms": [
+      "agree to",
+      "consent to",
+      "comply with"
+    ],
+    "confusable_words": [
+      "refuse"
+    ]
+  },
+  {
+    "word": "accentuate",
+    "phonetic": "/əkˈsentʃueɪt/",
+    "pos": "v.",
+    "meaning_cn": "强调；使突出",
+    "frequency_rank": 5,
+    "example": "The lighting accentuates the architecture.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "accentuate the positive",
+      "accentuate differences"
+    ],
+    "synonyms": [
+      "highlight",
+      "emphasize",
+      "stress"
+    ],
+    "confusable_words": [
+      "minimize"
+    ]
+  },
+  {
+    "word": "accolade",
+    "phonetic": "/ˈækəleɪd/",
+    "pos": "n.",
+    "meaning_cn": "荣誉；赞扬",
+    "frequency_rank": 6,
+    "example": "The film received numerous accolades.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "receive accolades",
+      "highest accolade"
+    ],
+    "synonyms": [
+      "honor",
+      "award",
+      "praise"
+    ],
+    "confusable_words": [
+      "criticism"
+    ]
+  },
+  {
+    "word": "accrue",
+    "phonetic": "/əˈkruː/",
+    "pos": "v.",
+    "meaning_cn": "累积；产生",
+    "frequency_rank": 7,
+    "example": "Interest accrues on the savings account.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "accrue interest",
+      "benefits accrue"
+    ],
+    "synonyms": [
+      "accumulate",
+      "build up",
+      "amass"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "acquiesce",
+    "phonetic": "/ˌækwiˈes/",
+    "pos": "v.",
+    "meaning_cn": "默许；勉强同意",
+    "frequency_rank": 8,
+    "example": "She acquiesced to their request reluctantly.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "acquiesce in",
+      "acquiesce to"
+    ],
+    "synonyms": [
+      "consent",
+      "comply",
+      "agree"
+    ],
+    "confusable_words": [
+      "resist",
+      "oppose"
+    ]
+  },
+  {
+    "word": "acrimony",
+    "phonetic": "/ˈækrɪməni/",
+    "pos": "n.",
+    "meaning_cn": "尖刻；激烈",
+    "frequency_rank": 9,
+    "example": "The debate was marked by considerable acrimony.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "with acrimony",
+      "bitter acrimony"
+    ],
+    "synonyms": [
+      "bitterness",
+      "hostility",
+      "animosity"
+    ],
+    "confusable_words": [
+      "civility",
+      "harmony"
+    ]
+  },
+  {
+    "word": "adamant",
+    "phonetic": "/ˈædəmənt/",
+    "pos": "adj.",
+    "meaning_cn": "坚决的；固执的",
+    "frequency_rank": 10,
+    "example": "She was adamant about not changing her mind.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "adamant about",
+      "remain adamant"
+    ],
+    "synonyms": [
+      "insistent",
+      "unyielding",
+      "firm"
+    ],
+    "confusable_words": [
+      "flexible"
+    ]
+  },
+  {
+    "word": "adept",
+    "phonetic": "/əˈdept/",
+    "pos": "adj.",
+    "meaning_cn": "熟练的；擅长的",
+    "frequency_rank": 11,
+    "example": "He is adept at solving complex problems.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "adept at",
+      "adept in"
+    ],
+    "synonyms": [
+      "skilled",
+      "proficient",
+      "expert"
+    ],
+    "confusable_words": [
+      "inept",
+      "clumsy"
+    ]
+  },
+  {
+    "word": "admonish",
+    "phonetic": "/ədˈmɒnɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "告诫；劝告",
+    "frequency_rank": 12,
+    "example": "The teacher admonished the students for being late.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "admonish for",
+      "admonish against"
+    ],
+    "synonyms": [
+      "warn",
+      "reprimand",
+      "scold"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "adorn",
+    "phonetic": "/əˈdɔːn/",
+    "pos": "v.",
+    "meaning_cn": "装饰；装扮",
+    "frequency_rank": 13,
+    "example": "Flowers adorned the entrance to the hall.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "adorn with",
+      "beautifully adorned"
+    ],
+    "synonyms": [
+      "decorate",
+      "ornament",
+      "embellish"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adroit",
+    "phonetic": "/əˈdrɔɪt/",
+    "pos": "adj.",
+    "meaning_cn": "灵巧的；机敏的",
+    "frequency_rank": 14,
+    "example": "She is an adroit negotiator.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "adroit at",
+      "politically adroit"
+    ],
+    "synonyms": [
+      "skillful",
+      "dexterous",
+      "clever"
+    ],
+    "confusable_words": [
+      "clumsy",
+      "awkward"
+    ]
+  },
+  {
+    "word": "adulation",
+    "phonetic": "/ˌædʒuˈleɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "奉承；谄媚",
+    "frequency_rank": 15,
+    "example": "The celebrity was uncomfortable with the adulation.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "public adulation",
+      "receive adulation"
+    ],
+    "synonyms": [
+      "flattery",
+      "adoration",
+      "praise"
+    ],
+    "confusable_words": [
+      "criticism"
+    ]
+  },
+  {
+    "word": "affable",
+    "phonetic": "/ˈæfəbl/",
+    "pos": "adj.",
+    "meaning_cn": "和蔼的；友善的",
+    "frequency_rank": 16,
+    "example": "The host was affable and welcoming.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "affable manner",
+      "affable personality"
+    ],
+    "synonyms": [
+      "friendly",
+      "amiable",
+      "genial"
+    ],
+    "confusable_words": [
+      "unfriendly",
+      "cold"
+    ]
+  },
+  {
+    "word": "agile",
+    "phonetic": "/ˈædʒaɪl/",
+    "pos": "adj.",
+    "meaning_cn": "敏捷的；灵活的",
+    "frequency_rank": 17,
+    "example": "The gymnast is remarkably agile.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "mentally agile",
+      "agile movement"
+    ],
+    "synonyms": [
+      "nimble",
+      "quick",
+      "flexible"
+    ],
+    "confusable_words": [
+      "clumsy",
+      "stiff"
+    ]
+  },
+  {
+    "word": "alacrity",
+    "phonetic": "/əˈlækrəti/",
+    "pos": "n.",
+    "meaning_cn": "欣然；乐意",
+    "frequency_rank": 18,
+    "example": "She accepted the invitation with alacrity.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "with alacrity",
+      "great alacrity"
+    ],
+    "synonyms": [
+      "eagerness",
+      "enthusiasm",
+      "willingness"
+    ],
+    "confusable_words": [
+      "reluctance"
+    ]
+  },
+  {
+    "word": "allay",
+    "phonetic": "/əˈleɪ/",
+    "pos": "v.",
+    "meaning_cn": "减轻；平息",
+    "frequency_rank": 19,
+    "example": "The manager tried to allay their fears.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "allay fears",
+      "allay concerns"
+    ],
+    "synonyms": [
+      "calm",
+      "relieve",
+      "soothe"
+    ],
+    "confusable_words": [
+      "intensify",
+      "aggravate"
+    ]
+  },
+  {
+    "word": "alleviate",
+    "phonetic": "/əˈliːvieɪt/",
+    "pos": "v.",
+    "meaning_cn": "减轻；缓和",
+    "frequency_rank": 20,
+    "example": "The drug helps alleviate the symptoms.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "alleviate pain",
+      "alleviate poverty"
+    ],
+    "synonyms": [
+      "relieve",
+      "ease",
+      "lessen"
+    ],
+    "confusable_words": [
+      "aggravate",
+      "exacerbate"
+    ]
+  }
+]

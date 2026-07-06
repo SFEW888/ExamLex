@@ -1,0 +1,405 @@
+[
+  {
+    "word": "abnormal",
+    "phonetic": "/æbˈnɔːml/",
+    "pos": "adj.",
+    "meaning_cn": "反常的；异常的",
+    "frequency_rank": 1,
+    "example": "The test results were abnormal.",
+    "cet_level": "CET6",
+    "collocations": [
+      "abnormal behavior",
+      "abnormal condition"
+    ],
+    "synonyms": [
+      "unusual",
+      "irregular",
+      "atypical"
+    ],
+    "confusable_words": [
+      "normal"
+    ]
+  },
+  {
+    "word": "abolish",
+    "phonetic": "/əˈbɒlɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "废除；废止",
+    "frequency_rank": 2,
+    "example": "Slavery was abolished in the 19th century.",
+    "cet_level": "CET6",
+    "collocations": [
+      "abolish a system",
+      "abolish the death penalty"
+    ],
+    "synonyms": [
+      "eliminate",
+      "do away with",
+      "put an end to"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "abrupt",
+    "phonetic": "/əˈbrʌpt/",
+    "pos": "adj.",
+    "meaning_cn": "突然的；唐突的",
+    "frequency_rank": 3,
+    "example": "The meeting came to an abrupt end.",
+    "cet_level": "CET6",
+    "collocations": [
+      "abrupt change",
+      "abrupt departure"
+    ],
+    "synonyms": [
+      "sudden",
+      "unexpected",
+      "sharp"
+    ],
+    "confusable_words": [
+      "gradual"
+    ]
+  },
+  {
+    "word": "absurd",
+    "phonetic": "/əbˈsɜːd/",
+    "pos": "adj.",
+    "meaning_cn": "荒谬的；可笑的",
+    "frequency_rank": 4,
+    "example": "It's absurd to blame me for everything.",
+    "cet_level": "CET6",
+    "collocations": [
+      "absurd idea",
+      "patently absurd"
+    ],
+    "synonyms": [
+      "ridiculous",
+      "preposterous",
+      "ludicrous"
+    ],
+    "confusable_words": [
+      "reasonable"
+    ]
+  },
+  {
+    "word": "baffle",
+    "phonetic": "/ˈbæfl/",
+    "pos": "v.",
+    "meaning_cn": "使困惑；难住",
+    "frequency_rank": 5,
+    "example": "The mystery continues to baffle investigators.",
+    "cet_level": "CET6",
+    "collocations": [
+      "baffle scientists",
+      "completely baffled"
+    ],
+    "synonyms": [
+      "puzzle",
+      "confuse",
+      "perplex"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accessory",
+    "phonetic": "/əkˈsesəri/",
+    "pos": "n.",
+    "meaning_cn": "附件；配件；从犯",
+    "frequency_rank": 6,
+    "example": "She bought accessories for her new phone.",
+    "cet_level": "CET6",
+    "collocations": [
+      "fashion accessories",
+      "car accessories"
+    ],
+    "synonyms": [
+      "attachment",
+      "add-on",
+      "supplement"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accommodation",
+    "phonetic": "/əˌkɒməˈdeɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "住宿；膳宿",
+    "frequency_rank": 7,
+    "example": "The university provides student accommodation.",
+    "cet_level": "CET6",
+    "collocations": [
+      "accommodation facilities",
+      "temporary accommodation"
+    ],
+    "synonyms": [
+      "lodging",
+      "housing",
+      "shelter"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accountability",
+    "phonetic": "/əˌkaʊntəˈbɪləti/",
+    "pos": "n.",
+    "meaning_cn": "问责；责任",
+    "frequency_rank": 8,
+    "example": "The new system improves government accountability.",
+    "cet_level": "CET6",
+    "collocations": [
+      "public accountability",
+      "personal accountability"
+    ],
+    "synonyms": [
+      "responsibility",
+      "answerability",
+      "liability"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "acquaint",
+    "phonetic": "/əˈkweɪnt/",
+    "pos": "v.",
+    "meaning_cn": "使熟悉；使认识",
+    "frequency_rank": 9,
+    "example": "Please acquaint yourself with the rules.",
+    "cet_level": "CET6",
+    "collocations": [
+      "be acquainted with",
+      "acquaint oneself with"
+    ],
+    "synonyms": [
+      "familiarize",
+      "inform",
+      "introduce"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "administer",
+    "phonetic": "/ədˈmɪnɪstə/",
+    "pos": "v.",
+    "meaning_cn": "管理；执行；给予",
+    "frequency_rank": 10,
+    "example": "The nurse administered the vaccine.",
+    "cet_level": "CET6",
+    "collocations": [
+      "administer justice",
+      "administer a test"
+    ],
+    "synonyms": [
+      "manage",
+      "conduct",
+      "dispense"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adolescent",
+    "phonetic": "/ˌædəˈlesnt/",
+    "pos": "n./adj.",
+    "meaning_cn": "青少年；青春期的",
+    "frequency_rank": 11,
+    "example": "Adolescents often experience rapid mood swings.",
+    "cet_level": "CET6",
+    "collocations": [
+      "adolescent behavior",
+      "adolescent development"
+    ],
+    "synonyms": [
+      "teenager",
+      "youth",
+      "juvenile"
+    ],
+    "confusable_words": [
+      "adult"
+    ]
+  },
+  {
+    "word": "adverse",
+    "phonetic": "/ˈædvɜːs/",
+    "pos": "adj.",
+    "meaning_cn": "不利的；相反的",
+    "frequency_rank": 12,
+    "example": "The drug may have adverse side effects.",
+    "cet_level": "CET6",
+    "collocations": [
+      "adverse effect",
+      "adverse conditions",
+      "adverse reaction"
+    ],
+    "synonyms": [
+      "negative",
+      "harmful",
+      "unfavorable"
+    ],
+    "confusable_words": [
+      "favorable"
+    ]
+  },
+  {
+    "word": "advocate",
+    "phonetic": "/ˈædvəkeɪt/",
+    "pos": "v./n.",
+    "meaning_cn": "倡导；提倡者",
+    "frequency_rank": 13,
+    "example": "He advocates for stricter environmental laws.",
+    "cet_level": "CET6",
+    "collocations": [
+      "advocate for",
+      "strong advocate",
+      "public advocate"
+    ],
+    "synonyms": [
+      "supporter",
+      "champion",
+      "promote"
+    ],
+    "confusable_words": [
+      "opponent"
+    ]
+  },
+  {
+    "word": "aesthetic",
+    "phonetic": "/iːsˈθetɪk/",
+    "pos": "adj.",
+    "meaning_cn": "审美的；美学的",
+    "frequency_rank": 14,
+    "example": "The building has great aesthetic appeal.",
+    "cet_level": "CET6",
+    "collocations": [
+      "aesthetic value",
+      "aesthetic sense"
+    ],
+    "synonyms": [
+      "artistic",
+      "visual",
+      "beautiful"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "affirm",
+    "phonetic": "/əˈfɜːm/",
+    "pos": "v.",
+    "meaning_cn": "断言；确认；肯定",
+    "frequency_rank": 15,
+    "example": "The court affirmed the lower court's decision.",
+    "cet_level": "CET6",
+    "collocations": [
+      "affirm the right",
+      "affirm commitment"
+    ],
+    "synonyms": [
+      "confirm",
+      "declare",
+      "assert"
+    ],
+    "confusable_words": [
+      "deny"
+    ]
+  },
+  {
+    "word": "agenda",
+    "phonetic": "/əˈdʒendə/",
+    "pos": "n.",
+    "meaning_cn": "议程；议事日程",
+    "frequency_rank": 16,
+    "example": "What's on the agenda for today's meeting?",
+    "cet_level": "CET6",
+    "collocations": [
+      "on the agenda",
+      "hidden agenda",
+      "set the agenda"
+    ],
+    "synonyms": [
+      "schedule",
+      "program",
+      "plan"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aggravate",
+    "phonetic": "/ˈæɡrəveɪt/",
+    "pos": "v.",
+    "meaning_cn": "加重；使恶化",
+    "frequency_rank": 17,
+    "example": "The cold weather aggravated his condition.",
+    "cet_level": "CET6",
+    "collocations": [
+      "aggravate the situation",
+      "aggravate symptoms"
+    ],
+    "synonyms": [
+      "worsen",
+      "intensify",
+      "exacerbate"
+    ],
+    "confusable_words": [
+      "alleviate"
+    ]
+  },
+  {
+    "word": "aggregate",
+    "phonetic": "/ˈæɡrɪɡət/",
+    "pos": "n./v.",
+    "meaning_cn": "总计；集合体",
+    "frequency_rank": 18,
+    "example": "The aggregate cost exceeded the budget.",
+    "cet_level": "CET6",
+    "collocations": [
+      "in aggregate",
+      "aggregate demand",
+      "aggregate data"
+    ],
+    "synonyms": [
+      "total",
+      "sum",
+      "collective"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "alienate",
+    "phonetic": "/ˈeɪliəneɪt/",
+    "pos": "v.",
+    "meaning_cn": "疏远；使格格不入",
+    "frequency_rank": 19,
+    "example": "His behavior alienated his colleagues.",
+    "cet_level": "CET6",
+    "collocations": [
+      "alienate from",
+      "alienate supporters"
+    ],
+    "synonyms": [
+      "estrange",
+      "isolate",
+      "distance"
+    ],
+    "confusable_words": [
+      "unite",
+      "reconcile"
+    ]
+  },
+  {
+    "word": "allege",
+    "phonetic": "/əˈledʒ/",
+    "pos": "v.",
+    "meaning_cn": "指控；宣称",
+    "frequency_rank": 20,
+    "example": "The plaintiff alleges that the contract was breached.",
+    "cet_level": "CET6",
+    "collocations": [
+      "allege that",
+      "it is alleged that"
+    ],
+    "synonyms": [
+      "claim",
+      "assert",
+      "accuse"
+    ],
+    "confusable_words": []
+  }
+]

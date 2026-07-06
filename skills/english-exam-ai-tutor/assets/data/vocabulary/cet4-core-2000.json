@@ -1,0 +1,809 @@
+[
+  {
+    "word": "abandon",
+    "phonetic": "/əˈbændən/",
+    "pos": "v.",
+    "meaning_cn": "放弃；抛弃；遗弃",
+    "frequency_rank": 1,
+    "example": "They had to abandon the sinking ship.",
+    "cet_level": "CET4",
+    "collocations": [
+      "abandon oneself to",
+      "abandon a plan"
+    ],
+    "synonyms": [
+      "give up",
+      "desert",
+      "forsake"
+    ],
+    "confusable_words": [
+      "abundant"
+    ]
+  },
+  {
+    "word": "ability",
+    "phonetic": "/əˈbɪləti/",
+    "pos": "n.",
+    "meaning_cn": "能力；才能",
+    "frequency_rank": 2,
+    "example": "She has the ability to learn quickly.",
+    "cet_level": "CET4",
+    "collocations": [
+      "have the ability to",
+      "to the best of one's ability"
+    ],
+    "synonyms": [
+      "capability",
+      "capacity",
+      "talent"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "abroad",
+    "phonetic": "/əˈbrɔːd/",
+    "pos": "adv.",
+    "meaning_cn": "在国外；到国外",
+    "frequency_rank": 3,
+    "example": "He went abroad for further study.",
+    "cet_level": "CET4",
+    "collocations": [
+      "go abroad",
+      "study abroad",
+      "from abroad"
+    ],
+    "synonyms": [
+      "overseas"
+    ],
+    "confusable_words": [
+      "aboard"
+    ]
+  },
+  {
+    "word": "absence",
+    "phonetic": "/ˈæbsəns/",
+    "pos": "n.",
+    "meaning_cn": "缺席；缺乏",
+    "frequency_rank": 4,
+    "example": "In the absence of evidence, the case was dropped.",
+    "cet_level": "CET4",
+    "collocations": [
+      "in the absence of",
+      "absence from"
+    ],
+    "synonyms": [
+      "lack",
+      "shortage"
+    ],
+    "confusable_words": [
+      "presence"
+    ]
+  },
+  {
+    "word": "absolute",
+    "phonetic": "/ˈæbsəluːt/",
+    "pos": "adj.",
+    "meaning_cn": "绝对的；完全的",
+    "frequency_rank": 5,
+    "example": "He demanded absolute obedience.",
+    "cet_level": "CET4",
+    "collocations": [
+      "absolute power",
+      "absolute certainty"
+    ],
+    "synonyms": [
+      "total",
+      "complete",
+      "utter"
+    ],
+    "confusable_words": [
+      "relative"
+    ]
+  },
+  {
+    "word": "absorb",
+    "phonetic": "/əbˈzɔːb/",
+    "pos": "v.",
+    "meaning_cn": "吸收；吸引",
+    "frequency_rank": 6,
+    "example": "Plants absorb carbon dioxide.",
+    "cet_level": "CET4",
+    "collocations": [
+      "absorb knowledge",
+      "be absorbed in"
+    ],
+    "synonyms": [
+      "soak up",
+      "take in",
+      "assimilate"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "abstract",
+    "phonetic": "/ˈæbstrækt/",
+    "pos": "adj.",
+    "meaning_cn": "抽象的；摘要",
+    "frequency_rank": 7,
+    "example": "The concept is too abstract to grasp.",
+    "cet_level": "CET4",
+    "collocations": [
+      "abstract concept",
+      "abstract art"
+    ],
+    "synonyms": [
+      "theoretical",
+      "conceptual"
+    ],
+    "confusable_words": [
+      "concrete"
+    ]
+  },
+  {
+    "word": "abundant",
+    "phonetic": "/əˈbʌndənt/",
+    "pos": "adj.",
+    "meaning_cn": "丰富的；充裕的",
+    "frequency_rank": 8,
+    "example": "The region has abundant natural resources.",
+    "cet_level": "CET4",
+    "collocations": [
+      "abundant in",
+      "abundant resources"
+    ],
+    "synonyms": [
+      "plentiful",
+      "ample",
+      "rich"
+    ],
+    "confusable_words": [
+      "scarce"
+    ]
+  },
+  {
+    "word": "abuse",
+    "phonetic": "/əˈbjuːz/",
+    "pos": "v./n.",
+    "meaning_cn": "滥用；虐待",
+    "frequency_rank": 9,
+    "example": "He abused his power as manager.",
+    "cet_level": "CET4",
+    "collocations": [
+      "drug abuse",
+      "abuse of power",
+      "child abuse"
+    ],
+    "synonyms": [
+      "misuse",
+      "mistreat",
+      "exploit"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "academic",
+    "phonetic": "/ˌækəˈdemɪk/",
+    "pos": "adj.",
+    "meaning_cn": "学术的；学院的",
+    "frequency_rank": 10,
+    "example": "She has an impressive academic record.",
+    "cet_level": "CET4",
+    "collocations": [
+      "academic year",
+      "academic research",
+      "academic performance"
+    ],
+    "synonyms": [
+      "scholarly",
+      "educational"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accelerate",
+    "phonetic": "/əkˈseləreɪt/",
+    "pos": "v.",
+    "meaning_cn": "加速；促进",
+    "frequency_rank": 11,
+    "example": "The car accelerated smoothly.",
+    "cet_level": "CET4",
+    "collocations": [
+      "accelerate growth",
+      "accelerate the pace"
+    ],
+    "synonyms": [
+      "speed up",
+      "hasten",
+      "quicken"
+    ],
+    "confusable_words": [
+      "decelerate"
+    ]
+  },
+  {
+    "word": "access",
+    "phonetic": "/ˈækses/",
+    "pos": "n./v.",
+    "meaning_cn": "进入；访问；通道",
+    "frequency_rank": 12,
+    "example": "Students have access to the library.",
+    "cet_level": "CET4",
+    "collocations": [
+      "have access to",
+      "internet access",
+      "gain access"
+    ],
+    "synonyms": [
+      "entry",
+      "admission",
+      "approach"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accommodate",
+    "phonetic": "/əˈkɒmədeɪt/",
+    "pos": "v.",
+    "meaning_cn": "容纳；适应；提供住宿",
+    "frequency_rank": 13,
+    "example": "The hotel can accommodate 200 guests.",
+    "cet_level": "CET4",
+    "collocations": [
+      "accommodate needs",
+      "accommodate to"
+    ],
+    "synonyms": [
+      "house",
+      "hold",
+      "adjust"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accompany",
+    "phonetic": "/əˈkʌmpəni/",
+    "pos": "v.",
+    "meaning_cn": "陪伴；伴随",
+    "frequency_rank": 14,
+    "example": "She accompanied me to the station.",
+    "cet_level": "CET4",
+    "collocations": [
+      "be accompanied by",
+      "accompany on piano"
+    ],
+    "synonyms": [
+      "escort",
+      "go with",
+      "attend"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accomplish",
+    "phonetic": "/əˈkɒmplɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "完成；实现",
+    "frequency_rank": 15,
+    "example": "We accomplished our goal ahead of schedule.",
+    "cet_level": "CET4",
+    "collocations": [
+      "accomplish a task",
+      "accomplish a mission"
+    ],
+    "synonyms": [
+      "achieve",
+      "complete",
+      "fulfill"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "account",
+    "phonetic": "/əˈkaʊnt/",
+    "pos": "n./v.",
+    "meaning_cn": "账户；说明；解释",
+    "frequency_rank": 16,
+    "example": "Please give an account of what happened.",
+    "cet_level": "CET4",
+    "collocations": [
+      "take into account",
+      "on account of",
+      "bank account"
+    ],
+    "synonyms": [
+      "explanation",
+      "report",
+      "description"
+    ],
+    "confusable_words": [
+      "count"
+    ]
+  },
+  {
+    "word": "accumulate",
+    "phonetic": "/əˈkjuːmjəleɪt/",
+    "pos": "v.",
+    "meaning_cn": "积累；积聚",
+    "frequency_rank": 17,
+    "example": "Dust accumulated on the shelves.",
+    "cet_level": "CET4",
+    "collocations": [
+      "accumulate wealth",
+      "accumulate experience"
+    ],
+    "synonyms": [
+      "gather",
+      "amass",
+      "build up"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accurate",
+    "phonetic": "/ˈækjərət/",
+    "pos": "adj.",
+    "meaning_cn": "准确的；精确的",
+    "frequency_rank": 18,
+    "example": "The measurements were highly accurate.",
+    "cet_level": "CET4",
+    "collocations": [
+      "accurate description",
+      "accurate measurement"
+    ],
+    "synonyms": [
+      "precise",
+      "exact",
+      "correct"
+    ],
+    "confusable_words": [
+      "inaccurate"
+    ]
+  },
+  {
+    "word": "achieve",
+    "phonetic": "/əˈtʃiːv/",
+    "pos": "v.",
+    "meaning_cn": "实现；达到",
+    "frequency_rank": 19,
+    "example": "She achieved her dream of becoming a doctor.",
+    "cet_level": "CET4",
+    "collocations": [
+      "achieve success",
+      "achieve a goal"
+    ],
+    "synonyms": [
+      "attain",
+      "accomplish",
+      "reach"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "acknowledge",
+    "phonetic": "/əkˈnɒlɪdʒ/",
+    "pos": "v.",
+    "meaning_cn": "承认；确认收到",
+    "frequency_rank": 20,
+    "example": "He acknowledged his mistake publicly.",
+    "cet_level": "CET4",
+    "collocations": [
+      "acknowledge receipt",
+      "acknowledge the fact"
+    ],
+    "synonyms": [
+      "admit",
+      "recognize",
+      "confess"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "acquire",
+    "phonetic": "/əˈkwaɪə/",
+    "pos": "v.",
+    "meaning_cn": "获得；习得",
+    "frequency_rank": 21,
+    "example": "She acquired a good knowledge of French.",
+    "cet_level": "CET4",
+    "collocations": [
+      "acquire knowledge",
+      "acquire skills"
+    ],
+    "synonyms": [
+      "obtain",
+      "gain",
+      "get"
+    ],
+    "confusable_words": [
+      "require",
+      "inquire"
+    ]
+  },
+  {
+    "word": "adapt",
+    "phonetic": "/əˈdæpt/",
+    "pos": "v.",
+    "meaning_cn": "适应；改编",
+    "frequency_rank": 22,
+    "example": "Animals adapt to their environment.",
+    "cet_level": "CET4",
+    "collocations": [
+      "adapt to",
+      "adapt from"
+    ],
+    "synonyms": [
+      "adjust",
+      "modify",
+      "alter"
+    ],
+    "confusable_words": [
+      "adopt",
+      "adept"
+    ]
+  },
+  {
+    "word": "adequate",
+    "phonetic": "/ˈædɪkwət/",
+    "pos": "adj.",
+    "meaning_cn": "足够的；适当的",
+    "frequency_rank": 23,
+    "example": "The supply is adequate for our needs.",
+    "cet_level": "CET4",
+    "collocations": [
+      "adequate supply",
+      "adequate for"
+    ],
+    "synonyms": [
+      "sufficient",
+      "enough",
+      "suitable"
+    ],
+    "confusable_words": [
+      "inadequate"
+    ]
+  },
+  {
+    "word": "adjust",
+    "phonetic": "/əˈdʒʌst/",
+    "pos": "v.",
+    "meaning_cn": "调整；适应",
+    "frequency_rank": 24,
+    "example": "You can adjust the volume with this knob.",
+    "cet_level": "CET4",
+    "collocations": [
+      "adjust to",
+      "adjust accordingly"
+    ],
+    "synonyms": [
+      "modify",
+      "alter",
+      "adapt"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "administration",
+    "phonetic": "/ədˌmɪnɪˈstreɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "管理；行政",
+    "frequency_rank": 25,
+    "example": "The administration announced new policies.",
+    "cet_level": "CET4",
+    "collocations": [
+      "business administration",
+      "public administration"
+    ],
+    "synonyms": [
+      "management",
+      "government",
+      "authority"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "admire",
+    "phonetic": "/ədˈmaɪə/",
+    "pos": "v.",
+    "meaning_cn": "钦佩；赞赏",
+    "frequency_rank": 26,
+    "example": "I admire her courage and determination.",
+    "cet_level": "CET4",
+    "collocations": [
+      "admire for",
+      "admire the view"
+    ],
+    "synonyms": [
+      "respect",
+      "appreciate",
+      "look up to"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adopt",
+    "phonetic": "/əˈdɒpt/",
+    "pos": "v.",
+    "meaning_cn": "采纳；收养",
+    "frequency_rank": 27,
+    "example": "The committee adopted the proposal unanimously.",
+    "cet_level": "CET4",
+    "collocations": [
+      "adopt a child",
+      "adopt a policy",
+      "adopt a method"
+    ],
+    "synonyms": [
+      "take on",
+      "embrace",
+      "accept"
+    ],
+    "confusable_words": [
+      "adapt",
+      "adept"
+    ]
+  },
+  {
+    "word": "advance",
+    "phonetic": "/ədˈvɑːns/",
+    "pos": "v./n.",
+    "meaning_cn": "前进；进步；提前",
+    "frequency_rank": 28,
+    "example": "Technology has advanced rapidly.",
+    "cet_level": "CET4",
+    "collocations": [
+      "in advance",
+      "advance payment",
+      "advance warning"
+    ],
+    "synonyms": [
+      "progress",
+      "proceed",
+      "move forward"
+    ],
+    "confusable_words": [
+      "retreat"
+    ]
+  },
+  {
+    "word": "advantage",
+    "phonetic": "/ədˈvɑːntɪdʒ/",
+    "pos": "n.",
+    "meaning_cn": "优势；有利条件",
+    "frequency_rank": 29,
+    "example": "Being tall gave him an advantage in basketball.",
+    "cet_level": "CET4",
+    "collocations": [
+      "take advantage of",
+      "competitive advantage"
+    ],
+    "synonyms": [
+      "benefit",
+      "edge",
+      "superiority"
+    ],
+    "confusable_words": [
+      "disadvantage"
+    ]
+  },
+  {
+    "word": "advertise",
+    "phonetic": "/ˈædvətaɪz/",
+    "pos": "v.",
+    "meaning_cn": "做广告；宣传",
+    "frequency_rank": 30,
+    "example": "They advertised the product on social media.",
+    "cet_level": "CET4",
+    "collocations": [
+      "advertise for",
+      "advertise online"
+    ],
+    "synonyms": [
+      "promote",
+      "publicize",
+      "market"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "affair",
+    "phonetic": "/əˈfeə/",
+    "pos": "n.",
+    "meaning_cn": "事务；事件",
+    "frequency_rank": 31,
+    "example": "The meeting dealt with financial affairs.",
+    "cet_level": "CET4",
+    "collocations": [
+      "foreign affairs",
+      "state of affairs",
+      "love affair"
+    ],
+    "synonyms": [
+      "matter",
+      "business",
+      "concern"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "affect",
+    "phonetic": "/əˈfekt/",
+    "pos": "v.",
+    "meaning_cn": "影响；感动",
+    "frequency_rank": 32,
+    "example": "The weather affects crop yields significantly.",
+    "cet_level": "CET4",
+    "collocations": [
+      "be affected by",
+      "adversely affect"
+    ],
+    "synonyms": [
+      "influence",
+      "impact",
+      "have an effect on"
+    ],
+    "confusable_words": [
+      "effect"
+    ]
+  },
+  {
+    "word": "afford",
+    "phonetic": "/əˈfɔːd/",
+    "pos": "v.",
+    "meaning_cn": "负担得起；提供",
+    "frequency_rank": 33,
+    "example": "I can't afford a new car right now.",
+    "cet_level": "CET4",
+    "collocations": [
+      "can afford",
+      "cannot afford",
+      "afford to"
+    ],
+    "synonyms": [
+      "manage",
+      "spare",
+      "provide"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aggressive",
+    "phonetic": "/əˈɡresɪv/",
+    "pos": "adj.",
+    "meaning_cn": "侵略的；好斗的；积极的",
+    "frequency_rank": 34,
+    "example": "The company adopted an aggressive marketing strategy.",
+    "cet_level": "CET4",
+    "collocations": [
+      "aggressive behavior",
+      "aggressive expansion"
+    ],
+    "synonyms": [
+      "hostile",
+      "combative",
+      "assertive"
+    ],
+    "confusable_words": [
+      "passive"
+    ]
+  },
+  {
+    "word": "agreement",
+    "phonetic": "/əˈɡriːmənt/",
+    "pos": "n.",
+    "meaning_cn": "协议；一致",
+    "frequency_rank": 35,
+    "example": "Both parties signed the agreement.",
+    "cet_level": "CET4",
+    "collocations": [
+      "reach an agreement",
+      "in agreement with"
+    ],
+    "synonyms": [
+      "contract",
+      "deal",
+      "accord"
+    ],
+    "confusable_words": [
+      "disagreement"
+    ]
+  },
+  {
+    "word": "agriculture",
+    "phonetic": "/ˈæɡrɪkʌltʃə/",
+    "pos": "n.",
+    "meaning_cn": "农业",
+    "frequency_rank": 36,
+    "example": "Agriculture is vital to the economy.",
+    "cet_level": "CET4",
+    "collocations": [
+      "agriculture industry",
+      "modern agriculture"
+    ],
+    "synonyms": [
+      "farming",
+      "cultivation"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aim",
+    "phonetic": "/eɪm/",
+    "pos": "n./v.",
+    "meaning_cn": "目标；瞄准；旨在",
+    "frequency_rank": 37,
+    "example": "The program aims to reduce poverty.",
+    "cet_level": "CET4",
+    "collocations": [
+      "aim at",
+      "aim to",
+      "take aim"
+    ],
+    "synonyms": [
+      "goal",
+      "target",
+      "objective",
+      "purpose"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "alcohol",
+    "phonetic": "/ˈælkəhɒl/",
+    "pos": "n.",
+    "meaning_cn": "酒精；酒",
+    "frequency_rank": 38,
+    "example": "The driver had consumed alcohol.",
+    "cet_level": "CET4",
+    "collocations": [
+      "alcohol abuse",
+      "alcohol consumption"
+    ],
+    "synonyms": [
+      "liquor",
+      "spirits"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "alert",
+    "phonetic": "/əˈlɜːt/",
+    "pos": "adj./v.",
+    "meaning_cn": "警觉的；提醒",
+    "frequency_rank": 39,
+    "example": "The alarm alerted everyone to the danger.",
+    "cet_level": "CET4",
+    "collocations": [
+      "on alert",
+      "stay alert",
+      "alert to"
+    ],
+    "synonyms": [
+      "warn",
+      "notify",
+      "vigilant"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "allow",
+    "phonetic": "/əˈlaʊ/",
+    "pos": "v.",
+    "meaning_cn": "允许；准许",
+    "frequency_rank": 40,
+    "example": "Smoking is not allowed in this building.",
+    "cet_level": "CET4",
+    "collocations": [
+      "allow for",
+      "allow to",
+      "be allowed to"
+    ],
+    "synonyms": [
+      "permit",
+      "let",
+      "authorize"
+    ],
+    "confusable_words": [
+      "forbid"
+    ]
+  }
+]
