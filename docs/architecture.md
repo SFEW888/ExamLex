@@ -23,12 +23,12 @@ flowchart TD
 
 ```mermaid
 flowchart LR
-    Intake["1. Validate learner profile"] --> Plan["2. Generate constrained daily plan"]
-    Plan --> Practice["3. Practice vocabulary, listening, reading, translation, writing"]
-    Practice --> Record["4. Record practice and tag errors"]
-    Record --> Summary["5. Summarize repeated errors"]
-    Summary --> Ability["6. Update ability profile"]
-    Ability --> Review["7. Weekly review or trend analysis"]
+    Intake["1. Validate profile (CET4/6/TEM4/8/PG)"] --> Vocab["2. Estimate vocabulary (optional)"]
+    Vocab --> Plan["3. Generate plan + vocab pool + spaced review"]
+    Plan --> Practice["4. Timed practice + error tagging"]
+    Practice --> Record["5. Summarize errors + review urgency + speed analysis"]
+    Record --> Ability["6. Update ability profile + analyze trends"]
+    Ability --> Review["7. Visualize progress (HTML report)"]
     Review --> Plan
 ```
 
@@ -36,8 +36,12 @@ flowchart LR
 
 - `skills/english-exam-ai-tutor/SKILL.md`: portable Skill entry point.
 - `skills/learning-planner/`, `skills/grammar-corrector/`, and the other shortcut directories: lightweight Agent Skill entry points for direct scenario calls.
-- `skills/english-exam-ai-tutor/references/`: public-safe policy, workflow, data model, exam profiles, assistant roster, and error taxonomy.
-- `skills/english-exam-ai-tutor/assets/`: templates and JSON schemas.
+- `skills/english-exam-ai-tutor/references/`: public-safe policy, workflow, data model, exam profiles, assistant roster, error taxonomy, Darwin rubric, multi-source distillation.
+- `skills/english-exam-ai-tutor/assets/`: templates, JSON schemas (8 schemas total), vocabulary pools, test word lists, common error patterns, sample essays.
+- `skills/english-exam-ai-tutor/scripts/`: deterministic automation scripts — profile validation, vocabulary estimation, daily planning (with vocab pool + spaced repetition), practice recording (with timed mode), error summarization (with review urgency + speed analysis), ability update, trend analysis, writing versioning/scoring, strategy ingestion/validation, backup/restore (with incremental and verification), progress visualization.
+- `skills/english-exam-ai-tutor/assets/data/vocabulary/`: 650 built-in vocabulary entries across CET4/6/PG/TEM4/TEM8.
+- `skills/english-exam-ai-tutor/assets/data/common-errors/`: 22 common error patterns for Chinese learners across 5 modules.
+- `skills/english-exam-ai-tutor/assets/data/sample-essays/`: model essays with rubric scores and structural annotations.
 - `skills/english-exam-ai-tutor/scripts/`: portable script entry points.
 - `skills/english_exam_ai_tutor/scripts/`: importable script mirror validated by hash.
 - `scripts/`: repository validator and platform installers.

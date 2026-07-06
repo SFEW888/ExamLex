@@ -80,6 +80,29 @@ Use these in Agent chat instead of long Python commands:
 | Scenario dialogue | `/scenario-dialog` |
 | Cultural context | `/culture-guide` |
 
+## Supported Exams
+
+This tutor supports five exam types:
+
+| Exam | Target Bands | Unique Modules |
+|------|-------------|----------------|
+| CET-4 | 425~499, 500~550, 550+, 600+ | — |
+| CET-6 | 425~499, 500~550, 550+, 600+ | — |
+| Postgraduate | 50+, 70~80, 80+, 90+ | — |
+| TEM-4 | 60~69, 70~79, 80+ | dictation, language-knowledge |
+| TEM-8 | 60~69, 70~79, 80+ | proofreading |
+
+## New Features
+
+- **Vocabulary Estimation**: `tutor vocab --interactive` — Yes/No sampling with false-alarm correction
+- **Timed Practice**: `tutor log --timed` — auto time-limit lookup + overtime tracking
+- **Spaced Repetition**: automatic review urgency scoring in error summaries
+- **Progress Visualization**: `tutor report` — standalone HTML with SVG radar/trend/error charts
+- **Vocabulary Pool**: built-in 650 words across 5 exam levels
+- **Common Error Library**: 22 curated error patterns with examples
+- **Model Essay Library**: scored sample essays for rubric anchoring
+- **Incremental Backup**: `tutor backup --incremental` with integrity verification
+
 ## Run The Optional CLI
 
 Use these wrappers when you want to run the deterministic tools directly from a terminal:
