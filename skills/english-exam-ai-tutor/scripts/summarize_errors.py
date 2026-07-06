@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime
 import json
 from pathlib import Path
 from typing import Any
@@ -11,11 +12,12 @@ except ImportError:  # pragma: no cover - supports direct script execution.
     import common  # type: ignore[no-redef]
 
 
-def summarize_errors(ledger_path: str | Path) -> dict[str, Any]:
+def summarize_errors(ledger_path: str | Path, window_days: int = 30) -> dict[str, Any]:
     ledger = common.load_data(ledger_path)
     if not isinstance(ledger, list):
         raise ValueError("ledger must contain a list of practice records")
 
+    today = datetime.date.today()
     total_records = len(ledger)
     total_error_tags = sum(
         len(record.get("error_tags", []))
@@ -44,6 +46,12 @@ def summarize_errors(ledger_path: str | Path) -> dict[str, Any]:
             _add(summary["by_tag"], tag, total_error_tags, module=dimension, dimension=ability)
             _add(summary["by_module"], dimension, total_error_tags)
             _add(summary["by_dimension"], ability, total_error_tags)
+
+    # Spaced repetition: compute review urgency for each error tag
+    for tag in list(summary["by_tag"].keys()):
+        last_date, urgency = compute_review_urgency(tag, ledger, today, window_days)
+        summary["by_tag"][tag]["last_practice_date"] = last_date
+        summary["by_tag"][tag]["review_urgency"] = urgency
 
     # Speed analysis: aggregate timed practice records
     timed_records = [r for r in ledger if isinstance(r, dict) and r.get("timed")]
@@ -86,13 +94,62 @@ def _add(bucket: dict[str, Any], key: str, total_error_tags: int, **extra: str) 
     entry["percentage"] = round(entry["count"] / total_error_tags, 2) if total_error_tags else 0.0
 
 
+def compute_review_urgency(
+    tag: str,
+    ledger: list[dict],
+    today: datetime.date | None = None,
+    window_days: int = 30,
+) -> tuple[str | None, float]:
+    """Compute review urgency for an error tag.
+
+    Uses base severity weight from common.ERROR_SEVERITY_WEIGHTS,
+    days since last occurrence, and recent error frequency.
+    Returns (last_practice_date_iso, urgency_0_to_1).
+    """
+    if today is None:
+        today = datetime.date.today()
+
+    tagged = [r for r in ledger if isinstance(r, dict) and tag in r.get("error_tags", [])]
+    if not tagged:
+        return (None, 0.0)
+
+    # Last occurrence date
+    dates = []
+    for r in tagged:
+        try:
+            dates.append(datetime.date.fromisoformat(str(r["date"])))
+        except (ValueError, KeyError):
+            continue
+    if not dates:
+        return (None, 0.0)
+
+    last_date = max(dates)
+    days_since = max(0, (today - last_date).days)
+
+    # Recent frequency within window
+    recent_count = sum(1 for d in dates if (today - d).days <= window_days)
+    total_records_in_window = sum(
+        1 for r in ledger
+        if isinstance(r, dict)
+        and (today - datetime.date.fromisoformat(str(r.get("date", today.isoformat())))).days <= window_days
+    )
+    error_freq = recent_count / total_records_in_window if total_records_in_window > 0 else 0.0
+
+    base_weight = common.ERROR_SEVERITY_WEIGHTS.get(tag, 0.5)
+    urgency = base_weight * (days_since / 7.0) * (error_freq + 0.1)
+    urgency = min(urgency, 1.0)
+
+    return (last_date.isoformat(), round(urgency, 3))
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Summarize practice ledger error tags.")
     parser.add_argument("--ledger", required=True, help="Path to the practice ledger.")
     parser.add_argument("--output", help="Optional output JSON path.")
+    parser.add_argument("--days", type=int, default=30, help="Review window in days (default: 30).")
     args = parser.parse_args(argv)
 
-    summary = summarize_errors(args.ledger)
+    summary = summarize_errors(args.ledger, window_days=args.days)
     if args.output:
         common.save_data(args.output, summary)
     else:

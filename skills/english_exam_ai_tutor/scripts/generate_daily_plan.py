@@ -66,6 +66,41 @@ def generate_daily_plan(
         )
         remaining -= minutes
 
+    # Spaced repetition: add review tasks for urgent error tags
+    review_urgent: list[dict[str, Any]] = []
+    REVIEW_URGENCY_THRESHOLD = 0.5
+    if error_summary and isinstance(error_summary.get("by_tag"), dict):
+        for tag, tag_data in error_summary["by_tag"].items():
+            if not isinstance(tag_data, dict):
+                continue
+            urgency = tag_data.get("review_urgency", 0)
+            if isinstance(urgency, (int, float)) and urgency > REVIEW_URGENCY_THRESHOLD:
+                module_node = common.ERROR_TAG_TO_ABILITY.get(tag)
+                if module_node:
+                    module, node = module_node
+                    last_date = tag_data.get("last_practice_date", "")
+                    review_urgent.append({
+                        "module": module,
+                        "focus": node,
+                        "tag": tag,
+                        "urgency": urgency,
+                        "last_practice_date": last_date,
+                    })
+    # Sort by urgency descending
+    review_urgent.sort(key=lambda r: r["urgency"], reverse=True)
+    # Add up to 2 review tasks
+    for review in review_urgent[:2]:
+        if remaining < MIN_TASK_MINUTES:
+            break
+        minutes = min(15, remaining)
+        tasks.append({
+            "module": review["module"],
+            "focus": review["focus"],
+            "minutes": minutes,
+            "reason": f"spaced review (urgency: {review['urgency']:.2f})",
+        })
+        remaining -= minutes
+
     if not tasks and remaining > 0:
         exam = profile.get("exam_type", "")
         fallback_module = _module_order_for(str(exam))[0]

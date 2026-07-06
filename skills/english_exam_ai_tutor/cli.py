@@ -18,6 +18,7 @@ from .scripts import (
     update_ability_profile,
     validate_strategy,
     validate_profile,
+    visualize,
 )
 from .scripts.cli_extract import main as extract_main
 from .scripts.cli_validate import main as validate_main
@@ -61,6 +62,7 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
     "check-deps": ("Check external tool dependencies.", _check_deps_main),
     "ops-check": ("Run 13-point operational readiness check.", ops_main),
     "vocab-estimate": ("Estimate vocabulary size via Yes/No sampling.", estimate_vocabulary.main),
+    "visualize": ("Generate HTML progress report with SVG charts.", visualize.main),
 }
 
 

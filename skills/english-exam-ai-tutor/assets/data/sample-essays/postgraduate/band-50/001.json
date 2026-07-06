@@ -1,0 +1,23 @@
+{
+  "sample_id": "PG-writing-050-001",
+  "exam_type": "POSTGRADUATE_ENGLISH",
+  "module": "writing",
+  "topic": "Environmental Protection (Picture Composition)",
+  "band": "50-69",
+  "prompt": "Directions: Write an essay of 160-200 words based on the following picture. In your essay you should 1) describe the picture briefly, 2) interpret its intended meaning, and 3) give your comments.",
+  "essay_text": "The picture depicts a striking contrast between two scenes. On the left, a barren hillside is covered with tree stumps, and a bird is flying away with no place to rest. On the right, the same hillside is shown in the future, transformed into a lush green forest where birds return and children play happily. The caption reads: \"What we do today determines tomorrow.\"\n\nThe message conveyed by this picture is thought-provoking. It highlights the critical importance of environmental protection and the long-term consequences of our actions today. The barren hillside represents the devastating effects of deforestation and environmental degradation, while the restored forest symbolizes hope and the possibility of recovery through conscious effort. The picture reminds us that nature has the capacity to heal, but only if we take responsible actions now.\n\nIn my view, this issue deserves urgent attention from both individuals and governments. On a personal level, we can reduce our carbon footprint by using public transportation and minimizing waste. At the societal level, stricter environmental regulations should be enforced, and investment in renewable energy must be prioritized. Ultimately, as the caption suggests, our future is shaped by the choices we make today. Let us choose wisely for the sake of generations to come.",
+  "word_count": 191,
+  "rubric_scores": {
+    "task_completion": 7,
+    "structure_logic": 7,
+    "language_accuracy": 6,
+    "expression_richness": 7,
+    "total": 27,
+    "max": 40
+  },
+  "annotations": [
+    {"highlight": "striking contrast between two scenes", "comment": "图画描述准确，快速建立对比框架", "dimension": "task_completion"},
+    {"highlight": "The message conveyed by this picture is thought-provoking", "comment": "自然过渡到寓意解读", "dimension": "structure_logic"},
+    {"highlight": "Let us choose wisely for the sake of generations to come", "comment": "号召式结尾有力，与图片标题呼应", "dimension": "expression_richness"}
+  ]
+}

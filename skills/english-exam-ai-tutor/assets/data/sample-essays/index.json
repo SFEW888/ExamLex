@@ -1,0 +1,23 @@
+{
+  "cet4": {
+    "path": "cet4/index.json",
+    "exam_type": "CET4",
+    "total_samples": 3,
+    "bands": ["band-425"],
+    "description": "四级写作范文，涵盖常见议论文和书信题型"
+  },
+  "cet6": {
+    "path": "cet6/index.json",
+    "exam_type": "CET6",
+    "total_samples": 3,
+    "bands": ["band-425"],
+    "description": "六级写作范文，难度较四级有明显提升"
+  },
+  "postgraduate": {
+    "path": "postgraduate/index.json",
+    "exam_type": "POSTGRADUATE_ENGLISH",
+    "total_samples": 3,
+    "bands": ["band-50"],
+    "description": "考研英语写作范文，含图画作文和图表作文"
+  }
+}

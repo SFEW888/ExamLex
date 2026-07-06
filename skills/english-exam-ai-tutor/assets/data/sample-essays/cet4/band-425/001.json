@@ -1,0 +1,25 @@
+{
+  "sample_id": "CET4-writing-425-001",
+  "exam_type": "CET4",
+  "module": "writing",
+  "topic": "Online Learning",
+  "band": "425-499",
+  "prompt": "Directions: Write a short essay on the topic of online learning. You should state the advantages and give your opinion. You should write at least 120 words but no more than 180 words.",
+  "essay_text": "Nowadays, online learning has become more and more popular. Many people choose to learn on the internet instead of traditional classroom. There are both advantages and problems.\n\nFirst, online learning is very convenient. We can learn at any time and any place. We don't need to go to school, so we can save a lot of time. Second, there are many resources online. We can find videos, articles, and courses from all over the world. This makes learning more interesting.\n\nHowever, online learning also have some problems. Some students may not have good self-control. They may play games instead of study. Also, staring at screen for long time is bad for our eyes.\n\nIn my opinion, online learning is a good tool, but we should use it wisely. Schools should combine online and offline learning together. I believe this is the best way for students.",
+  "word_count": 143,
+  "rubric_scores": {
+    "task_completion": 6,
+    "structure_logic": 6,
+    "language_accuracy": 5,
+    "expression_richness": 5,
+    "total": 22,
+    "max": 40
+  },
+  "annotations": [
+    {"highlight": "instead of traditional classroom", "comment": "缺少冠词 → instead of the traditional classroom", "dimension": "language_accuracy"},
+    {"highlight": "online learning also have some problems", "comment": "主谓不一致：online learning (单数) → has", "dimension": "language_accuracy"},
+    {"highlight": "instead of study", "comment": "介词后应用动名词 → instead of studying", "dimension": "language_accuracy"},
+    {"highlight": "staring at screen for long time", "comment": "冠词遗漏 → staring at a screen for a long time", "dimension": "language_accuracy"},
+    {"highlight": "combine online and offline learning together", "comment": "combine...together 冗余 → combine A and B", "dimension": "expression_richness"}
+  ]
+}

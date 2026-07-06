@@ -1,0 +1,23 @@
+{
+  "sample_id": "CET6-writing-425-001",
+  "exam_type": "CET6",
+  "module": "writing",
+  "topic": "Balancing Work and Leisure",
+  "band": "425-499",
+  "prompt": "Directions: Write an essay on the importance of balancing work and leisure. Give reasons and examples to support your view. You should write at least 150 words but no more than 200 words.",
+  "essay_text": "In modern society, people are busier than ever before. Many individuals find themselves overwhelmed by work and have little time for relaxation. Finding a balance between work and leisure is essential for both physical and mental well-being.\n\nTo begin with, excessive work without adequate rest can lead to burnout. When people work continuously without taking breaks, their productivity actually decreases over time. Moreover, chronic stress from overwork may result in serious health problems such as insomnia and depression. Therefore, taking time off work is not a luxury but a necessity.\n\nFurthermore, engaging in leisure activities can enhance creativity. When we step away from our desks and participate in hobbies or sports, our minds are free to explore new ideas. Many great innovations have emerged during moments of relaxation rather than during intense work sessions.\n\nIn conclusion, I firmly believe that a well-balanced lifestyle is crucial. Companies should encourage employees to take regular breaks, and individuals should view leisure not as wasted time, but as an investment in their long-term health and productivity. Only by striking this balance can we truly thrive.",
+  "word_count": 178,
+  "rubric_scores": {
+    "task_completion": 7,
+    "structure_logic": 7,
+    "language_accuracy": 6,
+    "expression_richness": 6,
+    "total": 26,
+    "max": 40
+  },
+  "annotations": [
+    {"highlight": "such as insomnia and depression", "comment": "举例恰当，增加了论证的具体性", "dimension": "task_completion"},
+    {"highlight": "not a luxury but a necessity", "comment": "对比结构使用得当", "dimension": "expression_richness"},
+    {"highlight": "Only by striking this balance can we truly thrive", "comment": "倒装句式使用正确，提升了结尾力度", "dimension": "structure_logic"}
+  ]
+}
