@@ -417,5 +417,1697 @@
       "aggravate",
       "exacerbate"
     ]
+  },
+  {
+    "word": "ambivalent",
+    "phonetic": "/æmˈbɪvələnt/",
+    "pos": "adj.",
+    "meaning_cn": "矛盾的；摇摆不定的",
+    "frequency_rank": 21,
+    "example": "She felt ambivalent about the job offer.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "ambivalent about",
+      "ambivalent feelings"
+    ],
+    "synonyms": [
+      "uncertain",
+      "conflicted",
+      "torn"
+    ],
+    "confusable_words": [
+      "certain"
+    ]
+  },
+  {
+    "word": "ameliorate",
+    "phonetic": "/əˈmiːliəreɪt/",
+    "pos": "v.",
+    "meaning_cn": "改善；改良",
+    "frequency_rank": 22,
+    "example": "Steps were taken to ameliorate conditions.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "ameliorate the situation",
+      "ameliorate suffering"
+    ],
+    "synonyms": [
+      "improve",
+      "better",
+      "alleviate"
+    ],
+    "confusable_words": [
+      "worsen"
+    ]
+  },
+  {
+    "word": "anecdote",
+    "phonetic": "/ˈænɪkdəʊt/",
+    "pos": "n.",
+    "meaning_cn": "轶事；趣闻",
+    "frequency_rank": 23,
+    "example": "He told an amusing anecdote about his travels.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "tell an anecdote",
+      "personal anecdote"
+    ],
+    "synonyms": [
+      "story",
+      "tale",
+      "account"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "animosity",
+    "phonetic": "/ˌænɪˈmɒsəti/",
+    "pos": "n.",
+    "meaning_cn": "敌意；仇恨",
+    "frequency_rank": 24,
+    "example": "There was open animosity between the rivals.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "animosity towards",
+      "personal animosity"
+    ],
+    "synonyms": [
+      "hostility",
+      "hatred",
+      "antagonism"
+    ],
+    "confusable_words": [
+      "friendship"
+    ]
+  },
+  {
+    "word": "antagonize",
+    "phonetic": "/ænˈtæɡənaɪz/",
+    "pos": "v.",
+    "meaning_cn": "使对抗；激怒",
+    "frequency_rank": 25,
+    "example": "Don't antagonize your colleagues.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "antagonize others",
+      "deliberately antagonize"
+    ],
+    "synonyms": [
+      "provoke",
+      "irritate",
+      "alienate"
+    ],
+    "confusable_words": [
+      "pacify"
+    ]
+  },
+  {
+    "word": "antipathy",
+    "phonetic": "/ænˈtɪpəθi/",
+    "pos": "n.",
+    "meaning_cn": "反感；厌恶",
+    "frequency_rank": 26,
+    "example": "She has a deep antipathy to violence.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "antipathy towards",
+      "mutual antipathy"
+    ],
+    "synonyms": [
+      "aversion",
+      "dislike",
+      "hostility"
+    ],
+    "confusable_words": [
+      "sympathy"
+    ]
+  },
+  {
+    "word": "apathetic",
+    "phonetic": "/ˌæpəˈθetɪk/",
+    "pos": "adj.",
+    "meaning_cn": "冷漠的；无动于衷的",
+    "frequency_rank": 27,
+    "example": "Voters are increasingly apathetic.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "apathetic about",
+      "apathetic attitude"
+    ],
+    "synonyms": [
+      "indifferent",
+      "uninterested",
+      "passive"
+    ],
+    "confusable_words": [
+      "enthusiastic"
+    ]
+  },
+  {
+    "word": "apprehension",
+    "phonetic": "/ˌæprɪˈhenʃn/",
+    "pos": "n.",
+    "meaning_cn": "忧虑；担心；理解",
+    "frequency_rank": 28,
+    "example": "She waited with some apprehension.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "with apprehension",
+      "feel apprehension"
+    ],
+    "synonyms": [
+      "anxiety",
+      "worry",
+      "understanding"
+    ],
+    "confusable_words": [
+      "calm"
+    ]
+  },
+  {
+    "word": "arduous",
+    "phonetic": "/ˈɑːdjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "艰巨的；费力的",
+    "frequency_rank": 29,
+    "example": "The journey through the mountains was arduous.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "arduous task",
+      "arduous journey"
+    ],
+    "synonyms": [
+      "difficult",
+      "strenuous",
+      "laborious"
+    ],
+    "confusable_words": [
+      "easy"
+    ]
+  },
+  {
+    "word": "articulate",
+    "phonetic": "/ɑːˈtɪkjuleɪt/",
+    "pos": "v./adj.",
+    "meaning_cn": "清楚表达；口齿清晰的",
+    "frequency_rank": 30,
+    "example": "She articulated the group's concerns.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "articulate clearly",
+      "highly articulate"
+    ],
+    "synonyms": [
+      "express",
+      "voice",
+      "eloquent"
+    ],
+    "confusable_words": [
+      "mumble"
+    ]
+  },
+  {
+    "word": "audacious",
+    "phonetic": "/ɔːˈdeɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "大胆的；无畏的",
+    "frequency_rank": 31,
+    "example": "It was an audacious plan to rob the bank.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "audacious plan",
+      "audacious move"
+    ],
+    "synonyms": [
+      "bold",
+      "daring",
+      "brave"
+    ],
+    "confusable_words": [
+      "cautious",
+      "timid"
+    ]
+  },
+  {
+    "word": "auspicious",
+    "phonetic": "/ɔːˈspɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "吉利的；有前途的",
+    "frequency_rank": 32,
+    "example": "It was an auspicious start to the project.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "auspicious beginning",
+      "auspicious occasion"
+    ],
+    "synonyms": [
+      "favorable",
+      "promising",
+      "lucky"
+    ],
+    "confusable_words": [
+      "ominous"
+    ]
+  },
+  {
+    "word": "benevolent",
+    "phonetic": "/bəˈnevələnt/",
+    "pos": "adj.",
+    "meaning_cn": "仁慈的；慈善的",
+    "frequency_rank": 33,
+    "example": "A benevolent donor funded the scholarship.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "benevolent fund",
+      "benevolent dictator"
+    ],
+    "synonyms": [
+      "kind",
+      "charitable",
+      "generous"
+    ],
+    "confusable_words": [
+      "malevolent"
+    ]
+  },
+  {
+    "word": "bilingual",
+    "phonetic": "/baɪˈlɪŋɡwəl/",
+    "pos": "adj.",
+    "meaning_cn": "双语的",
+    "frequency_rank": 34,
+    "example": "She grew up in a bilingual household.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "bilingual education",
+      "fully bilingual"
+    ],
+    "synonyms": [
+      "two-language",
+      "multilingual"
+    ],
+    "confusable_words": [
+      "monolingual"
+    ]
+  },
+  {
+    "word": "bombastic",
+    "phonetic": "/bɒmˈbæstɪk/",
+    "pos": "adj.",
+    "meaning_cn": "夸大的；浮夸的",
+    "frequency_rank": 35,
+    "example": "The speech was bombastic and empty.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "bombastic language",
+      "bombastic style"
+    ],
+    "synonyms": [
+      "pompous",
+      "grandiose",
+      "pretentious"
+    ],
+    "confusable_words": [
+      "humble",
+      "simple"
+    ]
+  },
+  {
+    "word": "brevity",
+    "phonetic": "/ˈbrevəti/",
+    "pos": "n.",
+    "meaning_cn": "简短；简洁",
+    "frequency_rank": 36,
+    "example": "The brevity of his speech was appreciated.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "brevity of life",
+      "for brevity"
+    ],
+    "synonyms": [
+      "conciseness",
+      "shortness",
+      "succinctness"
+    ],
+    "confusable_words": [
+      "lengthiness"
+    ]
+  },
+  {
+    "word": "candid",
+    "phonetic": "/ˈkændɪd/",
+    "pos": "adj.",
+    "meaning_cn": "坦率的；公正的",
+    "frequency_rank": 37,
+    "example": "Let me be candid about the risks.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "candid opinion",
+      "candid camera"
+    ],
+    "synonyms": [
+      "frank",
+      "honest",
+      "open"
+    ],
+    "confusable_words": [
+      "evasive",
+      "secretive"
+    ]
+  },
+  {
+    "word": "capricious",
+    "phonetic": "/kəˈprɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "反复无常的；任性的",
+    "frequency_rank": 38,
+    "example": "The weather in spring is notoriously capricious.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "capricious nature",
+      "capricious weather"
+    ],
+    "synonyms": [
+      "unpredictable",
+      "fickle",
+      "changeable"
+    ],
+    "confusable_words": [
+      "steady",
+      "consistent"
+    ]
+  },
+  {
+    "word": "censure",
+    "phonetic": "/ˈsenʃə/",
+    "pos": "v./n.",
+    "meaning_cn": "谴责；斥责",
+    "frequency_rank": 39,
+    "example": "The senator was censured for misconduct.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "censure for",
+      "vote of censure"
+    ],
+    "synonyms": [
+      "condemn",
+      "criticize",
+      "reprimand"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "circumspect",
+    "phonetic": "/ˈsɜːkəmspekt/",
+    "pos": "adj.",
+    "meaning_cn": "谨慎的；小心的",
+    "frequency_rank": 40,
+    "example": "She was circumspect about revealing details.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "circumspect about",
+      "be circumspect"
+    ],
+    "synonyms": [
+      "cautious",
+      "prudent",
+      "wary"
+    ],
+    "confusable_words": [
+      "reckless"
+    ]
+  },
+  {
+    "word": "clandestine",
+    "phonetic": "/klænˈdestɪn/",
+    "pos": "adj.",
+    "meaning_cn": "秘密的；暗中的",
+    "frequency_rank": 41,
+    "example": "They held a clandestine meeting at midnight.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "clandestine operation",
+      "clandestine affair"
+    ],
+    "synonyms": [
+      "secret",
+      "covert",
+      "surreptitious"
+    ],
+    "confusable_words": [
+      "open"
+    ]
+  },
+  {
+    "word": "coercion",
+    "phonetic": "/kəʊˈɜːʃn/",
+    "pos": "n.",
+    "meaning_cn": "强制；胁迫",
+    "frequency_rank": 42,
+    "example": "He signed the confession under coercion.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "under coercion",
+      "use coercion"
+    ],
+    "synonyms": [
+      "force",
+      "compulsion",
+      "pressure"
+    ],
+    "confusable_words": [
+      "freedom"
+    ]
+  },
+  {
+    "word": "coherent",
+    "phonetic": "/kəʊˈhɪərənt/",
+    "pos": "adj.",
+    "meaning_cn": "连贯的；一致的",
+    "frequency_rank": 43,
+    "example": "He gave a coherent account of the events.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "coherent argument",
+      "coherent strategy"
+    ],
+    "synonyms": [
+      "logical",
+      "consistent",
+      "clear"
+    ],
+    "confusable_words": [
+      "incoherent"
+    ]
+  },
+  {
+    "word": "commendable",
+    "phonetic": "/kəˈmendəbl/",
+    "pos": "adj.",
+    "meaning_cn": "值得赞扬的",
+    "frequency_rank": 44,
+    "example": "Their efforts are truly commendable.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "commendable effort",
+      "highly commendable"
+    ],
+    "synonyms": [
+      "praiseworthy",
+      "admirable",
+      "laudable"
+    ],
+    "confusable_words": [
+      "deplorable"
+    ]
+  },
+  {
+    "word": "complacency",
+    "phonetic": "/kəmˈpleɪsnsi/",
+    "pos": "n.",
+    "meaning_cn": "自满；自得",
+    "frequency_rank": 45,
+    "example": "Complacency is the enemy of progress.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "breed complacency",
+      "avoid complacency"
+    ],
+    "synonyms": [
+      "smugness",
+      "self-satisfaction"
+    ],
+    "confusable_words": [
+      "vigilance"
+    ]
+  },
+  {
+    "word": "conciliatory",
+    "phonetic": "/kənˈsɪliətəri/",
+    "pos": "adj.",
+    "meaning_cn": "安抚的；和解的",
+    "frequency_rank": 46,
+    "example": "The president made a conciliatory gesture.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "conciliatory tone",
+      "conciliatory approach"
+    ],
+    "synonyms": [
+      "peacemaking",
+      "appeasing",
+      "reconciling"
+    ],
+    "confusable_words": [
+      "hostile",
+      "aggressive"
+    ]
+  },
+  {
+    "word": "conjecture",
+    "phonetic": "/kənˈdʒektʃə/",
+    "pos": "n./v.",
+    "meaning_cn": "推测；猜测",
+    "frequency_rank": 47,
+    "example": "That's pure conjecture without evidence.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "based on conjecture",
+      "mere conjecture"
+    ],
+    "synonyms": [
+      "speculation",
+      "guess",
+      "supposition"
+    ],
+    "confusable_words": [
+      "fact"
+    ]
+  },
+  {
+    "word": "conscientious",
+    "phonetic": "/ˌkɒnʃiˈenʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "认真负责的",
+    "frequency_rank": 48,
+    "example": "She is a conscientious and reliable employee.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "conscientious objector",
+      "conscientious about"
+    ],
+    "synonyms": [
+      "diligent",
+      "careful",
+      "thorough"
+    ],
+    "confusable_words": [
+      "negligent"
+    ]
+  },
+  {
+    "word": "conspicuous",
+    "phonetic": "/kənˈspɪkjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "显眼的；引人注目的",
+    "frequency_rank": 49,
+    "example": "He was conspicuous by his absence.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "conspicuous consumption",
+      "conspicuous by absence"
+    ],
+    "synonyms": [
+      "noticeable",
+      "prominent",
+      "obvious"
+    ],
+    "confusable_words": [
+      "inconspicuous"
+    ]
+  },
+  {
+    "word": "contempt",
+    "phonetic": "/kənˈtempt/",
+    "pos": "n.",
+    "meaning_cn": "轻蔑；蔑视",
+    "frequency_rank": 50,
+    "example": "She looked at him with contempt.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "contempt for",
+      "contempt of court",
+      "hold in contempt"
+    ],
+    "synonyms": [
+      "scorn",
+      "disdain",
+      "disrespect"
+    ],
+    "confusable_words": [
+      "respect",
+      "admiration"
+    ]
+  },
+  {
+    "word": "contentious",
+    "phonetic": "/kənˈtenʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "有争议的；好争论的",
+    "frequency_rank": 51,
+    "example": "The issue of immigration is highly contentious.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "contentious issue",
+      "contentious debate"
+    ],
+    "synonyms": [
+      "controversial",
+      "disputed",
+      "argumentative"
+    ],
+    "confusable_words": [
+      "uncontroversial"
+    ]
+  },
+  {
+    "word": "cordial",
+    "phonetic": "/ˈkɔːdiəl/",
+    "pos": "adj.",
+    "meaning_cn": "热情的；友好的",
+    "frequency_rank": 52,
+    "example": "The meeting took place in a cordial atmosphere.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "cordial relationship",
+      "cordial welcome"
+    ],
+    "synonyms": [
+      "warm",
+      "friendly",
+      "hearty"
+    ],
+    "confusable_words": [
+      "cold",
+      "hostile"
+    ]
+  },
+  {
+    "word": "credulous",
+    "phonetic": "/ˈkredʒələs/",
+    "pos": "adj.",
+    "meaning_cn": "轻信的；易上当的",
+    "frequency_rank": 53,
+    "example": "Only a credulous person would believe that.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "credulous audience",
+      "credulous acceptance"
+    ],
+    "synonyms": [
+      "gullible",
+      "trusting",
+      "naive"
+    ],
+    "confusable_words": [
+      "skeptical"
+    ]
+  },
+  {
+    "word": "cursory",
+    "phonetic": "/ˈkɜːsəri/",
+    "pos": "adj.",
+    "meaning_cn": "粗略的；草率的",
+    "frequency_rank": 54,
+    "example": "He gave the document only a cursory glance.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "cursory examination",
+      "cursory glance"
+    ],
+    "synonyms": [
+      "superficial",
+      "brief",
+      "hasty"
+    ],
+    "confusable_words": [
+      "thorough",
+      "detailed"
+    ]
+  },
+  {
+    "word": "debilitate",
+    "phonetic": "/dɪˈbɪlɪteɪt/",
+    "pos": "v.",
+    "meaning_cn": "使虚弱；削弱",
+    "frequency_rank": 55,
+    "example": "The disease debilitated him for months.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "debilitate by",
+      "debilitating effects"
+    ],
+    "synonyms": [
+      "weaken",
+      "enfeeble",
+      "exhaust"
+    ],
+    "confusable_words": [
+      "strengthen"
+    ]
+  },
+  {
+    "word": "decorum",
+    "phonetic": "/dɪˈkɔːrəm/",
+    "pos": "n.",
+    "meaning_cn": "礼仪；得体",
+    "frequency_rank": 56,
+    "example": "Please observe proper decorum in court.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "maintain decorum",
+      "sense of decorum"
+    ],
+    "synonyms": [
+      "propriety",
+      "etiquette",
+      "politeness"
+    ],
+    "confusable_words": [
+      "impropriety"
+    ]
+  },
+  {
+    "word": "defamation",
+    "phonetic": "/ˌdefəˈmeɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "诽谤；中伤",
+    "frequency_rank": 57,
+    "example": "He sued the newspaper for defamation.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "defamation lawsuit",
+      "defamation of character"
+    ],
+    "synonyms": [
+      "slander",
+      "libel",
+      "calumny"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "deferential",
+    "phonetic": "/ˌdefəˈrenʃl/",
+    "pos": "adj.",
+    "meaning_cn": "恭敬的；顺从的",
+    "frequency_rank": 58,
+    "example": "The junior staff were deferential to the boss.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "deferential to",
+      "deferential attitude"
+    ],
+    "synonyms": [
+      "respectful",
+      "submissive",
+      "polite"
+    ],
+    "confusable_words": [
+      "disrespectful"
+    ]
+  },
+  {
+    "word": "deft",
+    "phonetic": "/deft/",
+    "pos": "adj.",
+    "meaning_cn": "灵巧的；熟练的",
+    "frequency_rank": 59,
+    "example": "She handled the situation with deft diplomacy.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "deft touch",
+      "deft handling"
+    ],
+    "synonyms": [
+      "skillful",
+      "adept",
+      "dexterous"
+    ],
+    "confusable_words": [
+      "clumsy"
+    ]
+  },
+  {
+    "word": "deleterious",
+    "phonetic": "/ˌdeləˈtɪəriəs/",
+    "pos": "adj.",
+    "meaning_cn": "有害的",
+    "frequency_rank": 60,
+    "example": "The chemical has deleterious effects on health.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "deleterious effect",
+      "deleterious to"
+    ],
+    "synonyms": [
+      "harmful",
+      "damaging",
+      "detrimental"
+    ],
+    "confusable_words": [
+      "beneficial"
+    ]
+  },
+  {
+    "word": "delineate",
+    "phonetic": "/dɪˈlɪnieɪt/",
+    "pos": "v.",
+    "meaning_cn": "描绘；勾勒",
+    "frequency_rank": 61,
+    "example": "The report delineates the key challenges.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "clearly delineate",
+      "delineate the boundaries"
+    ],
+    "synonyms": [
+      "describe",
+      "outline",
+      "define"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "demure",
+    "phonetic": "/dɪˈmjʊə/",
+    "pos": "adj.",
+    "meaning_cn": "娴静的；端庄的",
+    "frequency_rank": 62,
+    "example": "She sat in the corner, demure and quiet.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "demure smile",
+      "demure manner"
+    ],
+    "synonyms": [
+      "modest",
+      "reserved",
+      "shy"
+    ],
+    "confusable_words": [
+      "bold",
+      "outgoing"
+    ]
+  },
+  {
+    "word": "denigrate",
+    "phonetic": "/ˈdenɪɡreɪt/",
+    "pos": "v.",
+    "meaning_cn": "诋毁；贬低",
+    "frequency_rank": 63,
+    "example": "You shouldn't denigrate their achievements.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "denigrate others",
+      "constantly denigrate"
+    ],
+    "synonyms": [
+      "belittle",
+      "disparage",
+      "defame"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "deprecate",
+    "phonetic": "/ˈdeprəkeɪt/",
+    "pos": "v.",
+    "meaning_cn": "反对；不赞成",
+    "frequency_rank": 64,
+    "example": "I strongly deprecate such behavior.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "deprecate the use",
+      "self-deprecating humor"
+    ],
+    "synonyms": [
+      "disapprove",
+      "condemn",
+      "criticize"
+    ],
+    "confusable_words": [
+      "approve"
+    ]
+  },
+  {
+    "word": "despondent",
+    "phonetic": "/dɪˈspɒndənt/",
+    "pos": "adj.",
+    "meaning_cn": "沮丧的；失望的",
+    "frequency_rank": 65,
+    "example": "He was despondent after the job rejection.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "despondent about",
+      "feel despondent"
+    ],
+    "synonyms": [
+      "depressed",
+      "hopeless",
+      "dejected"
+    ],
+    "confusable_words": [
+      "hopeful",
+      "optimistic"
+    ]
+  },
+  {
+    "word": "diatribe",
+    "phonetic": "/ˈdaɪətraɪb/",
+    "pos": "n.",
+    "meaning_cn": "抨击；谴责",
+    "frequency_rank": 66,
+    "example": "The speech was a diatribe against corruption.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "diatribe against",
+      "lengthy diatribe"
+    ],
+    "synonyms": [
+      "tirade",
+      "denunciation",
+      "attack"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "dichotomy",
+    "phonetic": "/daɪˈkɒtəmi/",
+    "pos": "n.",
+    "meaning_cn": "二分法；对立",
+    "frequency_rank": 67,
+    "example": "There's a false dichotomy between work and play.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "false dichotomy",
+      "dichotomy between"
+    ],
+    "synonyms": [
+      "division",
+      "split",
+      "duality"
+    ],
+    "confusable_words": [
+      "unity"
+    ]
+  },
+  {
+    "word": "dilatory",
+    "phonetic": "/ˈdɪlətəri/",
+    "pos": "adj.",
+    "meaning_cn": "拖延的；缓慢的",
+    "frequency_rank": 68,
+    "example": "The committee's dilatory tactics frustrated everyone.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "dilatory tactics",
+      "dilatory response"
+    ],
+    "synonyms": [
+      "slow",
+      "delaying",
+      "procrastinating"
+    ],
+    "confusable_words": [
+      "prompt"
+    ]
+  },
+  {
+    "word": "disdain",
+    "phonetic": "/dɪsˈdeɪn/",
+    "pos": "n./v.",
+    "meaning_cn": "蔑视；鄙弃",
+    "frequency_rank": 69,
+    "example": "He treated the suggestion with disdain.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "with disdain",
+      "disdain for"
+    ],
+    "synonyms": [
+      "contempt",
+      "scorn",
+      "disrespect"
+    ],
+    "confusable_words": [
+      "respect",
+      "admiration"
+    ]
+  },
+  {
+    "word": "disingenuous",
+    "phonetic": "/ˌdɪsɪnˈdʒenjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "不真诚的；虚伪的",
+    "frequency_rank": 70,
+    "example": "His apology seemed disingenuous.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "disingenuous argument",
+      "being disingenuous"
+    ],
+    "synonyms": [
+      "insincere",
+      "dishonest",
+      "deceitful"
+    ],
+    "confusable_words": [
+      "sincere",
+      "honest"
+    ]
+  },
+  {
+    "word": "disseminate",
+    "phonetic": "/dɪˈsemɪneɪt/",
+    "pos": "v.",
+    "meaning_cn": "传播；散布",
+    "frequency_rank": 71,
+    "example": "The organization disseminates health information.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "disseminate information",
+      "widely disseminated"
+    ],
+    "synonyms": [
+      "spread",
+      "circulate",
+      "distribute"
+    ],
+    "confusable_words": [
+      "suppress"
+    ]
+  },
+  {
+    "word": "dogmatic",
+    "phonetic": "/dɒɡˈmætɪk/",
+    "pos": "adj.",
+    "meaning_cn": "教条的；武断的",
+    "frequency_rank": 72,
+    "example": "He has a dogmatic approach to teaching.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "dogmatic belief",
+      "dogmatic assertion"
+    ],
+    "synonyms": [
+      "opinionated",
+      "rigid",
+      "authoritarian"
+    ],
+    "confusable_words": [
+      "open-minded"
+    ]
+  },
+  {
+    "word": "ebullient",
+    "phonetic": "/ɪˈbʌliənt/",
+    "pos": "adj.",
+    "meaning_cn": "热情洋溢的；兴高采烈的",
+    "frequency_rank": 73,
+    "example": "She was in an ebullient mood after the victory.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "ebullient personality",
+      "ebullient mood"
+    ],
+    "synonyms": [
+      "enthusiastic",
+      "exuberant",
+      "lively"
+    ],
+    "confusable_words": [
+      "gloomy"
+    ]
+  },
+  {
+    "word": "efficacious",
+    "phonetic": "/ˌefɪˈkeɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "有效的；灵验的",
+    "frequency_rank": 74,
+    "example": "The treatment proved highly efficacious.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "efficacious remedy",
+      "highly efficacious"
+    ],
+    "synonyms": [
+      "effective",
+      "potent",
+      "powerful"
+    ],
+    "confusable_words": [
+      "ineffective"
+    ]
+  },
+  {
+    "word": "egregious",
+    "phonetic": "/ɪˈɡriːdʒiəs/",
+    "pos": "adj.",
+    "meaning_cn": "极端恶劣的；惊人的",
+    "frequency_rank": 75,
+    "example": "This is an egregious violation of human rights.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "egregious error",
+      "egregious example"
+    ],
+    "synonyms": [
+      "shocking",
+      "outrageous",
+      "flagrant"
+    ],
+    "confusable_words": [
+      "minor"
+    ]
+  },
+  {
+    "word": "elucidate",
+    "phonetic": "/ɪˈluːsɪdeɪt/",
+    "pos": "v.",
+    "meaning_cn": "阐明；解释",
+    "frequency_rank": 76,
+    "example": "Can you elucidate what you mean by that?",
+    "cet_level": "TEM4",
+    "collocations": [
+      "elucidate further",
+      "elucidate the point"
+    ],
+    "synonyms": [
+      "clarify",
+      "explain",
+      "illuminate"
+    ],
+    "confusable_words": [
+      "obscure"
+    ]
+  },
+  {
+    "word": "emulate",
+    "phonetic": "/ˈemjuleɪt/",
+    "pos": "v.",
+    "meaning_cn": "模仿；效仿",
+    "frequency_rank": 77,
+    "example": "Many artists tried to emulate his style.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "emulate the example",
+      "try to emulate"
+    ],
+    "synonyms": [
+      "imitate",
+      "copy",
+      "follow"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "enervate",
+    "phonetic": "/ˈenəveɪt/",
+    "pos": "v.",
+    "meaning_cn": "使衰弱；使无力",
+    "frequency_rank": 78,
+    "example": "The heat enervated the hikers.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "enervating heat",
+      "feel enervated"
+    ],
+    "synonyms": [
+      "weaken",
+      "exhaust",
+      "drain"
+    ],
+    "confusable_words": [
+      "energize"
+    ]
+  },
+  {
+    "word": "enigmatic",
+    "phonetic": "/ˌenɪɡˈmætɪk/",
+    "pos": "adj.",
+    "meaning_cn": "神秘的；难解的",
+    "frequency_rank": 79,
+    "example": "The Mona Lisa's smile is famously enigmatic.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "enigmatic figure",
+      "enigmatic smile"
+    ],
+    "synonyms": [
+      "mysterious",
+      "puzzling",
+      "cryptic"
+    ],
+    "confusable_words": [
+      "clear",
+      "obvious"
+    ]
+  },
+  {
+    "word": "ephemeral",
+    "phonetic": "/ɪˈfemərəl/",
+    "pos": "adj.",
+    "meaning_cn": "短暂的；朝生暮死的",
+    "frequency_rank": 80,
+    "example": "Internet fame is often ephemeral.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "ephemeral nature",
+      "ephemeral beauty"
+    ],
+    "synonyms": [
+      "fleeting",
+      "transient",
+      "temporary"
+    ],
+    "confusable_words": [
+      "permanent",
+      "lasting"
+    ]
+  },
+  {
+    "word": "equanimity",
+    "phonetic": "/ˌekwəˈnɪməti/",
+    "pos": "n.",
+    "meaning_cn": "平静；镇定",
+    "frequency_rank": 81,
+    "example": "She accepted the news with equanimity.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "with equanimity",
+      "maintain equanimity"
+    ],
+    "synonyms": [
+      "composure",
+      "calmness",
+      "poise"
+    ],
+    "confusable_words": [
+      "anxiety"
+    ]
+  },
+  {
+    "word": "equivocal",
+    "phonetic": "/ɪˈkwɪvəkl/",
+    "pos": "adj.",
+    "meaning_cn": "模棱两可的；含糊的",
+    "frequency_rank": 82,
+    "example": "The results were equivocal and inconclusive.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "equivocal statement",
+      "equivocal response"
+    ],
+    "synonyms": [
+      "ambiguous",
+      "vague",
+      "unclear"
+    ],
+    "confusable_words": [
+      "unequivocal"
+    ]
+  },
+  {
+    "word": "erudite",
+    "phonetic": "/ˈerudaɪt/",
+    "pos": "adj.",
+    "meaning_cn": "博学的；有学问的",
+    "frequency_rank": 83,
+    "example": "The professor's lectures were erudite and witty.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "erudite scholar",
+      "erudite discussion"
+    ],
+    "synonyms": [
+      "learned",
+      "scholarly",
+      "knowledgeable"
+    ],
+    "confusable_words": [
+      "ignorant"
+    ]
+  },
+  {
+    "word": "esoteric",
+    "phonetic": "/ˌesəˈterɪk/",
+    "pos": "adj.",
+    "meaning_cn": "深奥的；秘传的",
+    "frequency_rank": 84,
+    "example": "The subject is too esoteric for a general audience.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "esoteric knowledge",
+      "esoteric subject"
+    ],
+    "synonyms": [
+      "obscure",
+      "arcane",
+      "specialized"
+    ],
+    "confusable_words": [
+      "common",
+      "popular"
+    ]
+  },
+  {
+    "word": "euphemism",
+    "phonetic": "/ˈjuːfəmɪzəm/",
+    "pos": "n.",
+    "meaning_cn": "委婉语",
+    "frequency_rank": 85,
+    "example": "'Passed away' is a euphemism for 'died'.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "use a euphemism",
+      "polite euphemism"
+    ],
+    "synonyms": [
+      "understatement",
+      "polite term",
+      "circumlocution"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "exacerbate",
+    "phonetic": "/ɪɡˈzæsəbeɪt/",
+    "pos": "v.",
+    "meaning_cn": "使恶化；加剧",
+    "frequency_rank": 86,
+    "example": "The drought exacerbated the food crisis.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "exacerbate the problem",
+      "exacerbate symptoms"
+    ],
+    "synonyms": [
+      "worsen",
+      "aggravate",
+      "intensify"
+    ],
+    "confusable_words": [
+      "alleviate"
+    ]
+  },
+  {
+    "word": "exonerate",
+    "phonetic": "/ɪɡˈzɒnəreɪt/",
+    "pos": "v.",
+    "meaning_cn": "免除责任；证明无罪",
+    "frequency_rank": 87,
+    "example": "New evidence exonerated the defendant.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "exonerate from",
+      "completely exonerate"
+    ],
+    "synonyms": [
+      "clear",
+      "absolve",
+      "acquit"
+    ],
+    "confusable_words": [
+      "convict",
+      "blame"
+    ]
+  },
+  {
+    "word": "expedite",
+    "phonetic": "/ˈekspədaɪt/",
+    "pos": "v.",
+    "meaning_cn": "加快；促进",
+    "frequency_rank": 88,
+    "example": "We need to expedite the delivery process.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "expedite the process",
+      "expedite matters"
+    ],
+    "synonyms": [
+      "speed up",
+      "accelerate",
+      "hasten"
+    ],
+    "confusable_words": [
+      "delay"
+    ]
+  },
+  {
+    "word": "facetious",
+    "phonetic": "/fəˈsiːʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "开玩笑的；轻浮的",
+    "frequency_rank": 89,
+    "example": "He made a facetious remark about the situation.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "facetious comment",
+      "being facetious"
+    ],
+    "synonyms": [
+      "joking",
+      "witty",
+      "flippant"
+    ],
+    "confusable_words": [
+      "serious"
+    ]
+  },
+  {
+    "word": "fallacious",
+    "phonetic": "/fəˈleɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "谬误的；错误的",
+    "frequency_rank": 90,
+    "example": "The argument is based on fallacious reasoning.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "fallacious argument",
+      "fallacious assumption"
+    ],
+    "synonyms": [
+      "false",
+      "incorrect",
+      "misleading"
+    ],
+    "confusable_words": [
+      "valid",
+      "sound"
+    ]
+  },
+  {
+    "word": "fastidious",
+    "phonetic": "/fæˈstɪdiəs/",
+    "pos": "adj.",
+    "meaning_cn": "挑剔的；讲究的",
+    "frequency_rank": 91,
+    "example": "He was fastidious about his appearance.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "fastidious about",
+      "fastidious attention"
+    ],
+    "synonyms": [
+      "fussy",
+      "particular",
+      "meticulous"
+    ],
+    "confusable_words": [
+      "careless"
+    ]
+  },
+  {
+    "word": "fervent",
+    "phonetic": "/ˈfɜːvənt/",
+    "pos": "adj.",
+    "meaning_cn": "热情的；热烈的",
+    "frequency_rank": 92,
+    "example": "She is a fervent supporter of human rights.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "fervent hope",
+      "fervent supporter"
+    ],
+    "synonyms": [
+      "passionate",
+      "ardent",
+      "enthusiastic"
+    ],
+    "confusable_words": [
+      "indifferent"
+    ]
+  },
+  {
+    "word": "frugal",
+    "phonetic": "/ˈfruːɡl/",
+    "pos": "adj.",
+    "meaning_cn": "节俭的；节约的",
+    "frequency_rank": 93,
+    "example": "They lived a frugal life in retirement.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "frugal lifestyle",
+      "be frugal with"
+    ],
+    "synonyms": [
+      "thrifty",
+      "economical",
+      "sparing"
+    ],
+    "confusable_words": [
+      "wasteful",
+      "extravagant"
+    ]
+  },
+  {
+    "word": "garrulous",
+    "phonetic": "/ˈɡærələs/",
+    "pos": "adj.",
+    "meaning_cn": "喋喋不休的；多嘴的",
+    "frequency_rank": 94,
+    "example": "The garrulous old man told endless stories.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "garrulous companion",
+      "garrulous nature"
+    ],
+    "synonyms": [
+      "talkative",
+      "loquacious",
+      "chatty"
+    ],
+    "confusable_words": [
+      "taciturn",
+      "silent"
+    ]
+  },
+  {
+    "word": "gratuitous",
+    "phonetic": "/ɡrəˈtjuːɪtəs/",
+    "pos": "adj.",
+    "meaning_cn": "无理由的；免费的",
+    "frequency_rank": 95,
+    "example": "The violence in the film seemed gratuitous.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "gratuitous violence",
+      "gratuitous insult"
+    ],
+    "synonyms": [
+      "unnecessary",
+      "unjustified",
+      "free"
+    ],
+    "confusable_words": [
+      "justified"
+    ]
+  },
+  {
+    "word": "gregarious",
+    "phonetic": "/ɡrɪˈɡeəriəs/",
+    "pos": "adj.",
+    "meaning_cn": "爱社交的；群居的",
+    "frequency_rank": 96,
+    "example": "She is a gregarious person who loves parties.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "gregarious nature",
+      "gregarious personality"
+    ],
+    "synonyms": [
+      "sociable",
+      "outgoing",
+      "friendly"
+    ],
+    "confusable_words": [
+      "solitary"
+    ]
+  },
+  {
+    "word": "hackneyed",
+    "phonetic": "/ˈhæknid/",
+    "pos": "adj.",
+    "meaning_cn": "陈腐的；老套的",
+    "frequency_rank": 97,
+    "example": "The plot was full of hackneyed cliches.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "hackneyed phrase",
+      "hackneyed expression"
+    ],
+    "synonyms": [
+      "clichéd",
+      "banal",
+      "trite"
+    ],
+    "confusable_words": [
+      "original",
+      "fresh"
+    ]
+  },
+  {
+    "word": "hapless",
+    "phonetic": "/ˈhæpləs/",
+    "pos": "adj.",
+    "meaning_cn": "不幸的；倒霉的",
+    "frequency_rank": 98,
+    "example": "The hapless victim lost all his savings.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "hapless victim",
+      "hapless situation"
+    ],
+    "synonyms": [
+      "unfortunate",
+      "unlucky",
+      "wretched"
+    ],
+    "confusable_words": [
+      "lucky",
+      "fortunate"
+    ]
+  },
+  {
+    "word": "iconoclast",
+    "phonetic": "/aɪˈkɒnəklæst/",
+    "pos": "n.",
+    "meaning_cn": "打破传统者",
+    "frequency_rank": 99,
+    "example": "He was known as an iconoclast in his field.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "cultural iconoclast",
+      "iconoclast thinker"
+    ],
+    "synonyms": [
+      "rebel",
+      "nonconformist",
+      "maverick"
+    ],
+    "confusable_words": [
+      "conformist"
+    ]
+  },
+  {
+    "word": "ignominious",
+    "phonetic": "/ˌɪɡnəˈmɪniəs/",
+    "pos": "adj.",
+    "meaning_cn": "可耻的；不光彩的",
+    "frequency_rank": 100,
+    "example": "The team suffered an ignominious defeat.",
+    "cet_level": "TEM4",
+    "collocations": [
+      "ignominious defeat",
+      "ignominious retreat"
+    ],
+    "synonyms": [
+      "shameful",
+      "disgraceful",
+      "humiliating"
+    ],
+    "confusable_words": [
+      "glorious"
+    ]
   }
 ]

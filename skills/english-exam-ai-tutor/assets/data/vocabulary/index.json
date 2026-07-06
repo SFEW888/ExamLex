@@ -1,7 +1,7 @@
 {
   "cet4-core-2000": {
     "path": "cet4-core-2000.json",
-    "count": 40,
+    "count": 200,
     "exam_types": [
       "CET4"
     ],
@@ -10,7 +10,7 @@
   },
   "cet6-core-1500": {
     "path": "cet6-core-1500.json",
-    "count": 20,
+    "count": 150,
     "exam_types": [
       "CET6"
     ],
@@ -19,7 +19,7 @@
   },
   "postgraduate-core-1000": {
     "path": "postgraduate-core-1000.json",
-    "count": 20,
+    "count": 100,
     "exam_types": [
       "POSTGRADUATE_ENGLISH"
     ],
@@ -28,7 +28,7 @@
   },
   "tem4-core-2000": {
     "path": "tem4-core-2000.json",
-    "count": 20,
+    "count": 100,
     "exam_types": [
       "TEM4"
     ],
@@ -37,7 +37,7 @@
   },
   "tem8-core-2000": {
     "path": "tem8-core-2000.json",
-    "count": 20,
+    "count": 100,
     "exam_types": [
       "TEM8"
     ],

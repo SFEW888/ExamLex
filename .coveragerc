@@ -1,0 +1,21 @@
+[run]
+source = skills/english_exam_ai_tutor
+branch = true
+omit =
+    tests/*
+    */__init__.py
+    skills/english_exam_ai_tutor/scripts/vocab_data.py
+    skills/english_exam_ai_tutor/cli.py
+
+[report]
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    raise SystemExit
+show_missing = true
+precision = 2
+
+[html]
+directory = htmlcov

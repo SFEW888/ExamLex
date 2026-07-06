@@ -317,38 +317,48 @@ _WORDS_TEM8 = [
 
 # ── Level configuration ────────────────────────────────────────────────────
 
+# Try to import expanded word data
+try:
+    from .vocab_data import (
+        CET4_WORDS, CET6_WORDS, POSTGRAD_WORDS, TEM4_WORDS, TEM8_WORDS,
+    )
+except ImportError:
+    from vocab_data import (  # type: ignore[no-redef]
+        CET4_WORDS, CET6_WORDS, POSTGRAD_WORDS, TEM4_WORDS, TEM8_WORDS,
+    )
+
 LEVEL_CONFIG = {
     "CET4": {
         "filename": "cet4-core-2000.json",
-        "words": _WORDS_CET4,
+        "words": _WORDS_CET4 + CET4_WORDS,
         "exam_types": ["CET4"],
         "description": "四级高频核心词汇，按真题出现频率降序排列",
         "source": "基于 CET-4 历年真题词频统计（public domain 数据源）",
     },
     "CET6": {
         "filename": "cet6-core-1500.json",
-        "words": _WORDS_CET6,
+        "words": _WORDS_CET6 + CET6_WORDS,
         "exam_types": ["CET6"],
         "description": "六级增量高频词汇，假设用户已掌握四级词表",
         "source": "基于 CET-6 历年真题词频统计",
     },
     "POSTGRADUATE": {
         "filename": "postgraduate-core-1000.json",
-        "words": _WORDS_POSTGRAD,
+        "words": _WORDS_POSTGRAD + POSTGRAD_WORDS,
         "exam_types": ["POSTGRADUATE_ENGLISH"],
         "description": "考研英语增量高频词汇",
         "source": "基于考研英语(一/二)历年真题词频统计",
     },
     "TEM4": {
         "filename": "tem4-core-2000.json",
-        "words": _WORDS_TEM4,
+        "words": _WORDS_TEM4 + TEM4_WORDS,
         "exam_types": ["TEM4"],
         "description": "英语专业四级高频词汇",
         "source": "基于 TEM-4 历年真题词频统计",
     },
     "TEM8": {
         "filename": "tem8-core-2000.json",
-        "words": _WORDS_TEM8,
+        "words": _WORDS_TEM8 + TEM8_WORDS,
         "exam_types": ["TEM8"],
         "description": "英语专业八级高频进阶词汇",
         "source": "基于 TEM-8 历年真题词频统计",
