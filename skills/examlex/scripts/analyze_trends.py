@@ -20,6 +20,7 @@ def analyze_trends(
     history: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     module_series: dict[str, list[float]] = {}
+    strategy_series: dict[str, list[float]] = {}
 
     for record in ledger or []:
         module = record.get("module")
@@ -34,7 +35,21 @@ def analyze_trends(
         # Reject inconsistent records: an accuracy ratio must stay within [0, 1].
         if correct_items < 0 or correct_items > total_items:
             continue
-        module_series.setdefault(module, []).append(correct_items / total_items)
+        accuracy = correct_items / total_items
+        module_series.setdefault(module, []).append(accuracy)
+        revisions = record.get("strategy_revisions", [])
+        if not isinstance(revisions, list):
+            continue
+        for revision in revisions:
+            if not isinstance(revision, dict):
+                continue
+            strategy_id = revision.get("strategy_id")
+            revision_sha256 = revision.get("revision_sha256")
+            if not isinstance(strategy_id, str) or not strategy_id:
+                continue
+            if not isinstance(revision_sha256, str) or len(revision_sha256) != 64:
+                continue
+            strategy_series.setdefault(strategy_id, []).append(accuracy)
 
     for snapshot in history or []:
         modules = snapshot.get("modules") if isinstance(snapshot, dict) else None
@@ -49,6 +64,10 @@ def analyze_trends(
                 module_series.setdefault(module, []).append(sum(numeric) / len(numeric))
 
     summaries = {module: _summarize_series(values) for module, values in sorted(module_series.items())}
+    strategy_summaries = {
+        strategy_id: {**_summarize_series(values), "usage_records": len(values)}
+        for strategy_id, values in sorted(strategy_series.items())
+    }
     return {
         "label": "trend_analysis",
         "inputs": {
@@ -56,6 +75,7 @@ def analyze_trends(
             "history_snapshots": len(history or []),
         },
         "modules": summaries,
+        "strategies": strategy_summaries,
     }
 
 

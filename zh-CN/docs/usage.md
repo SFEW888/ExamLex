@@ -21,7 +21,7 @@ python -m examlex validate-profile --profile examples\sample-learner-profile.yam
 ## 3. 生成每日计划
 
 ```powershell
-python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
+python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --strategies strategy-library.json --output daily-plan.json
 ```
 
 如果暂时没有错误统计，第一次计划可以省略 `--errors`。
@@ -29,7 +29,7 @@ python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ab
 当 `summarize-errors` 生成 `error-summary.json` 后，把它输入下一次计划：
 
 ```powershell
-python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --errors error-summary.json --output daily-plan.next.json
+python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --strategies strategy-library.json --errors error-summary.json --output daily-plan.next.json
 ```
 
 ## 4. 每日闭环
@@ -38,6 +38,12 @@ python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ab
 
 ```powershell
 python -m examlex record-practice --ledger practice-ledger.json --date 2026-07-05 --exam-type CET6 --module reading --task-id reading-long-sentence-01 --duration-minutes 25 --total-items 12 --correct-items 8 --error-tags READING_LONG_SENTENCE_FAIL READING_PARAPHRASE_FAIL --print-record
+```
+
+如需把练习结果归因到日计划中的策略修订版本，使用日计划文件和任务索引：
+
+```powershell
+python -m examlex record-practice --ledger practice-ledger.json --plan daily-plan.next.json --plan-task-index 0 --date 2026-07-05 --exam-type CET6 --module reading --task-id reading-long-sentence-01 --duration-minutes 25 --total-items 12 --correct-items 8
 ```
 
 统计练习记录中的错误：
@@ -55,7 +61,7 @@ python -m examlex update-ability --ability examples\sample-ability-profile.yaml 
 用更新后的证据生成明天计划：
 
 ```powershell
-python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ability ability-profile.next.json --errors error-summary.json --output daily-plan.next.json
+python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ability ability-profile.next.json --strategies strategy-library.json --errors error-summary.json --output daily-plan.next.json
 ```
 
 ## 5. 作文闭环
@@ -83,6 +89,15 @@ python -m examlex summarize-errors --ledger practice-ledger.json --output weekly
 python -m examlex analyze-trends --ledger practice-ledger.json --history ability-history.json --output weekly-trends.json
 ```
 
+## 备份与恢复
+
+创建备份后，保存命令输出中的 `checksum_sha256` 到备份目录之外。恢复时必须提供该值，避免被同时篡改的归档与内部清单通过校验：
+
+```powershell
+python -m examlex backup --data-dir .\data --output backup.tar.gz
+python -m examlex restore --data-dir .\data --input backup.tar.gz --expected-checksum <创建时返回的checksum_sha256>
+```
+
 可以使用 `skills\examlex\assets\templates\weekly-review.md` 编写面向学习者的复盘。复盘应基于已完成任务、重复错误标签和能力变化。
 
 ## 可选：安装短命令
@@ -92,5 +107,5 @@ python -m examlex analyze-trends --ledger practice-ledger.json --history ability
 ```powershell
 python -m pip install -e .
 examlex validate-profile --profile examples\sample-learner-profile.yaml
-examlex daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --output daily-plan.json
+examlex daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --strategies strategy-library.json --output daily-plan.json
 ```

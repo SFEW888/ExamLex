@@ -70,6 +70,7 @@ examlex commit --artifacts-dir <path> --library strategy-library.json
 - Combines structure + effect scores → total Darwin score (max 100)
 - Ratchet check: score must improve or baseline
 - Atomic write with auto-backup (.bak)
+- Stores SHA-256 evidence for the exact validation and evaluation reports used for approval.
 - Commit requires passing format and structure validation plus an evaluation result for every strategy.
 - Strategies below 70 are rejected and remain drafts; only approved strategies are eligible for learner plans.
 - Score < 70 → triggers hill-climb optimization (max 3 rounds)
@@ -96,6 +97,8 @@ Each strategy entry in `strategy-library.json` carries full provenance:
   "source_url": "VIDEO_URL",
   "darwin_score": 80.0,
   "score_history": [{"version": 1, "score": 80.0, "status": "baseline"}],
+  "revisions": [{"version": 1, "sha256": "...", "strategy": {"strategy_id": "cet4-reading-ab12cd-001"}}],
+  "approval_evidence": {"validation_sha256": "...", "evaluation_sha256": "...", "approved_at": "2026-07-10T00:00:00+00:00"},
   "related_strategies": [{"strategy_id": "...", "relation": "complements"}],
   "ria_structure": {"r_reading": "...", "e_execution": ["1.", "2."], "b_boundary": "..."}
 }

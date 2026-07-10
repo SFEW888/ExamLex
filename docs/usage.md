@@ -44,7 +44,8 @@ The Agent may run the internal CLI after the Skill has interpreted the task. Hum
 ```powershell
 # Core workflow
 python -m examlex validate-profile --profile learner-profile.json
-python -m examlex daily-plan --profile learner-profile.json --ability ability-profile.json --vocab-pool vocab.json --output daily-plan.json
+python -m examlex daily-plan --profile learner-profile.json --ability ability-profile.json --strategies strategy-library.json --vocab-pool vocab.json --output daily-plan.json
+python -m examlex record-practice --ledger practice-ledger.json --plan daily-plan.json --plan-task-index 0 --date 2026-07-06 --exam-type CET4 --module reading --task-id t1 --duration-minutes 30 --total-items 20 --correct-items 14
 python -m examlex record-practice --ledger practice-ledger.json --date 2026-07-06 --exam-type CET4 --module reading --task-id t1 --duration-minutes 30 --total-items 20 --correct-items 14 --timed --time-limit-minutes 35
 python -m examlex summarize-errors --ledger practice-ledger.json --output error-summary.json --days 30
 python -m examlex update-ability --ability ability-profile.json --ledger practice-ledger.json
@@ -60,7 +61,9 @@ python -m examlex visualize --ability-history ability-history.json --ledger prac
 # Data management
 python -m examlex backup --data-dir ./data --output backup.tar.gz
 python -m examlex backup --list backup.tar.gz
-python -m examlex restore --data-dir ./data --input backup.tar.gz
+python -m examlex restore --data-dir ./data --input backup.tar.gz --expected-checksum <checksum_sha256_returned_by_backup>
 ```
+
+`backup` writes a companion `backup.tar.gz.sha256` file for routine integrity checks. Keep the returned checksum outside the backup directory and supply it to `restore`; this binds restoration to the archive you created rather than a rewritten archive and manifest.
 
 Generated local files such as plans, ledgers, `.env`, and private prompt assets should stay untracked.

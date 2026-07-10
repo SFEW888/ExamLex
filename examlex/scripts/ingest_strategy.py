@@ -35,6 +35,7 @@ def ingest_strategy(
     source = Path(file_path)
     if not source.is_file():
         raise FileNotFoundError(f"strategy source file not found: {source}")
+    raw_source = source.read_bytes()
     text = source.read_text(encoding="utf-8").lstrip("﻿")
     chosen_exam_types = exam_types if exam_types else common.DEFAULT_EXAM_TYPES
     chosen_modules = modules if modules else sorted(common.ABILITY_TREE.keys())
@@ -93,6 +94,12 @@ def ingest_strategy(
         "steps": steps,
         "tags": [],
         "lifecycle_status": "draft",
+        "source_provenance": {
+            "source_file": source.name,
+            "source_url": source_url,
+            "sha256": hashlib.sha256(raw_source).hexdigest(),
+            "captured_at": dt.datetime.now(dt.timezone.utc).isoformat(),
+        },
     }
     if source_url:
         strategy["source_url"] = source_url

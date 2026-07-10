@@ -1,6 +1,10 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
+import json
+import re
+from datetime import date
 from typing import Any
 
 try:
@@ -15,6 +19,7 @@ TEM_MODULE_ORDER = (
     "listening", "reading", "writing", "translation", "vocabulary",
     "language-knowledge", "proofreading", "dictation",
 )
+_SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
 
 
 def _module_order_for(exam_type: str) -> tuple[str, ...]:
@@ -139,19 +144,24 @@ def generate_daily_plan(
             for task in tasks:
                 module = task.get("module", "")
                 focus = task.get("focus", "")
-                matches = [
-                    s for s in strategy_list
-                    if isinstance(s, dict)
-                    and s.get("lifecycle_status") == "approved"
-                    and isinstance(s.get("modules"), list) and module in s["modules"]
-                    and isinstance(s.get("exam_types"), list) and exam_type in s["exam_types"]
-                ]
+                matches = []
+                for strategy in strategy_list:
+                    revision_sha256 = _latest_revision_sha256(strategy)
+                    if (
+                        isinstance(strategy, dict)
+                        and revision_sha256 is not None
+                        and strategy.get("lifecycle_status") == "approved"
+                        and isinstance(strategy.get("modules"), list) and module in strategy["modules"]
+                        and isinstance(strategy.get("exam_types"), list) and exam_type in strategy["exam_types"]
+                    ):
+                        matches.append((strategy, revision_sha256))
                 # Sort by Darwin score descending, then take top 3
-                matches.sort(key=lambda s: s.get("darwin_score", 0.0), reverse=True)
+                matches.sort(key=lambda item: item[0].get("darwin_score", 0.0), reverse=True)
                 if matches:
                     task["strategy_hints"] = [
                         {
                             "strategy_id": s.get("strategy_id"),
+                            "revision_sha256": revision_sha256,
                             "title": s.get("title"),
                             "darwin_score": s.get("darwin_score"),
                             "source_type": s.get("source_type", "text"),
@@ -161,16 +171,38 @@ def generate_daily_plan(
                             "execution_steps": ((s.get("ria_structure") or {}).get("e_execution", []) or
                                                 s.get("steps", [])),
                         }
-                        for s in matches[:3]
+                        for s, revision_sha256 in matches[:3]
                     ]
 
     return {
+        "plan_id": f"{profile.get('learner_id', 'learner')}-{date.today().isoformat()}",
         "learner_id": profile.get("learner_id"),
         "exam_type": profile.get("exam_type"),
         "daily_time_budget_minutes": budget,
         "total_planned_minutes": sum(task["minutes"] for task in tasks),
         "tasks": tasks,
     }
+
+
+def _latest_revision_sha256(strategy: Any) -> str | None:
+    if not isinstance(strategy, dict):
+        return None
+    revisions = strategy.get("revisions")
+    if not isinstance(revisions, list) or not revisions:
+        return None
+    revision = revisions[-1]
+    if not isinstance(revision, dict):
+        return None
+    digest = revision.get("sha256")
+    snapshot = revision.get("strategy")
+    if not isinstance(digest, str) or not _SHA256_RE.fullmatch(digest):
+        return None
+    if not isinstance(snapshot, dict) or snapshot.get("strategy_id") != strategy.get("strategy_id"):
+        return None
+    encoded = json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    if hashlib.sha256(encoded).hexdigest() != digest:
+        return None
+    return digest
 
 
 def _priority_error(error_summary: dict[str, Any] | None) -> str | None:

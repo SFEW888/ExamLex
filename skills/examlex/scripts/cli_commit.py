@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -36,6 +38,13 @@ def _load_json(path: Path, label: str) -> dict[str, Any]:
     if not isinstance(data, dict):
         raise ValueError(f"{label} must contain a JSON object")
     return data
+
+
+def _artifact_sha256(path: Path, label: str) -> str:
+    try:
+        return hashlib.sha256(path.read_bytes()).hexdigest()
+    except OSError as exc:
+        raise ValueError(f"{label} cannot be hashed: {exc}") from exc
 
 
 def _number(value: Any, field: str, strategy_id: str) -> float:
@@ -118,12 +127,19 @@ def main(argv: list[str] | None = None) -> int:
         if not all(isinstance(strategy, dict) for strategy in strategies):
             raise ValueError("distilled.json strategies must contain objects")
         cfg = TutorConfig()
+        validation_path = artifacts / "validation_report.json"
+        evaluation_path = artifacts / "evaluation.json"
         scores = _approval_scores(
             strategies,
-            _load_json(artifacts / "validation_report.json", "validation_report.json"),
-            _load_json(artifacts / "evaluation.json", "evaluation.json"),
+            _load_json(validation_path, "validation_report.json"),
+            _load_json(evaluation_path, "evaluation.json"),
             cfg.darwin_pass_score,
         )
+        approval_evidence = {
+            "validation_sha256": _artifact_sha256(validation_path, "validation_report.json"),
+            "evaluation_sha256": _artifact_sha256(evaluation_path, "evaluation.json"),
+            "approved_at": datetime.now(timezone.utc).isoformat(),
+        }
     except ValueError as exc:
         return _error(args, str(exc))
 
@@ -153,6 +169,7 @@ def main(argv: list[str] | None = None) -> int:
         approved = dict(strategy)
         approved["darwin_score"] = total
         approved["lifecycle_status"] = "approved"
+        approved["approval_evidence"] = approval_evidence
         ratchet.apply(approved, library, existing_strategy, total)
         committed.append({
             "strategy_id": strategy_id,

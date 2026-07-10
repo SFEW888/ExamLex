@@ -1,6 +1,7 @@
 """CI-discoverable end-to-end contract for continuous learning."""
 
 import filecmp
+import hashlib
 import json
 import tempfile
 import unittest
@@ -33,7 +34,20 @@ class ContinuousLearningEndToEndTests(unittest.TestCase):
                 "text", "book", "video", "podcast", "person", "course", "conversation",
             })
 
-            approved = {**draft, "lifecycle_status": "approved", "darwin_score": 80}
+            snapshot = {"strategy_id": draft["strategy_id"]}
+            revision_sha256 = hashlib.sha256(
+                json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+            ).hexdigest()
+            approved = {
+                **draft,
+                "lifecycle_status": "approved",
+                "darwin_score": 80,
+                "revisions": [{
+                    "version": 1,
+                    "sha256": revision_sha256,
+                    "strategy": snapshot,
+                }],
+            }
             plan = generate_daily_plan.generate_daily_plan(
                 {"learner_id": "learner", "exam_type": "CET4", "daily_time_budget_minutes": 20},
                 {"modules": {"reading": [{"node": "locating", "level": 1, "status": "priority"}]}},
@@ -41,6 +55,7 @@ class ContinuousLearningEndToEndTests(unittest.TestCase):
             )
             hints = [hint for task in plan["tasks"] for hint in task.get("strategy_hints", [])]
             self.assertEqual([hint["strategy_id"] for hint in hints], [approved["strategy_id"]])
+            self.assertEqual(hints[0]["revision_sha256"], revision_sha256)
 
     def test_schema_and_script_mirror_are_current(self):
         root = Path(__file__).resolve().parents[1]

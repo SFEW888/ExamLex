@@ -8,6 +8,7 @@ strategy versioning within strategy-library.json.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import os
 from dataclasses import dataclass, field
@@ -52,7 +53,17 @@ class StrategyRatchet:
             "delta": 0.0,
             "status": RatchetDecision.BASELINE.value,
         }]
+        s["revisions"] = [self._revision(s, 1)]
         return s
+
+    @staticmethod
+    def _revision(strategy: dict, version: int) -> dict:
+        """Capture a content-addressed, immutable strategy revision."""
+        snapshot = copy.deepcopy(strategy)
+        snapshot.pop("score_history", None)
+        snapshot.pop("revisions", None)
+        encoded = json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        return {"version": version, "sha256": hashlib.sha256(encoded).hexdigest(), "strategy": snapshot}
 
     def compare(self, old_strategy: dict, new_strategy: dict, new_score: float,
                 dimensions: dict | None = None) -> RatchetResult:
@@ -131,7 +142,7 @@ class StrategyRatchet:
                     "note": f"Attempted score {score}; reverted to v{len(history)}",
                 })
             else:
-                history = old_strategy.get("score_history", [])
+                history = copy.deepcopy(old_strategy.get("score_history", []))
                 next_version = len(history) + 1
                 history.append({
                     "version": next_version,
@@ -144,6 +155,11 @@ class StrategyRatchet:
                 updated = copy.deepcopy(new_strategy)
                 updated["darwin_score"] = score
                 updated["score_history"] = history
+                revisions = copy.deepcopy(old_strategy.get("revisions", []))
+                if not revisions:
+                    revisions.append(self._revision(old_strategy, max(1, next_version - 1)))
+                revisions.append(self._revision(updated, next_version))
+                updated["revisions"] = revisions
 
         # Replace in library
         strategies = library.setdefault("strategies", [])

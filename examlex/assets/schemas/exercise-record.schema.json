@@ -51,6 +51,22 @@
     },
     "next_action": {
       "type": "string"
+    },
+    "plan_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "strategy_revisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["strategy_id", "revision_sha256"],
+        "properties": {
+          "strategy_id": {"type": "string", "minLength": 1},
+          "revision_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+        },
+        "additionalProperties": false
+      }
     }
   }
 }

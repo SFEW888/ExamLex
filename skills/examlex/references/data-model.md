@@ -66,6 +66,8 @@ The ledger is a JSON list of records. Each record should include:
 
 Use `total_items` and `correct_items`. Do not use `total` or `correct`; scripts reject those names to prevent ambiguous accuracy calculations.
 
+When a daily plan assigns an approved strategy, store its immutable reference in `strategy_revisions`. Each item has a `strategy_id` and the revision's `revision_sha256`; `plan_id` records which plan assigned the work. `analyze_trends.py` uses these references to report strategy-level outcomes without attributing later practice to a rewritten method.
+
 ## Error Summary
 
 Produced by `scripts/summarize_errors.py`.
@@ -126,6 +128,10 @@ Required fields per strategy entry:
 - `content`: core method description (min 20 chars, max 5000)
 
 Optional fields:
+
+- `source_provenance`: captured source filename, optional URL, raw-source SHA-256, and UTC capture time.
+- `revisions`: immutable content-addressed snapshots (`version`, `sha256`, `strategy`). Practice records refer to the revision hash.
+- `approval_evidence`: SHA-256 values of the validation and evaluation reports plus the UTC approval time.
 
 - `lifecycle_status`: `draft`, `approved`, or `deprecated`; only `approved` strategies are eligible for daily plans.
 - `source_url`: original source URL (video link, book ISBN, person profile)
