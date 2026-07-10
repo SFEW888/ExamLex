@@ -17,6 +17,7 @@ local/
 *.local.yaml
 .obsidian/
 .task8-test-tmp/
+.worktrees/
 test-artifacts/
 sessions/
 _research/
