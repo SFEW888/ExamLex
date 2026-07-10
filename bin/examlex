@@ -1,0 +1,117 @@
+#!/usr/bin/env bash
+# ============================================================
+# examlex — ExamLex 统一命令行入口
+#
+# 用法: examlex <命令> [参数...]
+# 运行 examlex --help 查看所有命令
+# ============================================================
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+PYTHON_CMD="${EXAMLEX_PYTHON:-python}"
+CLI_ENTRY="examlex"
+
+# 颜色
+BOLD='\033[1m'
+CYAN='\033[0;36m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+RESET='\033[0m'
+
+show_help() {
+    cat << EOF
+${BOLD}英语考试 AI 助教 — 命令行工具${RESET}
+
+${BOLD}用法:${RESET}  examlex <命令> [参数...]
+
+${BOLD}📋 备考闭环（按工作流顺序）${RESET}
+  ${GREEN}check${RESET}    <档案>              校验学习者档案
+  ${GREEN}plan${RESET}    <档案> [选项]         生成每日计划
+  ${GREEN}log${RESET}     <台账> [选项]         记录练习数据
+  ${GREEN}tag${RESET}     <错误文本> [选项]      错误标签归因
+  ${GREEN}errors${RESET}  <台账> [选项]         汇总错误统计
+  ${GREEN}update${RESET}  <画像> <台账>         更新能力画像
+  ${GREEN}trends${RESET}  <台账> [选项]         分析练习趋势
+  ${GREEN}write${RESET}   <作文ID> [选项]       作文版本管理
+  ${GREEN}score${RESET}   <作文> [选项]         作文评分估算
+
+${BOLD}📥 知识管理${RESET}
+  ${GREEN}ingest${RESET}  <文件> [选项]         摄入策略到策略库
+  ${GREEN}strategies${RESET} [选项]             列出/搜索策略库
+
+${BOLD}💾 数据管理${RESET}
+  ${GREEN}backup${RESET}  <数据目录> [选项]      备份学习数据
+  ${GREEN}restore${RESET} <备份文件> <目录>      恢复学习数据
+  ${GREEN}report${RESET}  [选项]                生成进度可视化报告
+
+${BOLD}📊 词汇${RESET}
+  ${GREEN}vocab${RESET}   [选项]                词汇量抽样估算
+
+${BOLD}选项:${RESET}
+  --help, -h     显示此帮助
+  --json         以 JSON 格式输出结果
+
+${BOLD}示例:${RESET}
+  examlex check learner-profile.json
+  examlex plan learner-profile.json --ability ability-profile.json
+  examlex errors practice-ledger.json --output errors.json
+  examlex backup ./local/data --output backup-2026-07-05.tar.gz
+  examlex report --ledger practice-ledger.json --ability ability-history.json
+
+${BOLD}注意:${RESET}
+  大多数情况下不需要手动运行这些命令——在 Agent 对话中说
+  自然语言即可，Agent 会自动调用对应脚本。
+  此 CLI 主要用于调试、脚本集成和脱离 Agent 的独立使用。
+
+EOF
+}
+
+run_python() {
+    cd "$PROJECT_ROOT"
+    $PYTHON_CMD -m "$CLI_ENTRY" "$@"
+}
+
+# 主入口
+if [[ $# -eq 0 || "$1" == "--help" || "$1" == "-h" ]]; then
+    show_help
+    exit 0
+fi
+
+COMMAND="$1"
+shift
+
+case "$COMMAND" in
+    # 备考闭环 — 别名命令走 cli.py 的 ALIASES 以触发选项预添加
+    check)    run_python check "$@" ;;
+    plan)     run_python plan "$@" ;;
+    log)      run_python log "$@" ;;
+    tag)      run_python tag "$@" ;;
+    errors)   run_python errors "$@" ;;
+    update)   run_python update "$@" ;;
+    trends)   run_python trends "$@" ;;
+    write)    run_python write "$@" ;;
+    score)    run_python score "$@" ;;
+
+    # 知识管理
+    ingest)      run_python ingest "$@" ;;
+    strategies)  run_python strategies "$@" ;;
+    extract)     run_python extract "$@" ;;
+    validate)    run_python validate-strategies "$@" ;;
+    commit)      run_python commit-strategies "$@" ;;
+    check-deps)  run_python check-deps "$@" ;;
+    ops-check)   run_python ops-check "$@" ;;
+
+    # 数据管理
+    backup)   run_python backup "$@" ;;
+    restore)  run_python restore "$@" ;;
+    report)   run_python visualize "$@" ;;
+
+    # 词汇
+    vocab)    run_python vocab-estimate "$@" ;;
+
+    # 直通模式：examlex validate-profile ... 也支持
+    *)
+        run_python "$COMMAND" "$@"
+        ;;
+esac

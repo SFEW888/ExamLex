@@ -4,8 +4,8 @@ This project favors deterministic standard-library scripts over hidden local set
 
 ## Source Layout
 
-- `skills/english-exam-ai-tutor/`: portable public-safe Skill package.
-- `skills/english_exam_ai_tutor/`: importable Python mirror used by the CLI and tests.
+- `skills/examlex/`: portable public-safe Skill package.
+- `examlex/`: importable Python mirror used by the CLI and tests.
 - `scripts/`: repository installers and validation.
 - `tests/`: unit tests for scripts, CLI behavior, installers, and project invariants.
 
@@ -22,12 +22,12 @@ git diff --check
 For CLI changes, also run a smoke command:
 
 ```powershell
-python -m skills.english_exam_ai_tutor --help
+python -m examlex --help
 ```
 
 ## Change Rules
 
-- Update both script mirrors when editing automation scripts.
+- Edit automation scripts under `skills/examlex/scripts/`, then run `python skills\examlex\scripts\sync_mirror.py --sync` and verify with `--check`.
 - Add or update tests for behavior changes.
 - Keep the portable Skill directory free of root-style project docs.
 - Keep generated files in `local/`, `test-artifacts/`, or another ignored path.

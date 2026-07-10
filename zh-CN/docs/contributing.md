@@ -27,7 +27,7 @@ python -m unittest discover -s tests
 
 新增或修改标签时：
 
-- 更新 `skills/english-exam-ai-tutor/references/error-taxonomy.md`；
+- 更新 `skills/examlex/references/error-taxonomy.md`；
 - 同步更新可移植脚本和可导入脚本镜像中的映射；
 - 添加或调整聚焦测试；
 - 练习计数字段继续使用 `total_items` 和 `correct_items`。

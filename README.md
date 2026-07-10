@@ -1,11 +1,6 @@
-# English Exam AI Tutor
+# ExamLex
 
-[![CI](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/codeql.yml/badge.svg)](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/codeql.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Skills](https://img.shields.io/badge/Skills-9-brightgreen.svg)](#tutor-roles)
-[![Platforms](https://img.shields.io/badge/Platforms-4-blue.svg)](#platform-integration)
+> **Status:** ExamLex is currently unpublished. Install it from a local checkout. This documentation is intentionally self-contained and does not depend on remote links or badges.
 
 > CET-4 / CET-6 / Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning
 >
@@ -29,8 +24,8 @@ See [zh-CN/README.md](zh-CN/README.md) for the Chinese version.
 ## Quick Start
 
 > **Two usage modes — don't mix them up:**
-> - **As Agent Skill** (invoke via `/english-exam-ai-tutor` in chat) → `git clone` to your skills directory. Full assistant experience.
-> - **Standalone CLI** (command-line only) → `pip install` then use `tutor` or `english-exam-tutor`. Scripts only, no Agent Skill registration.
+> - **As Agent Skill** (invoke via `/examlex` in chat) → run a local installer from this checkout. Full assistant experience.
+> - **Standalone CLI** (command-line only) → install the checkout, then use `examlex`. Scripts only, no Agent Skill registration.
 
 ### Requirements
 
@@ -51,29 +46,12 @@ See [zh-CN/README.md](zh-CN/README.md) for the Chinese version.
 | `video` (audio) | ffmpeg | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
 | `video` (ASR) | whisper or SILICONFLOW_API_KEY | `pip install openai-whisper` | `pip3 install openai-whisper` |
 
-Run `bin/tutor check-deps` to see what's installed.
+Run `bin/examlex check-deps` to see what's installed.
 
 ### As Agent Skill (recommended)
 
-One-line install:
-```bash
-npx skills add your-org/english-exam-ai-tutor
-```
+From the project root, use the local installer scripts. They copy `skills\examlex` and the eight shortcut Skills into the selected platform's Skill directory:
 
-Or clone manually to `skills\english-exam-ai-tutor` under your platform's skills directory:
-
-```bash
-# Claude Code
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.claude/skills/english-exam-ai-tutor
-
-# Codex CLI / Codex App
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.agents/skills/english-exam-ai-tutor
-
-# Cursor
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.cursor/skills/english-exam-ai-tutor
-```
-
-Or use the installer scripts:
 ```bash
 ./install.sh claude    # or: codex, cursor
 .\install.ps1 claude   # PowerShell
@@ -81,7 +59,7 @@ Or use the installer scripts:
 
 Restart your agent, then invoke:
 ```text
-/english-exam-ai-tutor Create a 30-day CET4 plan for a weak-foundation learner targeting 550+.
+/examlex Create a 30-day CET4 plan for a weak-foundation learner targeting 550+.
 /learning-planner Give me a 30-day plan for a CET4 550+ learner with weak foundation.
 /grammar-corrector Check this essay and give me a correction report.
 ```
@@ -89,19 +67,17 @@ Restart your agent, then invoke:
 ### Standalone CLI (optional)
 
 ```bash
-git clone https://github.com/your-org/english-exam-ai-tutor.git
-cd english-exam-ai-tutor
-pip install -e .
+python -m pip install -e .
 ```
 
 Then use:
 ```bash
-tutor plan learner-profile.json --ability ability-profile.json
-tutor errors practice-ledger.json --days 30
-english-exam-tutor daily-plan --profile learner-profile.json --ability ability-profile.json
+examlex plan learner-profile.json --ability ability-profile.json
+examlex errors practice-ledger.json --days 30
+examlex daily-plan --profile learner-profile.json --ability ability-profile.json
 ```
 
-> `pip install -e .` installs only the script engine. Agent conversation features still require `git clone` to a skills directory.
+> `python -m pip install -e .` installs only the script engine. Agent conversation features require the local Skill installer above.
 
 ---
 
@@ -126,7 +102,7 @@ Eight built-in tutor assistants covering all English prep scenarios. Public repo
 
 | Scenario | Skill | Invocation |
 |----------|-------|-----------|
-| Full workflow | `english-exam-ai-tutor` | `/english-exam-ai-tutor` |
+| Full workflow | `examlex` | `/examlex` |
 | Study planning | `learning-planner` | `/learning-planner` |
 | Vocabulary | `vocabulary-builder` | `/vocabulary-builder` |
 | Reading | `reading-navigator` | `/reading-navigator` |
@@ -162,15 +138,15 @@ Three knowledge management scripts enable continuous learning:
 
 New pipeline commands for advanced distillation:
 ```bash
-tutor extract --input <url|file|name> [--type auto|video|book|text|person]
-tutor validate --artifacts-dir <path>
-tutor commit --artifacts-dir <path> --library strategy-library.json
-tutor ops-check    # 13-point operational readiness check
+examlex extract --input <url|file|name> [--type auto|video|book|text|person]
+examlex validate --artifacts-dir <path>
+examlex commit --artifacts-dir <path> --library strategy-library.json
+examlex ops-check    # 13-point operational readiness check
 ```
 
 Five distillation methods: `direct` (text), `book` (PDF/EPUB/DOCX), `video` (B站/YouTube + ASR), `person` (cognitive extraction), `manual` (conversation notes). Each strategy is automatically scored on a 9-dimension Darwin rubric (100 points). Strategies below 70 enter hill-climb optimization (max 3 rounds).
 
-See [skills/english-exam-ai-tutor/references/multi-source-distillation.md](skills/english-exam-ai-tutor/references/multi-source-distillation.md) for full documentation.
+See [skills/examlex/references/multi-source-distillation.md](skills/examlex/references/multi-source-distillation.md) for full documentation.
 
 ---
 
@@ -180,51 +156,51 @@ See [skills/english-exam-ai-tutor/references/multi-source-distillation.md](skill
 
 ```bash
 # Diagnose (supports CET4, CET6, TEM4, TEM8, POSTGRADUATE_ENGLISH)
-tutor check examples/sample-learner-profile.yaml
+examlex check examples/sample-learner-profile.yaml
 
 # Plan with vocab pool and spaced repetition
-tutor plan examples/sample-learner-profile.yaml \
+examlex plan examples/sample-learner-profile.yaml \
   --ability examples/sample-ability-profile.yaml \
-  --vocab-pool skills/english-exam-ai-tutor/assets/data/vocabulary/cet4-core-2000.json \
+  --vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-2000.json \
   --output daily-plan.json
 
 # Record timed practice
-tutor log practice-ledger.json \
+examlex log practice-ledger.json \
   --date 2026-07-06 --exam-type CET4 --module reading \
   --task-id timed-001 --duration-minutes 42 --total-items 20 --correct-items 14 \
   --timed --overtime-items 3 --overtime-correct 1
 
 # Estimate vocabulary
-tutor vocab --interactive --output vocab-estimate.json
+examlex vocab --interactive --output vocab-estimate.json
 
 # Visualize progress
-tutor report --ability-history ability-history.json \
+examlex report --ability-history ability-history.json \
   --ledger practice-ledger.json --days 30 --output report.html
 
 # Ingest strategy
-tutor ingest reading-strategy.md --library strategy-library.json --exam-types CET4,CET6 --modules reading
+examlex ingest reading-strategy.md --library strategy-library.json --exam-types CET4,CET6 --modules reading
 
 # Full pipeline
-tutor extract --input ./cet4-guide.pdf --type book
-tutor validate --artifacts-dir <path>
-tutor commit --artifacts-dir <path> --library strategy-library.json
+examlex extract --input ./cet4-guide.pdf --type book
+examlex validate --artifacts-dir <path>
+examlex commit --artifacts-dir <path> --library strategy-library.json
 ```
 
 ### CLI Wrappers
 
-The project provides `bin/tutor` (bash) and `bin/tutor.ps1` (PowerShell) wrappers:
+The project provides `bin/examlex` (bash) and `bin/examlex.ps1` (PowerShell) wrappers:
 
 | Command | Equivalent |
 |---------|-----------|
-| `tutor check <file>` | Validate learner profile |
-| `tutor plan <file> --ability ...` | Generate daily plan |
-| `tutor errors <file>` | Summarize error tags |
-| `tutor trends <file>` | Analyze practice trends |
-| `tutor score <essay>` | Estimate writing score |
-| `tutor ingest <file>` | Ingest strategy file |
-| `tutor extract --input <url>` | Extract from video/book/text |
-| `tutor check-deps` | Check tool dependencies |
-| `tutor ops-check` | 13-point operational check |
+| `examlex check <file>` | Validate learner profile |
+| `examlex plan <file> --ability ...` | Generate daily plan |
+| `examlex errors <file>` | Summarize error tags |
+| `examlex trends <file>` | Analyze practice trends |
+| `examlex score <essay>` | Estimate writing score |
+| `examlex ingest <file>` | Ingest strategy file |
+| `examlex extract --input <url>` | Extract from video/book/text |
+| `examlex check-deps` | Check tool dependencies |
+| `examlex ops-check` | 13-point operational check |
 
 ---
 
@@ -240,12 +216,12 @@ The project provides `bin/tutor` (bash) and `bin/tutor.ps1` (PowerShell) wrapper
 
 ### Environment Variables
 
-Copy `.env.example` to `.env`:
+ExamLex does not automatically load `.env`. Export these values in your shell, or load `.env.example` with your own environment tool:
 
 | Variable | Required | Default | Description |
 |----------|:--------:|---------|-------------|
 | `SILICONFLOW_API_KEY` | No | — | Cloud ASR key (SenseVoiceSmall, alternative to local whisper) |
-| `TUTOR_PYTHON` | No | `python` | Python interpreter for the `tutor` wrapper |
+| `EXAMLEX_PYTHON` | No | `python` | Python interpreter for the local ExamLex wrappers |
 
 ---
 
@@ -258,14 +234,14 @@ Agent Layer (Claude Code / Codex / Cursor)
     │
     ▼
 ┌─────────────────────────────────────────────────────────┐
-│  Skill Layer (skills/english-exam-ai-tutor/)            │
+│  Skill Layer (skills/examlex/)            │
 │  Tutor roles · Reference docs · Templates · Schemas     │
 │  8 shortcut Skills (skills/*/)                           │
 └───────────────────────┬─────────────────────────────────┘
                         │
                         ▼
 ┌─────────────────────────────────────────────────────────┐
-│  Script Layer (skills/english_exam_ai_tutor/)            │
+│  Script Layer (examlex/)            │
 │  extractors/  validators/  optimizers/  prompts/         │
 │  validate · daily-plan · record · tag-error · summarize  │
 │  update-ability · analyze-trends · writing-version       │
@@ -283,16 +259,16 @@ Agent Layer (Claude Code / Codex / Cursor)
 
 ### Does Continuous Learning Increase Project Size?
 
-No. All five distillation paths are implemented in ~25 Python files within the project. The five reference projects (cangjie-skill, nuwa-skill, book-to-skill, video-downloader, darwin-skill) were studied for methodology only — their code is NOT bundled. Heavy tools (yt-dlp, ffmpeg, whisper, Docling, calibre) are optional and lazy-loaded. `text` and `person` distillation import nothing beyond the Python standard library. The entire project is ~1.9 MB.
+No. All five distillation paths are implemented by local project code. Heavy extraction tools are optional and loaded only when their matching workflow needs them; `text` and `person` distillation use only the Python standard library.
 
 ### Repository Layout
 
 ```
 .
-├── SKILL.md                         # Root-level Skill entry (npx skills add compatible)
+├── SKILL.md                         # Root-level Skill entry
 ├── install.sh / install.ps1         # Cross-platform installer scripts
 │
-├── skills/english-exam-ai-tutor/    # Portable public-safe Skill package
+├── skills/examlex/    # Portable public-safe Skill package
 │   ├── SKILL.md                     #   Main Skill definition
 │   ├── assets/schemas/              #   JSON Schemas
 │   ├── assets/templates/            #   YAML/JSON/Markdown templates
@@ -305,7 +281,7 @@ No. All five distillation paths are implemented in ~25 Python files within the p
 │       ├── ops.py                   #   13-point operational check
 │       └── ...                      #   11 exam-prep scripts
 │
-├── skills/english_exam_ai_tutor/    # Importable Python mirror (tests + CLI)
+├── examlex/    # Importable Python mirror (tests + CLI)
 ├── skills/*/                        # 8 shortcut Skills
 ├── integrations/                    # Platform adapters
 ├── docs/                            # English docs
@@ -343,7 +319,7 @@ Foundation levels: `基础偏弱` (weak) / `中等基础` (moderate) / `基础�
 | Translation | `TRANSLATION_GRAMMAR_FAIL`, `TRANSLATION_CHINESE_ENGLISH` | Grammar, word choice, Chinese-English transfer, variety |
 | Writing | `WRITING_ARTICLE_OMISSION`, `WRITING_LANGUAGE_ACCURACY_FAIL` | Task response, structure, accuracy, expression richness |
 
-See [skills/english-exam-ai-tutor/references/error-taxonomy.md](skills/english-exam-ai-tutor/references/error-taxonomy.md).
+See [skills/examlex/references/error-taxonomy.md](skills/examlex/references/error-taxonomy.md).
 
 ---
 
@@ -351,9 +327,9 @@ See [skills/english-exam-ai-tutor/references/error-taxonomy.md](skills/english-e
 
 | Platform | Invocation | Shortcut Prefix | Adapter |
 |----------|-----------|:--------------:|--------|
-| Claude Code | `/english-exam-ai-tutor` | `/` | [Guide](integrations/claude-code/README.md) |
-| Codex CLI | `/english-exam-ai-tutor` | `/` | [Guide](integrations/codex-cli/README.md) |
-| Codex App | `/english-exam-ai-tutor` | `/` | [Guide](integrations/codex-app/README.md) |
+| Claude Code | `/examlex` | `/` | [Guide](integrations/claude-code/README.md) |
+| Codex CLI | `/examlex` | `/` | [Guide](integrations/codex-cli/README.md) |
+| Codex App | `/examlex` | `/` | [Guide](integrations/codex-app/README.md) |
 | Cursor | Via Skill directory config | — | [Guide](integrations/cursor/README.md) |
 
 ---
@@ -375,7 +351,7 @@ See [skills/english-exam-ai-tutor/references/error-taxonomy.md](skills/english-e
 No. All script outputs are deterministic calculations or rubric estimates based on your data. `score_writing_rubric.py` is a rubric estimate, not official scoring.
 
 **"Do I have to run CLI commands manually?"**
-No. In most cases you speak natural language in your Agent chat. The Agent reads the workflow from SKILL.md and calls scripts as needed. CLI and `tutor` wrappers are mainly for debugging, scripting, and standalone use.
+No. In most cases you speak natural language in your Agent chat. The Agent reads the workflow from SKILL.md and calls scripts as needed. CLI and `examlex` wrappers are mainly for debugging, scripting, and standalone use.
 
 **"Will strategy library data be uploaded to the cloud?"**
 No. The strategy library is a local JSON file. Extraction and analysis happen on your machine. If your Agent model runs in the cloud, the text you send follows that provider's standard data terms.
@@ -384,18 +360,32 @@ No. The strategy library is a local JSON file. Extraction and analysis happen on
 Your own exam strategies — yes. Strategies extracted from copyrighted books — do not publish them publicly. Same rules as handwritten study notes: your notes are yours, but don't republish someone else's book content.
 
 **"Does continuous learning increase the project size?"**
-No. All five distillation paths are ~25 built-in Python files. The five reference projects were studied for methodology, not bundled. Heavy tools are optional and lazy-loaded. The project is ~1.9 MB.
+No. All five distillation paths use built-in project code. Heavy extraction tools are optional and loaded only for the workflows that require them.
 
 ---
 
 ## Testing And Validation
 
 ```bash
-python -m pytest tests/                    # 210+ tests
+python -m unittest discover -s tests      # complete test suite
 python scripts/validate_repo.py --root .   # Repository integrity check
-tutor check-deps                           # Tool dependency check
-tutor ops-check                            # 13-point operational readiness check
+examlex check-deps                         # Tool dependency check
+examlex ops-check                          # 13-point operational readiness check
 ```
+
+## Documentation
+
+| Document | Purpose |
+|----------|---------|
+| [Getting Started](docs/getting-started.md) | Local installation and first use. |
+| [Configuration](docs/configuration.md) | Authoritative configuration and environment variables. |
+| [Usage](docs/usage.md) | Complete learning workflow. |
+| [Architecture](docs/architecture.md) | Repository layers and boundaries. |
+| [Development](docs/development.md) | Source layout and local checks. |
+| [Troubleshooting](docs/troubleshooting.md) | Common failures and remedies. |
+| [Release](docs/release.md) | Versioning and release checklist. |
+| [Roadmap](docs/roadmap.md) | Implemented and planned work. |
+| [CLI Reference](cli-reference.md) | Short and full command names. |
 
 ---
 
@@ -405,7 +395,7 @@ tutor ops-check                            # 13-point operational readiness chec
 - [x] TEM-4 / TEM-8 support
 - [x] Multi-source continuous learning (text/book/video/person/manual)
 - [x] Darwin 9-dimension quality scoring with auto-optimization
-- [x] 13-point operational readiness check (`tutor ops-check`)
+- [x] 13-point operational readiness check (`examlex ops-check`)
 - [ ] IELTS / TOEFL support
 - [ ] Web UI for strategy library browsing
 

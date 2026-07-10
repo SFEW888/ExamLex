@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Writing Version Record",
+  "type": "object",
+  "required": [
+    "writing_id",
+    "version",
+    "source_version",
+    "text",
+    "changes"
+  ],
+  "properties": {
+    "writing_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string",
+      "enum": [
+        "V1",
+        "V2",
+        "V3",
+        "V4"
+      ]
+    },
+    "source_version": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "text": {
+      "type": "string"
+    },
+    "changes": {
+      "type": "array"
+    }
+  }
+}

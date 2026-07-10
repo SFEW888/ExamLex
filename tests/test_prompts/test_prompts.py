@@ -1,11 +1,11 @@
 """Tests for prompt guides — verify rendering, schema validity, and content completeness."""
 import unittest
 
-from skills.english_exam_ai_tutor.scripts.prompts.ria import RIAGuide
-from skills.english_exam_ai_tutor.scripts.prompts.cognitive import CognitiveGuide
-from skills.english_exam_ai_tutor.scripts.prompts.effect import EffectGuide
-from skills.english_exam_ai_tutor.scripts.prompts.climb import ClimbGuide
-from skills.english_exam_ai_tutor.scripts.prompts.base import triple_verify_guide
+from examlex.scripts.prompts.ria import RIAGuide
+from examlex.scripts.prompts.cognitive import CognitiveGuide
+from examlex.scripts.prompts.effect import EffectGuide
+from examlex.scripts.prompts.climb import ClimbGuide
+from examlex.scripts.prompts.base import triple_verify_guide
 
 
 class RIAGuideTests(unittest.TestCase):

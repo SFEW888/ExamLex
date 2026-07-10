@@ -1,5 +1,5 @@
 # ============================================================
-# check_env.ps1 — English Exam AI Tutor 环境诊断
+# check_env.ps1 — ExamLex 环境诊断
 # 用法: .\scripts\check_env.ps1
 # 检查 Python、Git、Skills 安装、磁盘空间
 # ============================================================
@@ -58,8 +58,8 @@ foreach ($dir in $skillDirs) {
 Write-Host ""
 Write-Host "========== Project Installation =========="
 $projectPaths = @(
-    @{Name="english-exam-ai-tutor (Claude)"; Path="$env:USERPROFILE\.claude\skills\english-exam-ai-tutor\SKILL.md"},
-    @{Name="english-exam-ai-tutor (Codex)";  Path="$env:USERPROFILE\.agents\skills\english-exam-ai-tutor\SKILL.md"}
+    @{Name="examlex (Claude)"; Path="$env:USERPROFILE\.claude\skills\examlex\SKILL.md"},
+    @{Name="examlex (Codex)";  Path="$env:USERPROFILE\.agents\skills\examlex\SKILL.md"}
 )
 
 foreach ($p in $projectPaths) {

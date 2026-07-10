@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts import common, update_ability_profile
+from examlex.scripts import common, update_ability_profile
 
 
 class UpdateAbilityProfileTests(unittest.TestCase):

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Exercise Record",
+  "type": "object",
+  "required": [
+    "date",
+    "exam_type",
+    "module",
+    "task_id",
+    "duration_minutes",
+    "error_tags"
+  ],
+  "properties": {
+    "date": {
+      "type": "string"
+    },
+    "exam_type": {
+      "type": "string"
+    },
+    "module": {
+      "type": "string"
+    },
+    "task_id": {
+      "type": "string"
+    },
+    "duration_minutes": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "total_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "correct_items": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "accuracy": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "error_tags": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "notes": {
+      "type": "string"
+    },
+    "next_action": {
+      "type": "string"
+    }
+  }
+}

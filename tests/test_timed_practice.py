@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_SCRIPTS = REPO_ROOT / "skills" / "english-exam-ai-tutor" / "scripts"
+SKILL_SCRIPTS = REPO_ROOT / "skills" / "examlex" / "scripts"
 sys.path.insert(0, str(SKILL_SCRIPTS))
 
 import common
@@ -156,7 +156,7 @@ class TestTimedPractice(unittest.TestCase):
         import subprocess
         ledger = self.tmp / "cli-ledger.json"
         result = subprocess.run(
-            [sys.executable, "-m", "skills.english_exam_ai_tutor", "record-practice",
+            [sys.executable, "-m", "examlex", "record-practice",
              "--ledger", str(ledger),
              "--date", "2026-07-06",
              "--exam-type", "CET4",

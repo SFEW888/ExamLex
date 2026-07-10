@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "vocab-entry.schema.json",
+  "title": "Vocabulary Entry",
+  "type": "object",
+  "required": ["word", "meaning_cn", "frequency_rank"],
+  "properties": {
+    "word": {
+      "type": "string",
+      "minLength": 1,
+      "description": "English word or phrase"
+    },
+    "phonetic": {
+      "type": "string",
+      "description": "IPA phonetic notation"
+    },
+    "pos": {
+      "type": "string",
+      "description": "Part of speech abbreviation: n. / v. / adj. / adv. / prep. / conj. / pron."
+    },
+    "meaning_cn": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Chinese meaning"
+    },
+    "frequency_rank": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Frequency rank within the exam level (1 = most frequent)"
+    },
+    "example": {
+      "type": "string",
+      "description": "Example sentence"
+    },
+    "cet_level": {
+      "enum": ["CET4", "CET6", "POSTGRADUATE", "TEM4", "TEM8"],
+      "description": "Primary exam level association"
+    },
+    "collocations": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Common collocations"
+    },
+    "synonyms": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Synonyms or near-synonyms"
+    },
+    "confusable_words": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Easily confused words"
+    }
+  }
+}

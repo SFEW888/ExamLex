@@ -1,8 +1,6 @@
 # Configuration
 
-> **Migration Notice:** This document now describes the `TutorConfig` dataclass (`scripts/config.py`), which is the authoritative configuration interface.
-> The earlier environment-variable-based configuration (`ENGLISH_EXAM_TUTOR_PROMPT_MODE`, etc.) is **deprecated and no longer consumed by the code**.
-> If you are migrating from the old env-var approach: simply remove those variables — `TutorConfig` uses code defaults for all settings.
+The `TutorConfig` dataclass in `examlex/scripts/config.py` is the authoritative configuration interface.
 
 The public repository runs without secrets. Configuration is optional and mainly exists for local experiments or downstream integrations.
 
@@ -11,10 +9,10 @@ The public repository runs without secrets. Configuration is optional and mainly
 Settings are resolved from highest to lowest priority:
 
 1. Constructor kwargs / CLI arguments (highest priority)
-2. Environment variables (see per-field notes below)
-3. `.env` file in project root
-4. `~/.english-exam-ai-tutor/config.json`
-5. Code defaults (lowest priority)
+2. `SILICONFLOW_API_KEY` for the cloud ASR key
+3. Code defaults (lowest priority)
+
+ExamLex does not automatically load `.env` or a user-home JSON configuration file.
 
 ## The `TutorConfig` Dataclass
 
@@ -60,7 +58,7 @@ The "Darwin" scoring system controls adaptive pass thresholds for learning round
 
 | Field | Default | Description |
 |-------|---------|-------------|
-| `sessions_root` | Platform-specific default | Root directory for session artifacts. On Windows: `%LOCALAPPDATA%/english-exam-ai-tutor/sessions`. On macOS: `~/Library/Application Support/english-exam-ai-tutor/sessions`. On Linux: `$XDG_DATA_HOME/english-exam-ai-tutor/sessions` |
+| `sessions_root` | Platform-specific default | Root directory for session artifacts. On Windows: `%LOCALAPPDATA%/ExamLex/sessions`. On macOS: `~/Library/Application Support/ExamLex/sessions`. On Linux: `$XDG_DATA_HOME/ExamLex/sessions` |
 | `auto_cleanup` | `True` | Whether to automatically clean up old session artifacts |
 
 ### Content Limits
@@ -76,7 +74,7 @@ The "Darwin" scoring system controls adaptive pass thresholds for learning round
 ### Python (constructor kwargs)
 
 ```python
-from skills.english_exam_ai_tutor.scripts.config import TutorConfig
+from examlex.scripts.config import TutorConfig
 
 config = TutorConfig(
     ffmpeg_path="C:/tools/ffmpeg/bin/ffmpeg.exe",
@@ -87,21 +85,10 @@ config = TutorConfig(
 
 ### Environment Variables
 
+Export variables in the current shell. `.env.example` is documentation only unless your environment tooling loads it.
+
 ```bash
 export SILICONFLOW_API_KEY="sk-..."
-```
-
-### JSON Config File
-
-Create `~/.english-exam-ai-tutor/config.json`:
-
-```json
-{
-  "yt_dlp_path": "/usr/local/bin/yt-dlp",
-  "asr_backend": "whisper",
-  "asr_model": "medium",
-  "darwin_pass_score": 75.0
-}
 ```
 
 ## Dependency Checking

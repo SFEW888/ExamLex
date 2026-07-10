@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_SCRIPTS = REPO_ROOT / "skills" / "english-exam-ai-tutor" / "scripts"
+SKILL_SCRIPTS = REPO_ROOT / "skills" / "examlex" / "scripts"
 sys.path.insert(0, str(SKILL_SCRIPTS))
 
 from estimate_vocabulary import (
@@ -16,9 +16,13 @@ from estimate_vocabulary import (
     get_band_size,
     load_reference,
 )
+from examlex.scripts.estimate_vocabulary import _DEFAULT_REF
 
 
 class TestEstimateVocabulary(unittest.TestCase):
+    def test_importable_package_contains_default_vocab_reference(self):
+        self.assertTrue(_DEFAULT_REF.is_file(), str(_DEFAULT_REF))
+
     @classmethod
     def setUpClass(cls):
         cls.reference = load_reference()
@@ -170,10 +174,10 @@ class TestVocabEstimateCLI(unittest.TestCase):
         self.tmp.mkdir(parents=True, exist_ok=True)
 
     def test_cli_registered(self):
-        """english-exam-tutor vocab-estimate --help runs successfully."""
+        """examlex vocab-estimate --help runs successfully."""
         import subprocess
         result = subprocess.run(
-            [sys.executable, "-m", "skills.english_exam_ai_tutor", "vocab-estimate", "--help"],
+            [sys.executable, "-m", "examlex", "vocab-estimate", "--help"],
             capture_output=True, text=True, cwd=str(REPO_ROOT),
         )
         self.assertEqual(result.returncode, 0, f"stderr: {result.stderr}")
@@ -182,7 +186,7 @@ class TestVocabEstimateCLI(unittest.TestCase):
     def test_batch_mode_with_wordlist(self):
         """Batch mode processes a wordlist and produces valid output."""
         wordlist_path = self.tmp / "answers.json"
-        ref_path = (REPO_ROOT / "skills" / "english-exam-ai-tutor"
+        ref_path = (REPO_ROOT / "skills" / "examlex"
                     / "assets" / "data" / "vocab-test-words.json")
         answers = {
             "learner_id": "cli-test",
@@ -197,7 +201,7 @@ class TestVocabEstimateCLI(unittest.TestCase):
 
         import subprocess
         result = subprocess.run(
-            [sys.executable, "-m", "skills.english_exam_ai_tutor", "vocab-estimate",
+            [sys.executable, "-m", "examlex", "vocab-estimate",
              "--wordlist", str(wordlist_path), "--reference", str(ref_path)],
             capture_output=True, text=True, cwd=str(REPO_ROOT),
         )
@@ -206,11 +210,11 @@ class TestVocabEstimateCLI(unittest.TestCase):
 
     def test_interactive_mode(self):
         """Interactive mode generates quiz output."""
-        ref_path = (REPO_ROOT / "skills" / "english-exam-ai-tutor"
+        ref_path = (REPO_ROOT / "skills" / "examlex"
                     / "assets" / "data" / "vocab-test-words.json")
         import subprocess
         result = subprocess.run(
-            [sys.executable, "-m", "skills.english_exam_ai_tutor", "vocab-estimate",
+            [sys.executable, "-m", "examlex", "vocab-estimate",
              "--interactive", "--bands", "1-1000", "--samples-per-band", "3",
              "--nonwords-per-band", "1", "--reference", str(ref_path)],
             capture_output=True, text=True, cwd=str(REPO_ROOT),

@@ -11,7 +11,7 @@ Cursor should use the public-safe Skill instructions and repository docs for lea
 Use short scenario prompts in Cursor chat or rules:
 
 ```text
-english-exam-ai-tutor: Build today's plan from my learner profile and ability profile.
+examlex: Build today's plan from my learner profile and ability profile.
 learning-planner: Make a CET4 550+ weekly plan.
 grammar-corrector: Check this paragraph and return a correction report.
 reading-navigator: Break down this reading passage.

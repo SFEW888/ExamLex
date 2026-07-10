@@ -1,42 +1,28 @@
 # 快速开始
 
-本指南帮助你在全新克隆后安装 Skills。最简路径与其他 Agent 原生 Skill 仓库一致，一行命令即可完成。
+本指南帮助你从本地检出目录安装 ExamLex。ExamLex 尚未发布，因此暂不提供远程仓库或一行式注册表安装命令。
 
 ## 环境要求
 
 - Python 3.10 或更新版本
-- Git
-- 使用 `npx skills add` 需要 Node.js/npm；使用克隆安装器需要 Git 加 PowerShell 或 POSIX shell
-- 克隆安装器内部需要 Python 3.10 或更新版本
+- PowerShell 或 POSIX shell
 
 当前工具包不依赖任何第三方 Python 包。
 
-## 一行命令安装
-
-```bash
-npx skills add your-org/english-exam-ai-tutor
-```
-
-在仓库发布到 GitHub 并填入真实组织名后，以上命令会安装主 Skill `english-exam-ai-tutor`。重启 Agent，运行 `/skills`，即可在对话中调用该 Skill。
-
-## 克隆安装（含快捷 Skill）
+## 本地安装（含快捷 Skill）
 
 如果你希望同时安装主 Skill 和全部 8 个快捷 Skill，请使用此方式。
 
-macOS/Linux：
+在项目根目录运行（macOS/Linux）：
 
 ```bash
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.english-exam-ai-tutor
-cd ~/.english-exam-ai-tutor
 ./install.sh codex
 ./install.sh claude
 ```
 
-Windows PowerShell：
+在项目根目录运行（Windows PowerShell）：
 
 ```powershell
-git clone https://github.com/your-org/english-exam-ai-tutor.git
-cd english-exam-ai-tutor
 .\install.ps1 codex
 .\install.ps1 claude
 ```
@@ -59,7 +45,7 @@ cd english-exam-ai-tutor
 
 ```text
 /skills
-/english-exam-ai-tutor 帮我为 CET4 550+ 制定一周计划
+/examlex 帮我为 CET4 550+ 制定一周计划
 /learning-planner 帮我生成本周任务
 /grammar-corrector 批改这段作文
 ```
@@ -70,7 +56,7 @@ cd english-exam-ai-tutor
 
 | 场景 | 斜杠调用 |
 | --- | --- |
-| 完整备考流程 | `/english-exam-ai-tutor` |
+| 完整备考流程 | `/examlex` |
 | 学习计划 | `/learning-planner` |
 | 词汇 | `/vocabulary-builder` |
 | 阅读 | `/reading-navigator` |
@@ -94,36 +80,36 @@ cd english-exam-ai-tutor
 
 ## 新特性
 
-- **词汇量估算**：`tutor vocab --interactive` — 使用 Yes/No 抽样加虚报修正
-- **计时练习**：`tutor log --timed` — 自动查表限时 + 超时追踪
+- **词汇量估算**：`examlex vocab --interactive` — 使用 Yes/No 抽样加虚报修正
+- **计时练习**：`examlex log --timed` — 自动查表限时 + 超时追踪
 - **间隔重复**：错误汇总中自动计算复习紧迫度评分
-- **进度可视化**：`tutor report` — 生成独立 HTML，含雷达图/趋势图/错误图（SVG）
+- **进度可视化**：`examlex report` — 生成独立 HTML，含雷达图/趋势图/错误图（SVG）
 - **词汇池**：内置 650 词，覆盖 5 个考试等级
 - **常见错误库**：21 条精选错误模式，附示例
 - **范文库**：带评分数据的范文样本，用于评分锚定
-- **备份与恢复**：`tutor backup` / `tutor restore`，支持 tar.gz
+- **备份与恢复**：`examlex backup` / `examlex restore`，支持 tar.gz
 
 ## 运行可选 CLI
 
 当你需要直接从终端运行确定性工具时，使用以下封装命令：
 
 ```bash
-bin/tutor check examples/sample-learner-profile.yaml
-bin/tutor plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
-bin/tutor strategies --library strategy-library.json
+bin/examlex check examples/sample-learner-profile.yaml
+bin/examlex plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
+bin/examlex strategies --library strategy-library.json
 ```
 
 PowerShell：
 
 ```powershell
-.\bin\tutor.ps1 check examples/sample-learner-profile.yaml
-.\bin\tutor.ps1 plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
+.\bin\examlex.ps1 check examples/sample-learner-profile.yaml
+.\bin\examlex.ps1 plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
 ```
 
 底层 Python 模块供维护者和调试使用：
 
 ```powershell
-python -m skills.english_exam_ai_tutor --help
+python -m examlex --help
 ```
 
 详见 [../cli-reference.md](../cli-reference.md) 获取所有简短命令。
@@ -141,7 +127,7 @@ python -m unittest discover -s tests
 
 ```powershell
 python -m pip install -e .
-english-exam-tutor --help
+examlex --help
 ```
 
 生成的本地文件（如 `daily-plan.json`、`.env`、学习记录等）应保持不被版本跟踪。

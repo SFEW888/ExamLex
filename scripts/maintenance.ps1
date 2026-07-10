@@ -1,5 +1,5 @@
 # ============================================================
-# maintenance.ps1 — English Exam AI Tutor 数据维护
+# maintenance.ps1 — ExamLex 数据维护
 # 用法: .\scripts\maintenance.ps1 [--data-dir <path>] [--dry-run]
 # 清理旧备份、验证数据完整性、报告磁盘占用
 # ============================================================
@@ -43,7 +43,7 @@ function Remove-IfSafe($path, $description) {
     }
 }
 
-Write-Host "========== English Exam AI Tutor — Maintenance =========="
+Write-Host "========== ExamLex — Maintenance =========="
 if ($DryRun) {
     Write-Host "DRY-RUN mode: no files will be deleted." -ForegroundColor Yellow
 }
@@ -119,7 +119,7 @@ if ($allBackups) {
         Write-Host "  TIP: $($allBackups.Count - 5) backups older than the 5 most recent. Consider cleaning." -ForegroundColor Yellow
     }
 } else {
-    Write-Host "  No backups found. Run: tutor backup $DataDir" -ForegroundColor DarkGray
+    Write-Host "  No backups found. Run: examlex backup $DataDir" -ForegroundColor DarkGray
 }
 
 Write-Host ""

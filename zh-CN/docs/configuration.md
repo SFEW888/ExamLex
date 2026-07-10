@@ -1,24 +1,19 @@
 # 配置
 
-> **注意：** 本文档描述的是早期设计中的环境变量；
-> 当前的 `TutorConfig` 数据类（`scripts/config.py`）使用了一组不同的字段
->（`yt_dlp_path`、`ffmpeg_path`、`siliconflow_api_key`、`asr_backend` 等）。
-> 下面列出的环境变量可能未被当前代码使用。
-> 请参阅 `scripts/config.py` 获取权威的配置接口。
+`examlex/scripts/config.py` 中的 `TutorConfig` 数据类是权威配置接口。公共仓库无需密钥即可运行。
 
-公共仓库无需密钥即可运行。配置是可选的，主要用于本地实验或下游集成。
+配置优先级为：构造参数或 CLI 参数、`SILICONFLOW_API_KEY`、代码默认值。ExamLex 不会自动加载 `.env` 或用户目录中的 JSON 配置文件。
 
-## 环境文件
+## 环境变量
 
-仅当本地封装需要环境变量时，才将 `.env.example` 复制为 `.env`。
+请在当前 Shell 中导出变量；除非你使用自己的环境加载工具，否则 `.env.example` 仅用于说明。
 
 | 变量 | 是否必填 | 默认值 | 说明 |
 | --- | --- | --- | --- |
-| `ENGLISH_EXAM_TUTOR_PROMPT_MODE` | 否 | `public-safe` | 公开安全模式，防止私密提示词出现在生成产物中。 |
-| `ENGLISH_EXAM_TUTOR_DATA_DIR` | 否 | `./local/data` | 建议的学习记录和生成计划存放位置。 |
-| `ENGLISH_EXAM_TUTOR_PRIVATE_PROMPT_DIR` | 否 | 空 | 本地私密提示词目录（仅全本地模式使用）。 |
-| `ENGLISH_EXAM_TUTOR_DEFAULT_EXAM` | 否 | `CET4` | 本地封装的默认考试类型。 |
-| `ENGLISH_EXAM_TUTOR_DEFAULT_TARGET` | 否 | `550+` | 本地封装的默认目标分段。 |
+| `SILICONFLOW_API_KEY` | 否 | 空 | SiliconFlow 云端语音识别密钥。 |
+| `EXAMLEX_PYTHON` | 否 | `python` | 本地 ExamLex 封装脚本使用的 Python 解释器。 |
+
+`sessions_root` 默认使用平台对应的 `ExamLex/sessions` 应用数据目录，也可以通过 `TutorConfig(sessions_root=...)` 显式覆盖。
 
 ## 密钥处理
 

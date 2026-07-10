@@ -2,7 +2,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts import common, validate_profile
+from examlex.scripts import common, validate_profile
 
 
 class CommonRuntimeTests(unittest.TestCase):

@@ -1,4 +1,4 @@
-﻿# CET-6 Guide
+# CET-6 Guide
 
 CET-6 preparation usually needs more attention to inference, paraphrase recognition, listening detail capture, word choice, and output quality.
 
@@ -12,7 +12,7 @@ Supported target bands:
 Example Agent calls:
 
 ```text
-/english-exam-ai-tutor Update my CET6 plan after today's listening and reading practice.
+/examlex Update my CET6 plan after today's listening and reading practice.
 /reading-navigator Help me analyze why I missed this inference question.
 ```
 

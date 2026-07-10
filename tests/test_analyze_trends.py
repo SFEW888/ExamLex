@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts import analyze_trends
+from examlex.scripts import analyze_trends
 
 
 class AnalyzeTrendsTests(unittest.TestCase):

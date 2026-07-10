@@ -5,8 +5,8 @@
 Run commands from the repository root:
 
 ```powershell
-cd english-exam-ai-tutor
-python -m skills.english_exam_ai_tutor --help
+cd examlex
+python -m examlex --help
 ```
 
 If using the short command, reinstall in editable mode:
@@ -23,8 +23,8 @@ Some restricted Windows sandboxes deny writes to the default user temp directory
 
 Copy the intended change between:
 
-- `skills/english-exam-ai-tutor/scripts/`
-- `skills/english_exam_ai_tutor/scripts/`
+- `skills/examlex/scripts/`
+- `examlex/scripts/`
 
 Then rerun:
 

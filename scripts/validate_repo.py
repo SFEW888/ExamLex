@@ -7,10 +7,20 @@ import json
 import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
+from urllib.parse import unquote
 
 
-SKILL_NAME = "english-exam-ai-tutor"
-IMPORTABLE_NAME = "english_exam_ai_tutor"
+SKILL_NAME = "examlex"
+IMPORTABLE_NAME = "examlex"
+LEGACY_IDENTIFIERS = (
+    "english" + "-exam-ai-tutor",
+    "english" + "_exam_ai_tutor",
+    "english" + "-exam-tutor",
+    "ENGLISH" + "_EXAM_TUTOR",
+    "TUTOR" + "_YTDLP_COOKIES_FROM_BROWSER",
+    "tutor" + " backup",
+    "tutor" + " cron-create",
+)
 SKILL_ALIASES = {
     "culture-guide",
     "grammar-corrector",
@@ -22,6 +32,7 @@ SKILL_ALIASES = {
     "vocabulary-builder",
 }
 FORBIDDEN_PRIVATE_PROMPT = " ".join(("Act as a strict", "but helpful English", "grammar teacher"))
+MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)\n]+)\)")
 EXPECTED_REFERENCES = {
     "assistant-roster.md",
     "data-model.md",
@@ -33,6 +44,7 @@ EXPECTED_REFERENCES = {
 EXPECTED_AUTOMATION_SCRIPTS = {
     "analyze_trends.py",
     "backup_data.py",
+    "cleanup_sessions.py",
     "common.py",
     "generate_daily_plan.py",
     "ingest_strategy.py",
@@ -85,22 +97,18 @@ EXPECTED_README_SECTIONS = {
     "## License",
 }
 EXPECTED_README_SKILL_INSTALL_MARKERS = {
-    "npx skills add",
+    "python -m pip install -e .",
     "install.sh",
     "install.ps1",
-    "$HOME\\.agents\\skills",
-    ".agents\\skills",
-    "$HOME\\.claude\\skills",
-    ".claude\\skills",
-    "skills\\english-exam-ai-tutor",
+    "skills\\examlex",
 }
 EXPECTED_README_AGENT_CALL_MARKERS = {
-    "/english-exam-ai-tutor",
+    "/examlex",
     "/grammar-corrector",
     "/learning-planner",
 }
 FORBIDDEN_AGENT_CALL_MARKERS = {
-    "$" + "english-exam-ai-tutor",
+    "$" + "examlex",
     "$" + "grammar-corrector",
     "$" + "learning-planner",
     "$" + "vocabulary-builder",
@@ -189,6 +197,169 @@ def validate_writing_article_omission(common_path: Path, errors: list[str]) -> N
         errors.append("WRITING_ARTICLE_OMISSION must map to the same writing/language accuracy ability as WRITING_LANGUAGE_ACCURACY_FAIL.")
 
 
+def validate_resource_mirror(skill_dir: Path, importable_dir: Path, errors: list[str]) -> None:
+    """Require package resources to exactly mirror the portable Skill resources."""
+    skill_file = skill_dir / "SKILL.md"
+    package_skill = importable_dir / "SKILL.md"
+    if not package_skill.is_file() or sha256(skill_file) != sha256(package_skill):
+        errors.append("resource mirror mismatch: SKILL.md")
+
+    for directory_name in ("assets", "references"):
+        skill_resources = skill_dir / directory_name
+        package_resources = importable_dir / directory_name
+        source_files = {
+            path.relative_to(skill_resources): path
+            for path in skill_resources.rglob("*")
+            if path.is_file()
+        }
+        package_files = (
+            {
+                path.relative_to(package_resources): path
+                for path in package_resources.rglob("*")
+                if path.is_file()
+            }
+            if package_resources.exists()
+            else {}
+        )
+
+        for relative, source in sorted(source_files.items()):
+            package_file = package_files.get(relative)
+            if package_file is None or sha256(source) != sha256(package_file):
+                errors.append(
+                    f"resource mirror mismatch: {directory_name}/{relative.as_posix()}"
+                )
+        for relative in sorted(package_files.keys() - source_files.keys()):
+            errors.append(
+                f"extra package resource: {directory_name}/{relative.as_posix()}"
+            )
+
+
+def _maintained_markdown_files(root: Path) -> list[Path]:
+    """Return maintained Markdown, excluding generated and internal planning trees."""
+    ignored_parts = {
+        ".git",
+        ".pytest_cache",
+        ".task8-test-tmp",
+        ".tmp-test",
+        ".venv",
+        "build",
+        "dist",
+        "test-artifacts",
+        "__pycache__",
+    }
+    files: list[Path] = []
+    for path in root.rglob("*.md"):
+        relative = path.relative_to(root)
+        if ignored_parts.intersection(relative.parts):
+            continue
+        if relative.parts[:2] == ("docs", "superpowers"):
+            continue
+        files.append(path)
+    return sorted(files)
+
+
+def _validate_matching_basenames(
+    root: Path,
+    english_dir: Path,
+    chinese_dir: Path,
+    label: str,
+    errors: list[str],
+) -> None:
+    english = {path.name for path in english_dir.glob("*.md") if path.is_file()}
+    chinese = {path.name for path in chinese_dir.glob("*.md") if path.is_file()}
+    for name in sorted(english - chinese):
+        missing = (chinese_dir / name).relative_to(root).as_posix()
+        errors.append(
+            f"missing Chinese documentation counterpart for {label}/{name}: "
+            f"{missing}"
+        )
+    for name in sorted(chinese - english):
+        missing = (english_dir / name).relative_to(root).as_posix()
+        errors.append(
+            f"missing English documentation counterpart for {label}/{name}: "
+            f"{missing}"
+        )
+
+
+def _markdown_link_target(raw_target: str) -> str:
+    target = raw_target.strip()
+    if target.startswith("<") and ">" in target:
+        return target[1:target.index(">")]
+    return target.split(maxsplit=1)[0] if target else ""
+
+
+def validate_documentation(root: Path, errors: list[str]) -> None:
+    """Validate bilingual coverage, offline policy, and local link targets."""
+    _validate_matching_basenames(
+        root, root / "docs", root / "zh-CN" / "docs", "docs", errors
+    )
+    _validate_matching_basenames(
+        root,
+        root / "skills" / SKILL_NAME / "references",
+        root / "zh-CN" / "skill" / "references",
+        "Skill references",
+        errors,
+    )
+
+    for relative in (
+        Path("zh-CN/README.md"),
+        Path("zh-CN/skill/SKILL.md"),
+        Path("zh-CN/cli-reference.md"),
+    ):
+        if not (root / relative).is_file():
+            errors.append(
+                "missing Chinese documentation counterpart: " + relative.as_posix()
+            )
+
+    for platform in ("claude-code", "codex-app", "codex-cli", "cursor"):
+        english = root / "integrations" / platform / "README.md"
+        chinese = root / "zh-CN" / "integrations" / f"{platform}.md"
+        if english.is_file() and not chinese.is_file():
+            errors.append(
+                "missing Chinese documentation counterpart for integration: "
+                + chinese.relative_to(root).as_posix()
+            )
+        if chinese.is_file() and not english.is_file():
+            errors.append(
+                "missing English documentation counterpart for integration: "
+                + english.relative_to(root).as_posix()
+            )
+
+    for markdown_file in _maintained_markdown_files(root):
+        relative = markdown_file.relative_to(root)
+        text = markdown_file.read_text(encoding="utf-8")
+        if "http://" in text or "https://" in text:
+            errors.append(
+                f"external URL is forbidden in maintained Markdown: {relative.as_posix()}"
+            )
+
+        for match in MARKDOWN_LINK_RE.finditer(text):
+            target = _markdown_link_target(match.group(1))
+            if not target or target.startswith("#"):
+                continue
+            if re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", target):
+                errors.append(
+                    f"external URL is forbidden in maintained Markdown: "
+                    f"{relative.as_posix()} -> {target}"
+                )
+                continue
+            path_text = unquote(target.split("#", 1)[0])
+            if not path_text:
+                continue
+            resolved = (markdown_file.parent / path_text).resolve()
+            try:
+                resolved.relative_to(root)
+            except ValueError:
+                errors.append(
+                    f"broken local Markdown link in {relative.as_posix()}: {target}"
+                )
+                continue
+            if not resolved.exists():
+                errors.append(
+                    f"broken local Markdown link in {relative.as_posix()}: {target}"
+                )
+
+
 def validate_project(root: str | Path) -> ValidationResult:
     root_path = Path(root).resolve()
     result = ValidationResult(root=str(root_path))
@@ -198,13 +369,16 @@ def validate_project(root: str | Path) -> ValidationResult:
     for filename in ("LICENSE", "pyproject.toml", "SKILL.md", "install.sh", "install.ps1", "cli-reference.md"):
         if not (root_path / filename).is_file():
             errors.append(f"Missing required root file: {filename}")
-    for relative in ("bin/tutor", "bin/tutor.ps1"):
+    for relative in ("bin/examlex", "bin/examlex.ps1"):
         if not (root_path / relative).is_file():
             errors.append(f"Missing user CLI wrapper: {relative}")
     if not (root_path / "README.md").is_file():
         warnings.append("README.md is not present yet; Task 9 may add it, so this is a warning only.")
     else:
         readme_text = (root_path / "README.md").read_text(encoding="utf-8")
+        for marker in ("your-org", "github.com/"):
+            if marker in readme_text:
+                errors.append(f"README.md contains remote install placeholder: {marker}")
         for section in sorted(EXPECTED_README_SECTIONS):
             if section not in readme_text:
                 errors.append(f"README.md must include {section}.")
@@ -236,7 +410,7 @@ def validate_project(root: str | Path) -> ValidationResult:
         errors.append("Missing GitHub pull request template: .github/PULL_REQUEST_TEMPLATE.md")
 
     skill_dir = root_path / "skills" / SKILL_NAME
-    importable_dir = root_path / "skills" / IMPORTABLE_NAME
+    importable_dir = root_path / IMPORTABLE_NAME
     for relative in (
         Path("skills") / SKILL_NAME / "SKILL.md",
         Path("scripts"),
@@ -282,11 +456,23 @@ def validate_project(root: str | Path) -> ValidationResult:
         description = alias_metadata.get("description", "")
         if not description.startswith("Use when"):
             errors.append(f"Shortcut Skill {alias} description must start with 'Use when'.")
-        if "english-exam-ai-tutor" not in alias_text:
-            errors.append(f"Shortcut Skill {alias} must route back to english-exam-ai-tutor.")
+        if SKILL_NAME not in alias_text:
+            errors.append(f"Shortcut Skill {alias} must route back to {SKILL_NAME}.")
 
+    ignored_parts = {
+        ".git",
+        ".pytest_cache",
+        ".task8-test-tmp",
+        ".tmp-test",
+        ".venv",
+        "build",
+        "dist",
+        "test-artifacts",
+        "__pycache__",
+    }
     for path in root_path.rglob("*"):
-        if "test-artifacts" in path.parts or path.is_dir():
+        relative_path = path.relative_to(root_path)
+        if ignored_parts.intersection(relative_path.parts) or path.is_dir():
             continue
         try:
             text = path.read_text(encoding="utf-8")
@@ -294,6 +480,12 @@ def validate_project(root: str | Path) -> ValidationResult:
             continue
         if FORBIDDEN_PRIVATE_PROMPT in text:
             errors.append(f"Found forbidden private prompt sentence in {path.relative_to(root_path).as_posix()}.")
+        for identifier in LEGACY_IDENTIFIERS:
+            if identifier in text:
+                errors.append(
+                    "legacy product identifier found in "
+                    f"{relative_path.as_posix()}: {identifier}"
+                )
         for marker in sorted(FORBIDDEN_AGENT_CALL_MARKERS):
             if marker in text:
                 errors.append(f"Found forbidden dollar-style Skill call in {path.relative_to(root_path).as_posix()}: {marker}")
@@ -304,7 +496,7 @@ def validate_project(root: str | Path) -> ValidationResult:
 
     prompt_mode = read_pyproject_prompt_mode(root_path / "pyproject.toml")
     if prompt_mode != "public-safe":
-        errors.append("pyproject.toml [tool.english-exam-ai-tutor] prompt-mode must remain public-safe.")
+        errors.append("pyproject.toml [tool.examlex] prompt-mode must remain public-safe.")
 
     portable_scripts = skill_dir / "scripts"
     importable_scripts = importable_dir / "scripts"
@@ -320,7 +512,9 @@ def validate_project(root: str | Path) -> ValidationResult:
         if sha256(portable) != sha256(importable):
             errors.append(f"Automation script mirror mismatch: {script_name}")
 
+    validate_resource_mirror(skill_dir, importable_dir, errors)
     validate_writing_article_omission(portable_scripts / "common.py", errors)
+    validate_documentation(root_path, errors)
     return result
 
 

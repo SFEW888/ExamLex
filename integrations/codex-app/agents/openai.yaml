@@ -1,9 +1,9 @@
-﻿name: english-exam-ai-tutor
+name: examlex
 description: Public-safe Codex App adapter for CET-4, CET-6, and postgraduate English tutoring.
-entrypoint: ../../../skills/english-exam-ai-tutor/SKILL.md
+entrypoint: ../../../skills/examlex/SKILL.md
 prompt_mode: public-safe
 skill_calls:
-  codex: /english-exam-ai-tutor
+  codex: /examlex
   learning_planner: /learning-planner
   grammar_corrector: /grammar-corrector
 maintenance_commands:

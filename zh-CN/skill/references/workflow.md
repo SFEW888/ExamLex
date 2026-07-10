@@ -20,7 +20,7 @@
 根据学习者档案、能力画像和可选错误统计生成每日计划：
 
 ```bash
-python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json
+python -m examlex daily-plan --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json
 ```
 
 以生成任务为基线。可以调整面向学习者的文字表达，但模块、重点、分钟数和原因应保持一致，除非用户修改约束。
@@ -36,7 +36,7 @@ python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json
 用 `record-practice` 追加练习记录，再统计重复错误：
 
 ```bash
-python -m skills.english_exam_ai_tutor summarize-errors --ledger practice-ledger.json --output error-summary.json
+python -m examlex summarize-errors --ledger practice-ledger.json --output error-summary.json
 ```
 
 错误统计是下一次计划的证据，不是对学习者的最终判断。
@@ -46,13 +46,13 @@ python -m skills.english_exam_ai_tutor summarize-errors --ledger practice-ledger
 根据练习记录更新能力画像：
 
 ```bash
-python -m skills.english_exam_ai_tutor update-ability --ability ability-profile.json --ledger practice-ledger.json
+python -m examlex update-ability --ability ability-profile.json --ledger practice-ledger.json
 ```
 
 当练习记录或能力历史有足够数据点时，分析趋势：
 
 ```bash
-python -m skills.english_exam_ai_tutor analyze-trends --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json
+python -m examlex analyze-trends --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json
 ```
 
 ## 6. 作文闭环

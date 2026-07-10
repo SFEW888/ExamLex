@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts import record_practice
+from examlex.scripts import record_practice
 
 
 class RecordPracticeTests(unittest.TestCase):

@@ -6,7 +6,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_SCRIPTS = REPO_ROOT / "skills" / "english-exam-ai-tutor" / "scripts"
+SKILL_SCRIPTS = REPO_ROOT / "skills" / "examlex" / "scripts"
 sys.path.insert(0, str(SKILL_SCRIPTS))
 
 from visualize import generate_report, _compute_ability_levels, _compute_trend_data
@@ -79,7 +79,7 @@ class TestVisualization(unittest.TestCase):
         """visualize command is in CLI."""
         import subprocess
         result = subprocess.run(
-            [sys.executable, "-m", "skills.english_exam_ai_tutor", "visualize", "--help"],
+            [sys.executable, "-m", "examlex", "visualize", "--help"],
             capture_output=True, text=True, cwd=str(REPO_ROOT),
         )
         self.assertEqual(result.returncode, 0)
@@ -103,7 +103,7 @@ class TestVisualization(unittest.TestCase):
 class TestSampleEssays(unittest.TestCase):
     def test_index_loads(self):
         """Sample essay index is valid JSON and all paths exist."""
-        base = (REPO_ROOT / "skills" / "english-exam-ai-tutor"
+        base = (REPO_ROOT / "skills" / "examlex"
                 / "assets" / "data" / "sample-essays")
         index = json.loads((base / "index.json").read_text("utf-8"))
         for key, info in index.items():
@@ -113,7 +113,7 @@ class TestSampleEssays(unittest.TestCase):
 
     def test_samples_valid(self):
         """All sample essays have required fields."""
-        base = (REPO_ROOT / "skills" / "english-exam-ai-tutor"
+        base = (REPO_ROOT / "skills" / "examlex"
                 / "assets" / "data" / "sample-essays")
         # Walk and check JSON files
         for f in base.rglob("*.json"):

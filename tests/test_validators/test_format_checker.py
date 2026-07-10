@@ -1,7 +1,7 @@
 """Tests for format checker."""
 import unittest
 
-from skills.english_exam_ai_tutor.scripts.validators.format_checker import FormatChecker
+from examlex.scripts.validators.format_checker import FormatChecker
 
 
 _VALID_STRATEGY = {

@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from skills.english_exam_ai_tutor.scripts.config import TutorConfig, DependencyReport
+from examlex.scripts.config import TutorConfig, DependencyReport
 
 
 class TutorConfigTests(unittest.TestCase):
@@ -27,6 +27,7 @@ class TutorConfigTests(unittest.TestCase):
             self.assertEqual(cfg.darwin_touch_top_delta, 2.0)
             self.assertTrue(cfg.auto_cleanup)
             self.assertIsInstance(cfg.sessions_root, Path)
+            self.assertIn("ExamLex", str(cfg.sessions_root))
 
     def test_env_var_siliconflow_api_key_is_read(self):
         env = {**self.clean_env, "SILICONFLOW_API_KEY": "sk-test-123"}

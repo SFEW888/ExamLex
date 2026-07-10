@@ -1,0 +1,55 @@
+{
+  "error_patterns": [
+    {
+      "pattern_id": "CN-LI-KEY-001",
+      "tag": "LISTENING_KEYWORD_MISS",
+      "description_cn": "关键词漏听：对信号词（but/however/actually）不敏感，错过关键信息转折点",
+      "typical_examples": [
+        {"incorrect": "听到前面就选答案，没注意 but 后面才是正确答案", "correct": "注意转折词 but/however 后面的信息往往是答案", "note_cn": "信号词识别"},
+        {"incorrect": "被数字干扰后错过后续关键内容", "correct": "听到数字后继续集中注意后续信息", "note_cn": "数字后的信息更重要"}
+      ],
+      "exam_types": ["CET4", "CET6", "TEM4", "TEM8"],
+      "frequency_in_corpus": "very_high",
+      "suggested_fix_strategy": "建立信号词列表（转折、因果、强调），听到后提高警惕",
+      "related_tags": ["LISTENING_MAIN_IDEA_FAIL"]
+    },
+    {
+      "pattern_id": "CN-LI-LINK-001",
+      "tag": "LISTENING_LINKING_WEAK_FORM_FAIL",
+      "description_cn": "连读/弱读识别困难：对 wanna/gonna/'ve 等口语连读形式不熟悉",
+      "typical_examples": [
+        {"incorrect": "听到 /ˈwɒnə/ 不知道是 want to", "correct": "want to → wanna, going to → gonna 需单独记忆", "note_cn": "口语缩写"},
+        {"incorrect": "漏听 've 导致时态判断错误", "correct": "I've been → 现在完成时，需识别缩略形式", "note_cn": "弱读 've"}
+      ],
+      "exam_types": ["CET4", "CET6", "TEM4", "TEM8"],
+      "frequency_in_corpus": "high",
+      "suggested_fix_strategy": "系统学习英语连读和弱读规则，做影子跟读练习",
+      "related_tags": ["LISTENING_KEYWORD_MISS"]
+    },
+    {
+      "pattern_id": "CN-LI-NUM-001",
+      "tag": "LISTENING_NUMBER_DATE_FAIL",
+      "description_cn": "数字/日期听辨困难：对英语中数字读法（如 150→one hundred and fifty）反应慢",
+      "typical_examples": [
+        {"incorrect": "2,345 听成 2,300 和 45", "correct": "two thousand three hundred and forty-five 是一个数", "note_cn": "大数字读法"},
+        {"incorrect": "May 13 与 March 30 听混", "correct": "May /meɪ/ vs March /mɑːrtʃ/ 元音不同", "note_cn": "月份听辨"}
+      ],
+      "exam_types": ["CET4", "CET6", "TEM4"],
+      "frequency_in_corpus": "high",
+      "suggested_fix_strategy": "专项练习数字听写，从两位数到六位数逐步提高",
+      "related_tags": ["LISTENING_KEYWORD_MISS"]
+    },
+    {
+      "pattern_id": "CN-LI-MAIN-001",
+      "tag": "LISTENING_MAIN_IDEA_FAIL",
+      "description_cn": "主旨题失分：关注细节但忽略全文主旨",
+      "typical_examples": [
+        {"incorrect": "记住了一堆细节，但问'这段讲了什么'答不出来", "correct": "听完第一遍后先想主旨，第二遍再记细节", "note_cn": "理解层次问题"}
+      ],
+      "exam_types": ["CET4", "CET6", "TEM4", "TEM8"],
+      "frequency_in_corpus": "medium",
+      "suggested_fix_strategy": "听第一遍时不做题，专注于理解大意；第二遍再答题",
+      "related_tags": ["LISTENING_KEYWORD_MISS"]
+    }
+  ]
+}

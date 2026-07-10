@@ -2,7 +2,7 @@
 import unittest
 from unittest import mock
 
-from skills.english_exam_ai_tutor.scripts.ops import (
+from examlex.scripts.ops import (
     run_all_checks,
     check_environment,
     check_config,
@@ -12,7 +12,7 @@ from skills.english_exam_ai_tutor.scripts.ops import (
     OpsReport,
     CheckResult,
 )
-from skills.english_exam_ai_tutor.scripts.config import TutorConfig
+from examlex.scripts.config import TutorConfig
 
 
 class OpsCheckTests(unittest.TestCase):
@@ -55,6 +55,8 @@ class OpsCheckTests(unittest.TestCase):
     def test_check_scheduler(self):
         result = check_scheduler(self.cfg)
         self.assertEqual(result.status, "pass")
+        self.assertIn("examlex cron-create", result.detail["recommendation"])
+        self.assertNotIn("tutor" + " cron-create", result.detail["recommendation"])
 
     def test_report_all_pass(self):
         report = OpsReport(
@@ -75,7 +77,7 @@ class OpsCheckTests(unittest.TestCase):
         self.assertFalse(report.all_pass())
 
     def test_cli_ops_runs(self):
-        from skills.english_exam_ai_tutor.scripts.cli_ops import main
+        from examlex.scripts.cli_ops import main
         ret = main(["--json"])
         self.assertIn(ret, (0, 1))  # 0=all pass, 1=some warn/fail
 
@@ -85,7 +87,7 @@ class OpsJSONOutputTests(unittest.TestCase):
 
     def test_json_output_is_valid(self):
         import json, io, sys
-        from skills.english_exam_ai_tutor.scripts.cli_ops import main
+        from examlex.scripts.cli_ops import main
 
         old_stdout = sys.stdout
         sys.stdout = io.StringIO()

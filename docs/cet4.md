@@ -1,4 +1,4 @@
-﻿# CET-4 Guide
+# CET-4 Guide
 
 CET-4 learners often need a stable foundation loop: high-frequency vocabulary, sentence-level grammar repair, reading accuracy, and short writing or translation output.
 
@@ -12,7 +12,7 @@ Supported target bands:
 Example Agent calls:
 
 ```text
-/english-exam-ai-tutor Build today's CET4 550+ plan from my learner profile, ability profile, and latest error summary.
+/examlex Build today's CET4 550+ plan from my learner profile, ability profile, and latest error summary.
 /learning-planner Create a 30-day CET4 plan for a weak-foundation learner targeting 550+.
 ```
 

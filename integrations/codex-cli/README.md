@@ -1,23 +1,17 @@
-﻿# Codex CLI Integration
+# Codex CLI Integration
 
-Install the Skill for Codex CLI:
-
-```bash
-npx skills add your-org/english-exam-ai-tutor  # 替换为你的组织名/用户名 (replace with your org/username)
-```
-
-For the main Skill plus shortcut Skills:
+ExamLex is currently unpublished. From the local project root, install the main Skill plus shortcut Skills for Codex CLI:
 
 ```powershell
 .\install.ps1 codex
 ```
 
-Then use the installed `english-exam-ai-tutor` Skill for CET-4, CET-6, or postgraduate English tasks.
+Then use the installed `examlex` Skill for CET-4, CET-6, or postgraduate English tasks.
 
 Use Skill calls inside Codex:
 
 ```text
-/english-exam-ai-tutor Build today's plan from my learner profile and ability profile.
+/examlex Build today's plan from my learner profile and ability profile.
 /learning-planner Make a CET4 550+ weekly plan.
 /grammar-corrector Check this paragraph and return a correction report.
 /reading-navigator Break down this reading passage.

@@ -12,7 +12,7 @@
 示例练习记录：
 
 ```powershell
-python -m skills.english_exam_ai_tutor record-practice --ledger cet6-ledger.json --date 2026-07-05 --exam-type CET6 --module listening --task-id listening-keyword-01 --duration-minutes 20 --total-items 15 --correct-items 11 --error-tags LISTENING_KEYWORD_MISS --print-record
+python -m examlex record-practice --ledger cet6-ledger.json --date 2026-07-05 --exam-type CET6 --module listening --task-id listening-keyword-01 --duration-minutes 20 --total-items 15 --correct-items 11 --error-tags LISTENING_KEYWORD_MISS --print-record
 ```
 
 所有生成计划和作文评分都只是学习指导。工具包不承诺官方六级成绩。

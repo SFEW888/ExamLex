@@ -5,8 +5,8 @@
 请从仓库根目录运行命令：
 
 ```powershell
-cd english-exam-ai-tutor
-python -m skills.english_exam_ai_tutor --help
+cd examlex
+python -m examlex --help
 ```
 
 如果使用简短命令，请先以可编辑模式重新安装：
@@ -23,8 +23,8 @@ python -m pip install -e .
 
 将预期变更同步到以下两个目录之间：
 
-- `skills/english-exam-ai-tutor/scripts/`
-- `skills/english_exam_ai_tutor/scripts/`
+- `skills/examlex/scripts/`
+- `examlex/scripts/`
 
 然后重新运行：
 

@@ -7,7 +7,7 @@ from dataclasses import asdict, dataclass
 from pathlib import Path
 
 
-SKILL_NAME = "english-exam-ai-tutor"
+SKILL_NAME = "examlex"
 SKILL_ALIASES = (
     "learning-planner",
     "vocabulary-builder",
@@ -144,7 +144,7 @@ def result_to_json(result: InstallResult | list[InstallResult]) -> str:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Install the English Exam AI Tutor Skill for Claude Code.")
+    parser = argparse.ArgumentParser(description="Install the ExamLex Skill for Claude Code.")
     parser.add_argument("--source", type=Path, default=default_source(), help="Skill directory or skills root to copy.")
     parser.add_argument("--dest", type=Path, default=default_dest(), help="Destination skills directory.")
     parser.add_argument("--dry-run", action="store_true", help="Report the copy target without writing files.")

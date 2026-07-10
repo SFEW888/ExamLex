@@ -3,24 +3,27 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "english-exam-ai-tutor"
+name = "examlex"
 version = "0.1.0"
 description = "Agent Skill plus automation toolkit for CET-4, CET-6, and postgraduate English preparation."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
-authors = [{ name = "English Exam AI Tutor Contributors" }]
+license = "MIT"
+authors = [{ name = "ExamLex Contributors" }]
 dependencies = []
 
 [project.scripts]
-english-exam-tutor = "skills.english_exam_ai_tutor.cli:main"
+examlex = "examlex.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["skills*"]
+include = ["examlex*"]
+
+[tool.setuptools.package-data]
+examlex = ["SKILL.md", "assets/**/*", "references/*.md"]
 
 [tool.unittest]
 start-directory = "tests"
 
-[tool.english-exam-ai-tutor]
-skill-path = "skills/english-exam-ai-tutor"
+[tool.examlex]
+skill-path = "skills/examlex"
 prompt-mode = "public-safe"

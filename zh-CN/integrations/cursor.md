@@ -12,8 +12,8 @@ Cursor 应使用 public-safe Skill 说明和仓库文档来处理学习者流程
 日常操作示例：
 
 ```powershell
-python -m skills.english_exam_ai_tutor record-practice --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module vocabulary --task-id vocab-context-01 --duration-minutes 15 --total-items 20 --correct-items 16 --error-tags VOCAB_CONTEXT_MISUSE --print-record
-python -m skills.english_exam_ai_tutor summarize-errors --ledger practice-ledger.json --output error-summary.json
+python -m examlex record-practice --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module vocabulary --task-id vocab-context-01 --duration-minutes 15 --total-items 20 --correct-items 16 --error-tags VOCAB_CONTEXT_MISUSE --print-record
+python -m examlex summarize-errors --ledger practice-ledger.json --output error-summary.json
 ```
 
 不要把私有提示词正文粘贴进 Cursor 规则或提交文件。

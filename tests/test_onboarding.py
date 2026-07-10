@@ -7,14 +7,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts.config import TutorConfig, DependencyReport
-from skills.english_exam_ai_tutor.scripts.session import SessionManager
-from skills.english_exam_ai_tutor.scripts.extractors.text import TextExtractor
-from skills.english_exam_ai_tutor.scripts.extractors.url_resolver import resolve_input, InputType
-from skills.english_exam_ai_tutor.scripts.validators.format_checker import FormatChecker
-from skills.english_exam_ai_tutor.scripts.validators.darwin_structure import DarwinStructureScorer
-from skills.english_exam_ai_tutor.scripts.optimizers.ratchet import StrategyRatchet
-from skills.english_exam_ai_tutor.scripts.common import load_data, save_data
+from examlex.scripts.config import TutorConfig, DependencyReport
+from examlex.scripts.session import SessionManager
+from examlex.scripts.extractors.text import TextExtractor
+from examlex.scripts.extractors.url_resolver import resolve_input, InputType
+from examlex.scripts.validators.format_checker import FormatChecker
+from examlex.scripts.validators.darwin_structure import DarwinStructureScorer
+from examlex.scripts.optimizers.ratchet import StrategyRatchet
+from examlex.scripts.common import load_data, save_data
 
 
 class UserOnboardingTests(unittest.TestCase):
@@ -22,7 +22,7 @@ class UserOnboardingTests(unittest.TestCase):
 
     def setUp(self):
         self.home = tempfile.mkdtemp()
-        self.project = Path(self.home) / "english-exam-ai-tutor"
+        self.project = Path(self.home) / "examlex"
         self.project.mkdir()
         self.library = self.project / "strategy-library.json"
 
@@ -212,8 +212,8 @@ class CLIOnboardingTests(unittest.TestCase):
     """Test CLI commands from a new user's perspective."""
 
     def test_check_deps_cli(self):
-        """tutor check-deps should run without crashing."""
-        from skills.english_exam_ai_tutor.cli import _check_deps_main
+        """examlex check-deps should run without crashing."""
+        from examlex.cli import _check_deps_main
         import io, sys
         old_stdout = sys.stdout
         sys.stdout = io.StringIO()
@@ -224,8 +224,8 @@ class CLIOnboardingTests(unittest.TestCase):
             sys.stdout = old_stdout
 
     def test_help_shows_new_commands(self):
-        """tutor --help should list extract/validate/commit/check-deps."""
-        from skills.english_exam_ai_tutor.cli import ALL_COMMANDS
+        """examlex --help should list extract/validate/commit/check-deps."""
+        from examlex.cli import ALL_COMMANDS
         new_cmds = ["extract", "validate-strategies", "commit-strategies", "check-deps"]
         for cmd in new_cmds:
             self.assertIn(cmd, ALL_COMMANDS, f"Missing command: {cmd}")

@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts.extractors.book import BookExtractor
+from examlex.scripts.extractors.book import BookExtractor
 
 
 class BookExtractorTests(unittest.TestCase):

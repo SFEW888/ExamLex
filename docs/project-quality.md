@@ -1,6 +1,6 @@
 # GitHub Project Quality
 
-This repository is organized as a public GitHub project, not only as a local Skill folder.
+This unpublished repository is organized to meet public-project quality expectations, not only as a local Skill folder.
 
 ## Quality Bar
 
@@ -8,7 +8,7 @@ This repository is organized as a public GitHub project, not only as a local Ski
 - Community health: root-level `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `SUPPORT.md`, `LICENSE`, and `CHANGELOG.md`.
 - Contribution workflow: `.github/ISSUE_TEMPLATE/`, `.github/PULL_REQUEST_TEMPLATE.md`, and `.github/workflows/ci.yml`.
 - Deterministic checks: `scripts/validate_repo.py`, unit tests, and `git diff --check`.
-- Skill portability: `skills/english-exam-ai-tutor/` keeps only the required Skill package files and resources.
+- Skill portability: `skills/examlex/` keeps only the required Skill package files and resources.
 - Prompt safety: public files use placeholders and keep private prompt bodies out of the repository.
 
 ## Release Readiness Checklist

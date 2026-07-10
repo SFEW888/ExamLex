@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts import common, summarize_errors
+from examlex.scripts import common, summarize_errors
 
 
 class SummarizeErrorsTests(unittest.TestCase):

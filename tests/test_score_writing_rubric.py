@@ -2,7 +2,7 @@ import json
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts import score_writing_rubric
+from examlex.scripts import score_writing_rubric
 
 
 class ScoreWritingRubricTests(unittest.TestCase):

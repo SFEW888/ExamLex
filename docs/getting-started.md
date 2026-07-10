@@ -1,42 +1,28 @@
-﻿# Getting Started
+# Getting Started
 
-Use this guide to install the Skills from a clean clone. For the shortest path, use the same one-line style as other agent-native Skill repositories.
+Use this guide to install ExamLex from a local checkout. ExamLex is currently unpublished, so remote and one-line registry installation are intentionally not documented yet.
 
 ## Requirements
 
 - Python 3.10 or newer
-- Git
-- Node.js/npm for `npx skills add`, or Git plus PowerShell/POSIX shell for the clone installer
-- Python 3.10 or newer for the clone installer internals
+- PowerShell or a POSIX shell for the local installer
 
 No third-party Python dependency is required for the current toolkit.
 
-## One-Line Install
-
-```bash
-npx skills add your-org/english-exam-ai-tutor
-```
-
-This installs the main `english-exam-ai-tutor` Skill when the repository is published with a real GitHub owner. Restart the agent, run `/skills`, and invoke the Skill from chat.
-
-## Clone Install With Shortcut Skills
+## Local Install With Shortcut Skills
 
 Use this path when you want the main Skill plus all eight shortcut Skills.
 
-macOS/Linux:
+From the project root on macOS/Linux:
 
 ```bash
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.english-exam-ai-tutor
-cd ~/.english-exam-ai-tutor
 ./install.sh codex
 ./install.sh claude
 ```
 
-Windows PowerShell:
+From the project root in Windows PowerShell:
 
 ```powershell
-git clone https://github.com/your-org/english-exam-ai-tutor.git
-cd english-exam-ai-tutor
 .\install.ps1 codex
 .\install.ps1 claude
 ```
@@ -59,7 +45,7 @@ Verify in the Agent:
 
 ```text
 /skills
-/english-exam-ai-tutor 帮我为 CET4 550+ 制定一周计划
+/examlex 帮我为 CET4 550+ 制定一周计划
 /learning-planner 帮我生成本周任务
 /grammar-corrector 批改这段作文
 ```
@@ -70,7 +56,7 @@ Use these in Agent chat instead of long Python commands:
 
 | Scenario | Slash call |
 | --- | --- |
-| Full tutor workflow | `/english-exam-ai-tutor` |
+| Full tutor workflow | `/examlex` |
 | Learning plan | `/learning-planner` |
 | Vocabulary | `/vocabulary-builder` |
 | Reading | `/reading-navigator` |
@@ -94,36 +80,36 @@ This tutor supports five exam types:
 
 ## New Features
 
-- **Vocabulary Estimation**: `tutor vocab --interactive` — Yes/No sampling with false-alarm correction
-- **Timed Practice**: `tutor log --timed` — auto time-limit lookup + overtime tracking
+- **Vocabulary Estimation**: `examlex vocab --interactive` — Yes/No sampling with false-alarm correction
+- **Timed Practice**: `examlex log --timed` — auto time-limit lookup + overtime tracking
 - **Spaced Repetition**: automatic review urgency scoring in error summaries
-- **Progress Visualization**: `tutor report` — standalone HTML with SVG radar/trend/error charts
+- **Progress Visualization**: `examlex report` — standalone HTML with SVG radar/trend/error charts
 - **Vocabulary Pool**: built-in 650 words across 5 exam levels
 - **Common Error Library**: 21 curated error patterns with examples
 - **Model Essay Library**: scored sample essays for rubric anchoring
-- **Backup & Restore**: `tutor backup` / `tutor restore` with tar.gz support
+- **Backup & Restore**: `examlex backup` / `examlex restore` with tar.gz support
 
 ## Run The Optional CLI
 
 Use these wrappers when you want to run the deterministic tools directly from a terminal:
 
 ```bash
-bin/tutor check examples/sample-learner-profile.yaml
-bin/tutor plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
-bin/tutor strategies --library strategy-library.json  # 需要你创建/积累的策略库文件 (create/accumulate your own strategy library file)
+bin/examlex check examples/sample-learner-profile.yaml
+bin/examlex plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
+bin/examlex strategies --library strategy-library.json  # 需要你创建/积累的策略库文件 (create/accumulate your own strategy library file)
 ```
 
 PowerShell:
 
 ```powershell
-.\bin\tutor.ps1 check examples/sample-learner-profile.yaml
-.\bin\tutor.ps1 plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
+.\bin\examlex.ps1 check examples/sample-learner-profile.yaml
+.\bin\examlex.ps1 plan examples/sample-learner-profile.yaml --ability examples/sample-ability-profile.yaml --output daily-plan.json
 ```
 
 The underlying Python module is for maintainers and debugging:
 
 ```powershell
-python -m skills.english_exam_ai_tutor --help
+python -m examlex --help
 ```
 
 See [../cli-reference.md](../cli-reference.md) for all short commands.
@@ -141,7 +127,7 @@ python -m unittest discover -s tests
 
 ```powershell
 python -m pip install -e .
-english-exam-tutor --help
+examlex --help
 ```
 
 Generated local files such as `daily-plan.json`, `.env`, and learner records should stay untracked.

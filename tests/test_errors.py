@@ -1,7 +1,7 @@
 """Tests for standardized error types."""
 import unittest
 
-from skills.english_exam_ai_tutor.scripts.errors import (
+from examlex.scripts.errors import (
     TutorError,
     ExtractionError,
     ValidationError,

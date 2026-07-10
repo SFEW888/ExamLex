@@ -1,1 +1,1 @@
-"""Repository maintenance scripts for the English Exam AI Tutor project."""
+"""Repository maintenance scripts for the ExamLex project."""

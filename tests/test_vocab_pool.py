@@ -7,7 +7,7 @@ from pathlib import Path
 
 # Ensure we can import from the package
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_SCRIPTS = REPO_ROOT / "skills" / "english-exam-ai-tutor" / "scripts"
+SKILL_SCRIPTS = REPO_ROOT / "skills" / "examlex" / "scripts"
 sys.path.insert(0, str(SKILL_SCRIPTS))
 
 import vocab_generator
@@ -17,7 +17,7 @@ from vocab_generator import generate_all, generate_level, validate_entry, load_s
 class TestVocabPool(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.vocab_dir = REPO_ROOT / "skills" / "english-exam-ai-tutor" / "assets" / "data" / "vocabulary"
+        cls.vocab_dir = REPO_ROOT / "skills" / "examlex" / "assets" / "data" / "vocabulary"
         cls.schema = load_schema()
 
     def test_index_exists(self):

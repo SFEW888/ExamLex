@@ -13,7 +13,7 @@ from scripts import install_claude, install_codex, install_cursor
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SOURCE = PROJECT_ROOT / "skills" / "english-exam-ai-tutor"
+SOURCE = PROJECT_ROOT / "skills" / "examlex"
 TEMP_ROOT = PROJECT_ROOT / ".task8-test-tmp"
 
 
@@ -36,7 +36,7 @@ class InstallScriptTests(unittest.TestCase):
             result = install_codex.install_skill(SOURCE, dest, dry_run=True)
 
             self.assertTrue(result.dry_run)
-            self.assertFalse((dest / "english-exam-ai-tutor").exists())
+            self.assertFalse((dest / "examlex").exists())
 
     def test_copies_skill_to_temp_destination(self):
         with temp_dir() as temp:
@@ -44,7 +44,7 @@ class InstallScriptTests(unittest.TestCase):
 
             result = install_claude.install_skill(SOURCE, dest)
 
-            self.assertEqual(dest / "english-exam-ai-tutor", result.target)
+            self.assertEqual(dest / "examlex", result.target)
             self.assertTrue((result.target / "SKILL.md").exists())
             self.assertTrue((result.target / "references" / "workflow.md").exists())
 
@@ -55,7 +55,7 @@ class InstallScriptTests(unittest.TestCase):
             results = install_claude.install_skills(PROJECT_ROOT / "skills", dest, dry_run=True)
 
             installed_names = {result.target.name for result in results}
-            self.assertIn("english-exam-ai-tutor", installed_names)
+            self.assertIn("examlex", installed_names)
             self.assertIn("grammar-corrector", installed_names)
             self.assertIn("learning-planner", installed_names)
 
@@ -81,7 +81,7 @@ class InstallScriptTests(unittest.TestCase):
 
     def test_force_refuses_destination_that_aliases_source_parent(self):
         with temp_dir() as temp:
-            source = Path(temp) / "skills" / "english-exam-ai-tutor"
+            source = Path(temp) / "skills" / "examlex"
             source.mkdir(parents=True)
             marker = source / "SKILL.md"
             marker.write_text("---\nname: x\ndescription: Use when x.\n---\n", encoding="utf-8")
@@ -93,7 +93,7 @@ class InstallScriptTests(unittest.TestCase):
 
     def test_copy_excludes_pycache_and_pyc_files(self):
         with temp_dir() as temp:
-            source = Path(temp) / "source" / "english-exam-ai-tutor"
+            source = Path(temp) / "source" / "examlex"
             source.mkdir(parents=True)
             (source / "SKILL.md").write_text("---\nname: x\ndescription: Use when x.\n---\n", encoding="utf-8")
             pycache = source / "scripts" / "__pycache__"
@@ -117,7 +117,7 @@ class InstallScriptTests(unittest.TestCase):
                 sys.executable,
                 "scripts/install_codex.py",
                 "--source",
-                "skills/english-exam-ai-tutor",
+                "skills/examlex",
                 "--dest",
                 str(dest),
                 "--dry-run",
@@ -132,7 +132,7 @@ class InstallScriptTests(unittest.TestCase):
 
         self.assertTrue(payload["dry_run"])
         self.assertFalse(payload["copied"])
-        self.assertFalse((dest / "english-exam-ai-tutor").exists())
+        self.assertFalse((dest / "examlex").exists())
 
     def test_cursor_installer_runs_as_standalone_cli_dry_run_json(self):
         dest = PROJECT_ROOT / "test-artifacts" / "task8-cli-cursor"
@@ -142,7 +142,7 @@ class InstallScriptTests(unittest.TestCase):
                 sys.executable,
                 "scripts/install_cursor.py",
                 "--source",
-                "skills/english-exam-ai-tutor",
+                "skills/examlex",
                 "--dest",
                 str(dest),
                 "--dry-run",
@@ -157,7 +157,7 @@ class InstallScriptTests(unittest.TestCase):
 
         self.assertTrue(payload["dry_run"])
         self.assertFalse(payload["copied"])
-        self.assertFalse((dest / "english-exam-ai-tutor").exists())
+        self.assertFalse((dest / "examlex").exists())
 
 
 if __name__ == "__main__":

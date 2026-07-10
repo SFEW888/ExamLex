@@ -12,7 +12,7 @@
 示例每日计划命令：
 
 ```powershell
-python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.cet4.json --ability ability-profile.json --errors error-summary.json --output cet4-daily-plan.json
+python -m examlex daily-plan --profile learner-profile.cet4.json --ability ability-profile.json --errors error-summary.json --output cet4-daily-plan.json
 ```
 
 确定性作文评分只能作为修改参考，不是官方四级成绩保证。

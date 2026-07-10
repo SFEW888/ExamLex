@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 import shutil
 import unittest
@@ -10,7 +10,7 @@ from scripts import validate_repo
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = Path("skills") / "english-exam-ai-tutor"
+SKILL_DIR = Path("skills") / "examlex"
 TEMP_ROOT = PROJECT_ROOT / ".task8-test-tmp"
 
 
@@ -31,6 +31,97 @@ def copy_project():
 
 
 class ValidateProjectTests(unittest.TestCase):
+    def test_detects_missing_chinese_document_counterpart(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            (root / "zh-CN" / "docs" / "roadmap.md").unlink(missing_ok=True)
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(
+            any(
+                "missing Chinese documentation counterpart" in error
+                and "zh-CN/docs/roadmap.md" in error
+                for error in result.errors
+            )
+        )
+
+    def test_detects_external_url_in_published_markdown(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            readme = root / "README.md"
+            marker = "https" + "://example.invalid/source"
+            readme.write_text(
+                readme.read_text(encoding="utf-8") + f"\n{marker}\n",
+                encoding="utf-8",
+            )
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(any("external URL" in error for error in result.errors))
+
+    def test_detects_broken_local_markdown_link(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            readme = root / "README.md"
+            readme.write_text(
+                readme.read_text(encoding="utf-8")
+                + "\n[missing](docs/not-present.md)\n",
+                encoding="utf-8",
+            )
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(
+            any("broken local Markdown link" in error for error in result.errors)
+        )
+
+    def test_unpublished_documentation_is_local_only(self):
+        readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+        zh_readme = (PROJECT_ROOT / "zh-CN" / "README.md").read_text(encoding="utf-8")
+        env_example = (PROJECT_ROOT / ".env.example").read_text(encoding="utf-8")
+
+        self.assertIn("unpublished", readme.lower())
+        self.assertIn("尚未发布", zh_readme)
+        for text in (readme, zh_readme):
+            self.assertNotIn("your-org", text)
+            self.assertNotIn("github.com/", text)
+        self.assertIn("SILICONFLOW_API_KEY=", env_example)
+        self.assertIn("EXAMLEX_PYTHON=python", env_example)
+        self.assertNotIn("EXAMLEX_PROMPT_MODE", env_example)
+
+    def test_detects_remote_install_placeholder(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            readme = root / "README.md"
+            readme.write_text(
+                readme.read_text(encoding="utf-8") + "\nyour-org/examlex\n",
+                encoding="utf-8",
+            )
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(any("remote install placeholder" in e for e in result.errors))
+
+    def test_current_repo_uses_examlex_identity(self):
+        result = validate_repo.validate_project(PROJECT_ROOT)
+
+        self.assertEqual([], result.errors)
+        self.assertTrue((PROJECT_ROOT / "examlex" / "__init__.py").is_file())
+        self.assertTrue((PROJECT_ROOT / "skills" / "examlex" / "SKILL.md").is_file())
+
+    def test_detects_legacy_product_identifier(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            legacy = "english" + "-exam-ai-tutor"
+            (root / "legacy-product-name.txt").write_text(legacy, encoding="utf-8")
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(
+            any("legacy product identifier" in error for error in result.errors)
+        )
+
     def test_current_repo_is_valid_without_readme_warning(self):
         result = validate_repo.validate_project(PROJECT_ROOT)
 
@@ -67,7 +158,7 @@ class ValidateProjectTests(unittest.TestCase):
             root = Path(temp) / "repo"
             skill = root / SKILL_DIR / "SKILL.md"
             skill.write_text(
-                "---\nname: english-exam-ai-tutor\ndescription: Supports exams.\n---\n\n# Skill\n",
+                "---\nname: examlex\ndescription: Supports exams.\n---\n\n# Skill\n",
                 encoding="utf-8",
             )
 
@@ -78,12 +169,49 @@ class ValidateProjectTests(unittest.TestCase):
     def test_detects_mirror_mismatch(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
-            script = root / "skills" / "english_exam_ai_tutor" / "scripts" / "record_practice.py"
+            script = root / "skills" / "examlex" / "scripts" / "record_practice.py"
             script.write_text(script.read_text(encoding="utf-8") + "\n# mismatch\n", encoding="utf-8")
 
             result = validate_repo.validate_project(root)
 
         self.assertTrue(any("mirror mismatch" in error for error in result.errors))
+
+    def test_detects_resource_mirror_mismatch(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            package_asset = root / "examlex" / "assets" / "data" / "vocab-test-words.json"
+            package_asset.parent.mkdir(parents=True, exist_ok=True)
+            package_asset.write_text("{}\n", encoding="utf-8")
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(
+            any("resource mirror mismatch" in error for error in result.errors)
+        )
+
+    def test_importable_package_contains_skill_references(self):
+        package_reference = (
+            PROJECT_ROOT / "examlex" / "references" / "darwin-rubric.md"
+        )
+
+        self.assertTrue(package_reference.is_file(), str(package_reference))
+
+    def test_detects_reference_mirror_mismatch(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            package_reference = (
+                root / "examlex" / "references" / "darwin-rubric.md"
+            )
+            package_reference.write_text("# mismatch\n", encoding="utf-8")
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(
+            any(
+                "resource mirror mismatch: references/darwin-rubric.md" in error
+                for error in result.errors
+            )
+        )
 
     def test_detects_missing_github_health_file(self):
         with copy_project() as temp:
@@ -157,23 +285,23 @@ class ValidateProjectTests(unittest.TestCase):
 
         self.assertTrue(any("Missing required root file: cli-reference.md" in error for error in result.errors))
 
-    def test_detects_missing_tutor_bash_wrapper(self):
+    def test_detects_missing_examlex_bash_wrapper(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
-            (root / "bin" / "tutor").unlink(missing_ok=True)
+            (root / "bin" / "examlex").unlink(missing_ok=True)
 
             result = validate_repo.validate_project(root)
 
-        self.assertTrue(any("Missing user CLI wrapper: bin/tutor" in error for error in result.errors))
+        self.assertTrue(any("Missing user CLI wrapper: bin/examlex" in error for error in result.errors))
 
-    def test_detects_missing_tutor_powershell_wrapper(self):
+    def test_detects_missing_examlex_powershell_wrapper(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
-            (root / "bin" / "tutor.ps1").unlink(missing_ok=True)
+            (root / "bin" / "examlex.ps1").unlink(missing_ok=True)
 
             result = validate_repo.validate_project(root)
 
-        self.assertTrue(any("Missing user CLI wrapper: bin/tutor.ps1" in error for error in result.errors))
+        self.assertTrue(any("Missing user CLI wrapper: bin/examlex.ps1" in error for error in result.errors))
 
     def test_detects_missing_quality_documentation(self):
         with copy_project() as temp:
@@ -197,7 +325,7 @@ class ValidateProjectTests(unittest.TestCase):
         with copy_project() as temp:
             root = Path(temp) / "repo"
             readme = root / "README.md"
-            readme.write_text("# English Exam AI Tutor\n", encoding="utf-8")
+            readme.write_text("# ExamLex\n", encoding="utf-8")
 
             result = validate_repo.validate_project(root)
 
@@ -208,10 +336,7 @@ class ValidateProjectTests(unittest.TestCase):
             root = Path(temp) / "repo"
             readme = root / "README.md"
             text = readme.read_text(encoding="utf-8")
-            text = text.replace("$HOME\\.agents\\skills", "$HOME\\agents\\skills")
-            text = text.replace("$HOME\\.claude\\skills", "$HOME\\claude\\skills")
-            text = text.replace(".agents\\skills", "agents\\skills")
-            text = text.replace(".claude\\skills", "claude\\skills")
+            text = text.replace("python -m pip install -e .", "python -m pip --version")
             readme.write_text(text, encoding="utf-8")
 
             result = validate_repo.validate_project(root)
@@ -273,7 +398,7 @@ class ValidateProjectTests(unittest.TestCase):
         with copy_project() as temp:
             root = Path(temp) / "repo"
             readme = root / "README.md"
-            readme.write_text(readme.read_text(encoding="utf-8") + "\nD:\\Codex_project\\英语\\english-exam-ai-tutor\n", encoding="utf-8")
+            readme.write_text(readme.read_text(encoding="utf-8") + "\nD:\\Codex_project\\英语\\examlex\n", encoding="utf-8")
 
             result = validate_repo.validate_project(root)
 

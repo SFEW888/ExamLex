@@ -1,7 +1,7 @@
 """Tests for Darwin structure scoring."""
 import unittest
 
-from skills.english_exam_ai_tutor.scripts.validators.darwin_structure import (
+from examlex.scripts.validators.darwin_structure import (
     DarwinStructureScorer,
     StructureScore,
 )

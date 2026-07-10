@@ -5,17 +5,17 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts.common import load_data, save_data
-from skills.english_exam_ai_tutor.scripts.optimizers.ratchet import StrategyRatchet
-from skills.english_exam_ai_tutor.scripts.session import SessionManager
-from skills.english_exam_ai_tutor.scripts.extractors.url_resolver import resolve_input, InputType
-from skills.english_exam_ai_tutor.scripts.extractors.text import TextExtractor
+from examlex.scripts.common import load_data, save_data
+from examlex.scripts.optimizers.ratchet import StrategyRatchet
+from examlex.scripts.session import SessionManager
+from examlex.scripts.extractors.url_resolver import resolve_input, InputType
+from examlex.scripts.extractors.text import TextExtractor
 import io
 import os
 import tarfile
-from skills.english_exam_ai_tutor.scripts.backup_data import restore_backup
-from skills.english_exam_ai_tutor.scripts.config import TutorConfig
-from skills.english_exam_ai_tutor.scripts.extractors.video import _cookie_retry_enabled
+from examlex.scripts.backup_data import restore_backup
+from examlex.scripts.config import TutorConfig
+from examlex.scripts.extractors.video import _cookie_retry_enabled
 
 
 class InjectionTests(unittest.TestCase):
@@ -45,7 +45,7 @@ class InjectionTests(unittest.TestCase):
             "exam_types": ["CET4"], "modules": ["reading"],
         }
         # Validate should handle this without catastrophic backtracking
-        from skills.english_exam_ai_tutor.scripts.validators.format_checker import FormatChecker
+        from examlex.scripts.validators.format_checker import FormatChecker
         checker = FormatChecker()
         report = checker.validate(s)
         self.assertFalse(report.passed)
@@ -71,7 +71,7 @@ class InjectionTests(unittest.TestCase):
             "source_file": "x.txt",
             "exam_types": ["CET4"], "modules": ["reading"],
         }
-        from skills.english_exam_ai_tutor.scripts.validators.format_checker import FormatChecker
+        from examlex.scripts.validators.format_checker import FormatChecker
         checker = FormatChecker()
         report = checker.validate(s)
         # Should not crash; may pass or fail but must not raise
@@ -189,19 +189,19 @@ class ConfigurationSecurityTests(unittest.TestCase):
 
     def test_cookie_retry_is_opt_in(self):
         """Verify yt-dlp cookie retry requires explicit opt-in."""
-        original = os.environ.get("TUTOR_YTDLP_COOKIES_FROM_BROWSER")
+        original = os.environ.get("EXAMLEX_YTDLP_COOKIES_FROM_BROWSER")
 
         def cleanup():
             if original is not None:
-                os.environ["TUTOR_YTDLP_COOKIES_FROM_BROWSER"] = original
+                os.environ["EXAMLEX_YTDLP_COOKIES_FROM_BROWSER"] = original
             else:
-                os.environ.pop("TUTOR_YTDLP_COOKIES_FROM_BROWSER", None)
+                os.environ.pop("EXAMLEX_YTDLP_COOKIES_FROM_BROWSER", None)
 
         self.addCleanup(cleanup)
-        os.environ.pop("TUTOR_YTDLP_COOKIES_FROM_BROWSER", None)
+        os.environ.pop("EXAMLEX_YTDLP_COOKIES_FROM_BROWSER", None)
         self.assertFalse(_cookie_retry_enabled())
 
-        os.environ["TUTOR_YTDLP_COOKIES_FROM_BROWSER"] = "1"
+        os.environ["EXAMLEX_YTDLP_COOKIES_FROM_BROWSER"] = "1"
         self.assertTrue(_cookie_retry_enabled())
 
 

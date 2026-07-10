@@ -5,10 +5,10 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts.validators.format_checker import FormatChecker
-from skills.english_exam_ai_tutor.scripts.validators.darwin_structure import DarwinStructureScorer
-from skills.english_exam_ai_tutor.scripts.optimizers.ratchet import StrategyRatchet
-from skills.english_exam_ai_tutor.scripts.extractors.url_resolver import resolve_input, InputType
+from examlex.scripts.validators.format_checker import FormatChecker
+from examlex.scripts.validators.darwin_structure import DarwinStructureScorer
+from examlex.scripts.optimizers.ratchet import StrategyRatchet
+from examlex.scripts.extractors.url_resolver import resolve_input, InputType
 
 
 class EmptyInputTests(unittest.TestCase):

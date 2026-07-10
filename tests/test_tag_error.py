@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from skills.english_exam_ai_tutor.scripts import tag_error
+from examlex.scripts import tag_error
 
 
 class TagErrorTests(unittest.TestCase):

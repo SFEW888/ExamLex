@@ -4,7 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts.optimizers.ratchet import (
+from examlex.scripts.optimizers.ratchet import (
     StrategyRatchet,
     RatchetDecision,
 )

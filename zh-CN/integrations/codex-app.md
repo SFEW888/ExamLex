@@ -13,8 +13,8 @@ Codex App 中也使用同样的证据闭环：
 
 ```powershell
 python scripts\validate_repo.py --root . --json
-python -m skills.english_exam_ai_tutor validate-profile --profile learner-profile.json
-python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json
+python -m examlex validate-profile --profile learner-profile.json
+python -m examlex daily-plan --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json
 ```
 
 不要把私有提示词正文复制进适配配置或共享对话记录。

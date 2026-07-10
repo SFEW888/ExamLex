@@ -6,7 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts.session import SessionManager, Session
+from examlex.scripts.session import SessionManager, Session
 
 
 class SessionManagerTests(unittest.TestCase):

@@ -5,7 +5,7 @@
 ```mermaid
 flowchart TD
     User["学习者或助教操作者"] --> Agent["Agent 平台：Claude Code、Codex、Cursor"]
-    Agent --> Skill["可移植 Skill：skills/english-exam-ai-tutor"]
+    Agent --> Skill["可移植 Skill：skills/examlex"]
     Skill --> References["参考资料：角色表、工作流、数据模型、考试配置、错误标签、提示词模式"]
     Skill --> Templates["模板和 Schema"]
     Agent --> Scripts["自动化脚本"]
@@ -34,11 +34,11 @@ flowchart LR
 
 ## 主要组件
 
-- `skills/english-exam-ai-tutor/SKILL.md`：可移植 Skill 入口。
-- `skills/english-exam-ai-tutor/references/`：公开安全策略、工作流、数据模型、考试配置、助教角色表和错误标签。
-- `skills/english-exam-ai-tutor/assets/`：模板和 JSON Schema。
-- `skills/english-exam-ai-tutor/scripts/`：可移植脚本入口。
-- `skills/english_exam_ai_tutor/scripts/`：用于测试和命令行的可导入脚本镜像。
+- `skills/examlex/SKILL.md`：可移植 Skill 入口。
+- `skills/examlex/references/`：公开安全策略、工作流、数据模型、考试配置、助教角色表和错误标签。
+- `skills/examlex/assets/`：模板和 JSON Schema。
+- `skills/examlex/scripts/`：可移植脚本入口。
+- `examlex/scripts/`：用于测试和命令行的可导入脚本镜像。
 - `scripts/`：仓库校验器和平台安装器。
 - `integrations/`：各平台的安装和使用说明。
 

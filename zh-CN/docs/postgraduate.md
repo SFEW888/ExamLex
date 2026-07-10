@@ -12,7 +12,7 @@
 示例作文评分命令：
 
 ```powershell
-python -m skills.english_exam_ai_tutor score-writing --text-file postgraduate-essay.txt --exam-type POSTGRADUATE_ENGLISH --output postgraduate-writing-score.json
+python -m examlex score-writing --text-file postgraduate-essay.txt --exam-type POSTGRADUATE_ENGLISH --output postgraduate-writing-score.json
 ```
 
 评分参考用于比较草稿和指导修改，不代表官方考研英语成绩。

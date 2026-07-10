@@ -1,6 +1,6 @@
 # 多源蒸馏方法论
 
-> 五种蒸馏路径全部内置于 english-exam-ai-tutor。无需外部 Skill 或工具（视频下载需要 yt-dlp + ffmpeg）。Agent 编排五阶段管线：提取 → 蒸馏 → 校验 → 评估 → 提交。
+> 五种蒸馏路径全部内置于 examlex。无需外部 Skill 或工具（视频下载需要 yt-dlp + ffmpeg）。Agent 编排五阶段管线：提取 → 蒸馏 → 校验 → 评估 → 提交。
 
 ## 支持的来源类型
 
@@ -16,7 +16,7 @@
 
 ### 阶段 1: 提取
 ```bash
-tutor extract --input <url|file|name> [--type auto|video|book|text|person]
+examlex extract --input <url|file|name> [--type auto|video|book|text|person]
 ```
 - **video**: yt-dlp下载 → ffmpeg音频提取 → SenseVoiceSmall/whisper ASR → transcript.txt
 - **book**: 多格式解析器 → full_text.txt + 章节结构 + 术语表
@@ -31,7 +31,7 @@ tutor extract --input <url|file|name> [--type auto|video|book|text|person]
 
 ### 阶段 3: 校验
 ```bash
-tutor validate --artifacts-dir <path>
+examlex validate --artifacts-dir <path>
 ```
 - 格式检查: 步骤编号、Schema合规、RIA++完整性
 - Darwin 结构评分: 6维度59分
@@ -41,7 +41,7 @@ tutor validate --artifacts-dir <path>
 
 ### 阶段 5: 提交
 ```bash
-tutor commit --artifacts-dir <path> --library strategy-library.json
+examlex commit --artifacts-dir <path> --library strategy-library.json
 ```
 棘轮检查 + 原子写入 + 自动备份
 
@@ -51,5 +51,5 @@ tutor commit --artifacts-dir <path> --library strategy-library.json
 
 ## 会话管理
 
-中间产物存储在 `~/.english-exam-ai-tutor/sessions/<日期>/<uuid>/`。
-长任务可续跑: `tutor resume <session-id>`
+中间产物存储在 `~/.examlex/sessions/<日期>/<uuid>/`。
+长任务可续跑: `examlex resume <session-id>`

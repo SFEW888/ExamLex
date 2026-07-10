@@ -1,6 +1,6 @@
 # Claude Code Notes
 
-Use `skills/english-exam-ai-tutor/SKILL.md` as the entry point after installing with:
+Use `skills/examlex/SKILL.md` as the entry point after installing with:
 
 ```powershell
 python scripts\install_claude.py --dry-run --json

@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts.extractors.text import TextExtractor
+from examlex.scripts.extractors.text import TextExtractor
 
 
 class TextExtractorTests(unittest.TestCase):

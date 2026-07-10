@@ -1,0 +1,3093 @@
+[
+  {
+    "word": "abnormal",
+    "phonetic": "/æbˈnɔːml/",
+    "pos": "adj.",
+    "meaning_cn": "反常的；异常的",
+    "frequency_rank": 1,
+    "example": "The test results were abnormal.",
+    "cet_level": "CET6",
+    "collocations": [
+      "abnormal behavior",
+      "abnormal condition"
+    ],
+    "synonyms": [
+      "unusual",
+      "irregular",
+      "atypical"
+    ],
+    "confusable_words": [
+      "normal"
+    ]
+  },
+  {
+    "word": "abolish",
+    "phonetic": "/əˈbɒlɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "废除；废止",
+    "frequency_rank": 2,
+    "example": "Slavery was abolished in the 19th century.",
+    "cet_level": "CET6",
+    "collocations": [
+      "abolish a system",
+      "abolish the death penalty"
+    ],
+    "synonyms": [
+      "eliminate",
+      "do away with",
+      "put an end to"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "abrupt",
+    "phonetic": "/əˈbrʌpt/",
+    "pos": "adj.",
+    "meaning_cn": "突然的；唐突的",
+    "frequency_rank": 3,
+    "example": "The meeting came to an abrupt end.",
+    "cet_level": "CET6",
+    "collocations": [
+      "abrupt change",
+      "abrupt departure"
+    ],
+    "synonyms": [
+      "sudden",
+      "unexpected",
+      "sharp"
+    ],
+    "confusable_words": [
+      "gradual"
+    ]
+  },
+  {
+    "word": "absurd",
+    "phonetic": "/əbˈsɜːd/",
+    "pos": "adj.",
+    "meaning_cn": "荒谬的；可笑的",
+    "frequency_rank": 4,
+    "example": "It's absurd to blame me for everything.",
+    "cet_level": "CET6",
+    "collocations": [
+      "absurd idea",
+      "patently absurd"
+    ],
+    "synonyms": [
+      "ridiculous",
+      "preposterous",
+      "ludicrous"
+    ],
+    "confusable_words": [
+      "reasonable"
+    ]
+  },
+  {
+    "word": "baffle",
+    "phonetic": "/ˈbæfl/",
+    "pos": "v.",
+    "meaning_cn": "使困惑；难住",
+    "frequency_rank": 5,
+    "example": "The mystery continues to baffle investigators.",
+    "cet_level": "CET6",
+    "collocations": [
+      "baffle scientists",
+      "completely baffled"
+    ],
+    "synonyms": [
+      "puzzle",
+      "confuse",
+      "perplex"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accessory",
+    "phonetic": "/əkˈsesəri/",
+    "pos": "n.",
+    "meaning_cn": "附件；配件；从犯",
+    "frequency_rank": 6,
+    "example": "She bought accessories for her new phone.",
+    "cet_level": "CET6",
+    "collocations": [
+      "fashion accessories",
+      "car accessories"
+    ],
+    "synonyms": [
+      "attachment",
+      "add-on",
+      "supplement"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accommodation",
+    "phonetic": "/əˌkɒməˈdeɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "住宿；膳宿",
+    "frequency_rank": 7,
+    "example": "The university provides student accommodation.",
+    "cet_level": "CET6",
+    "collocations": [
+      "accommodation facilities",
+      "temporary accommodation"
+    ],
+    "synonyms": [
+      "lodging",
+      "housing",
+      "shelter"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "accountability",
+    "phonetic": "/əˌkaʊntəˈbɪləti/",
+    "pos": "n.",
+    "meaning_cn": "问责；责任",
+    "frequency_rank": 8,
+    "example": "The new system improves government accountability.",
+    "cet_level": "CET6",
+    "collocations": [
+      "public accountability",
+      "personal accountability"
+    ],
+    "synonyms": [
+      "responsibility",
+      "answerability",
+      "liability"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "acquaint",
+    "phonetic": "/əˈkweɪnt/",
+    "pos": "v.",
+    "meaning_cn": "使熟悉；使认识",
+    "frequency_rank": 9,
+    "example": "Please acquaint yourself with the rules.",
+    "cet_level": "CET6",
+    "collocations": [
+      "be acquainted with",
+      "acquaint oneself with"
+    ],
+    "synonyms": [
+      "familiarize",
+      "inform",
+      "introduce"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "administer",
+    "phonetic": "/ədˈmɪnɪstə/",
+    "pos": "v.",
+    "meaning_cn": "管理；执行；给予",
+    "frequency_rank": 10,
+    "example": "The nurse administered the vaccine.",
+    "cet_level": "CET6",
+    "collocations": [
+      "administer justice",
+      "administer a test"
+    ],
+    "synonyms": [
+      "manage",
+      "conduct",
+      "dispense"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adolescent",
+    "phonetic": "/ˌædəˈlesnt/",
+    "pos": "n./adj.",
+    "meaning_cn": "青少年；青春期的",
+    "frequency_rank": 11,
+    "example": "Adolescents often experience rapid mood swings.",
+    "cet_level": "CET6",
+    "collocations": [
+      "adolescent behavior",
+      "adolescent development"
+    ],
+    "synonyms": [
+      "teenager",
+      "youth",
+      "juvenile"
+    ],
+    "confusable_words": [
+      "adult"
+    ]
+  },
+  {
+    "word": "adverse",
+    "phonetic": "/ˈædvɜːs/",
+    "pos": "adj.",
+    "meaning_cn": "不利的；相反的",
+    "frequency_rank": 12,
+    "example": "The drug may have adverse side effects.",
+    "cet_level": "CET6",
+    "collocations": [
+      "adverse effect",
+      "adverse conditions",
+      "adverse reaction"
+    ],
+    "synonyms": [
+      "negative",
+      "harmful",
+      "unfavorable"
+    ],
+    "confusable_words": [
+      "favorable"
+    ]
+  },
+  {
+    "word": "advocate",
+    "phonetic": "/ˈædvəkeɪt/",
+    "pos": "v./n.",
+    "meaning_cn": "倡导；提倡者",
+    "frequency_rank": 13,
+    "example": "He advocates for stricter environmental laws.",
+    "cet_level": "CET6",
+    "collocations": [
+      "advocate for",
+      "strong advocate",
+      "public advocate"
+    ],
+    "synonyms": [
+      "supporter",
+      "champion",
+      "promote"
+    ],
+    "confusable_words": [
+      "opponent"
+    ]
+  },
+  {
+    "word": "aesthetic",
+    "phonetic": "/iːsˈθetɪk/",
+    "pos": "adj.",
+    "meaning_cn": "审美的；美学的",
+    "frequency_rank": 14,
+    "example": "The building has great aesthetic appeal.",
+    "cet_level": "CET6",
+    "collocations": [
+      "aesthetic value",
+      "aesthetic sense"
+    ],
+    "synonyms": [
+      "artistic",
+      "visual",
+      "beautiful"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "affirm",
+    "phonetic": "/əˈfɜːm/",
+    "pos": "v.",
+    "meaning_cn": "断言；确认；肯定",
+    "frequency_rank": 15,
+    "example": "The court affirmed the lower court's decision.",
+    "cet_level": "CET6",
+    "collocations": [
+      "affirm the right",
+      "affirm commitment"
+    ],
+    "synonyms": [
+      "confirm",
+      "declare",
+      "assert"
+    ],
+    "confusable_words": [
+      "deny"
+    ]
+  },
+  {
+    "word": "agenda",
+    "phonetic": "/əˈdʒendə/",
+    "pos": "n.",
+    "meaning_cn": "议程；议事日程",
+    "frequency_rank": 16,
+    "example": "What's on the agenda for today's meeting?",
+    "cet_level": "CET6",
+    "collocations": [
+      "on the agenda",
+      "hidden agenda",
+      "set the agenda"
+    ],
+    "synonyms": [
+      "schedule",
+      "program",
+      "plan"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aggravate",
+    "phonetic": "/ˈæɡrəveɪt/",
+    "pos": "v.",
+    "meaning_cn": "加重；使恶化",
+    "frequency_rank": 17,
+    "example": "The cold weather aggravated his condition.",
+    "cet_level": "CET6",
+    "collocations": [
+      "aggravate the situation",
+      "aggravate symptoms"
+    ],
+    "synonyms": [
+      "worsen",
+      "intensify",
+      "exacerbate"
+    ],
+    "confusable_words": [
+      "alleviate"
+    ]
+  },
+  {
+    "word": "aggregate",
+    "phonetic": "/ˈæɡrɪɡət/",
+    "pos": "n./v.",
+    "meaning_cn": "总计；集合体",
+    "frequency_rank": 18,
+    "example": "The aggregate cost exceeded the budget.",
+    "cet_level": "CET6",
+    "collocations": [
+      "in aggregate",
+      "aggregate demand",
+      "aggregate data"
+    ],
+    "synonyms": [
+      "total",
+      "sum",
+      "collective"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "alienate",
+    "phonetic": "/ˈeɪliəneɪt/",
+    "pos": "v.",
+    "meaning_cn": "疏远；使格格不入",
+    "frequency_rank": 19,
+    "example": "His behavior alienated his colleagues.",
+    "cet_level": "CET6",
+    "collocations": [
+      "alienate from",
+      "alienate supporters"
+    ],
+    "synonyms": [
+      "estrange",
+      "isolate",
+      "distance"
+    ],
+    "confusable_words": [
+      "unite",
+      "reconcile"
+    ]
+  },
+  {
+    "word": "allege",
+    "phonetic": "/əˈledʒ/",
+    "pos": "v.",
+    "meaning_cn": "指控；宣称",
+    "frequency_rank": 20,
+    "example": "The plaintiff alleges that the contract was breached.",
+    "cet_level": "CET6",
+    "collocations": [
+      "allege that",
+      "it is alleged that"
+    ],
+    "synonyms": [
+      "claim",
+      "assert",
+      "accuse"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "allege",
+    "phonetic": "/əˈledʒ/",
+    "pos": "v.",
+    "meaning_cn": "指控；宣称",
+    "frequency_rank": 21,
+    "example": "The plaintiff alleges breach of contract.",
+    "cet_level": "CET6",
+    "collocations": [
+      "allege that",
+      "it is alleged that"
+    ],
+    "synonyms": [
+      "claim",
+      "assert",
+      "accuse"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "alleviate",
+    "phonetic": "/əˈliːvieɪt/",
+    "pos": "v.",
+    "meaning_cn": "减轻；缓解",
+    "frequency_rank": 22,
+    "example": "This medicine should alleviate the pain.",
+    "cet_level": "CET6",
+    "collocations": [
+      "alleviate suffering",
+      "alleviate poverty"
+    ],
+    "synonyms": [
+      "relieve",
+      "ease",
+      "lessen"
+    ],
+    "confusable_words": [
+      "aggravate"
+    ]
+  },
+  {
+    "word": "allocate",
+    "phonetic": "/ˈæləkeɪt/",
+    "pos": "v.",
+    "meaning_cn": "分配；拨出",
+    "frequency_rank": 23,
+    "example": "Funds were allocated for research.",
+    "cet_level": "CET6",
+    "collocations": [
+      "allocate resources",
+      "allocate to"
+    ],
+    "synonyms": [
+      "assign",
+      "distribute",
+      "apportion"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "ambiguous",
+    "phonetic": "/æmˈbɪɡjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "模棱两可的",
+    "frequency_rank": 24,
+    "example": "The statement was deliberately ambiguous.",
+    "cet_level": "CET6",
+    "collocations": [
+      "ambiguous wording",
+      "highly ambiguous"
+    ],
+    "synonyms": [
+      "vague",
+      "unclear",
+      "equivocal"
+    ],
+    "confusable_words": [
+      "clear"
+    ]
+  },
+  {
+    "word": "amend",
+    "phonetic": "/əˈmend/",
+    "pos": "v.",
+    "meaning_cn": "修改；修正",
+    "frequency_rank": 25,
+    "example": "The constitution was amended in 2020.",
+    "cet_level": "CET6",
+    "collocations": [
+      "amend the law",
+      "amend a document"
+    ],
+    "synonyms": [
+      "revise",
+      "modify",
+      "correct"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "analogy",
+    "phonetic": "/əˈnælədʒi/",
+    "pos": "n.",
+    "meaning_cn": "类比；比喻",
+    "frequency_rank": 26,
+    "example": "He drew an analogy between the heart and a pump.",
+    "cet_level": "CET6",
+    "collocations": [
+      "draw an analogy",
+      "by analogy",
+      "close analogy"
+    ],
+    "synonyms": [
+      "comparison",
+      "similarity",
+      "parallel"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "anonymous",
+    "phonetic": "/əˈnɒnɪməs/",
+    "pos": "adj.",
+    "meaning_cn": "匿名的",
+    "frequency_rank": 27,
+    "example": "The donation was made by an anonymous donor.",
+    "cet_level": "CET6",
+    "collocations": [
+      "anonymous letter",
+      "remain anonymous"
+    ],
+    "synonyms": [
+      "unnamed",
+      "unknown",
+      "unidentified"
+    ],
+    "confusable_words": [
+      "identified"
+    ]
+  },
+  {
+    "word": "apparatus",
+    "phonetic": "/ˌæpəˈreɪtəs/",
+    "pos": "n.",
+    "meaning_cn": "设备；仪器；机构",
+    "frequency_rank": 28,
+    "example": "The laboratory has sophisticated apparatus.",
+    "cet_level": "CET6",
+    "collocations": [
+      "breathing apparatus",
+      "state apparatus"
+    ],
+    "synonyms": [
+      "equipment",
+      "device",
+      "machinery"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "appraisal",
+    "phonetic": "/əˈpreɪzl/",
+    "pos": "n.",
+    "meaning_cn": "评价；评估",
+    "frequency_rank": 29,
+    "example": "The annual performance appraisal is next week.",
+    "cet_level": "CET6",
+    "collocations": [
+      "performance appraisal",
+      "critical appraisal"
+    ],
+    "synonyms": [
+      "evaluation",
+      "assessment",
+      "review"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "articulate",
+    "phonetic": "/ɑːˈtɪkjuleɪt/",
+    "pos": "v./adj.",
+    "meaning_cn": "清楚表达；口齿伶俐的",
+    "frequency_rank": 30,
+    "example": "She articulated her vision clearly.",
+    "cet_level": "CET6",
+    "collocations": [
+      "articulate clearly",
+      "highly articulate"
+    ],
+    "synonyms": [
+      "express",
+      "voice",
+      "eloquent"
+    ],
+    "confusable_words": [
+      "inarticulate"
+    ]
+  },
+  {
+    "word": "ascertain",
+    "phonetic": "/ˌæsəˈteɪn/",
+    "pos": "v.",
+    "meaning_cn": "查明；确定",
+    "frequency_rank": 31,
+    "example": "We need to ascertain the facts.",
+    "cet_level": "CET6",
+    "collocations": [
+      "ascertain whether",
+      "ascertain the cause"
+    ],
+    "synonyms": [
+      "determine",
+      "establish",
+      "verify"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aspiration",
+    "phonetic": "/ˌæspəˈreɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "志向；抱负",
+    "frequency_rank": 32,
+    "example": "Young people should have high aspirations.",
+    "cet_level": "CET6",
+    "collocations": [
+      "career aspiration",
+      "political aspiration"
+    ],
+    "synonyms": [
+      "ambition",
+      "goal",
+      "dream"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "assault",
+    "phonetic": "/əˈsɔːlt/",
+    "pos": "n./v.",
+    "meaning_cn": "攻击；袭击",
+    "frequency_rank": 33,
+    "example": "He was charged with assault.",
+    "cet_level": "CET6",
+    "collocations": [
+      "assault on",
+      "sexual assault",
+      "under assault"
+    ],
+    "synonyms": [
+      "attack",
+      "strike",
+      "assail"
+    ],
+    "confusable_words": [
+      "defend"
+    ]
+  },
+  {
+    "word": "assert",
+    "phonetic": "/əˈsɜːt/",
+    "pos": "v.",
+    "meaning_cn": "断言；主张；维护",
+    "frequency_rank": 34,
+    "example": "He asserted his right to a fair trial.",
+    "cet_level": "CET6",
+    "collocations": [
+      "assert that",
+      "assert oneself",
+      "assert control"
+    ],
+    "synonyms": [
+      "declare",
+      "affirm",
+      "claim"
+    ],
+    "confusable_words": [
+      "deny"
+    ]
+  },
+  {
+    "word": "assimilate",
+    "phonetic": "/əˈsɪməleɪt/",
+    "pos": "v.",
+    "meaning_cn": "吸收；同化",
+    "frequency_rank": 35,
+    "example": "Immigrants assimilated into the culture.",
+    "cet_level": "CET6",
+    "collocations": [
+      "assimilate into",
+      "assimilate information"
+    ],
+    "synonyms": [
+      "absorb",
+      "integrate",
+      "adapt"
+    ],
+    "confusable_words": [
+      "segregate"
+    ]
+  },
+  {
+    "word": "attorney",
+    "phonetic": "/əˈtɜːni/",
+    "pos": "n.",
+    "meaning_cn": "律师",
+    "frequency_rank": 36,
+    "example": "You have the right to an attorney.",
+    "cet_level": "CET6",
+    "collocations": [
+      "power of attorney",
+      "defense attorney",
+      "district attorney"
+    ],
+    "synonyms": [
+      "lawyer",
+      "counsel",
+      "advocate"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "augment",
+    "phonetic": "/ɔːɡˈment/",
+    "pos": "v.",
+    "meaning_cn": "增加；扩大",
+    "frequency_rank": 37,
+    "example": "She augmented her income with freelance work.",
+    "cet_level": "CET6",
+    "collocations": [
+      "augment with",
+      "augment the supply"
+    ],
+    "synonyms": [
+      "increase",
+      "supplement",
+      "boost"
+    ],
+    "confusable_words": [
+      "reduce"
+    ]
+  },
+  {
+    "word": "authentic",
+    "phonetic": "/ɔːˈθentɪk/",
+    "pos": "adj.",
+    "meaning_cn": "真正的；可靠的",
+    "frequency_rank": 38,
+    "example": "This is an authentic Ming dynasty vase.",
+    "cet_level": "CET6",
+    "collocations": [
+      "authentic experience",
+      "authentic document"
+    ],
+    "synonyms": [
+      "genuine",
+      "real",
+      "original"
+    ],
+    "confusable_words": [
+      "fake",
+      "forged"
+    ]
+  },
+  {
+    "word": "autonomous",
+    "phonetic": "/ɔːˈtɒnəməs/",
+    "pos": "adj.",
+    "meaning_cn": "自治的；自主的",
+    "frequency_rank": 39,
+    "example": "Each department operates autonomously.",
+    "cet_level": "CET6",
+    "collocations": [
+      "autonomous region",
+      "autonomous vehicle"
+    ],
+    "synonyms": [
+      "independent",
+      "self-governing",
+      "free"
+    ],
+    "confusable_words": [
+      "dependent"
+    ]
+  },
+  {
+    "word": "avail",
+    "phonetic": "/əˈveɪl/",
+    "pos": "v./n.",
+    "meaning_cn": "有用；有帮助",
+    "frequency_rank": 40,
+    "example": "All efforts were of no avail.",
+    "cet_level": "CET6",
+    "collocations": [
+      "to no avail",
+      "avail oneself of"
+    ],
+    "synonyms": [
+      "help",
+      "benefit",
+      "use"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "barren",
+    "phonetic": "/ˈbærən/",
+    "pos": "adj.",
+    "meaning_cn": "贫瘠的；不育的",
+    "frequency_rank": 41,
+    "example": "The land was barren and dry.",
+    "cet_level": "CET6",
+    "collocations": [
+      "barren land",
+      "barren landscape"
+    ],
+    "synonyms": [
+      "infertile",
+      "unproductive",
+      "desolate"
+    ],
+    "confusable_words": [
+      "fertile"
+    ]
+  },
+  {
+    "word": "beforehand",
+    "phonetic": "/bɪˈfɔːhænd/",
+    "pos": "adv.",
+    "meaning_cn": "事先；预先",
+    "frequency_rank": 42,
+    "example": "Please let me know beforehand.",
+    "cet_level": "CET6",
+    "collocations": [
+      "arrange beforehand",
+      "prepare beforehand"
+    ],
+    "synonyms": [
+      "in advance",
+      "earlier",
+      "previously"
+    ],
+    "confusable_words": [
+      "afterwards"
+    ]
+  },
+  {
+    "word": "benevolent",
+    "phonetic": "/bəˈnevələnt/",
+    "pos": "adj.",
+    "meaning_cn": "仁慈的；慈善的",
+    "frequency_rank": 43,
+    "example": "A benevolent donor funded the project.",
+    "cet_level": "CET6",
+    "collocations": [
+      "benevolent fund",
+      "benevolent smile"
+    ],
+    "synonyms": [
+      "kind",
+      "charitable",
+      "generous"
+    ],
+    "confusable_words": [
+      "malevolent"
+    ]
+  },
+  {
+    "word": "bias",
+    "phonetic": "/ˈbaɪəs/",
+    "pos": "n./v.",
+    "meaning_cn": "偏见；偏向",
+    "frequency_rank": 44,
+    "example": "The study showed gender bias.",
+    "cet_level": "CET6",
+    "collocations": [
+      "bias against",
+      "unconscious bias",
+      "political bias"
+    ],
+    "synonyms": [
+      "prejudice",
+      "favoritism",
+      "partiality"
+    ],
+    "confusable_words": [
+      "impartiality"
+    ]
+  },
+  {
+    "word": "bizarre",
+    "phonetic": "/bɪˈzɑː/",
+    "pos": "adj.",
+    "meaning_cn": "奇怪的；怪异的",
+    "frequency_rank": 45,
+    "example": "The story took a bizarre twist.",
+    "cet_level": "CET6",
+    "collocations": [
+      "bizarre situation",
+      "bizarre behavior"
+    ],
+    "synonyms": [
+      "strange",
+      "weird",
+      "peculiar"
+    ],
+    "confusable_words": [
+      "normal"
+    ]
+  },
+  {
+    "word": "blaze",
+    "phonetic": "/bleɪz/",
+    "pos": "n./v.",
+    "meaning_cn": "火焰；燃烧；闪耀",
+    "frequency_rank": 46,
+    "example": "The fire blazed through the night.",
+    "cet_level": "CET6",
+    "collocations": [
+      "blaze a trail",
+      "in a blaze of",
+      "blaze with anger"
+    ],
+    "synonyms": [
+      "flame",
+      "fire",
+      "glare"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "bleak",
+    "phonetic": "/bliːk/",
+    "pos": "adj.",
+    "meaning_cn": "荒凉的；暗淡的",
+    "frequency_rank": 47,
+    "example": "The future looks bleak for the industry.",
+    "cet_level": "CET6",
+    "collocations": [
+      "bleak outlook",
+      "bleak landscape"
+    ],
+    "synonyms": [
+      "gloomy",
+      "dreary",
+      "depressing"
+    ],
+    "confusable_words": [
+      "bright",
+      "promising"
+    ]
+  },
+  {
+    "word": "bless",
+    "phonetic": "/bles/",
+    "pos": "v.",
+    "meaning_cn": "祝福；保佑",
+    "frequency_rank": 48,
+    "example": "May God bless you and your family.",
+    "cet_level": "CET6",
+    "collocations": [
+      "bless with",
+      "bless you",
+      "a blessing in disguise"
+    ],
+    "synonyms": [
+      "favor",
+      "grace",
+      "endow"
+    ],
+    "confusable_words": [
+      "curse"
+    ]
+  },
+  {
+    "word": "blunder",
+    "phonetic": "/ˈblʌndə/",
+    "pos": "n./v.",
+    "meaning_cn": "大错；犯错",
+    "frequency_rank": 49,
+    "example": "He made a serious diplomatic blunder.",
+    "cet_level": "CET6",
+    "collocations": [
+      "make a blunder",
+      "terrible blunder"
+    ],
+    "synonyms": [
+      "mistake",
+      "error",
+      "gaffe"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "boycott",
+    "phonetic": "/ˈbɔɪkɒt/",
+    "pos": "v./n.",
+    "meaning_cn": "抵制；拒绝购买",
+    "frequency_rank": 50,
+    "example": "They called for a boycott of the products.",
+    "cet_level": "CET6",
+    "collocations": [
+      "boycott against",
+      "call for a boycott"
+    ],
+    "synonyms": [
+      "ban",
+      "protest",
+      "blacklist"
+    ],
+    "confusable_words": [
+      "support"
+    ]
+  },
+  {
+    "word": "breach",
+    "phonetic": "/briːtʃ/",
+    "pos": "n./v.",
+    "meaning_cn": "违反；破坏；缺口",
+    "frequency_rank": 51,
+    "example": "This is a breach of contract.",
+    "cet_level": "CET6",
+    "collocations": [
+      "breach of contract",
+      "breach of trust",
+      "security breach"
+    ],
+    "synonyms": [
+      "violation",
+      "break",
+      "infringement"
+    ],
+    "confusable_words": [
+      "compliance"
+    ]
+  },
+  {
+    "word": "breakthrough",
+    "phonetic": "/ˈbreɪkθruː/",
+    "pos": "n.",
+    "meaning_cn": "突破；重大进展",
+    "frequency_rank": 52,
+    "example": "Scientists made a major breakthrough.",
+    "cet_level": "CET6",
+    "collocations": [
+      "major breakthrough",
+      "scientific breakthrough"
+    ],
+    "synonyms": [
+      "advance",
+      "discovery",
+      "leap forward"
+    ],
+    "confusable_words": [
+      "setback"
+    ]
+  },
+  {
+    "word": "breed",
+    "phonetic": "/briːd/",
+    "pos": "v./n.",
+    "meaning_cn": "繁殖；品种；导致",
+    "frequency_rank": 53,
+    "example": "Familiarity breeds contempt.",
+    "cet_level": "CET6",
+    "collocations": [
+      "breed resentment",
+      "rare breed",
+      "breed of dog"
+    ],
+    "synonyms": [
+      "produce",
+      "raise",
+      "variety"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "brink",
+    "phonetic": "/brɪŋk/",
+    "pos": "n.",
+    "meaning_cn": "边缘",
+    "frequency_rank": 54,
+    "example": "The country was on the brink of war.",
+    "cet_level": "CET6",
+    "collocations": [
+      "on the brink of",
+      "brink of disaster"
+    ],
+    "synonyms": [
+      "edge",
+      "verge",
+      "threshold"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "brisk",
+    "phonetic": "/brɪsk/",
+    "pos": "adj.",
+    "meaning_cn": "轻快的；活跃的",
+    "frequency_rank": 55,
+    "example": "Business is brisk this season.",
+    "cet_level": "CET6",
+    "collocations": [
+      "brisk walk",
+      "brisk pace",
+      "brisk trade"
+    ],
+    "synonyms": [
+      "quick",
+      "lively",
+      "energetic"
+    ],
+    "confusable_words": [
+      "slow",
+      "sluggish"
+    ]
+  },
+  {
+    "word": "bruise",
+    "phonetic": "/bruːz/",
+    "pos": "n./v.",
+    "meaning_cn": "瘀伤；擦伤",
+    "frequency_rank": 56,
+    "example": "He had bruises on his arms.",
+    "cet_level": "CET6",
+    "collocations": [
+      "bruise easily",
+      "cuts and bruises"
+    ],
+    "synonyms": [
+      "injury",
+      "contusion",
+      "hurt"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "brutal",
+    "phonetic": "/ˈbruːtl/",
+    "pos": "adj.",
+    "meaning_cn": "残忍的；野蛮的",
+    "frequency_rank": 57,
+    "example": "The attack was brutal and unprovoked.",
+    "cet_level": "CET6",
+    "collocations": [
+      "brutal murder",
+      "brutal honesty"
+    ],
+    "synonyms": [
+      "cruel",
+      "savage",
+      "ruthless"
+    ],
+    "confusable_words": [
+      "gentle",
+      "kind"
+    ]
+  },
+  {
+    "word": "bureaucracy",
+    "phonetic": "/bjʊəˈrɒkrəsi/",
+    "pos": "n.",
+    "meaning_cn": "官僚机构；官僚主义",
+    "frequency_rank": 58,
+    "example": "The project was delayed by bureaucracy.",
+    "cet_level": "CET6",
+    "collocations": [
+      "government bureaucracy",
+      "excessive bureaucracy"
+    ],
+    "synonyms": [
+      "officialdom",
+      "red tape",
+      "administration"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "bustle",
+    "phonetic": "/ˈbʌsl/",
+    "pos": "v./n.",
+    "meaning_cn": "忙碌；熙攘",
+    "frequency_rank": 59,
+    "example": "The market was bustling with activity.",
+    "cet_level": "CET6",
+    "collocations": [
+      "hustle and bustle",
+      "bustle with"
+    ],
+    "synonyms": [
+      "commotion",
+      "activity",
+      "busyness"
+    ],
+    "confusable_words": [
+      "calm"
+    ]
+  },
+  {
+    "word": "calamity",
+    "phonetic": "/kəˈlæməti/",
+    "pos": "n.",
+    "meaning_cn": "灾难；灾祸",
+    "frequency_rank": 60,
+    "example": "The flood was a national calamity.",
+    "cet_level": "CET6",
+    "collocations": [
+      "natural calamity",
+      "great calamity"
+    ],
+    "synonyms": [
+      "disaster",
+      "catastrophe",
+      "tragedy"
+    ],
+    "confusable_words": [
+      "blessing"
+    ]
+  },
+  {
+    "word": "candid",
+    "phonetic": "/ˈkændɪd/",
+    "pos": "adj.",
+    "meaning_cn": "坦率的；公正的",
+    "frequency_rank": 61,
+    "example": "Let me be candid with you.",
+    "cet_level": "CET6",
+    "collocations": [
+      "candid opinion",
+      "candid photo"
+    ],
+    "synonyms": [
+      "frank",
+      "honest",
+      "open"
+    ],
+    "confusable_words": [
+      "evasive"
+    ]
+  },
+  {
+    "word": "canvas",
+    "phonetic": "/ˈkænvəs/",
+    "pos": "n.",
+    "meaning_cn": "帆布；画布",
+    "frequency_rank": 62,
+    "example": "The artist stretched canvas on a frame.",
+    "cet_level": "CET6",
+    "collocations": [
+      "on canvas",
+      "blank canvas",
+      "canvas bag"
+    ],
+    "synonyms": [
+      "fabric",
+      "cloth",
+      "surface"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "catastrophe",
+    "phonetic": "/kəˈtæstrəfi/",
+    "pos": "n.",
+    "meaning_cn": "大灾难；灾祸",
+    "frequency_rank": 63,
+    "example": "The earthquake was a humanitarian catastrophe.",
+    "cet_level": "CET6",
+    "collocations": [
+      "natural catastrophe",
+      "economic catastrophe"
+    ],
+    "synonyms": [
+      "disaster",
+      "calamity",
+      "tragedy"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "cater",
+    "phonetic": "/ˈkeɪtə/",
+    "pos": "v.",
+    "meaning_cn": "提供饮食；迎合",
+    "frequency_rank": 64,
+    "example": "The hotel caters for weddings.",
+    "cet_level": "CET6",
+    "collocations": [
+      "cater for",
+      "cater to",
+      "catering service"
+    ],
+    "synonyms": [
+      "serve",
+      "provide for",
+      "supply"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "caution",
+    "phonetic": "/ˈkɔːʃn/",
+    "pos": "n./v.",
+    "meaning_cn": "谨慎；警告",
+    "frequency_rank": 65,
+    "example": "Treat these claims with caution.",
+    "cet_level": "CET6",
+    "collocations": [
+      "with caution",
+      "exercise caution",
+      "throw caution to the wind"
+    ],
+    "synonyms": [
+      "care",
+      "prudence",
+      "warn"
+    ],
+    "confusable_words": [
+      "recklessness"
+    ]
+  },
+  {
+    "word": "chancellor",
+    "phonetic": "/ˈtʃɑːnsələ/",
+    "pos": "n.",
+    "meaning_cn": "大臣；校长；总理",
+    "frequency_rank": 66,
+    "example": "The Chancellor announced tax changes.",
+    "cet_level": "CET6",
+    "collocations": [
+      "chancellor of the exchequer",
+      "vice chancellor"
+    ],
+    "synonyms": [
+      "minister",
+      "principal",
+      "leader"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "chaos",
+    "phonetic": "/ˈkeɪɒs/",
+    "pos": "n.",
+    "meaning_cn": "混乱；混沌",
+    "frequency_rank": 67,
+    "example": "The room was in complete chaos.",
+    "cet_level": "CET6",
+    "collocations": [
+      "in chaos",
+      "total chaos",
+      "political chaos"
+    ],
+    "synonyms": [
+      "disorder",
+      "confusion",
+      "mess"
+    ],
+    "confusable_words": [
+      "order"
+    ]
+  },
+  {
+    "word": "chronic",
+    "phonetic": "/ˈkrɒnɪk/",
+    "pos": "adj.",
+    "meaning_cn": "慢性的；长期的",
+    "frequency_rank": 68,
+    "example": "He suffers from chronic back pain.",
+    "cet_level": "CET6",
+    "collocations": [
+      "chronic disease",
+      "chronic shortage"
+    ],
+    "synonyms": [
+      "persistent",
+      "long-term",
+      "constant"
+    ],
+    "confusable_words": [
+      "acute"
+    ]
+  },
+  {
+    "word": "circumstance",
+    "phonetic": "/ˈsɜːkəmstəns/",
+    "pos": "n.",
+    "meaning_cn": "环境；情况",
+    "frequency_rank": 69,
+    "example": "Under the circumstances, we had no choice.",
+    "cet_level": "CET6",
+    "collocations": [
+      "under the circumstances",
+      "extenuating circumstances"
+    ],
+    "synonyms": [
+      "situation",
+      "condition",
+      "context"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "civilian",
+    "phonetic": "/səˈvɪliən/",
+    "pos": "n./adj.",
+    "meaning_cn": "平民；民用的",
+    "frequency_rank": 70,
+    "example": "The attack killed several civilians.",
+    "cet_level": "CET6",
+    "collocations": [
+      "civilian population",
+      "civilian life"
+    ],
+    "synonyms": [
+      "citizen",
+      "non-military",
+      "public"
+    ],
+    "confusable_words": [
+      "military"
+    ]
+  },
+  {
+    "word": "clash",
+    "phonetic": "/klæʃ/",
+    "pos": "v./n.",
+    "meaning_cn": "冲突；碰撞；不协调",
+    "frequency_rank": 71,
+    "example": "The protesters clashed with police.",
+    "cet_level": "CET6",
+    "collocations": [
+      "clash with",
+      "cultural clash",
+      "armed clash"
+    ],
+    "synonyms": [
+      "conflict",
+      "fight",
+      "collide"
+    ],
+    "confusable_words": [
+      "harmonize"
+    ]
+  },
+  {
+    "word": "cling",
+    "phonetic": "/klɪŋ/",
+    "pos": "v.",
+    "meaning_cn": "紧抓；坚持；依附",
+    "frequency_rank": 72,
+    "example": "She clung to her mother's hand.",
+    "cet_level": "CET6",
+    "collocations": [
+      "cling to",
+      "cling together"
+    ],
+    "synonyms": [
+      "hold on",
+      "grasp",
+      "stick"
+    ],
+    "confusable_words": [
+      "let go"
+    ]
+  },
+  {
+    "word": "cognitive",
+    "phonetic": "/ˈkɒɡnətɪv/",
+    "pos": "adj.",
+    "meaning_cn": "认知的",
+    "frequency_rank": 73,
+    "example": "Children develop cognitive skills rapidly.",
+    "cet_level": "CET6",
+    "collocations": [
+      "cognitive ability",
+      "cognitive science",
+      "cognitive development"
+    ],
+    "synonyms": [
+      "mental",
+      "intellectual",
+      "perceptual"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "coincide",
+    "phonetic": "/ˌkəʊɪnˈsaɪd/",
+    "pos": "v.",
+    "meaning_cn": "同时发生；一致",
+    "frequency_rank": 74,
+    "example": "The festival coincides with my birthday.",
+    "cet_level": "CET6",
+    "collocations": [
+      "coincide with",
+      "happen to coincide"
+    ],
+    "synonyms": [
+      "match",
+      "correspond",
+      "concur"
+    ],
+    "confusable_words": [
+      "differ"
+    ]
+  },
+  {
+    "word": "collaborate",
+    "phonetic": "/kəˈlæbəreɪt/",
+    "pos": "v.",
+    "meaning_cn": "合作；协作",
+    "frequency_rank": 75,
+    "example": "Two teams collaborated on the project.",
+    "cet_level": "CET6",
+    "collocations": [
+      "collaborate with",
+      "collaborate on"
+    ],
+    "synonyms": [
+      "cooperate",
+      "work together",
+      "team up"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "commemorate",
+    "phonetic": "/kəˈmeməreɪt/",
+    "pos": "v.",
+    "meaning_cn": "纪念；庆祝",
+    "frequency_rank": 76,
+    "example": "A statue was built to commemorate the event.",
+    "cet_level": "CET6",
+    "collocations": [
+      "commemorate the anniversary",
+      "commemorate the dead"
+    ],
+    "synonyms": [
+      "honor",
+      "celebrate",
+      "remember"
+    ],
+    "confusable_words": [
+      "forget"
+    ]
+  },
+  {
+    "word": "commence",
+    "phonetic": "/kəˈmens/",
+    "pos": "v.",
+    "meaning_cn": "开始；着手",
+    "frequency_rank": 77,
+    "example": "The ceremony will commence at noon.",
+    "cet_level": "CET6",
+    "collocations": [
+      "commence with",
+      "commence proceedings"
+    ],
+    "synonyms": [
+      "begin",
+      "start",
+      "initiate"
+    ],
+    "confusable_words": [
+      "end",
+      "cease"
+    ]
+  },
+  {
+    "word": "commodity",
+    "phonetic": "/kəˈmɒdəti/",
+    "pos": "n.",
+    "meaning_cn": "商品；日用品",
+    "frequency_rank": 78,
+    "example": "Oil is a valuable commodity.",
+    "cet_level": "CET6",
+    "collocations": [
+      "commodity market",
+      "scarce commodity",
+      "commodity price"
+    ],
+    "synonyms": [
+      "product",
+      "goods",
+      "merchandise"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "compact",
+    "phonetic": "/kəmˈpækt/",
+    "pos": "adj./n.",
+    "meaning_cn": "紧凑的；协议",
+    "frequency_rank": 79,
+    "example": "The apartment is compact but comfortable.",
+    "cet_level": "CET6",
+    "collocations": [
+      "compact disc",
+      "make a compact",
+      "compact size"
+    ],
+    "synonyms": [
+      "dense",
+      "small",
+      "agreement"
+    ],
+    "confusable_words": [
+      "spacious"
+    ]
+  },
+  {
+    "word": "compatible",
+    "phonetic": "/kəmˈpætəbl/",
+    "pos": "adj.",
+    "meaning_cn": "兼容的；能共处的",
+    "frequency_rank": 80,
+    "example": "The software is compatible with Windows.",
+    "cet_level": "CET6",
+    "collocations": [
+      "compatible with",
+      "backward compatible"
+    ],
+    "synonyms": [
+      "consistent",
+      "harmonious",
+      "suitable"
+    ],
+    "confusable_words": [
+      "incompatible"
+    ]
+  },
+  {
+    "word": "compile",
+    "phonetic": "/kəmˈpaɪl/",
+    "pos": "v.",
+    "meaning_cn": "编制；编译",
+    "frequency_rank": 81,
+    "example": "She compiled a list of references.",
+    "cet_level": "CET6",
+    "collocations": [
+      "compile data",
+      "compile a report"
+    ],
+    "synonyms": [
+      "assemble",
+      "gather",
+      "collect"
+    ],
+    "confusable_words": [
+      "disperse"
+    ]
+  },
+  {
+    "word": "complement",
+    "phonetic": "/ˈkɒmplɪment/",
+    "pos": "v./n.",
+    "meaning_cn": "补充；补足",
+    "frequency_rank": 82,
+    "example": "The wine complements the meal perfectly.",
+    "cet_level": "CET6",
+    "collocations": [
+      "complement each other",
+      "perfect complement"
+    ],
+    "synonyms": [
+      "supplement",
+      "enhance",
+      "complete"
+    ],
+    "confusable_words": [
+      "contradict"
+    ]
+  },
+  {
+    "word": "comply",
+    "phonetic": "/kəmˈplaɪ/",
+    "pos": "v.",
+    "meaning_cn": "遵守；遵从",
+    "frequency_rank": 83,
+    "example": "All companies must comply with the regulations.",
+    "cet_level": "CET6",
+    "collocations": [
+      "comply with",
+      "fully comply",
+      "refuse to comply"
+    ],
+    "synonyms": [
+      "obey",
+      "follow",
+      "conform"
+    ],
+    "confusable_words": [
+      "defy",
+      "violate"
+    ]
+  },
+  {
+    "word": "comprehend",
+    "phonetic": "/ˌkɒmprɪˈhend/",
+    "pos": "v.",
+    "meaning_cn": "理解；包含",
+    "frequency_rank": 84,
+    "example": "The concept is difficult to comprehend.",
+    "cet_level": "CET6",
+    "collocations": [
+      "fully comprehend",
+      "fail to comprehend"
+    ],
+    "synonyms": [
+      "understand",
+      "grasp",
+      "perceive"
+    ],
+    "confusable_words": [
+      "misunderstand"
+    ]
+  },
+  {
+    "word": "compulsory",
+    "phonetic": "/kəmˈpʌlsəri/",
+    "pos": "adj.",
+    "meaning_cn": "强制的；必修的",
+    "frequency_rank": 85,
+    "example": "Education is compulsory for all children.",
+    "cet_level": "CET6",
+    "collocations": [
+      "compulsory course",
+      "compulsory education"
+    ],
+    "synonyms": [
+      "mandatory",
+      "obligatory",
+      "required"
+    ],
+    "confusable_words": [
+      "optional",
+      "voluntary"
+    ]
+  },
+  {
+    "word": "conceive",
+    "phonetic": "/kənˈsiːv/",
+    "pos": "v.",
+    "meaning_cn": "构思；想象；怀孕",
+    "frequency_rank": 86,
+    "example": "I can't conceive of living without a phone.",
+    "cet_level": "CET6",
+    "collocations": [
+      "conceive of",
+      "conceive a plan",
+      "conceive a child"
+    ],
+    "synonyms": [
+      "imagine",
+      "think up",
+      "devise"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "concise",
+    "phonetic": "/kənˈsaɪs/",
+    "pos": "adj.",
+    "meaning_cn": "简洁的；简明的",
+    "frequency_rank": 87,
+    "example": "Please give a concise summary.",
+    "cet_level": "CET6",
+    "collocations": [
+      "concise summary",
+      "clear and concise"
+    ],
+    "synonyms": [
+      "brief",
+      "succinct",
+      "compact"
+    ],
+    "confusable_words": [
+      "verbose",
+      "lengthy"
+    ]
+  },
+  {
+    "word": "confer",
+    "phonetic": "/kənˈfɜː/",
+    "pos": "v.",
+    "meaning_cn": "授予；商议",
+    "frequency_rank": 88,
+    "example": "The degree was conferred upon her.",
+    "cet_level": "CET6",
+    "collocations": [
+      "confer with",
+      "confer a title",
+      "confer on"
+    ],
+    "synonyms": [
+      "grant",
+      "bestow",
+      "consult"
+    ],
+    "confusable_words": [
+      "withhold"
+    ]
+  },
+  {
+    "word": "confidential",
+    "phonetic": "/ˌkɒnfɪˈdenʃl/",
+    "pos": "adj.",
+    "meaning_cn": "机密的；秘密的",
+    "frequency_rank": 89,
+    "example": "This information is strictly confidential.",
+    "cet_level": "CET6",
+    "collocations": [
+      "confidential information",
+      "strictly confidential"
+    ],
+    "synonyms": [
+      "private",
+      "secret",
+      "classified"
+    ],
+    "confusable_words": [
+      "public"
+    ]
+  },
+  {
+    "word": "conscientious",
+    "phonetic": "/ˌkɒnʃiˈenʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "认真负责的",
+    "frequency_rank": 90,
+    "example": "She is a conscientious worker.",
+    "cet_level": "CET6",
+    "collocations": [
+      "conscientious objector",
+      "conscientious about"
+    ],
+    "synonyms": [
+      "diligent",
+      "careful",
+      "thorough"
+    ],
+    "confusable_words": [
+      "careless"
+    ]
+  },
+  {
+    "word": "consensus",
+    "phonetic": "/kənˈsensəs/",
+    "pos": "n.",
+    "meaning_cn": "共识；一致意见",
+    "frequency_rank": 91,
+    "example": "There is a growing consensus on climate change.",
+    "cet_level": "CET6",
+    "collocations": [
+      "reach a consensus",
+      "general consensus",
+      "scientific consensus"
+    ],
+    "synonyms": [
+      "agreement",
+      "accord",
+      "unanimity"
+    ],
+    "confusable_words": [
+      "disagreement"
+    ]
+  },
+  {
+    "word": "consolidate",
+    "phonetic": "/kənˈsɒlɪdeɪt/",
+    "pos": "v.",
+    "meaning_cn": "巩固；合并",
+    "frequency_rank": 92,
+    "example": "They consolidated several departments.",
+    "cet_level": "CET6",
+    "collocations": [
+      "consolidate power",
+      "consolidate into"
+    ],
+    "synonyms": [
+      "strengthen",
+      "merge",
+      "unify"
+    ],
+    "confusable_words": [
+      "weaken",
+      "split"
+    ]
+  },
+  {
+    "word": "conspicuous",
+    "phonetic": "/kənˈspɪkjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "显眼的；引人注目的",
+    "frequency_rank": 93,
+    "example": "The red car was conspicuous.",
+    "cet_level": "CET6",
+    "collocations": [
+      "conspicuous consumption",
+      "conspicuous by absence"
+    ],
+    "synonyms": [
+      "noticeable",
+      "prominent",
+      "obvious"
+    ],
+    "confusable_words": [
+      "inconspicuous"
+    ]
+  },
+  {
+    "word": "contemplate",
+    "phonetic": "/ˈkɒntəmpleɪt/",
+    "pos": "v.",
+    "meaning_cn": "沉思；考虑；凝视",
+    "frequency_rank": 94,
+    "example": "She contemplated her future career.",
+    "cet_level": "CET6",
+    "collocations": [
+      "contemplate doing",
+      "contemplate the meaning"
+    ],
+    "synonyms": [
+      "consider",
+      "ponder",
+      "reflect on"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "contend",
+    "phonetic": "/kənˈtend/",
+    "pos": "v.",
+    "meaning_cn": "竞争；主张；斗争",
+    "frequency_rank": 95,
+    "example": "Several teams are contending for the title.",
+    "cet_level": "CET6",
+    "collocations": [
+      "contend with",
+      "contend that",
+      "contend for"
+    ],
+    "synonyms": [
+      "compete",
+      "argue",
+      "struggle"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "contrive",
+    "phonetic": "/kənˈtraɪv/",
+    "pos": "v.",
+    "meaning_cn": "设法做到；谋划",
+    "frequency_rank": 96,
+    "example": "He contrived to escape from prison.",
+    "cet_level": "CET6",
+    "collocations": [
+      "contrive to do",
+      "cleverly contrived"
+    ],
+    "synonyms": [
+      "devise",
+      "manage",
+      "invent"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "convene",
+    "phonetic": "/kənˈviːn/",
+    "pos": "v.",
+    "meaning_cn": "召集；开会",
+    "frequency_rank": 97,
+    "example": "The committee will convene next week.",
+    "cet_level": "CET6",
+    "collocations": [
+      "convene a meeting",
+      "convene a conference"
+    ],
+    "synonyms": [
+      "assemble",
+      "gather",
+      "summon"
+    ],
+    "confusable_words": [
+      "disperse"
+    ]
+  },
+  {
+    "word": "converge",
+    "phonetic": "/kənˈvɜːdʒ/",
+    "pos": "v.",
+    "meaning_cn": "汇集；聚集；趋同",
+    "frequency_rank": 98,
+    "example": "The roads converge at the city center.",
+    "cet_level": "CET6",
+    "collocations": [
+      "converge on",
+      "converge into"
+    ],
+    "synonyms": [
+      "meet",
+      "merge",
+      "come together"
+    ],
+    "confusable_words": [
+      "diverge"
+    ]
+  },
+  {
+    "word": "convict",
+    "phonetic": "/kənˈvɪkt/",
+    "pos": "v./n.",
+    "meaning_cn": "定罪；罪犯",
+    "frequency_rank": 99,
+    "example": "He was convicted of fraud.",
+    "cet_level": "CET6",
+    "collocations": [
+      "convict of",
+      "convicted criminal"
+    ],
+    "synonyms": [
+      "find guilty",
+      "sentence",
+      "prisoner"
+    ],
+    "confusable_words": [
+      "acquit"
+    ]
+  },
+  {
+    "word": "cordial",
+    "phonetic": "/ˈkɔːdiəl/",
+    "pos": "adj.",
+    "meaning_cn": "热情的；友好的",
+    "frequency_rank": 100,
+    "example": "We were given a cordial welcome.",
+    "cet_level": "CET6",
+    "collocations": [
+      "cordial relationship",
+      "cordial invitation"
+    ],
+    "synonyms": [
+      "warm",
+      "friendly",
+      "hearty"
+    ],
+    "confusable_words": [
+      "cold",
+      "hostile"
+    ]
+  },
+  {
+    "word": "correlate",
+    "phonetic": "/ˈkɒrəleɪt/",
+    "pos": "v.",
+    "meaning_cn": "相关；关联",
+    "frequency_rank": 101,
+    "example": "Smoking correlates with lung cancer.",
+    "cet_level": "CET6",
+    "collocations": [
+      "correlate with",
+      "strongly correlated"
+    ],
+    "synonyms": [
+      "associate",
+      "connect",
+      "link"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "corrode",
+    "phonetic": "/kəˈrəʊd/",
+    "pos": "v.",
+    "meaning_cn": "腐蚀；侵蚀",
+    "frequency_rank": 102,
+    "example": "The metal was corroded by acid.",
+    "cet_level": "CET6",
+    "collocations": [
+      "corrode away",
+      "corrode metal"
+    ],
+    "synonyms": [
+      "rust",
+      "erode",
+      "deteriorate"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "counterpart",
+    "phonetic": "/ˈkaʊntəpɑːt/",
+    "pos": "n.",
+    "meaning_cn": "对应的人或物",
+    "frequency_rank": 103,
+    "example": "The minister met his French counterpart.",
+    "cet_level": "CET6",
+    "collocations": [
+      "female counterpart",
+      "modern counterpart"
+    ],
+    "synonyms": [
+      "equivalent",
+      "parallel",
+      "match"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "courtesy",
+    "phonetic": "/ˈkɜːtəsi/",
+    "pos": "n.",
+    "meaning_cn": "礼貌；好意",
+    "frequency_rank": 104,
+    "example": "It's common courtesy to say thank you.",
+    "cet_level": "CET6",
+    "collocations": [
+      "as a courtesy",
+      "common courtesy",
+      "courtesy bus"
+    ],
+    "synonyms": [
+      "politeness",
+      "respect",
+      "civility"
+    ],
+    "confusable_words": [
+      "rudeness"
+    ]
+  },
+  {
+    "word": "cradle",
+    "phonetic": "/ˈkreɪdl/",
+    "pos": "n.",
+    "meaning_cn": "摇篮；发源地",
+    "frequency_rank": 105,
+    "example": "Africa is the cradle of civilization.",
+    "cet_level": "CET6",
+    "collocations": [
+      "from the cradle",
+      "cradle of civilization"
+    ],
+    "synonyms": [
+      "birthplace",
+      "origin",
+      "source"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "credentials",
+    "phonetic": "/krəˈdenʃlz/",
+    "pos": "n.",
+    "meaning_cn": "资格；证书",
+    "frequency_rank": 106,
+    "example": "Check his credentials before hiring.",
+    "cet_level": "CET6",
+    "collocations": [
+      "academic credentials",
+      "present credentials"
+    ],
+    "synonyms": [
+      "qualifications",
+      "certificates",
+      "references"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "credible",
+    "phonetic": "/ˈkredəbl/",
+    "pos": "adj.",
+    "meaning_cn": "可信的；可靠的",
+    "frequency_rank": 107,
+    "example": "The witness gave a credible account.",
+    "cet_level": "CET6",
+    "collocations": [
+      "credible evidence",
+      "credible threat"
+    ],
+    "synonyms": [
+      "believable",
+      "plausible",
+      "trustworthy"
+    ],
+    "confusable_words": [
+      "incredible"
+    ]
+  },
+  {
+    "word": "cripple",
+    "phonetic": "/ˈkrɪpl/",
+    "pos": "v./n.",
+    "meaning_cn": "严重削弱；使残疾",
+    "frequency_rank": 108,
+    "example": "The strike crippled the economy.",
+    "cet_level": "CET6",
+    "collocations": [
+      "cripple with",
+      "cripple the economy"
+    ],
+    "synonyms": [
+      "disable",
+      "paralyze",
+      "weaken"
+    ],
+    "confusable_words": [
+      "strengthen"
+    ]
+  },
+  {
+    "word": "crude",
+    "phonetic": "/kruːd/",
+    "pos": "adj.",
+    "meaning_cn": "粗糙的；天然的；粗鲁的",
+    "frequency_rank": 109,
+    "example": "The system was a crude early version.",
+    "cet_level": "CET6",
+    "collocations": [
+      "crude oil",
+      "crude estimate",
+      "crude remark"
+    ],
+    "synonyms": [
+      "rough",
+      "raw",
+      "vulgar"
+    ],
+    "confusable_words": [
+      "refined"
+    ]
+  },
+  {
+    "word": "culminate",
+    "phonetic": "/ˈkʌlmɪneɪt/",
+    "pos": "v.",
+    "meaning_cn": "达到顶点；以…告终",
+    "frequency_rank": 110,
+    "example": "The crisis culminated in a war.",
+    "cet_level": "CET6",
+    "collocations": [
+      "culminate in",
+      "culminate with"
+    ],
+    "synonyms": [
+      "climax",
+      "peak",
+      "result"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "cumulative",
+    "phonetic": "/ˈkjuːmjələtɪv/",
+    "pos": "adj.",
+    "meaning_cn": "累积的",
+    "frequency_rank": 111,
+    "example": "The cumulative effect was devastating.",
+    "cet_level": "CET6",
+    "collocations": [
+      "cumulative effect",
+      "cumulative impact"
+    ],
+    "synonyms": [
+      "accumulative",
+      "increasing",
+      "building"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "cynical",
+    "phonetic": "/ˈsɪnɪkl/",
+    "pos": "adj.",
+    "meaning_cn": "愤世嫉俗的；怀疑的",
+    "frequency_rank": 112,
+    "example": "He has a cynical view of politics.",
+    "cet_level": "CET6",
+    "collocations": [
+      "cynical about",
+      "cynical attitude"
+    ],
+    "synonyms": [
+      "skeptical",
+      "pessimistic",
+      "distrustful"
+    ],
+    "confusable_words": [
+      "optimistic",
+      "idealistic"
+    ]
+  },
+  {
+    "word": "dazzle",
+    "phonetic": "/ˈdæzl/",
+    "pos": "v.",
+    "meaning_cn": "使目眩；使惊叹",
+    "frequency_rank": 113,
+    "example": "I was dazzled by the bright lights.",
+    "cet_level": "CET6",
+    "collocations": [
+      "dazzle with",
+      "dazzling performance"
+    ],
+    "synonyms": [
+      "blind",
+      "amaze",
+      "impress"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "deceive",
+    "phonetic": "/dɪˈsiːv/",
+    "pos": "v.",
+    "meaning_cn": "欺骗；蒙蔽",
+    "frequency_rank": 114,
+    "example": "He deceived investors for years.",
+    "cet_level": "CET6",
+    "collocations": [
+      "deceive into",
+      "deceive oneself"
+    ],
+    "synonyms": [
+      "trick",
+      "mislead",
+      "cheat"
+    ],
+    "confusable_words": [
+      "be honest"
+    ]
+  },
+  {
+    "word": "decisive",
+    "phonetic": "/dɪˈsaɪsɪv/",
+    "pos": "adj.",
+    "meaning_cn": "决定性的；果断的",
+    "frequency_rank": 115,
+    "example": "This could be the decisive factor.",
+    "cet_level": "CET6",
+    "collocations": [
+      "decisive action",
+      "decisive victory",
+      "decisive role"
+    ],
+    "synonyms": [
+      "conclusive",
+      "determined",
+      "resolute"
+    ],
+    "confusable_words": [
+      "indecisive"
+    ]
+  },
+  {
+    "word": "decree",
+    "phonetic": "/dɪˈkriː/",
+    "pos": "n./v.",
+    "meaning_cn": "法令；判决",
+    "frequency_rank": 116,
+    "example": "The king issued a decree.",
+    "cet_level": "CET6",
+    "collocations": [
+      "by decree",
+      "royal decree",
+      "decree absolute"
+    ],
+    "synonyms": [
+      "order",
+      "edict",
+      "ruling"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "dedicate",
+    "phonetic": "/ˈdedɪkeɪt/",
+    "pos": "v.",
+    "meaning_cn": "奉献；致力于",
+    "frequency_rank": 117,
+    "example": "The book is dedicated to her mother.",
+    "cet_level": "CET6",
+    "collocations": [
+      "dedicate to",
+      "dedicate oneself"
+    ],
+    "synonyms": [
+      "devote",
+      "commit",
+      "consecrate"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "deduce",
+    "phonetic": "/dɪˈdjuːs/",
+    "pos": "v.",
+    "meaning_cn": "推断；演绎",
+    "frequency_rank": 118,
+    "example": "From the evidence, we can deduce what happened.",
+    "cet_level": "CET6",
+    "collocations": [
+      "deduce from",
+      "deduce that"
+    ],
+    "synonyms": [
+      "infer",
+      "conclude",
+      "reason"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "default",
+    "phonetic": "/dɪˈfɔːlt/",
+    "pos": "n./v.",
+    "meaning_cn": "默认；违约；缺席",
+    "frequency_rank": 119,
+    "example": "The borrower is in default on the loan.",
+    "cet_level": "CET6",
+    "collocations": [
+      "by default",
+      "in default of",
+      "default setting"
+    ],
+    "synonyms": [
+      "failure",
+      "nonpayment",
+      "standard"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "deficiency",
+    "phonetic": "/dɪˈfɪʃnsi/",
+    "pos": "n.",
+    "meaning_cn": "缺乏；不足；缺陷",
+    "frequency_rank": 120,
+    "example": "The soil has a nitrogen deficiency.",
+    "cet_level": "CET6",
+    "collocations": [
+      "vitamin deficiency",
+      "immune deficiency"
+    ],
+    "synonyms": [
+      "lack",
+      "shortage",
+      "insufficiency"
+    ],
+    "confusable_words": [
+      "excess",
+      "surplus"
+    ]
+  },
+  {
+    "word": "deficit",
+    "phonetic": "/ˈdefɪsɪt/",
+    "pos": "n.",
+    "meaning_cn": "赤字；不足",
+    "frequency_rank": 121,
+    "example": "The company is running at a deficit.",
+    "cet_level": "CET6",
+    "collocations": [
+      "budget deficit",
+      "trade deficit",
+      "attention deficit"
+    ],
+    "synonyms": [
+      "shortfall",
+      "loss",
+      "deficiency"
+    ],
+    "confusable_words": [
+      "surplus"
+    ]
+  },
+  {
+    "word": "defy",
+    "phonetic": "/dɪˈfaɪ/",
+    "pos": "v.",
+    "meaning_cn": "违抗；蔑视；不可能",
+    "frequency_rank": 122,
+    "example": "The beauty of the scene defies description.",
+    "cet_level": "CET6",
+    "collocations": [
+      "defy the law",
+      "defy expectations",
+      "defy explanation"
+    ],
+    "synonyms": [
+      "disobey",
+      "resist",
+      "challenge"
+    ],
+    "confusable_words": [
+      "obey"
+    ]
+  },
+  {
+    "word": "deliberate",
+    "phonetic": "/dɪˈlɪbərət/",
+    "pos": "adj./v.",
+    "meaning_cn": "故意的；深思熟虑",
+    "frequency_rank": 123,
+    "example": "It was a deliberate attempt to mislead.",
+    "cet_level": "CET6",
+    "collocations": [
+      "deliberate attempt",
+      "deliberate on"
+    ],
+    "synonyms": [
+      "intentional",
+      "planned",
+      "consider"
+    ],
+    "confusable_words": [
+      "accidental"
+    ]
+  },
+  {
+    "word": "delicate",
+    "phonetic": "/ˈdelɪkət/",
+    "pos": "adj.",
+    "meaning_cn": "精致的；脆弱的；微妙的",
+    "frequency_rank": 124,
+    "example": "These are delicate negotiations.",
+    "cet_level": "CET6",
+    "collocations": [
+      "delicate balance",
+      "delicate situation"
+    ],
+    "synonyms": [
+      "fragile",
+      "fine",
+      "sensitive"
+    ],
+    "confusable_words": [
+      "robust",
+      "tough"
+    ]
+  },
+  {
+    "word": "demolish",
+    "phonetic": "/dɪˈmɒlɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "拆除；摧毁",
+    "frequency_rank": 125,
+    "example": "The old building was demolished.",
+    "cet_level": "CET6",
+    "collocations": [
+      "demolish a building",
+      "completely demolish"
+    ],
+    "synonyms": [
+      "destroy",
+      "tear down",
+      "knock down"
+    ],
+    "confusable_words": [
+      "build",
+      "construct"
+    ]
+  },
+  {
+    "word": "denote",
+    "phonetic": "/dɪˈnəʊt/",
+    "pos": "v.",
+    "meaning_cn": "表示；意味着",
+    "frequency_rank": 126,
+    "example": "The red light denotes danger.",
+    "cet_level": "CET6",
+    "collocations": [
+      "denote that",
+      "clearly denote"
+    ],
+    "synonyms": [
+      "indicate",
+      "signify",
+      "mean"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "dense",
+    "phonetic": "/dens/",
+    "pos": "adj.",
+    "meaning_cn": "密集的；稠密的",
+    "frequency_rank": 127,
+    "example": "The forest was dense and dark.",
+    "cet_level": "CET6",
+    "collocations": [
+      "dense fog",
+      "dense population",
+      "dense forest"
+    ],
+    "synonyms": [
+      "thick",
+      "compact",
+      "crowded"
+    ],
+    "confusable_words": [
+      "sparse"
+    ]
+  },
+  {
+    "word": "desolate",
+    "phonetic": "/ˈdesələt/",
+    "pos": "adj.",
+    "meaning_cn": "荒凉的；孤寂的",
+    "frequency_rank": 128,
+    "example": "The landscape was desolate and barren.",
+    "cet_level": "CET6",
+    "collocations": [
+      "desolate landscape",
+      "feel desolate"
+    ],
+    "synonyms": [
+      "barren",
+      "deserted",
+      "bleak"
+    ],
+    "confusable_words": [
+      "lively",
+      "populated"
+    ]
+  },
+  {
+    "word": "deplete",
+    "phonetic": "/dɪˈpliːt/",
+    "pos": "v.",
+    "meaning_cn": "耗尽；用光",
+    "frequency_rank": 129,
+    "example": "Fish stocks have been depleted.",
+    "cet_level": "CET6",
+    "collocations": [
+      "deplete resources",
+      "deplete the ozone"
+    ],
+    "synonyms": [
+      "exhaust",
+      "drain",
+      "use up"
+    ],
+    "confusable_words": [
+      "replenish"
+    ]
+  },
+  {
+    "word": "deploy",
+    "phonetic": "/dɪˈplɔɪ/",
+    "pos": "v.",
+    "meaning_cn": "部署；调动",
+    "frequency_rank": 130,
+    "example": "Troops were deployed to the border.",
+    "cet_level": "CET6",
+    "collocations": [
+      "deploy resources",
+      "deploy troops"
+    ],
+    "synonyms": [
+      "station",
+      "position",
+      "utilize"
+    ],
+    "confusable_words": [
+      "withdraw"
+    ]
+  },
+  {
+    "word": "deprive",
+    "phonetic": "/dɪˈpraɪv/",
+    "pos": "v.",
+    "meaning_cn": "剥夺；使丧失",
+    "frequency_rank": 131,
+    "example": "He was deprived of his freedom.",
+    "cet_level": "CET6",
+    "collocations": [
+      "deprive of",
+      "deprived childhood"
+    ],
+    "synonyms": [
+      "deny",
+      "strip",
+      "take away"
+    ],
+    "confusable_words": [
+      "give",
+      "provide"
+    ]
+  },
+  {
+    "word": "designate",
+    "phonetic": "/ˈdezɪɡneɪt/",
+    "pos": "v.",
+    "meaning_cn": "指定；任命",
+    "frequency_rank": 132,
+    "example": "The area was designated a national park.",
+    "cet_level": "CET6",
+    "collocations": [
+      "designate as",
+      "designate for"
+    ],
+    "synonyms": [
+      "appoint",
+      "name",
+      "assign"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "destined",
+    "phonetic": "/ˈdestɪnd/",
+    "pos": "adj.",
+    "meaning_cn": "注定的；前往…的",
+    "frequency_rank": 133,
+    "example": "He was destined for greatness.",
+    "cet_level": "CET6",
+    "collocations": [
+      "destined for",
+      "destined to be"
+    ],
+    "synonyms": [
+      "fated",
+      "bound",
+      "meant"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "detain",
+    "phonetic": "/dɪˈteɪn/",
+    "pos": "v.",
+    "meaning_cn": "拘留；扣留",
+    "frequency_rank": 134,
+    "example": "The suspect was detained for questioning.",
+    "cet_level": "CET6",
+    "collocations": [
+      "detain without charge",
+      "detain illegally"
+    ],
+    "synonyms": [
+      "hold",
+      "arrest",
+      "confine"
+    ],
+    "confusable_words": [
+      "release"
+    ]
+  },
+  {
+    "word": "deviate",
+    "phonetic": "/ˈdiːvieɪt/",
+    "pos": "v.",
+    "meaning_cn": "偏离；背离",
+    "frequency_rank": 135,
+    "example": "Don't deviate from the plan.",
+    "cet_level": "CET6",
+    "collocations": [
+      "deviate from",
+      "deviate significantly"
+    ],
+    "synonyms": [
+      "stray",
+      "diverge",
+      "depart"
+    ],
+    "confusable_words": [
+      "conform"
+    ]
+  },
+  {
+    "word": "diagnose",
+    "phonetic": "/ˈdaɪəɡnəʊz/",
+    "pos": "v.",
+    "meaning_cn": "诊断；判断",
+    "frequency_rank": 136,
+    "example": "The doctor diagnosed the illness.",
+    "cet_level": "CET6",
+    "collocations": [
+      "diagnose with",
+      "diagnose a problem"
+    ],
+    "synonyms": [
+      "identify",
+      "determine",
+      "detect"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "diffuse",
+    "phonetic": "/dɪˈfjuːz/",
+    "pos": "v./adj.",
+    "meaning_cn": "扩散；传播；弥漫的",
+    "frequency_rank": 137,
+    "example": "The scent diffused through the room.",
+    "cet_level": "CET6",
+    "collocations": [
+      "diffuse knowledge",
+      "diffuse light"
+    ],
+    "synonyms": [
+      "spread",
+      "scatter",
+      "disperse"
+    ],
+    "confusable_words": [
+      "concentrate"
+    ]
+  },
+  {
+    "word": "dilemma",
+    "phonetic": "/dɪˈlemə/",
+    "pos": "n.",
+    "meaning_cn": "困境；进退两难",
+    "frequency_rank": 138,
+    "example": "I'm faced with a moral dilemma.",
+    "cet_level": "CET6",
+    "collocations": [
+      "face a dilemma",
+      "moral dilemma",
+      "in a dilemma"
+    ],
+    "synonyms": [
+      "predicament",
+      "quandary",
+      "problem"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "diligent",
+    "phonetic": "/ˈdɪlɪdʒənt/",
+    "pos": "adj.",
+    "meaning_cn": "勤奋的；勤勉的",
+    "frequency_rank": 139,
+    "example": "She is a diligent student.",
+    "cet_level": "CET6",
+    "collocations": [
+      "diligent work",
+      "diligent research"
+    ],
+    "synonyms": [
+      "hardworking",
+      "industrious",
+      "conscientious"
+    ],
+    "confusable_words": [
+      "lazy"
+    ]
+  },
+  {
+    "word": "diminish",
+    "phonetic": "/dɪˈmɪnɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "减少；削弱",
+    "frequency_rank": 140,
+    "example": "The pain gradually diminished.",
+    "cet_level": "CET6",
+    "collocations": [
+      "diminish the value",
+      "diminish over time"
+    ],
+    "synonyms": [
+      "decrease",
+      "reduce",
+      "lessen"
+    ],
+    "confusable_words": [
+      "increase"
+    ]
+  },
+  {
+    "word": "diplomacy",
+    "phonetic": "/dɪˈpləʊməsi/",
+    "pos": "n.",
+    "meaning_cn": "外交；手腕",
+    "frequency_rank": 141,
+    "example": "The crisis was resolved through diplomacy.",
+    "cet_level": "CET6",
+    "collocations": [
+      "international diplomacy",
+      "quiet diplomacy"
+    ],
+    "synonyms": [
+      "negotiation",
+      "tact",
+      "statesmanship"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "disastrous",
+    "phonetic": "/dɪˈzɑːstrəs/",
+    "pos": "adj.",
+    "meaning_cn": "灾难性的",
+    "frequency_rank": 142,
+    "example": "The decision proved disastrous.",
+    "cet_level": "CET6",
+    "collocations": [
+      "disastrous consequences",
+      "disastrous effect"
+    ],
+    "synonyms": [
+      "catastrophic",
+      "devastating",
+      "terrible"
+    ],
+    "confusable_words": [
+      "successful"
+    ]
+  },
+  {
+    "word": "discern",
+    "phonetic": "/dɪˈsɜːn/",
+    "pos": "v.",
+    "meaning_cn": "辨别；识别",
+    "frequency_rank": 143,
+    "example": "It's hard to discern the truth.",
+    "cet_level": "CET6",
+    "collocations": [
+      "discern between",
+      "difficult to discern"
+    ],
+    "synonyms": [
+      "perceive",
+      "detect",
+      "distinguish"
+    ],
+    "confusable_words": [
+      "miss"
+    ]
+  },
+  {
+    "word": "disclose",
+    "phonetic": "/dɪsˈkləʊz/",
+    "pos": "v.",
+    "meaning_cn": "透露；公开",
+    "frequency_rank": 144,
+    "example": "He refused to disclose the source.",
+    "cet_level": "CET6",
+    "collocations": [
+      "disclose information",
+      "decline to disclose"
+    ],
+    "synonyms": [
+      "reveal",
+      "expose",
+      "divulge"
+    ],
+    "confusable_words": [
+      "hide",
+      "conceal"
+    ]
+  },
+  {
+    "word": "discrete",
+    "phonetic": "/dɪˈskriːt/",
+    "pos": "adj.",
+    "meaning_cn": "分离的；离散的",
+    "frequency_rank": 145,
+    "example": "The process can be divided into discrete stages.",
+    "cet_level": "CET6",
+    "collocations": [
+      "discrete unit",
+      "discrete category"
+    ],
+    "synonyms": [
+      "separate",
+      "distinct",
+      "individual"
+    ],
+    "confusable_words": [
+      "continuous"
+    ]
+  },
+  {
+    "word": "displace",
+    "phonetic": "/dɪsˈpleɪs/",
+    "pos": "v.",
+    "meaning_cn": "取代；使流离失所",
+    "frequency_rank": 146,
+    "example": "Thousands were displaced by the war.",
+    "cet_level": "CET6",
+    "collocations": [
+      "displace workers",
+      "internally displaced"
+    ],
+    "synonyms": [
+      "move",
+      "relocate",
+      "replace"
+    ],
+    "confusable_words": [
+      "settle"
+    ]
+  },
+  {
+    "word": "dispose",
+    "phonetic": "/dɪˈspəʊz/",
+    "pos": "v.",
+    "meaning_cn": "处理；处置；安排",
+    "frequency_rank": 147,
+    "example": "Please dispose of the waste properly.",
+    "cet_level": "CET6",
+    "collocations": [
+      "dispose of",
+      "well disposed"
+    ],
+    "synonyms": [
+      "get rid of",
+      "arrange",
+      "discard"
+    ],
+    "confusable_words": [
+      "keep"
+    ]
+  },
+  {
+    "word": "dispute",
+    "phonetic": "/dɪˈspjuːt/",
+    "pos": "n./v.",
+    "meaning_cn": "争议；争论",
+    "frequency_rank": 148,
+    "example": "The issue is still in dispute.",
+    "cet_level": "CET6",
+    "collocations": [
+      "in dispute",
+      "settle a dispute",
+      "labor dispute"
+    ],
+    "synonyms": [
+      "disagreement",
+      "argument",
+      "conflict"
+    ],
+    "confusable_words": [
+      "agreement"
+    ]
+  },
+  {
+    "word": "dissolve",
+    "phonetic": "/dɪˈzɒlv/",
+    "pos": "v.",
+    "meaning_cn": "溶解；解散",
+    "frequency_rank": 149,
+    "example": "Sugar dissolves in water.",
+    "cet_level": "CET6",
+    "collocations": [
+      "dissolve in",
+      "dissolve parliament"
+    ],
+    "synonyms": [
+      "melt",
+      "disintegrate",
+      "disband"
+    ],
+    "confusable_words": [
+      "solidify"
+    ]
+  },
+  {
+    "word": "distort",
+    "phonetic": "/dɪˈstɔːt/",
+    "pos": "v.",
+    "meaning_cn": "扭曲；歪曲",
+    "frequency_rank": 150,
+    "example": "The media distorted the facts.",
+    "cet_level": "CET6",
+    "collocations": [
+      "distort the truth",
+      "distorted view"
+    ],
+    "synonyms": [
+      "twist",
+      "misrepresent",
+      "warp"
+    ],
+    "confusable_words": [
+      "clarify"
+    ]
+  }
+]

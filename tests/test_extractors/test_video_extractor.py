@@ -5,7 +5,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
-from skills.english_exam_ai_tutor.scripts.extractors.video import (
+from examlex.scripts.extractors.video import (
     VideoExtractor,
     _select_backend,
     _resolve_model,

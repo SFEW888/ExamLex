@@ -1,0 +1,38 @@
+from __future__ import annotations
+
+import subprocess
+import sys
+import unittest
+from pathlib import Path
+from unittest import mock
+
+from scripts import smoke_test_wheel
+
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+SMOKE_SCRIPT = PROJECT_ROOT / "scripts" / "smoke_test_wheel.py"
+
+
+class WheelSmokeScriptTests(unittest.TestCase):
+    def test_run_checked_decodes_utf8_output_on_windows(self):
+        completed = subprocess.CompletedProcess([], 0, stdout="通过", stderr="")
+
+        with mock.patch.object(smoke_test_wheel.subprocess, "run", return_value=completed) as run:
+            result = smoke_test_wheel.run_checked(["examlex", "--help"], PROJECT_ROOT, {})
+
+        self.assertEqual("通过", result.stdout)
+        self.assertEqual("utf-8", run.call_args.kwargs["encoding"])
+        self.assertEqual("replace", run.call_args.kwargs["errors"])
+
+    def test_smoke_script_exposes_help(self):
+        self.assertTrue(SMOKE_SCRIPT.is_file())
+
+        result = subprocess.run(
+            [sys.executable, str(SMOKE_SCRIPT), "--help"],
+            cwd=PROJECT_ROOT,
+            capture_output=True,
+            text=True,
+        )
+
+        self.assertEqual(0, result.returncode, result.stderr)
+        self.assertIn("wheel", result.stdout.lower())

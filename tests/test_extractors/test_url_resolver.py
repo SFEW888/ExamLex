@@ -1,7 +1,7 @@
 """Tests for URL resolver / input type detection."""
 import unittest
 
-from skills.english_exam_ai_tutor.scripts.extractors.url_resolver import (
+from examlex.scripts.extractors.url_resolver import (
     InputType,
     resolve_input,
 )

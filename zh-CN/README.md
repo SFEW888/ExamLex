@@ -1,11 +1,6 @@
-# 英语考试 AI 助教
+# ExamLex
 
-[![CI](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/ci.yml/badge.svg)](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/codeql.yml/badge.svg)](https://github.com/your-org/english-exam-ai-tutor/actions/workflows/codeql.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
-[![Skills](https://img.shields.io/badge/Skills-9-brightgreen.svg)](#八个助教角色)
-[![Platforms](https://img.shields.io/badge/Platforms-4-blue.svg)](#平台集成)
+> **项目状态：ExamLex 尚未发布。** 当前仅支持从本地检出目录安装；本文档保持完全离线，不依赖远程链接或状态徽章。
 
 > **四级 / 六级 / 专四 / 专八 / 考研英语备考一站式 AI Agent Skill 与自动化工具包——支持上传策略文件持续学习进化**
 > *CET-4 · CET-6 · TEM-4 · TEM-8 · Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning*
@@ -28,8 +23,8 @@
 ## 快速开始
 
 > **两种使用方式，不要混淆：**
-> - **作为 Agent Skill**（在对话中用 `/english-exam-ai-tutor` 调用）→ **`git clone` 到 skills 目录**（下方有各平台命令）。这是完整助教体验。
-> - **独立 CLI**（仅命令行工具）→ `pip install` 后使用 `tutor` 或 `english-exam-tutor` 命令。不注册 Agent Skill，只安装脚本引擎。
+> - **作为 Agent Skill**（在对话中用 `/examlex` 调用）→ 从当前本地目录运行安装脚本。这是完整助教体验。
+> - **独立 CLI**（仅命令行工具）→ 安装当前本地目录后使用 `examlex` 命令。不注册 Agent Skill，只安装脚本引擎。
 
 ### 环境要求
 
@@ -39,52 +34,38 @@
 
 ### 作为 Agent Skill 安装（推荐）
 
-**Claude Code**：
+在项目根目录运行本地安装脚本：
+
+```powershell
+.\install.ps1 claude  # 也可替换为 codex 或 cursor
+```
 
 ```bash
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.claude/skills/english-exam-ai-tutor
+./install.sh claude   # 也可替换为 codex 或 cursor
 ```
 
 然后重启 Claude Code，在对话中调用：
 
 ```text
-/english-exam-ai-tutor 帮我为 CET4 550+ 制定一周计划
+/examlex 帮我为 CET4 550+ 制定一周计划
 /learning-planner 给基础偏弱、目标 CET4 550+ 的学习者制定 30 天计划
 /grammar-corrector 批改这段作文并输出批改报告
 ```
 
-**Codex CLI / Codex App**：
-
-```bash
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.agents/skills/english-exam-ai-tutor
-```
-
 ```text
-/english-exam-ai-tutor 帮我为 CET6 600+ 制定一周计划
+/examlex 帮我为 CET6 600+ 制定一周计划
 /learning-planner 给基础偏弱、目标 CET4 550+ 的学习者制定 30 天计划
-```
-
-**Cursor**：
-
-```bash
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.cursor/skills/english-exam-ai-tutor
-```
-
-**跨平台（Codex + Amp 等同时发现）**：
-
-```bash
-git clone https://github.com/your-org/english-exam-ai-tutor.git ~/.agents/skills/english-exam-ai-tutor
 ```
 
 ### 安装后验证
 
 ```text
 # 重启 Agent 后
-Claude Code:  /skills list → 应看到 english-exam-ai-tutor 和 8 个快捷 Skill
-Codex CLI:    /skills → 应看到 /english-exam-ai-tutor 和 8 个快捷 Skill
+Claude Code:  /skills list → 应看到 examlex 和 8 个快捷 Skill
+Codex CLI:    /skills → 应看到 /examlex 和 8 个快捷 Skill
 
 # 快速测试
-/english-exam-ai-tutor 你好，介绍一下你能帮我做什么
+/examlex 你好，介绍一下你能帮我做什么
 ```
 
 ### 安装目录速查
@@ -100,26 +81,24 @@ Codex CLI:    /skills → 应看到 /english-exam-ai-tutor 和 8 个快捷 Skill
 如果你只需要命令行工具（脱离 Agent 使用脚本）：
 
 ```bash
-git clone https://github.com/your-org/english-exam-ai-tutor.git
-cd english-exam-ai-tutor
-pip install -e .
+python -m pip install -e .
 ```
 
 安装后可用：
 
 ```bash
-# 简短封装命令
-tutor plan learner-profile.json --ability ability-profile.json
-tutor errors practice-ledger.json --days 30
+# 简短命令
+examlex plan learner-profile.json --ability ability-profile.json
+examlex errors practice-ledger.json --days 30
 
 # 或完整 Python 命令
-english-exam-tutor daily-plan --profile learner-profile.json --ability ability-profile.json
-python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json --ability ability-profile.json
+examlex daily-plan --profile learner-profile.json --ability ability-profile.json
+python -m examlex daily-plan --profile learner-profile.json --ability ability-profile.json
 ```
 
-> `pip install -e .` 只安装脚本引擎，不注册 Agent Skill。Agent 对话功能仍需上方 `git clone` 到 skills 目录。
+> `python -m pip install -e .` 只安装脚本引擎，不注册 Agent Skill。Agent 对话功能需要使用上方本地安装脚本。
 >
-> 完整安装说明见 [快速开始指南](../docs/getting-started.md)。
+> 完整安装说明见 [快速开始指南](docs/getting-started.md)。
 
 ---
 
@@ -198,7 +177,7 @@ python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json
 
 | 场景 | 快捷 Skill | 调用方式 |
 |------|:---------:|---------|
-| 完整助教工作流 | `english-exam-ai-tutor` | `/english-exam-ai-tutor` |
+| 完整助教工作流 | `examlex` | `/examlex` |
 | 学习规划 | `learning-planner` | `/learning-planner` |
 | 词汇拓展 | `vocabulary-builder` | `/vocabulary-builder` |
 | 阅读拆解 | `reading-navigator` | `/reading-navigator` |
@@ -250,7 +229,7 @@ python -m skills.english_exam_ai_tutor daily-plan --profile learner-profile.json
 | 🔍 **语法错误反复犯** | `grammar-corrector` + `update_ability_profile.py` | 标签化归因 → 能力画像更新 → 下一轮计划优先修复 |
 | 📊 **想知道进步了多少** | `analyze_trends.py` + `update_ability_profile.py` | 练习台账 → 能力趋势可视化分析 |
 | 🗣️ **口语/听力薄弱** | `scenario-dialog` + `culture-guide` | 情景对话练习 + 文化语境理解 |
-| 🔄 **需要完整学习闭环** | `english-exam-ai-tutor`（主 Skill） | 诊断→计划→练习→归因→更新→迭代，七步自动流转 |
+| 🔄 **需要完整学习闭环** | `examlex`（主 Skill） | 诊断→计划→练习→归因→更新→迭代，七步自动流转 |
 | 📥 **沉淀个人备考方法论** | 拖入策略文件 → `ingest_strategy.py` → 后续备考自动引用 | 上传「四级阅读技巧.md」「考研作文模板.pdf」等，Skill 吸收后在计划和辅导中自动应用 |
 | 📚 **整本备考书→策略库** | Agent 读取 PDF → structural 提取 → `ingest_strategy.py` | 300 页《四级真题解析》→ 三重验证 → 8 条方法论自动融入每日计划 |
 | 🎬 **备考视频→策略库** | Agent RIA++ 蒸馏 → `ingest_strategy.py --source-type video` | B站字幕→并行提取→三重验证通过 5/15→自动引用 |
@@ -355,14 +334,14 @@ Agent 对话层 (Claude Code / Codex / Cursor)
     │
     ▼
 ┌─────────────────────────────────────────────────────────┐
-│  Skill 层 (skills/english-exam-ai-tutor/)               │
+│  Skill 层 (skills/examlex/)               │
 │  助教角色 · 参考文档 · 模板 · Schema · 工作流定义        │
 │  八个快捷 Skill (skills/*/)                              │
 └───────────────────────┬─────────────────────────────────┘
                         │
                         ▼
 ┌─────────────────────────────────────────────────────────┐
-│  脚本层 (skills/english_exam_ai_tutor/)                  │
+│  脚本层 (examlex/)                  │
 │  validate · daily-plan · record · tag-error · summarize  │
 │  update-ability · analyze-trends · writing-version       │
 │  score-writing · CLI 统一入口                             │
@@ -381,10 +360,10 @@ Agent 对话层 (Claude Code / Codex / Cursor)
 
 ```
 .
-├── SKILL.md                         # 兼容 npx skills add 的根级 Skill 入口
+├── SKILL.md                         # 根级 Skill 入口
 ├── install.sh / install.ps1         # 跨平台克隆安装入口
 │
-├── skills/english-exam-ai-tutor/    # 可移植 public-safe Skill 包
+├── skills/examlex/    # 可移植 public-safe Skill 包
 │   ├── SKILL.md                     #   主 Skill 定义
 │   ├── assets/
 │   │   ├── schemas/                 #   JSON Schema（档案/记录/作文版本）
@@ -394,7 +373,7 @@ Agent 对话层 (Claude Code / Codex / Cursor)
 │
 ├── skills/*/                        # 八个快捷 Agent Skill
 │
-├── skills/english_exam_ai_tutor/    # 可导入 Python 镜像（测试与 CLI 使用）
+├── examlex/    # 可导入 Python 镜像（测试与 CLI 使用）
 │   ├── cli.py                       #   统一 CLI 入口
 │   └── scripts/                     #   镜像脚本（与 Skill 脚本字段兼容）
 │
@@ -418,7 +397,7 @@ Agent 对话层 (Claude Code / Codex / Cursor)
 
 ### 设计原则
 
-- **双轨分离**：`skills/english-exam-ai-tutor/`（Agent 可读的 Skill 包）与 `skills/english_exam_ai_tutor/`（Python 可导入的镜像）保持字段兼容，脚本输出可互相校验。
+- **双轨分离**：`skills/examlex/`（Agent 可读的 Skill 包）与 `examlex/`（Python 可导入的镜像）保持字段兼容，脚本输出可互相校验。
 - **确定性优先**：脚本刻意避免概率式规划或评分逻辑，所有自动化输出可审计、可复现。
 - **公开安全**：GitHub 仓库仅发布角色边界、模板、Schema、脚本接口和占位符；原始八个助教提示词正文不进入公开仓库。
 
@@ -580,7 +559,7 @@ Agent：[提取 3 条策略 → ingest_strategy.py --source-type conversation]
 - **全局共享**：一份策略库服务于所有学习者档案，喂一次所有人受益
 - **来源可追溯**：每条策略记录 `source_type` + `distillation_method` + `source_url`
 
-> 详细的多源蒸馏工作流和字段规范见 [多源蒸馏参考](../skills/english-exam-ai-tutor/references/multi-source-distillation.md)。
+> 详细的多源蒸馏工作流和字段规范见 [多源蒸馏参考](skill/references/multi-source-distillation.md)。
 
 ---
 
@@ -596,7 +575,7 @@ Agent：[提取 3 条策略 → ingest_strategy.py --source-type conversation]
 | 🌐 翻译 | `TRANSLATION_GRAMMAR_FAIL` · `TRANSLATION_WORD_CHOICE_FAIL` · `TRANSLATION_CHINESE_ENGLISH` | 语法准确度 / 选词 / 中英转换 / 句式变化 |
 | ✍️ 写作 | `WRITING_STRUCTURE_LOGIC_WEAK` · `WRITING_LANGUAGE_ACCURACY_FAIL` · `WRITING_EXPRESSION_LIMITED` | 任务完成度 / 结构逻辑 / 语言准确度 / 表达丰富度 |
 
-> 详见 [错误分类参考](../skills/english-exam-ai-tutor/references/error-taxonomy.md)。
+> 详见 [错误分类参考](skill/references/error-taxonomy.md)。
 
 ---
 
@@ -604,59 +583,56 @@ Agent：[提取 3 条策略 → ingest_strategy.py --source-type conversation]
 
 | 平台 | 调用方式 | 快捷 Skill 前缀 | 适配说明 |
 |------|----------|:------------:|----------|
-| **Claude Code** | `/english-exam-ai-tutor` | `/` | [集成说明](../integrations/claude-code/README.md) |
-| **Codex CLI** | `/english-exam-ai-tutor` | `/` | [集成说明](../integrations/codex-cli/README.md) |
-| **Codex App** | `/english-exam-ai-tutor` | `/` | [集成说明](../integrations/codex-app/README.md) |
-| **Cursor** | 通过 Skill 目录配置 | — | [集成说明](../integrations/cursor/README.md) |
+| **Claude Code** | `/examlex` | `/` | [集成说明](integrations/claude-code.md) |
+| **Codex CLI** | `/examlex` | `/` | [集成说明](integrations/codex-cli.md) |
+| **Codex App** | `/examlex` | `/` | [集成说明](integrations/codex-app.md) |
+| **Cursor** | 通过 Skill 目录配置 | — | [集成说明](integrations/cursor.md) |
 
 内部 CLI 仅用于开发调试与测试，不作为普通用户入口：
 
 ```powershell
-python -m skills.english_exam_ai_tutor --help
+python -m examlex --help
 ```
 
 ### CLI 快捷封装
 
-项目提供了 `tutor` 封装脚本，用简短命令替代长串 Python 调用，适合脱离 Agent 时在终端直接使用：
+项目提供了 `examlex` 封装脚本，用简短命令替代长串 Python 调用，适合脱离 Agent 时在终端直接使用：
 
 ```bash
 # bash
-tutor plan learner-profile.json --ability ability-profile.json
-tutor errors practice-ledger.json --days 30
-tutor backup ./local/data
+examlex plan learner-profile.json --ability ability-profile.json
+examlex errors practice-ledger.json --days 30
+examlex backup ./local/data
 
 # PowerShell
-.\tutor.ps1 plan learner-profile.json --ability ability-profile.json
-.\tutor.ps1 errors practice-ledger.json --days 30
-.\tutor.ps1 backup .\local\data
+.\examlex.ps1 plan learner-profile.json --ability ability-profile.json
+.\examlex.ps1 errors practice-ledger.json --days 30
+.\examlex.ps1 backup .\local\data
 ```
 
 | 类别 | 快捷命令 | Agent 对话等价 |
 |------|---------|---------------|
-| 校验档案 | `tutor check <file>` | 「帮我检查这份档案」 |
-| 生成计划 | `tutor plan <file> --ability ...` | 「帮我制定今天的计划」 |
-| 错误汇总 | `tutor errors <file>` | 「最近哪些错误最频繁」 |
-| 趋势分析 | `tutor trends <file>` | 「我最近进步了吗」 |
-| 作文评分 | `tutor score <essay>` | 「这篇作文能打多少分」 |
-| 摄入策略 | `tutor ingest <file>` | 「记住这份技巧文件」 |
-| 数据备份 | `tutor backup <dir>` | 「备份我的学习数据」 |
-| 进度报告 | `tutor report --ability ...` | 「生成一份学习报告」 |
+| 校验档案 | `examlex check <file>` | 「帮我检查这份档案」 |
+| 生成计划 | `examlex plan <file> --ability ...` | 「帮我制定今天的计划」 |
+| 错误汇总 | `examlex errors <file>` | 「最近哪些错误最频繁」 |
+| 趋势分析 | `examlex trends <file>` | 「我最近进步了吗」 |
+| 作文评分 | `examlex score <essay>` | 「这篇作文能打多少分」 |
+| 摄入策略 | `examlex ingest <file>` | 「记住这份技巧文件」 |
+| 数据备份 | `examlex backup <dir>` | 「备份我的学习数据」 |
+| 进度报告 | `examlex report --ability-history ...` | 「生成一份学习报告」 |
 
-> 完整命令签名见 [CLI 参考文档](../cli-reference.md)。封装脚本位于 `bin/tutor`（bash）和 `bin/tutor.ps1`（PowerShell）。
+> 完整命令签名见 [CLI 参考文档](cli-reference.md)。封装脚本位于 `bin/examlex`（bash）和 `bin/examlex.ps1`（PowerShell）。
 
 ---
 
 ## 环境变量参考
 
-无需密钥即可使用。可选本地配置见 `.env.example`：
+无需密钥即可使用。ExamLex 不会自动加载 `.env`；请在 Shell 中导出变量，或使用你自己的环境加载工具读取 `.env.example`：
 
 | 变量 | 必填 | 默认值 | 说明 |
 |------|:--:|--------|------|
-| `ENGLISH_EXAM_TUTOR_PROMPT_MODE` | 否 | `public-safe` | 提示词模式（`public-safe` / `full-local`） |
-| `ENGLISH_EXAM_TUTOR_DATA_DIR` | 否 | `./local/data` | 学习者数据本地存储目录 |
-| `ENGLISH_EXAM_TUTOR_PRIVATE_PROMPT_DIR` | 否 | — | full-local 模式下私有提示词资产目录 |
-| `ENGLISH_EXAM_TUTOR_DEFAULT_EXAM` | 否 | `CET4` | 默认考试类型 |
-| `ENGLISH_EXAM_TUTOR_DEFAULT_TARGET` | 否 | `550+` | 默认目标区间 |
+| `SILICONFLOW_API_KEY` | 否 | — | SiliconFlow 云端语音识别密钥 |
+| `EXAMLEX_PYTHON` | 否 | `python` | 本地 ExamLex 封装脚本使用的 Python 解释器 |
 
 > ⚠️ **安全提醒**：不要提交 `.env`、学习者身份信息、私有提示词正文、Token、密码或本地数据库凭据到公开仓库。
 
@@ -669,7 +645,7 @@ tutor backup ./local/data
 | 🔓 **public-safe**（默认） | GitHub、示例、文档、演示、Issue、PR、发布包 | 仅包含角色边界、占位符、模板、Schema 和脚本接口 |
 | 🔒 **full-local** | 用户本机私有环境 | 可路由到仓库外的私有提示词资产 |
 
-> **重要约束**：原始八个助教提示词正文不发布、不重写、不重构进任何公开文件。公开文档中的占位符（如 `[PRIVATE_PROMPT_PLACEHOLDER: grammar-corrector]`）仅为接口标记。详见 [提示词策略](../docs/prompt-policy.md)。
+> **重要约束**：原始八个助教提示词正文不发布、不重写、不重构进任何公开文件。公开文档中的占位符（如 `[PRIVATE_PROMPT_PLACEHOLDER: grammar-corrector]`）仅为接口标记。详见 [提示词策略](docs/prompt-policy.md)。
 
 ---
 
@@ -681,7 +657,7 @@ tutor backup ./local/data
 
 **"我必须手动运行 CLI 命令吗？"**
 
-不需要。绝大多数情况下你在 Agent 对话中说自然语言即可——Agent 读取 SKILL.md 中的工作流说明后，自动按需调用脚本。CLI 和 `tutor` 封装命令主要用于调试、脚本集成和脱离 Agent 的独立使用场景。
+不需要。绝大多数情况下你在 Agent 对话中说自然语言即可——Agent 读取 SKILL.md 中的工作流说明后，自动按需调用脚本。CLI 和 `examlex` 封装命令主要用于调试、脚本集成和脱离 Agent 的独立使用场景。
 
 **"策略库里的数据会被上传到云端吗？"**
 
@@ -719,7 +695,7 @@ git diff --check
 ```powershell
 # 确认公开文件中无私有提示词正文
 # 确认可移植 Skill 目录中无根级安装说明
-Get-ChildItem -Name skills\english-exam-ai-tutor | Where-Object { $_ -in @('README.md','INSTALL.md') }
+Get-ChildItem -Name skills\examlex | Where-Object { $_ -in @('README.md','INSTALL.md') }
 ```
 
 ---
@@ -728,25 +704,25 @@ Get-ChildItem -Name skills\english-exam-ai-tutor | Where-Object { $_ -in @('READ
 
 | 文档 | 说明 |
 |------|------|
-| [设计说明](../docs/design.md) | 双轨分离、公开安全发布、确定性自动化的设计理念 |
-| [架构说明](../docs/architecture.md) | 项目分层与模块关系 |
-| [使用流程](../docs/usage.md) | 完整学习闭环操作指南 |
-| [提示词策略](../docs/prompt-policy.md) | public-safe 与 full-local 模式规则 |
-| [快速开始](../docs/getting-started.md) | 各平台安装与首次使用 |
-| [配置](../docs/configuration.md) | 可选本地配置与环境变量 |
-| [开发](../docs/development.md) | 开发环境搭建与贡献流程 |
-| [排错](../docs/troubleshooting.md) | 常见问题与解决方法 |
-| [发布](../docs/release.md) | 版本发布流程 |
-| [路线图](../docs/roadmap.md) | 未来计划 |
-| [项目质量](../docs/project-quality.md) | GitHub 社区标准合规 |
-| [四级指南](../docs/cet4.md) | CET-4 备考专项说明 |
-| [六级指南](../docs/cet6.md) | CET-6 备考专项说明 |
-| [考研英语指南](../docs/postgraduate.md) | 考研英语备考专项说明 |
-| [CLI 参考](../cli-reference.md) | 全部命令行签名、触发方式分类、封装脚本说明 |
-| [优化方案](../optimization-plan.md) | P0-P3 详细设计规格 |
-| [环境诊断](scripts/check_env.ps1) | 检查 Python/Git/Skills/磁盘空间 |
-| [数据诊断](scripts/check_data.ps1) | 检查学习者数据完整性与大小 |
-| [数据维护](scripts/maintenance.ps1) | 清理旧备份、验证 JSON 完整性 |
+| [设计说明](docs/design.md) | 双轨分离、公开安全发布、确定性自动化的设计理念 |
+| [架构说明](docs/architecture.md) | 项目分层与模块关系 |
+| [使用流程](docs/usage.md) | 完整学习闭环操作指南 |
+| [提示词策略](docs/prompt-policy.md) | public-safe 与 full-local 模式规则 |
+| [快速开始](docs/getting-started.md) | 各平台安装与首次使用 |
+| [配置](docs/configuration.md) | 可选本地配置与环境变量 |
+| [开发](docs/development.md) | 开发环境搭建与贡献流程 |
+| [排错](docs/troubleshooting.md) | 常见问题与解决方法 |
+| [发布](docs/release.md) | 版本发布流程 |
+| [路线图](docs/roadmap.md) | 未来计划 |
+| [项目质量](docs/project-quality.md) | 项目质量与发布检查 |
+| [四级指南](docs/cet4.md) | CET-4 备考专项说明 |
+| [六级指南](docs/cet6.md) | CET-6 备考专项说明 |
+| [考研英语指南](docs/postgraduate.md) | 考研英语备考专项说明 |
+| [CLI 参考](cli-reference.md) | 全部命令行签名、触发方式分类、封装脚本说明 |
+| [优化计划](docs/optimization-plan.md) | 已完成优化与后续优先级 |
+| [环境诊断](../scripts/check_env.ps1) | 检查 Python/Git/Skills/磁盘空间 |
+| [数据诊断](../scripts/check_data.ps1) | 检查学习者数据完整性与大小 |
+| [数据维护](../scripts/maintenance.ps1) | 清理旧备份、验证 JSON 完整性 |
 
 中文版文档位于 `zh-CN/` 目录下。
 
@@ -764,17 +740,17 @@ Get-ChildItem -Name skills\english-exam-ai-tutor | Where-Object { $_ -in @('READ
 
 ## 社区
 
-- [贡献指南](../CONTRIBUTING.md)
-- [安全策略](../SECURITY.md)
-- [行为准则](../CODE_OF_CONDUCT.md)
-- [支持](../SUPPORT.md)
-- [更新日志](../CHANGELOG.md)
+- [贡献指南（英文）](../CONTRIBUTING.md)
+- [安全策略（英文）](../SECURITY.md)
+- [行为准则（英文）](../CODE_OF_CONDUCT.md)
+- [支持（英文）](../SUPPORT.md)
+- [更新日志（英文）](../CHANGELOG.md)
 
 ---
 
 ## 贡献
 
-贡献应保持项目公开安全、确定性可验证。请从 [CONTRIBUTING.md](../CONTRIBUTING.md) 开始。
+贡献应保持项目公开安全、确定性可验证。请从英文版 [CONTRIBUTING.md](../CONTRIBUTING.md) 开始。
 
 ---
 

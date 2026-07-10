@@ -7,7 +7,7 @@ import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SKILL_DIR = REPO_ROOT / "skills" / "english-exam-ai-tutor"
+SKILL_DIR = REPO_ROOT / "skills" / "examlex"
 ERRORS_DIR = SKILL_DIR / "assets" / "data" / "common-errors"
 SCHEMA_PATH = SKILL_DIR / "assets" / "schemas" / "error-pattern.schema.json"
 

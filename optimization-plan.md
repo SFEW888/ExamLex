@@ -1,4 +1,4 @@
-# English Exam AI Tutor — 完整技术规格文档
+# ExamLex — 完整技术规格文档
 
 > P0 → P3 逐项展开：命令签名、JSON Schema、函数伪代码、文件清单、测试规格、集成矩阵。
 > 实施前请结合当前 `common.py` 和 `cli.py` 的实际代码确认接口兼容性。
@@ -29,7 +29,7 @@
 ### 1. 命令设计
 
 ```bash
-python -m skills.english_exam_ai_tutor validate-strategy \
+python -m examlex validate-strategy \
   --library <path>                    # 策略库 JSON 文件路径（必填）
   [--schema <path>]                   # 自定义 Schema 路径（可选，默认使用内置 Schema）
   [--strict]                          # WARNING 升级为 ERROR（可选）
@@ -87,7 +87,6 @@ ERROR  added_at: "2026/07/05" — 格式错误，应为 ISO 8601 (YYYY-MM-DD)
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "strategy-library.schema.json",
   "title": "Strategy Library",
   "type": "object",
@@ -161,7 +160,7 @@ ERROR  added_at: "2026/07/05" — 格式错误，应为 ISO 8601 (YYYY-MM-DD)
 ### 3. 函数伪代码
 
 ```python
-# skills/english_exam_ai_tutor/scripts/validate_strategy.py
+# examlex/scripts/validate_strategy.py
 
 def main(argv: list[str] | None = None) -> int:
     args = parse_args(argv)
@@ -261,14 +260,14 @@ def main(argv: list[str] | None = None) -> int:
 
 ```
 新增 (3 files):
-  skills/english-exam-ai-tutor/scripts/validate_strategy.py
-  skills/english_exam_ai_tutor/scripts/validate_strategy.py   # 镜像
-  skills/english-exam-ai-tutor/assets/schemas/strategy-library.schema.json
+  skills/examlex/scripts/validate_strategy.py
+  examlex/scripts/validate_strategy.py   # 镜像
+  skills/examlex/assets/schemas/strategy-library.schema.json
 
 修改 (4 files):
-  skills/english_exam_ai_tutor/cli.py                          # +1 命令注册
-  skills/english_exam_ai_tutor/scripts/common.py               # +常量 +校验函数
-  skills/english-exam-ai-tutor/scripts/ingest_strategy.py      # 写入后自动校验
+  examlex/cli.py                          # +1 命令注册
+  examlex/scripts/common.py               # +常量 +校验函数
+  skills/examlex/scripts/ingest_strategy.py      # 写入后自动校验
   scripts/validate_repo.py                                      # + --check-strategies
 ```
 
@@ -334,12 +333,12 @@ class TestValidateStrategy:
 
 ```bash
 # 验证 TEM-4 档案可被校验
-python -m skills.english_exam_ai_tutor validate-profile \
+python -m examlex validate-profile \
   --profile tests/fixtures/tem4-learner-profile.json
 # → 应通过（exit 0）
 
 # 验证 TEM-8 计划可被生成
-python -m skills.english_exam_ai_tutor daily-plan \
+python -m examlex daily-plan \
   --profile tests/fixtures/tem8-learner-profile.json \
   --ability tests/fixtures/tem8-ability-profile.json \
   --output /tmp/tem8-plan.json
@@ -436,16 +435,16 @@ EXAM_TIME_LIMITS = {
 
 ```
 修改 (10 files):
-  skills/english_exam_ai_tutor/scripts/common.py
-  skills/english_exam_ai_tutor/scripts/validate_profile.py     # 校验 TEM 目标区间
-  skills/english_exam_ai_tutor/scripts/generate_daily_plan.py  # 处理新模块
-  skills/english_exam_ai_tutor/scripts/summarize_errors.py     # 新标签统计
-  skills/english_exam_ai_tutor/scripts/update_ability_profile.py
-  skills/english_exam_ai_tutor/scripts/analyze_trends.py
-  skills/english_exam_ai_tutor/references/exam-profiles.md
-  skills/english_exam_ai_tutor/references/error-taxonomy.md
-  skills/english_exam_ai_tutor/assets/templates/learner-profile.yaml
-  skills/english_exam_ai_tutor/assets/templates/ability-profile.yaml
+  examlex/scripts/common.py
+  examlex/scripts/validate_profile.py     # 校验 TEM 目标区间
+  examlex/scripts/generate_daily_plan.py  # 处理新模块
+  examlex/scripts/summarize_errors.py     # 新标签统计
+  examlex/scripts/update_ability_profile.py
+  examlex/scripts/analyze_trends.py
+  examlex/references/exam-profiles.md
+  examlex/references/error-taxonomy.md
+  examlex/assets/templates/learner-profile.yaml
+  examlex/assets/templates/ability-profile.yaml
 
 新增 (4 files):
   docs/tem4.md
@@ -495,12 +494,12 @@ class TestTEMSupport:
 ### 1. 命令设计
 
 ```bash
-python -m skills.english_exam_ai_tutor vocab-estimate \
+python -m examlex vocab-estimate \
   --wordlist <path>              # 用户标注的词表 JSON（非交互模式，必填，与 --interactive 互斥）
   [--output <path>]              # 结果输出路径（默认 stdout）
   [--reference <path>]           # 测试词表文件（默认使用内置词表）
 
-python -m skills.english_exam_ai_tutor vocab-estimate \
+python -m examlex vocab-estimate \
   --interactive                  # 交互模式：逐词输出，通过 stdin/stdout 交互
   [--bands <bands>]              # 仅测试指定频率段，逗号分隔（默认全部 6 段）
   [--samples-per-band <n>]       # 每段真词数（默认 10）
@@ -509,7 +508,7 @@ python -m skills.english_exam_ai_tutor vocab-estimate \
   [--reference <path>]
 
 # Agent 使用示例
-python -m skills.english_exam_ai_tutor vocab-estimate \
+python -m examlex vocab-estimate \
   --interactive --bands 1-1000,1001-2000,2001-3000 \
   --samples-per-band 5 --output vocab-result.json
 ```
@@ -543,7 +542,6 @@ Agent 显示: 你认识这个词吗？ "flompery"  [y/n]
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "vocab-estimate-result.schema.json",
   "type": "object",
   "required": ["learner_id", "test_date", "method", "estimated_vocabulary", "confidence_interval", "false_alarm_rate", "by_band"],
@@ -691,16 +689,16 @@ update_ability_profile.py:
 
 ```
 新增 (5 files):
-  skills/english-exam-ai-tutor/scripts/estimate_vocabulary.py
-  skills/english_exam_ai_tutor/scripts/estimate_vocabulary.py
-  skills/english-exam-ai-tutor/assets/data/vocab-test-words.json
-  skills/english-exam-ai-tutor/assets/schemas/vocab-estimate-result.schema.json
+  skills/examlex/scripts/estimate_vocabulary.py
+  examlex/scripts/estimate_vocabulary.py
+  skills/examlex/assets/data/vocab-test-words.json
+  skills/examlex/assets/schemas/vocab-estimate-result.schema.json
   tests/test_estimate_vocabulary.py
 
 修改 (3 files):
-  skills/english_exam_ai_tutor/cli.py                  # +1 命令
-  skills/english_exam_ai_tutor/scripts/validate_profile.py  # + --suggest-foundation
-  skills/english_exam_ai_tutor/scripts/generate_daily_plan.py  # + --vocab-estimate
+  examlex/cli.py                  # +1 命令
+  examlex/scripts/validate_profile.py  # + --suggest-foundation
+  examlex/scripts/generate_daily_plan.py  # + --vocab-estimate
 ```
 
 ### 7. 测试规格
@@ -728,7 +726,7 @@ class TestEstimateVocabulary:
         """--output 输出符合 Schema"""
 
     def test_cli_registered(self):
-        """english-exam-tutor vocab-estimate --help 可运行"""
+        """examlex vocab-estimate --help 可运行"""
 ```
 
 ---
@@ -741,10 +739,10 @@ class TestEstimateVocabulary:
 
 ```bash
 # 计划生成时引用预置词表
-python -m skills.english_exam_ai_tutor daily-plan \
+python -m examlex daily-plan \
   --profile learner-profile.json \
   --ability ability-profile.json \
-  --vocab-pool skills/english-exam-ai-tutor/assets/data/vocabulary/cet4-core-2000.json \
+  --vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-2000.json \
   --output daily-plan.json
 ```
 
@@ -752,7 +750,6 @@ python -m skills.english_exam_ai_tutor daily-plan \
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "vocab-entry.schema.json",
   "type": "object",
   "required": ["word", "meaning_cn", "frequency_rank"],
@@ -791,7 +788,7 @@ python -m skills.english_exam_ai_tutor daily-plan \
 ### 4. 词表文件结构
 
 ```
-skills/english-exam-ai-tutor/assets/data/vocabulary/
+skills/examlex/assets/data/vocabulary/
 ├── cet4-core-2000.json              # 四级高频 2000 词（按 frequency_rank 升序）
 ├── cet6-core-1500.json              # 六级增量 1500 词（不含四级已覆盖）
 ├── postgraduate-core-1000.json      # 考研增量 1000 词
@@ -865,16 +862,16 @@ def select_daily_vocab(
 
 ```
 新增 (7 files):
-  skills/english-exam-ai-tutor/assets/data/vocabulary/cet4-core-2000.json
-  skills/english-exam-ai-tutor/assets/data/vocabulary/cet6-core-1500.json
-  skills/english-exam-ai-tutor/assets/data/vocabulary/postgraduate-core-1000.json
-  skills/english-exam-ai-tutor/assets/data/vocabulary/tem4-core-2000.json
-  skills/english-exam-ai-tutor/assets/data/vocabulary/tem8-core-2000.json
-  skills/english-exam-ai-tutor/assets/data/vocabulary/index.json
-  skills/english-exam-ai-tutor/assets/schemas/vocab-entry.schema.json
+  skills/examlex/assets/data/vocabulary/cet4-core-2000.json
+  skills/examlex/assets/data/vocabulary/cet6-core-1500.json
+  skills/examlex/assets/data/vocabulary/postgraduate-core-1000.json
+  skills/examlex/assets/data/vocabulary/tem4-core-2000.json
+  skills/examlex/assets/data/vocabulary/tem8-core-2000.json
+  skills/examlex/assets/data/vocabulary/index.json
+  skills/examlex/assets/schemas/vocab-entry.schema.json
 
 修改 (1 file):
-  skills/english_exam_ai_tutor/scripts/generate_daily_plan.py  # + --vocab-pool
+  examlex/scripts/generate_daily_plan.py  # + --vocab-pool
 ```
 
 ### 8. 测试规格
@@ -912,7 +909,7 @@ class TestVocabPool:
 
 ```bash
 # 计时练习记录
-python -m skills.english_exam_ai_tutor record-practice \
+python -m examlex record-practice \
   --ledger practice-ledger.json \
   --date 2026-07-05 \
   --exam-type CET4 \
@@ -928,7 +925,7 @@ python -m skills.english_exam_ai_tutor record-practice \
   --error-tags READING_SPEED_LOW,READING_INFERENCE_FAIL
 
 # 自动获取时间限制（从 EXAM_TIME_LIMITS 查找）
-python -m skills.english_exam_ai_tutor record-practice \
+python -m examlex record-practice \
   --ledger practice-ledger.json \
   --timed --exam-type CET4 --module reading \
   --task-id timed-reading-001 \
@@ -941,7 +938,6 @@ python -m skills.english_exam_ai_tutor record-practice \
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "exercise-record.schema.json",
   "type": "object",
   "required": ["date", "exam_type", "module", "task_id", "duration_minutes", "total_items", "correct_items"],
@@ -1040,15 +1036,15 @@ def get_time_limit(exam_type: str, module: str) -> int | None:
 
 ```
 修改 (5 files):
-  skills/english_exam_ai_tutor/scripts/record_practice.py
-  skills/english_exam_ai_tutor/scripts/summarize_errors.py
-  skills/english_exam_ai_tutor/scripts/common.py               # + EXAM_TIME_LIMITS
-  skills/english_exam_ai_tutor/assets/templates/exercise-record.json
-  skills/english_exam_ai_tutor/assets/schemas/exercise-record.schema.json
+  examlex/scripts/record_practice.py
+  examlex/scripts/summarize_errors.py
+  examlex/scripts/common.py               # + EXAM_TIME_LIMITS
+  examlex/assets/templates/exercise-record.json
+  examlex/assets/schemas/exercise-record.schema.json
 
 镜像同步 (2 files):
-  skills/english_exam_ai_tutor/scripts/record_practice.py
-  skills/english_exam_ai_tutor/scripts/summarize_errors.py
+  examlex/scripts/record_practice.py
+  examlex/scripts/summarize_errors.py
 ```
 
 ### 6. 测试规格
@@ -1198,14 +1194,14 @@ def generate_daily_plan(
 
 ```
 修改 (3 files):
-  skills/english_exam_ai_tutor/scripts/common.py               # + ERROR_SEVERITY_WEIGHTS
-  skills/english_exam_ai_tutor/scripts/summarize_errors.py     # + review_urgency
-  skills/english_exam_ai_tutor/scripts/generate_daily_plan.py  # + 复习加权
+  examlex/scripts/common.py               # + ERROR_SEVERITY_WEIGHTS
+  examlex/scripts/summarize_errors.py     # + review_urgency
+  examlex/scripts/generate_daily_plan.py  # + 复习加权
 
 镜像同步 (3 files):
-  skills/english_exam_ai_tutor/scripts/common.py
-  skills/english_exam_ai_tutor/scripts/summarize_errors.py
-  skills/english_exam_ai_tutor/scripts/generate_daily_plan.py
+  examlex/scripts/common.py
+  examlex/scripts/summarize_errors.py
+  examlex/scripts/generate_daily_plan.py
 ```
 
 ### 6. 测试规格
@@ -1246,9 +1242,9 @@ class TestSpacedReview:
 
 ```bash
 # 使用常见错误库辅助归因
-python -m skills.english_exam_ai_tutor tag-error \
+python -m examlex tag-error \
   --text "I went to store." \
-  --reference skills/english-exam-ai-tutor/assets/data/common-errors/chinese-learner-writing-errors.json \
+  --reference skills/examlex/assets/data/common-errors/chinese-learner-writing-errors.json \
   --output error-tags.json
 ```
 
@@ -1256,7 +1252,6 @@ python -m skills.english_exam_ai_tutor tag-error \
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "error-pattern.schema.json",
   "type": "object",
   "required": ["error_patterns"],
@@ -1310,15 +1305,15 @@ python -m skills.english_exam_ai_tutor tag-error \
 
 ```
 新增 (6 files):
-  skills/english-exam-ai-tutor/assets/data/common-errors/chinese-learner-writing-errors.json
-  skills/english-exam-ai-tutor/assets/data/common-errors/chinese-learner-translation-errors.json
-  skills/english-exam-ai-tutor/assets/data/common-errors/chinese-learner-listening-errors.json
-  skills/english-exam-ai-tutor/assets/data/common-errors/chinese-learner-reading-errors.json
-  skills/english-exam-ai-tutor/assets/data/common-errors/chinese-learner-vocabulary-errors.json
-  skills/english-exam-ai-tutor/assets/schemas/error-pattern.schema.json
+  skills/examlex/assets/data/common-errors/chinese-learner-writing-errors.json
+  skills/examlex/assets/data/common-errors/chinese-learner-translation-errors.json
+  skills/examlex/assets/data/common-errors/chinese-learner-listening-errors.json
+  skills/examlex/assets/data/common-errors/chinese-learner-reading-errors.json
+  skills/examlex/assets/data/common-errors/chinese-learner-vocabulary-errors.json
+  skills/examlex/assets/schemas/error-pattern.schema.json
 
 修改 (1 file):
-  skills/english_exam_ai_tutor/scripts/tag_error.py  # + --reference
+  examlex/scripts/tag_error.py  # + --reference
 ```
 
 ### 4. 测试规格
@@ -1344,7 +1339,7 @@ class TestCommonErrors:
 ### 1. 命令设计
 
 ```bash
-python -m skills.english_exam_ai_tutor visualize \
+python -m examlex visualize \
   --ability-history <path>           # ability-history.json（必填）
   --ledger <path>                    # practice-ledger.json（必填）
   [--error-summary <path>]           # error-summary.json（可选）
@@ -1454,12 +1449,12 @@ def render_pie_chart(ledger: list, days: int) -> str:
 
 ```
 新增 (3 files):
-  skills/english-exam-ai-tutor/scripts/visualize_progress.py
-  skills/english_exam_ai_tutor/scripts/visualize_progress.py  # 镜像
+  skills/examlex/scripts/visualize_progress.py
+  examlex/scripts/visualize_progress.py  # 镜像
   tests/test_visualize_progress.py
 
 修改 (1 file):
-  skills/english_exam_ai_tutor/cli.py  # +1 命令 ("visualize")
+  examlex/cli.py  # +1 命令 ("visualize")
 ```
 
 ### 5. 测试规格
@@ -1487,7 +1482,7 @@ class TestVisualizeProgress:
         """--days 7 只包含最近 7 天数据"""
 
     def test_cli_registered(self):
-        """english-exam-tutor visualize --help 可运行"""
+        """examlex visualize --help 可运行"""
 ```
 
 ---
@@ -1500,10 +1495,10 @@ class TestVisualizeProgress:
 
 ```bash
 # 评分时引用范文库做锚定
-python -m skills.english_exam_ai_tutor score-writing \
+python -m examlex score-writing \
   --exam-type CET4 \
   --essay essay.txt \
-  --reference-samples skills/english-exam-ai-tutor/assets/data/sample-essays/cet4/ \
+  --reference-samples skills/examlex/assets/data/sample-essays/cet4/ \
   --output score.json
 ```
 
@@ -1511,7 +1506,6 @@ python -m skills.english_exam_ai_tutor score-writing \
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "sample-essay.schema.json",
   "type": "object",
   "required": ["sample_id", "exam_type", "module", "topic", "band", "essay_text", "rubric_scores"],
@@ -1555,7 +1549,7 @@ python -m skills.english_exam_ai_tutor score-writing \
 ### 3. 文件结构
 
 ```
-skills/english-exam-ai-tutor/assets/data/sample-essays/
+skills/examlex/assets/data/sample-essays/
 ├── index.json              # 索引
 ├── cet4/
 │   ├── index.json
@@ -1617,23 +1611,23 @@ def score_with_anchor(
 
 ```
 新增 (12 files):
-  skills/english-exam-ai-tutor/assets/data/sample-essays/index.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/cet4/index.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/cet4/band-425/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/cet4/band-550/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/cet4/band-600/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/cet6/index.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/cet6/band-425/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/cet6/band-550/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/cet6/band-600/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/postgraduate/index.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/postgraduate/band-50/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/postgraduate/band-70/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/data/sample-essays/postgraduate/band-90/{001,002,003}.json
-  skills/english-exam-ai-tutor/assets/schemas/sample-essay.schema.json
+  skills/examlex/assets/data/sample-essays/index.json
+  skills/examlex/assets/data/sample-essays/cet4/index.json
+  skills/examlex/assets/data/sample-essays/cet4/band-425/{001,002,003}.json
+  skills/examlex/assets/data/sample-essays/cet4/band-550/{001,002,003}.json
+  skills/examlex/assets/data/sample-essays/cet4/band-600/{001,002,003}.json
+  skills/examlex/assets/data/sample-essays/cet6/index.json
+  skills/examlex/assets/data/sample-essays/cet6/band-425/{001,002,003}.json
+  skills/examlex/assets/data/sample-essays/cet6/band-550/{001,002,003}.json
+  skills/examlex/assets/data/sample-essays/cet6/band-600/{001,002,003}.json
+  skills/examlex/assets/data/sample-essays/postgraduate/index.json
+  skills/examlex/assets/data/sample-essays/postgraduate/band-50/{001,002,003}.json
+  skills/examlex/assets/data/sample-essays/postgraduate/band-70/{001,002,003}.json
+  skills/examlex/assets/data/sample-essays/postgraduate/band-90/{001,002,003}.json
+  skills/examlex/assets/schemas/sample-essay.schema.json
 
 修改 (1 file):
-  skills/english_exam_ai_tutor/scripts/score_writing_rubric.py  # + --reference-samples
+  examlex/scripts/score_writing_rubric.py  # + --reference-samples
 ```
 
 ### 6. 测试规格
@@ -1669,14 +1663,14 @@ class TestSampleEssays:
 
 ```bash
 # 备份
-python -m skills.english_exam_ai_tutor backup \
+python -m examlex backup \
   --data-dir <path>                  # 数据目录（必填）
   [--output <path>]                  # 输出 .tar.gz 路径（默认 backup-{date}.tar.gz）
   [--exclude <patterns>]             # 排除模式，逗号分隔（默认排除 .env*,*private*）
   [--json]                           # JSON 格式输出
 
 # 恢复
-python -m skills.english_exam_ai_tutor restore \
+python -m examlex restore \
   --input <path>                     # 备份文件路径（必填）
   --data-dir <path>                  # 目标数据目录（必填）
   [--force]                          # 覆盖已有文件（默认跳过）
@@ -1684,7 +1678,7 @@ python -m skills.english_exam_ai_tutor restore \
   [--json]
 
 # 列出备份内容
-python -m skills.english_exam_ai_tutor backup \
+python -m examlex backup \
   --list <path>                      # 列出备份文件内容
   [--json]
 ```
@@ -1692,7 +1686,7 @@ python -m skills.english_exam_ai_tutor backup \
 **输出示例**:
 
 ```bash
-$ python -m skills.english_exam_ai_tutor backup --list backup-2026-07-05.tar.gz
+$ python -m examlex backup --list backup-2026-07-05.tar.gz
 
 备份文件: backup-2026-07-05.tar.gz
 创建时间: 2026-07-05T14:30:00
@@ -1815,12 +1809,12 @@ def restore_backup(input_path: Path, data_dir: Path, force: bool, dry_run: bool)
 
 ```
 新增 (3 files):
-  skills/english-exam-ai-tutor/scripts/backup_data.py
-  skills/english_exam_ai_tutor/scripts/backup_data.py   # 镜像
+  skills/examlex/scripts/backup_data.py
+  examlex/scripts/backup_data.py   # 镜像
   tests/test_backup_data.py
 
 修改 (1 file):
-  skills/english_exam_ai_tutor/cli.py                    # +2 命令 ("backup", "restore")
+  examlex/cli.py                    # +2 命令 ("backup", "restore")
 ```
 
 ### 5. CLI 注册（cli.py）
@@ -1911,7 +1905,7 @@ VOCAB_TO_FOUNDATION_MAP = {
 ## 附录 B：CLI 命令注册汇总
 
 ```python
-# skills/english_exam_ai_tutor/cli.py — COMMANDS dict 最终状态
+# examlex/cli.py — COMMANDS dict 最终状态
 
 COMMANDS: dict[str, tuple[str, CommandMain]] = {
     # 现有命令

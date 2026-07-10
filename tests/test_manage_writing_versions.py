@@ -4,7 +4,7 @@ from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts import manage_writing_versions
+from examlex.scripts import manage_writing_versions
 
 
 class ManageWritingVersionsTests(unittest.TestCase):

@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 
-from skills.english_exam_ai_tutor.scripts import generate_daily_plan
+from examlex.scripts import generate_daily_plan
 
 
 class GenerateDailyPlanTests(unittest.TestCase):

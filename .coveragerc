@@ -1,11 +1,11 @@
 [run]
-source = skills/english_exam_ai_tutor
+source = examlex
 branch = true
 omit =
     tests/*
     */__init__.py
-    skills/english_exam_ai_tutor/scripts/vocab_data.py
-    skills/english_exam_ai_tutor/cli.py
+    examlex/scripts/vocab_data.py
+    examlex/cli.py
 
 [report]
 exclude_lines =

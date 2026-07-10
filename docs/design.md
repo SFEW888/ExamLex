@@ -1,6 +1,6 @@
 # Design Rationale
 
-English Exam AI Tutor is intentionally split into a portable Skill and small deterministic scripts.
+ExamLex is intentionally split into a portable Skill and small deterministic scripts.
 
 The Skill gives agents the tutoring frame: supported exams, learner levels, target bands, the eight assistant roles, prompt modes, references, and templates. The scripts keep the measurable parts stable: profile validation, daily planning, practice recording, error summaries, ability updates, trend analysis, writing versioning, and writing rubric estimates.
 

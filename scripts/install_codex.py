@@ -14,7 +14,7 @@ def default_dest() -> Path:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Install the English Exam AI Tutor Skill for Codex.")
+    parser = argparse.ArgumentParser(description="Install the ExamLex Skill for Codex.")
     parser.add_argument("--source", type=Path, default=Path(__file__).resolve().parents[1] / "skills")
     parser.add_argument("--dest", type=Path, default=default_dest())
     parser.add_argument("--dry-run", action="store_true")

@@ -5,7 +5,7 @@ The repository is a local-first tutoring toolkit. Agents provide tutoring behavi
 ```mermaid
 flowchart TD
     User["Learner or tutor operator"] --> Agent["Agent platform: Claude Code, Codex, Cursor"]
-    Agent --> Skill["Portable Skill: skills/english-exam-ai-tutor"]
+    Agent --> Skill["Portable Skill: skills/examlex"]
     Skill --> References["References: roster, workflow, data model, exam profiles, taxonomy, prompt modes"]
     Skill --> Templates["Templates and schemas"]
     Agent --> Scripts["Automation scripts"]
@@ -34,16 +34,16 @@ flowchart LR
 
 ## Main Components
 
-- `skills/english-exam-ai-tutor/SKILL.md`: portable Skill entry point.
+- `skills/examlex/SKILL.md`: portable Skill entry point.
 - `skills/learning-planner/`, `skills/grammar-corrector/`, and the other shortcut directories: lightweight Agent Skill entry points for direct scenario calls.
-- `skills/english-exam-ai-tutor/references/`: public-safe policy, workflow, data model, exam profiles, assistant roster, error taxonomy, Darwin rubric, multi-source distillation.
-- `skills/english-exam-ai-tutor/assets/`: templates, JSON schemas (8 schemas total), vocabulary pools, test word lists, common error patterns, sample essays.
-- `skills/english-exam-ai-tutor/scripts/`: deterministic automation scripts — profile validation, vocabulary estimation, daily planning (with vocab pool + spaced repetition), practice recording (with timed mode), error summarization (with review urgency + speed analysis), ability update, trend analysis, writing versioning/scoring, strategy ingestion/validation, backup/restore (with incremental and verification), progress visualization.
-- `skills/english-exam-ai-tutor/assets/data/vocabulary/`: 650 built-in vocabulary entries across CET4/6/PG/TEM4/TEM8.
-- `skills/english-exam-ai-tutor/assets/data/common-errors/`: 22 common error patterns for Chinese learners across 5 modules.
-- `skills/english-exam-ai-tutor/assets/data/sample-essays/`: model essays with rubric scores and structural annotations.
-- `skills/english-exam-ai-tutor/scripts/`: portable script entry points.
-- `skills/english_exam_ai_tutor/scripts/`: importable script mirror validated by hash.
+- `skills/examlex/references/`: public-safe policy, workflow, data model, exam profiles, assistant roster, error taxonomy, Darwin rubric, multi-source distillation.
+- `skills/examlex/assets/`: templates, JSON schemas (8 schemas total), vocabulary pools, test word lists, common error patterns, sample essays.
+- `skills/examlex/scripts/`: deterministic automation scripts — profile validation, vocabulary estimation, daily planning (with vocab pool + spaced repetition), practice recording (with timed mode), error summarization (with review urgency + speed analysis), ability update, trend analysis, writing versioning/scoring, strategy ingestion/validation, backup/restore (with incremental and verification), progress visualization.
+- `skills/examlex/assets/data/vocabulary/`: 650 built-in vocabulary entries across CET4/6/PG/TEM4/TEM8.
+- `skills/examlex/assets/data/common-errors/`: 22 common error patterns for Chinese learners across 5 modules.
+- `skills/examlex/assets/data/sample-essays/`: model essays with rubric scores and structural annotations.
+- `skills/examlex/scripts/`: portable script entry points.
+- `examlex/scripts/`: importable script mirror validated by hash.
 - `scripts/`: repository validator and platform installers.
 - `integrations/`: platform-specific installation and usage notes.
 

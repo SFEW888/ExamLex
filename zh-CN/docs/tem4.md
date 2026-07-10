@@ -43,11 +43,11 @@ TEM-4（Test for English Majors — Band 4）是全国高校英语专业四级�
 
 ```bash
 # 验证 TEM-4 学习者档案
-tutor check tem4-learner-profile.json
+examlex check tem4-learner-profile.json
 
 # 生成 TEM-4 每日计划
-tutor plan tem4-learner-profile.json \
+examlex plan tem4-learner-profile.json \
   --ability tem4-ability-profile.json \
-  --vocab-pool skills/english-exam-ai-tutor/assets/data/vocabulary/tem4-core-2000.json \
+  --vocab-pool skills/examlex/assets/data/vocabulary/tem4-core-2000.json \
   --output daily-plan.json
 ```
