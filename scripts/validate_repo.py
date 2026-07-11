@@ -43,6 +43,21 @@ ALLOWED_EXTERNAL_URLS = {
     "https://poppler.freedesktop.org/",
     "https://calibre-ebook.com/download",
 }
+README_BADGE_URLS = {
+    f"{REPOSITORY_URL}/actions/workflows/ci.yml",
+    f"{REPOSITORY_URL}/actions/workflows/ci.yml/badge.svg",
+    f"{REPOSITORY_URL}/actions/workflows/codeql.yml",
+    f"{REPOSITORY_URL}/actions/workflows/codeql.yml/badge.svg",
+    "https://img.shields.io/badge/License-MIT-yellow.svg",
+    "https://img.shields.io/badge/Python-3.10--3.13-blue.svg",
+    "https://img.shields.io/badge/Platforms-4-blue.svg",
+    "https://img.shields.io/badge/Skills-9-brightgreen.svg",
+    "https://www.python.org/",
+}
+README_BADGE_PATHS = {
+    Path("README.md"),
+    Path("zh-CN/README.md"),
+}
 EXPECTED_REFERENCES = {
     "assistant-roster.md",
     "data-model.md",
@@ -102,7 +117,6 @@ EXPECTED_README_SECTIONS = {
     "## Usage",
     "## Repository Layout",
     "## Testing And Validation",
-    "## Roadmap",
     "## Contributing",
     "## License",
 }
@@ -341,8 +355,11 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
     for markdown_file in _maintained_markdown_files(root):
         relative = markdown_file.relative_to(root)
         text = markdown_file.read_text(encoding="utf-8")
+        allowed_urls = ALLOWED_EXTERNAL_URLS
+        if relative in README_BADGE_PATHS:
+            allowed_urls = ALLOWED_EXTERNAL_URLS | README_BADGE_URLS
         text_without_allowed_urls = text
-        for allowed_url in ALLOWED_EXTERNAL_URLS:
+        for allowed_url in allowed_urls:
             text_without_allowed_urls = text_without_allowed_urls.replace(
                 allowed_url, ""
             )
@@ -356,7 +373,7 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
             if not target or target.startswith("#"):
                 continue
             if re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", target):
-                if target in ALLOWED_EXTERNAL_URLS:
+                if target in allowed_urls:
                     continue
                 errors.append(
                     f"external URL is forbidden in maintained Markdown: "
