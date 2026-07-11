@@ -276,7 +276,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.output:
         write_json(result, args.output)
     else:
-        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print(json.dumps(result, ensure_ascii=True, indent=2))
     return 0
 
 

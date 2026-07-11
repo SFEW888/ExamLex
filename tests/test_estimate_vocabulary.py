@@ -209,16 +209,20 @@ class TestVocabEstimateCLI(unittest.TestCase):
         self.assertIn("estimated_vocabulary", output)
 
     def test_interactive_mode(self):
-        """Interactive mode generates quiz output."""
+        """Interactive mode emits JSON on non-UTF-8 Windows consoles."""
         ref_path = (REPO_ROOT / "skills" / "examlex"
                     / "assets" / "data" / "vocab-test-words.json")
+        import os
         import subprocess
+        env = os.environ.copy()
+        env["PYTHONIOENCODING"] = "cp1252"
         result = subprocess.run(
             [sys.executable, "-m", "examlex", "vocab-estimate",
              "--interactive", "--bands", "1-1000", "--samples-per-band", "3",
              "--nonwords-per-band", "1", "--reference", str(ref_path)],
-            capture_output=True, text=True, cwd=str(REPO_ROOT),
+            capture_output=True, text=True, cwd=str(REPO_ROOT), env=env,
         )
+        self.assertEqual(result.returncode, 0, result.stderr)
         output = result.stdout
         data = json.loads(output)
         self.assertIn("quiz_words", data)
