@@ -1,4 +1,9 @@
 """Tests for operational readiness checks."""
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
 import unittest
 from unittest import mock
 
@@ -13,6 +18,9 @@ from examlex.scripts.ops import (
     CheckResult,
 )
 from examlex.scripts.config import TutorConfig
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class OpsCheckTests(unittest.TestCase):
@@ -100,7 +108,7 @@ class OpsJSONOutputTests(unittest.TestCase):
     """Verify ops-check --json produces valid output."""
 
     def test_json_output_is_valid(self):
-        import json, io, sys
+        import io
         from examlex.scripts.cli_ops import main
 
         old_stdout = sys.stdout
@@ -115,6 +123,20 @@ class OpsJSONOutputTests(unittest.TestCase):
         self.assertIn("summary", data)
         self.assertIn("checks", data)
         self.assertIn("timestamp", data)
+
+    def test_json_output_is_portable_on_non_utf8_windows_console(self):
+        env = os.environ.copy()
+        env["PYTHONIOENCODING"] = "cp1252"
+        result = subprocess.run(
+            [sys.executable, "-m", "examlex", "ops-check", "--json"],
+            capture_output=True,
+            text=True,
+            cwd=str(REPO_ROOT),
+            env=env,
+        )
+
+        self.assertIn(result.returncode, (0, 1), result.stderr)
+        self.assertIn("checks", json.loads(result.stdout))
 
 
 if __name__ == "__main__":

@@ -23,7 +23,7 @@ def main(argv: list[str] | None = None) -> int:
         report = run_all_checks(cfg, args.library)
     except Exception as exc:
         if args.json:
-            print(json.dumps({"error": str(exc)}, ensure_ascii=False))
+            print(json.dumps({"error": str(exc)}, ensure_ascii=True))
         else:
             print(f"[FAIL] Check execution failed: {exc}", file=sys.stderr)
         return 2
@@ -46,7 +46,7 @@ def main(argv: list[str] | None = None) -> int:
                 for c in report.checks
             ],
         }
-        print(json.dumps(output, ensure_ascii=False, indent=2))
+        print(json.dumps(output, ensure_ascii=True, indent=2))
         return 0 if report.all_pass() else 1
 
     # Human-readable output
