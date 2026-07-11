@@ -33,7 +33,10 @@ SKILL_ALIASES = {
 }
 FORBIDDEN_PRIVATE_PROMPT = " ".join(("Act as a strict", "but helpful English", "grammar teacher"))
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)\n]+)\)")
+REPOSITORY_URL = "https://github.com/SFEW888/ExamLex"
 ALLOWED_EXTERNAL_URLS = {
+    REPOSITORY_URL,
+    f"{REPOSITORY_URL}/issues",
     "https://github.com/yt-dlp/yt-dlp",
     "https://ffmpeg.org/download.html",
     "https://github.com/openai/whisper",
@@ -104,6 +107,8 @@ EXPECTED_README_SECTIONS = {
     "## License",
 }
 EXPECTED_README_SKILL_INSTALL_MARKERS = {
+    "git clone https://github.com/SFEW888/ExamLex.git",
+    "git+https://github.com/SFEW888/ExamLex.git",
     "python -m pip install -e .",
     "install.sh",
     "install.ps1",

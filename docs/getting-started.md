@@ -1,6 +1,6 @@
 # Getting Started
 
-Use this guide to install ExamLex from a local checkout. ExamLex is currently unpublished, so remote and one-line registry installation are intentionally not documented yet.
+Use this guide to install ExamLex from the public [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) repository.
 
 ## Requirements
 
@@ -19,9 +19,16 @@ Core tutoring and direct-text ingestion require no third-party Python package. M
 
 Run `bin/examlex check-deps` after installation. The complete video-to-transcript path requires both `yt-dlp` and `ffmpeg`, plus one ASR backend.
 
-## Local Install With Shortcut Skills
+## Agent Install With Shortcut Skills
 
 Use this path when you want the main Skill plus all eight shortcut Skills.
+
+Clone the repository first:
+
+```powershell
+git clone https://github.com/SFEW888/ExamLex.git
+Set-Location ExamLex
+```
 
 From the project root on macOS/Linux:
 
@@ -99,7 +106,14 @@ This tutor supports five exam types:
 - **Model Essay Library**: scored sample essays for rubric anchoring
 - **Backup & Restore**: `examlex backup` / `examlex restore` with tar.gz support
 
-## Run The Optional CLI
+## Install And Run The CLI
+
+Install the CLI directly from GitHub:
+
+```powershell
+python -m pip install "git+https://github.com/SFEW888/ExamLex.git"
+examlex --help
+```
 
 Use these wrappers when you want to run the deterministic tools directly from a terminal:
 

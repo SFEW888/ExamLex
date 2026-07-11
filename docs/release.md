@@ -2,6 +2,8 @@
 
 This repository is pre-1.0. Use semantic versioning once the public CLI and Skill contract are stable.
 
+Canonical repository: [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex).
+
 ## Versioning
 
 Use `X.Y.Z`:

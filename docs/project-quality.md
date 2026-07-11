@@ -1,6 +1,6 @@
 # GitHub Project Quality
 
-This unpublished repository is organized to meet public-project quality expectations, not only as a local Skill folder.
+The public [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) repository is organized to meet open-source project quality expectations, not only as a local Skill folder.
 
 ## Quality Bar
 

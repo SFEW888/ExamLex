@@ -1,8 +1,10 @@
 # Claude Code Integration
 
-ExamLex is currently unpublished. From the local project root, install the main Skill plus shortcut Skills into Claude Code's local skills directory:
+Clone [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex), then install the main Skill plus shortcut Skills into Claude Code's local skills directory:
 
 ```powershell
+git clone https://github.com/SFEW888/ExamLex.git
+Set-Location ExamLex
 .\install.ps1 claude
 ```
 

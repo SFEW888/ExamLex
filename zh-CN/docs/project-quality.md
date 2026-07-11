@@ -1,6 +1,6 @@
 # 项目质量
 
-本仓库尚未发布，但按公开项目的质量标准组织，而不仅是一个本地 Skill 目录。
+公共仓库 [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) 按开源项目的质量标准组织，而不仅是一个本地 Skill 目录。
 
 ## 质量基线
 

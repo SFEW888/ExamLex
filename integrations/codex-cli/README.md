@@ -1,8 +1,10 @@
 # Codex CLI Integration
 
-ExamLex is currently unpublished. From the local project root, install the main Skill plus shortcut Skills for Codex CLI:
+Clone [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex), then install the main Skill plus shortcut Skills for Codex CLI:
 
 ```powershell
+git clone https://github.com/SFEW888/ExamLex.git
+Set-Location ExamLex
 .\install.ps1 codex
 ```
 

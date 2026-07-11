@@ -1,8 +1,10 @@
 # Claude Code 集成
 
-把可移植 Skill 安装到 Claude Code 的本地 skills 目录：
+先克隆公共仓库 [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex)，再把可移植 Skill 安装到 Claude Code 的本地 skills 目录：
 
 ```powershell
+git clone https://github.com/SFEW888/ExamLex.git
+Set-Location ExamLex
 python scripts\install_claude.py --dry-run --json
 python scripts\install_claude.py --force
 ```

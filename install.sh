@@ -1,13 +1,26 @@
 #!/usr/bin/env bash
 set -eu
 
+repository_url="https://github.com/SFEW888/ExamLex"
+
+usage() {
+  echo "Usage: ./install.sh [codex|claude|cursor] [--project] [--dry-run] [--no-force]"
+  echo "Repository: $repository_url"
+  echo "Clone: git clone $repository_url.git"
+}
+
+if [ "${1:-}" = "--help" ] || [ "${1:-}" = "-h" ]; then
+  usage
+  exit 0
+fi
+
 agent="${1:-codex}"
 shift || true
 
 case "$agent" in
   codex|claude|cursor) ;;
   *)
-    echo "Usage: ./install.sh [codex|claude|cursor] [--project] [--dry-run] [--no-force]" >&2
+    usage >&2
     exit 2
     ;;
 esac
@@ -21,6 +34,7 @@ while [ "$#" -gt 0 ]; do
     --project) project=true ;;
     --dry-run) dry_run=true ;;
     --no-force) force=false ;;
+    --help|-h) usage; exit 0 ;;
     *)
       echo "Unknown option: $1" >&2
       exit 2

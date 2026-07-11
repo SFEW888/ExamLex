@@ -3,10 +3,19 @@ param(
     [string]$Agent = "codex",
     [switch]$Project,
     [switch]$DryRun,
-    [switch]$NoForce
+    [switch]$NoForce,
+    [switch]$Help
 )
 
 $ErrorActionPreference = "Stop"
+$RepositoryUrl = "https://github.com/SFEW888/ExamLex"
+
+if ($Help) {
+    Write-Host "Usage: .\install.ps1 [codex|claude|cursor] [-Project] [-DryRun] [-NoForce]"
+    Write-Host "Repository: $RepositoryUrl"
+    Write-Host "Clone: git clone $RepositoryUrl.git"
+    exit 0
+}
 
 $python = Get-Command python -ErrorAction SilentlyContinue
 if (-not $python) {

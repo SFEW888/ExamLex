@@ -1,6 +1,6 @@
 # ExamLex
 
-> **项目状态：ExamLex 尚未发布。** 当前仅支持从本地检出目录安装；本文档不依赖 ExamLex 的远程仓库地址或状态徽章，下方外链仅指向依赖工具的官方网站。
+> **项目状态：** ExamLex 已在 [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) 以 MIT 许可证开源。
 
 > **四级 / 六级 / 专四 / 专八 / 考研英语备考一站式 AI Agent Skill 与自动化工具包——支持上传策略文件持续学习进化**
 > *CET-4 · CET-6 · TEM-4 · TEM-8 · Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning*
@@ -52,7 +52,12 @@
 
 ### 作为 Agent Skill 安装（推荐）
 
-在项目根目录运行本地安装脚本：
+克隆公共仓库，然后在项目根目录运行对应 Agent 的安装脚本：
+
+```powershell
+git clone https://github.com/SFEW888/ExamLex.git
+Set-Location ExamLex
+```
 
 ```powershell
 .\install.ps1 claude  # 也可替换为 codex 或 cursor
@@ -99,7 +104,7 @@ Codex CLI:    /skills → 应看到 /examlex 和 8 个快捷 Skill
 如果你只需要命令行工具（脱离 Agent 使用脚本）：
 
 ```bash
-python -m pip install -e .
+python -m pip install "git+https://github.com/SFEW888/ExamLex.git"
 ```
 
 安装后可用：
@@ -114,7 +119,7 @@ examlex daily-plan --profile learner-profile.json --ability ability-profile.json
 python -m examlex daily-plan --profile learner-profile.json --ability ability-profile.json
 ```
 
-> `python -m pip install -e .` 只安装脚本引擎，不注册 Agent Skill。Agent 对话功能需要使用上方本地安装脚本。
+> Git 安装只安装 CLI 脚本引擎，不注册 Agent Skill。Agent 对话功能需要先克隆仓库并运行上方安装脚本。贡献者可在本地检出目录使用 `python -m pip install -e .`。
 >
 > 完整安装说明见 [快速开始指南](docs/getting-started.md)。
 

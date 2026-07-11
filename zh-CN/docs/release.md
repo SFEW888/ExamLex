@@ -2,6 +2,8 @@
 
 本仓库当前处于 1.0 之前。在公开 CLI 与 Skill 契约稳定后采用语义化版本。
 
+正式仓库：[SFEW888/ExamLex](https://github.com/SFEW888/ExamLex)。
+
 ## 版本规则
 
 版本号使用 `X.Y.Z`：

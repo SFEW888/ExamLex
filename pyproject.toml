@@ -12,6 +12,11 @@ license = "MIT"
 authors = [{ name = "ExamLex Contributors" }]
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/SFEW888/ExamLex"
+Repository = "https://github.com/SFEW888/ExamLex"
+Issues = "https://github.com/SFEW888/ExamLex/issues"
+
 [project.scripts]
 examlex = "examlex.cli:main"
 

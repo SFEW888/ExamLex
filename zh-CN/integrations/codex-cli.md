@@ -1,8 +1,10 @@
 # Codex CLI 集成
 
-为 Codex CLI 安装 Skill：
+先克隆公共仓库 [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex)，再为 Codex CLI 安装 Skill：
 
 ```powershell
+git clone https://github.com/SFEW888/ExamLex.git
+Set-Location ExamLex
 python scripts\install_codex.py --dry-run --json
 python scripts\install_codex.py --force
 ```

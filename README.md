@@ -1,6 +1,6 @@
 # ExamLex
 
-> **Status:** ExamLex is currently unpublished. Install it from a local checkout. This documentation does not depend on a remote ExamLex repository URL or status badges; links below point only to official dependency sites.
+> **Status:** ExamLex is open source at [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) and licensed under MIT.
 
 > CET-4 / CET-6 / Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning
 >
@@ -54,9 +54,11 @@ Run `bin/examlex check-deps` to see what's installed.
 
 ### As Agent Skill (recommended)
 
-From the project root, use the local installer scripts. They copy `skills\examlex` and the eight shortcut Skills into the selected platform's Skill directory:
+Clone the public repository, then run the installer for your Agent. It copies `skills\examlex` and the eight shortcut Skills into the selected platform's Skill directory:
 
 ```bash
+git clone https://github.com/SFEW888/ExamLex.git
+cd ExamLex
 ./install.sh claude    # or: codex, cursor
 .\install.ps1 claude   # PowerShell
 ```
@@ -71,7 +73,7 @@ Restart your agent, then invoke:
 ### Standalone CLI (optional)
 
 ```bash
-python -m pip install -e .
+python -m pip install "git+https://github.com/SFEW888/ExamLex.git"
 ```
 
 Then use:
@@ -81,7 +83,7 @@ examlex errors practice-ledger.json --days 30
 examlex daily-plan --profile learner-profile.json --ability ability-profile.json
 ```
 
-> `python -m pip install -e .` installs only the script engine. Agent conversation features require the local Skill installer above.
+> The Git installation installs only the CLI script engine. Agent conversation features require cloning the repository and running the Agent installer above. Contributors can use `python -m pip install -e .` in a checkout.
 
 ---
 

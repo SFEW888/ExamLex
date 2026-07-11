@@ -85,18 +85,64 @@ class ValidateProjectTests(unittest.TestCase):
             any("broken local Markdown link" in error for error in result.errors)
         )
 
-    def test_unpublished_documentation_has_no_project_remote_placeholder(self):
+    def test_public_documentation_names_the_canonical_repository(self):
         readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
         zh_readme = (PROJECT_ROOT / "zh-CN" / "README.md").read_text(encoding="utf-8")
         env_example = (PROJECT_ROOT / ".env.example").read_text(encoding="utf-8")
 
-        self.assertIn("unpublished", readme.lower())
-        self.assertIn("尚未发布", zh_readme)
+        repository_url = "https://github.com/SFEW888/ExamLex"
         for text in (readme, zh_readme):
             self.assertNotIn("your-org", text)
+            self.assertIn(repository_url, text)
         self.assertIn("SILICONFLOW_API_KEY=", env_example)
         self.assertIn("EXAMLEX_PYTHON=python", env_example)
         self.assertNotIn("EXAMLEX_PROMPT_MODE", env_example)
+
+    def test_public_agent_and_cli_install_contract_is_documented(self):
+        repository_url = "https://github.com/SFEW888/ExamLex"
+        git_install = f"git+{repository_url}.git"
+        documents = [
+            PROJECT_ROOT / "README.md",
+            PROJECT_ROOT / "zh-CN" / "README.md",
+            PROJECT_ROOT / "docs" / "getting-started.md",
+            PROJECT_ROOT / "zh-CN" / "docs" / "getting-started.md",
+        ]
+
+        for path in documents:
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                text = path.read_text(encoding="utf-8")
+                self.assertIn(repository_url, text)
+                self.assertIn("git clone", text)
+                self.assertIn(git_install, text)
+
+        pyproject = (PROJECT_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+        self.assertIn('[project.urls]', pyproject)
+        self.assertIn(repository_url, pyproject)
+
+        for installer in ("install.ps1", "install.sh"):
+            with self.subTest(installer=installer):
+                text = (PROJECT_ROOT / installer).read_text(encoding="utf-8")
+                self.assertIn(repository_url, text)
+                self.assertIn("help", text.lower())
+
+    def test_agent_entrypoints_reference_the_public_repository(self):
+        repository_url = "https://github.com/SFEW888/ExamLex"
+        documents = [
+            PROJECT_ROOT / "SKILL.md",
+            PROJECT_ROOT / "integrations" / "claude-code" / "README.md",
+            PROJECT_ROOT / "integrations" / "codex-cli" / "README.md",
+            PROJECT_ROOT / "integrations" / "codex-app" / "README.md",
+            PROJECT_ROOT / "zh-CN" / "integrations" / "claude-code.md",
+            PROJECT_ROOT / "zh-CN" / "integrations" / "codex-cli.md",
+            PROJECT_ROOT / "zh-CN" / "integrations" / "codex-app.md",
+        ]
+
+        for path in documents:
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                text = path.read_text(encoding="utf-8")
+                self.assertIn(repository_url, text)
+                self.assertNotIn("unpublished", text.lower())
+                self.assertNotIn("尚未发布", text)
 
     def test_bilingual_docs_document_video_toolchain(self):
         documents = [

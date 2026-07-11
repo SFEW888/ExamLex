@@ -1,6 +1,6 @@
 # 快速开始
 
-本指南帮助你从本地检出目录安装 ExamLex。ExamLex 尚未发布，因此暂不提供远程仓库或一行式注册表安装命令。
+本指南帮助你从公共仓库 [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) 安装 ExamLex。
 
 ## 环境要求
 
@@ -19,9 +19,16 @@
 
 安装后运行 `bin/examlex check-deps`。完整的“视频 → 转写”路径需要同时具备 `yt-dlp`、`ffmpeg` 和一种语音识别后端。
 
-## 本地安装（含快捷 Skill）
+## Agent 安装（含快捷 Skill）
 
 如果你希望同时安装主 Skill 和全部 8 个快捷 Skill，请使用此方式。
+
+先克隆仓库：
+
+```powershell
+git clone https://github.com/SFEW888/ExamLex.git
+Set-Location ExamLex
+```
 
 在项目根目录运行（macOS/Linux）：
 
@@ -99,7 +106,14 @@
 - **范文库**：带评分数据的范文样本，用于评分锚定
 - **备份与恢复**：`examlex backup` / `examlex restore`，支持 tar.gz
 
-## 运行可选 CLI
+## 安装并运行 CLI
+
+直接从 GitHub 安装 CLI：
+
+```powershell
+python -m pip install "git+https://github.com/SFEW888/ExamLex.git"
+examlex --help
+```
 
 当你需要直接从终端运行确定性工具时，使用以下封装命令：
 
