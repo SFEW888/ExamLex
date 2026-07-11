@@ -25,7 +25,7 @@ Paths to external CLI tools. When set to `None` (the default), the tool is locat
 | Field | Default | Description |
 |-------|---------|-------------|
 | `yt_dlp_path` | `None` (auto-detect) | Explicit path to `yt-dlp` for video download |
-| `ffmpeg_path` | `None` (auto-detect) | Explicit path to `ffmpeg` for audio extraction |
+| `ffmpeg_path` | `None` (auto-detect) | Explicit path to `ffmpeg` for stream merging, media conversion, and audio extraction |
 | `whisper_path` | `None` (auto-detect) | Explicit path to `whisper` (OpenAI Whisper) for local speech-to-text |
 | `pdftotext_path` | `None` (auto-detect) | Explicit path to `pdftotext` (poppler) for PDF book extraction |
 | `calibre_ebook_convert` | `None` (auto-detect) | Explicit path to `ebook-convert` (Calibre) for e-book conversion |
@@ -96,7 +96,7 @@ export SILICONFLOW_API_KEY="sk-..."
 `TutorConfig.check_all_dependencies()` produces a `DependencyReport` showing which external tools are available and which are missing, along with platform-specific install instructions. The report covers:
 
 - `yt-dlp` — video download
-- `ffmpeg` — audio extraction from video
+- `ffmpeg` — merge separate media streams and convert/extract audio before ASR
 - `whisper` (openai-whisper) — local speech-to-text
 - `pdftotext` (poppler) — PDF book extraction
 - `ebook-convert` (Calibre) — e-book conversion

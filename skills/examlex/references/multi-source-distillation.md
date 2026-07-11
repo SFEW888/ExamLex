@@ -1,6 +1,6 @@
 # Multi-Source Distillation Methodology（多源蒸馏方法论）
 
-> All five distillation paths are built into examlex. No external skills or tools needed (except yt-dlp + ffmpeg for video download). The Agent orchestrates a 5-stage pipeline: Extract → Distill → Validate → Evaluate → Commit.
+> All five distillation paths are built into examlex. No external Skill package is required. Video processing requires `yt-dlp` for download/metadata and `ffmpeg` for separate-stream merging plus audio extraction/conversion; transcription additionally requires local `whisper` or `SILICONFLOW_API_KEY`. The Agent orchestrates a 5-stage pipeline: Extract → Distill → Validate → Evaluate → Commit.
 
 ## Supported Source Types
 

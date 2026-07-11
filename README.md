@@ -33,7 +33,9 @@ See [zh-CN/README.md](zh-CN/README.md) for the Chinese version.
 - Git
 - One of: Claude Code / Codex CLI / Codex App / Cursor
 
-### Optional Tools by Distillation Method
+### Feature Dependencies
+
+Core tutoring and direct-text ingestion need no third-party Python package. The following tools are required only when you use the corresponding book or video feature.
 
 | Method | Tools | Install (Windows) | Install (macOS/Linux) |
 |--------|-------|-------------------|----------------------|
@@ -42,9 +44,11 @@ See [zh-CN/README.md](zh-CN/README.md) for the Chinese version.
 | `book` (PDF) | pdftotext | `winget install poppler` | `brew install poppler` / `apt install poppler-utils` |
 | `book` (DOCX) | python-docx | `pip install python-docx` | `pip3 install python-docx` |
 | `book` (EPUB DRM) | calibre | `winget install calibre` | `brew install calibre` |
-| `video` (download) | yt-dlp | `pip install yt-dlp` | `pip3 install yt-dlp` |
-| `video` (audio) | ffmpeg | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
-| `video` (ASR) | whisper or SILICONFLOW_API_KEY | `pip install openai-whisper` | `pip3 install openai-whisper` |
+| `video` (download/metadata) | yt-dlp | `pip install yt-dlp` | `pip3 install yt-dlp` |
+| `video` (merge/convert/audio) | ffmpeg | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
+| `video` (ASR) | whisper or `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
+
+`ffmpeg` is the open-source media converter used in two places: `yt-dlp` may need it to merge separate video and audio streams, and ExamLex needs it to extract/convert audio before either local `whisper` or SiliconFlow ASR. A download-only path can sometimes work without `ffmpeg`, but the complete video-to-transcript pipeline cannot.
 
 Run `bin/examlex check-deps` to see what's installed.
 

@@ -7,7 +7,17 @@
 - Python 3.10 或更新版本
 - PowerShell 或 POSIX shell
 
-当前工具包不依赖任何第三方 Python 包。
+核心助教功能和纯文本摄入不依赖第三方 Python 包。多源摄入按功能使用以下依赖：
+
+| 功能 | 必需工具 |
+| --- | --- |
+| 视频下载和元数据 | `yt-dlp` |
+| 视频流合并、媒体转换和音频抽取 | `ffmpeg` |
+| 视频语音识别 | 本地 `whisper` 或 `SILICONFLOW_API_KEY`；两条路径都需要 `ffmpeg` 预处理音频 |
+| PDF 提取 | `pdftotext`（Poppler） |
+| 无 DRM 电子书转换后备 | `ebook-convert`（Calibre） |
+
+安装后运行 `bin/examlex check-deps`。完整的“视频 → 转写”路径需要同时具备 `yt-dlp`、`ffmpeg` 和一种语音识别后端。
 
 ## 本地安装（含快捷 Skill）
 

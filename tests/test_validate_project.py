@@ -23,7 +23,16 @@ def copy_project():
         shutil.copytree(
             PROJECT_ROOT,
             target,
-            ignore=shutil.ignore_patterns(".git", ".worktrees", ".task8-test-tmp", ".tmp-test", "test-artifacts", "__pycache__", "*.pyc"),
+            ignore=shutil.ignore_patterns(
+                ".git",
+                ".pytest_cache",
+                ".worktrees",
+                ".task8-test-tmp",
+                ".tmp-test",
+                "test-artifacts",
+                "__pycache__",
+                "*.pyc",
+            ),
         )
         yield str(tempdir)
     finally:
@@ -90,6 +99,24 @@ class ValidateProjectTests(unittest.TestCase):
         self.assertIn("EXAMLEX_PYTHON=python", env_example)
         self.assertNotIn("EXAMLEX_PROMPT_MODE", env_example)
 
+    def test_bilingual_docs_document_video_toolchain(self):
+        documents = [
+            PROJECT_ROOT / "README.md",
+            PROJECT_ROOT / "zh-CN" / "README.md",
+            PROJECT_ROOT / "docs" / "getting-started.md",
+            PROJECT_ROOT / "zh-CN" / "docs" / "getting-started.md",
+            PROJECT_ROOT / "docs" / "configuration.md",
+            PROJECT_ROOT / "zh-CN" / "docs" / "configuration.md",
+        ]
+
+        for path in documents:
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                text = path.read_text(encoding="utf-8")
+                self.assertIn("yt-dlp", text)
+                self.assertIn("ffmpeg", text)
+                self.assertIn("whisper", text.lower())
+                self.assertIn("SILICONFLOW_API_KEY", text)
+
     def test_detects_remote_install_placeholder(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
@@ -124,6 +151,23 @@ class ValidateProjectTests(unittest.TestCase):
 
     def test_current_repo_is_valid_without_readme_warning(self):
         result = validate_repo.validate_project(PROJECT_ROOT)
+
+        self.assertEqual([], result.errors)
+        self.assertEqual([], result.warnings)
+
+    def test_ignores_local_git_worktrees(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            worktree_readme = root / ".worktrees" / "stale" / "README.md"
+            worktree_readme.parent.mkdir(parents=True)
+            remote_url = "https" + "://example.invalid/source"
+            legacy_name = "english" + "-exam-ai-tutor"
+            worktree_readme.write_text(
+                f"{remote_url}\n{legacy_name}\n",
+                encoding="utf-8",
+            )
+
+            result = validate_repo.validate_project(root)
 
         self.assertEqual([], result.errors)
         self.assertEqual([], result.warnings)

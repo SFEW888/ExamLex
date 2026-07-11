@@ -7,7 +7,17 @@ Use this guide to install ExamLex from a local checkout. ExamLex is currently un
 - Python 3.10 or newer
 - PowerShell or a POSIX shell for the local installer
 
-No third-party Python dependency is required for the current toolkit.
+Core tutoring and direct-text ingestion require no third-party Python package. Multi-source ingestion has feature-specific dependencies:
+
+| Feature | Required tools |
+| --- | --- |
+| Video download and metadata | `yt-dlp` |
+| Video stream merge, media conversion, and audio extraction | `ffmpeg` |
+| Video speech-to-text | local `whisper` or `SILICONFLOW_API_KEY`; both paths still use `ffmpeg` for audio preparation |
+| PDF extraction | `pdftotext` (Poppler) |
+| DRM-free e-book conversion fallback | `ebook-convert` (Calibre) |
+
+Run `bin/examlex check-deps` after installation. The complete video-to-transcript path requires both `yt-dlp` and `ffmpeg`, plus one ASR backend.
 
 ## Local Install With Shortcut Skills
 

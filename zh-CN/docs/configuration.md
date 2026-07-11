@@ -4,6 +4,20 @@
 
 配置优先级为：构造参数或 CLI 参数、`SILICONFLOW_API_KEY`、代码默认值。ExamLex 不会自动加载 `.env` 或用户目录中的 JSON 配置文件。
 
+## 外部工具路径
+
+工具路径默认为 `None`，ExamLex 会通过系统 `PATH` 自动查找。也可以在 `TutorConfig` 中显式指定：
+
+| 字段 | 默认值 | 用途 |
+| --- | --- | --- |
+| `yt_dlp_path` | `None`（自动查找） | 使用 `yt-dlp` 下载视频和读取元数据 |
+| `ffmpeg_path` | `None`（自动查找） | 使用 `ffmpeg` 合并媒体流、转换媒体并抽取音频 |
+| `whisper_path` | `None`（自动查找） | 使用本地 `whisper` 命令进行语音识别 |
+| `pdftotext_path` | `None`（自动查找） | 使用 Poppler 的 `pdftotext` 提取 PDF 文本 |
+| `calibre_ebook_convert` | `None`（自动查找） | 使用 Calibre 的 `ebook-convert` 转换电子书 |
+
+视频完整处理链路是：`yt-dlp` 下载/读取元数据 → `ffmpeg` 合并或转换并抽取音频 → 本地 `whisper` 或配置 `SILICONFLOW_API_KEY` 调用云端语音识别。`ffmpeg` 不是可忽略的装饰依赖；完整的视频转写流程必须安装它。
+
 ## 环境变量
 
 请在当前 Shell 中导出变量；除非你使用自己的环境加载工具，否则 `.env.example` 仅用于说明。
@@ -14,6 +28,10 @@
 | `EXAMLEX_PYTHON` | 否 | `python` | 本地 ExamLex 封装脚本使用的 Python 解释器。 |
 
 `sessions_root` 默认使用平台对应的 `ExamLex/sessions` 应用数据目录，也可以通过 `TutorConfig(sessions_root=...)` 显式覆盖。
+
+## 依赖检查
+
+运行 `bin/examlex check-deps`，或在 Python 中调用 `TutorConfig.check_all_dependencies()`，可检查 `yt-dlp`、`ffmpeg`、`whisper`、`pdftotext` 和 `ebook-convert`，并获得当前平台的安装提示。
 
 ## 密钥处理
 

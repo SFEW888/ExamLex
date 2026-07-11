@@ -32,6 +32,24 @@
 - **Git**
 - 以下任一 AI 编程助手：**Claude Code** / **Codex CLI** / **Codex App** / **Cursor**
 
+### 按功能安装的依赖
+
+核心助教功能和纯文本摄入不需要第三方 Python 包。只有使用对应的书籍或视频功能时，才需要下列工具。
+
+| 功能 | 工具 | Windows 安装 | macOS/Linux 安装 |
+|------|------|--------------|------------------|
+| `text` / `person` | 无 | — | — |
+| `book`（PDF） | pdftotext | `winget install poppler` | `brew install poppler` / `apt install poppler-utils` |
+| `book`（DOCX） | python-docx | `pip install python-docx` | `pip3 install python-docx` |
+| `book`（EPUB DRM） | calibre / ebook-convert | `winget install calibre` | `brew install calibre` |
+| `video`（下载/元数据） | yt-dlp | `pip install yt-dlp` | `pip3 install yt-dlp` |
+| `video`（合并/转换/抽取音频） | ffmpeg | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
+| `video`（语音识别） | whisper 或 `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
+
+`ffmpeg` 就是视频链路需要的开源媒体转换器：`yt-dlp` 下载到分离的视频流和音频流时可能需要它完成合并；ExamLex 在语音识别前也用它抽取并转换音频。只下载某些单文件视频时可能暂时用不到，但完整的“视频 → 音频 → 转写”流程必须安装 `ffmpeg`。
+
+运行 `bin/examlex check-deps` 可检查本机工具是否齐全。
+
 ### 作为 Agent Skill 安装（推荐）
 
 在项目根目录运行本地安装脚本：
