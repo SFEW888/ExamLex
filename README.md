@@ -1,12 +1,19 @@
 # ExamLex
 
+[![CI](https://github.com/SFEW888/ExamLex/actions/workflows/ci.yml/badge.svg)](https://github.com/SFEW888/ExamLex/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/SFEW888/ExamLex/actions/workflows/codeql.yml/badge.svg)](https://github.com/SFEW888/ExamLex/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.10--3.13-blue.svg)](https://www.python.org/)
+[![Skills](https://img.shields.io/badge/Skills-9-brightgreen.svg)](#tutor-roles)
+[![Platforms](https://img.shields.io/badge/Platforms-4-blue.svg)](#platform-integration)
+
+**Language:** [简体中文](zh-CN/README.md)
+
 > **Status:** ExamLex is open source at [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) and licensed under MIT.
 
-> CET-4 / CET-6 / Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning
+> CET-4 / CET-6 / TEM-4 / TEM-8 / Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning
 >
 > **In one sentence**: Turn the pain of "I don't know where to start with English prep" into a deterministic learning loop — ingest knowledge → diagnose → plan → practice → attribute errors → update → iterate. Every strategy and method you feed in gets absorbed and used in your next study session.
-
-See [zh-CN/README.md](zh-CN/README.md) for the Chinese version.
 
 ---
 
@@ -573,23 +580,10 @@ examlex ops-check                          # 13-point operational readiness chec
 | [Development](docs/development.md) | Source layout and local checks. |
 | [Troubleshooting](docs/troubleshooting.md) | Common failures and remedies. |
 | [Release](docs/release.md) | Versioning and release checklist. |
-| [Roadmap](docs/roadmap.md) | Implemented and planned work. |
 | [Project Quality](docs/project-quality.md) | Repository quality and release checks. |
 | [CET-4](docs/cet4.md) / [CET-6](docs/cet6.md) / [Postgraduate](docs/postgraduate.md) | Exam-specific guidance. |
 | [TEM-4](docs/tem4.md) / [TEM-8](docs/tem8.md) | English-major exam guidance. |
 | [CLI Reference](cli-reference.md) | Short and full command names. |
-
----
-
-## Roadmap
-
-- [x] CET-4 / CET-6 / Postgraduate English exam profiles
-- [x] TEM-4 / TEM-8 support
-- [x] Multi-source continuous learning (text/book/video/person/manual)
-- [x] Darwin 9-dimension quality scoring with auto-optimization
-- [x] 13-point operational readiness check (`examlex ops-check`)
-- [ ] IELTS / TOEFL support
-- [ ] Web UI for strategy library browsing
 
 ---
 

@@ -1,5 +1,14 @@
 # ExamLex
 
+[![CI](https://github.com/SFEW888/ExamLex/actions/workflows/ci.yml/badge.svg)](https://github.com/SFEW888/ExamLex/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/SFEW888/ExamLex/actions/workflows/codeql.yml/badge.svg)](https://github.com/SFEW888/ExamLex/actions/workflows/codeql.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../LICENSE)
+[![Python](https://img.shields.io/badge/Python-3.10--3.13-blue.svg)](https://www.python.org/)
+[![Skills](https://img.shields.io/badge/Skills-9-brightgreen.svg)](#八个助教角色)
+[![Platforms](https://img.shields.io/badge/Platforms-4-blue.svg)](#平台集成)
+
+**语言：** [English](../README.md)
+
 > **项目状态：** ExamLex 已在 [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) 以 MIT 许可证开源。
 
 > **四级 / 六级 / 专四 / 专八 / 考研英语备考一站式 AI Agent Skill 与自动化工具包——支持上传策略文件持续学习进化**

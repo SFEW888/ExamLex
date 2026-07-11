@@ -73,6 +73,21 @@ class ValidateProjectTests(unittest.TestCase):
 
         self.assertTrue(any("external URL" in error for error in result.errors))
 
+    def test_allows_project_status_badges_in_bilingual_readmes(self):
+        result = validate_repo.validate_project(PROJECT_ROOT)
+
+        badge_errors = [
+            error
+            for error in result.errors
+            if "badge.svg" in error or "img.shields.io" in error
+        ]
+        self.assertEqual([], badge_errors)
+
+    def test_validator_does_not_require_an_english_readme_roadmap(self):
+        result = validate_repo.validate_project(PROJECT_ROOT)
+
+        self.assertFalse(any("README.md must include ## Roadmap" in error for error in result.errors))
+
     def test_detects_broken_local_markdown_link(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
@@ -223,6 +238,56 @@ class ValidateProjectTests(unittest.TestCase):
                 text = path.read_text(encoding="utf-8")
                 for marker in (*language_markers, *shared_markers):
                     self.assertIn(marker, text)
+
+    def test_bilingual_readmes_have_current_badges_and_language_switches(self):
+        common_badges = (
+            "https://github.com/SFEW888/ExamLex/actions/workflows/ci.yml/badge.svg",
+            "https://github.com/SFEW888/ExamLex/actions/workflows/codeql.yml/badge.svg",
+            "https://img.shields.io/badge/Python-3.10--3.13-blue.svg",
+        )
+        readme_contracts = {
+            PROJECT_ROOT / "README.md": (
+                "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)",
+                "[![Skills](https://img.shields.io/badge/Skills-9-brightgreen.svg)](#tutor-roles)",
+                "[![Platforms](https://img.shields.io/badge/Platforms-4-blue.svg)](#platform-integration)",
+                "[简体中文](zh-CN/README.md)",
+            ),
+            PROJECT_ROOT / "zh-CN" / "README.md": (
+                "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](../LICENSE)",
+                "[![Skills](https://img.shields.io/badge/Skills-9-brightgreen.svg)](#八个助教角色)",
+                "[![Platforms](https://img.shields.io/badge/Platforms-4-blue.svg)](#平台集成)",
+                "[English](../README.md)",
+            ),
+        }
+
+        for path, local_markers in readme_contracts.items():
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                text = path.read_text(encoding="utf-8")
+                for marker in (*common_badges, *local_markers):
+                    self.assertIn(marker, text)
+
+    def test_bilingual_readme_openings_list_all_supported_exams(self):
+        readmes = (
+            PROJECT_ROOT / "README.md",
+            PROJECT_ROOT / "zh-CN" / "README.md",
+        )
+
+        for path in readmes:
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                opening = "\n".join(path.read_text(encoding="utf-8").splitlines()[:30])
+                for exam in ("CET-4", "CET-6", "TEM-4", "TEM-8", "Postgraduate English"):
+                    self.assertIn(exam, opening)
+
+    def test_english_readme_omits_roadmap(self):
+        readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+
+        self.assertNotIn("## Roadmap", readme)
+        self.assertNotIn("[Roadmap]", readme)
+
+    def test_internal_bilingual_sync_plan_is_not_published(self):
+        plan = PROJECT_ROOT / "docs" / "plans" / "2026-07-11-bilingual-documentation-sync.md"
+
+        self.assertFalse(plan.exists())
 
     def test_bilingual_reference_pairs_cover_current_operational_contracts(self):
         document_contracts = {
