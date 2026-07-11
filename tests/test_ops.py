@@ -52,11 +52,25 @@ class OpsCheckTests(unittest.TestCase):
         result = check_safety_limits(cfg)
         self.assertEqual(result.status, "warn")
 
-    def test_check_scheduler(self):
+    @mock.patch("examlex.scripts.ops.platform.system", return_value="Windows")
+    def test_check_scheduler_windows_has_actionable_recommendation(self, _mock_system):
         result = check_scheduler(self.cfg)
         self.assertEqual(result.status, "pass")
-        self.assertIn("examlex cron-create", result.detail["recommendation"])
-        self.assertNotIn("tutor" + " cron-create", result.detail["recommendation"])
+        self.assertIn("Task Scheduler", result.detail["recommendation"])
+        self.assertIn("examlex", result.detail["recommendation"])
+        self.assertNotIn("cron-create", result.detail["recommendation"])
+
+    @mock.patch("examlex.scripts.ops.shutil.which", return_value="/usr/bin/crontab")
+    @mock.patch("examlex.scripts.ops.platform.system", return_value="Linux")
+    def test_check_scheduler_linux_has_actionable_recommendation(
+        self, _mock_system, _mock_which
+    ):
+        result = check_scheduler(self.cfg)
+        self.assertEqual(result.status, "pass")
+        self.assertTrue(result.detail["cron_available"])
+        self.assertIn("crontab", result.detail["recommendation"])
+        self.assertIn("examlex", result.detail["recommendation"])
+        self.assertNotIn("cron-create", result.detail["recommendation"])
 
     def test_report_all_pass(self):
         report = OpsReport(

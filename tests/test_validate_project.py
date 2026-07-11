@@ -432,6 +432,20 @@ class ValidateProjectTests(unittest.TestCase):
 
         self.assertTrue(any("Missing GitHub workflow" in error for error in result.errors))
 
+    def test_github_workflows_use_current_node_runtime_actions(self):
+        ci = (PROJECT_ROOT / ".github" / "workflows" / "ci.yml").read_text(
+            encoding="utf-8"
+        )
+        codeql = (
+            PROJECT_ROOT / ".github" / "workflows" / "codeql.yml"
+        ).read_text(encoding="utf-8")
+
+        self.assertIn("actions/checkout@v7", ci)
+        self.assertIn("actions/setup-python@v6", ci)
+        self.assertIn("actions/checkout@v7", codeql)
+        self.assertIn("github/codeql-action/init@v4", codeql)
+        self.assertIn("github/codeql-action/analyze@v4", codeql)
+
     def test_detects_missing_readme_quality_section(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"

@@ -353,11 +353,20 @@ def check_scheduler(cfg: TutorConfig) -> CheckResult:
 
     if platform.system() == "Windows":
         detail["scheduler"] = "Task Scheduler (taskschd.msc)"
-        detail["recommendation"] = "Use examlex cron-create for recurring distillations"
+        detail["recommendation"] = (
+            "Use Task Scheduler to run the required examlex command "
+            "for recurring distillations"
+        )
     else:
         cron_available = shutil.which("crontab") is not None
         detail["cron_available"] = cron_available
         detail["scheduler"] = "crontab" if cron_available else "not found"
+        detail["recommendation"] = (
+            "Use crontab to run the required examlex command "
+            "for recurring distillations"
+            if cron_available
+            else "Install cron, then use crontab to run the required examlex command"
+        )
 
     return CheckResult("scheduler", "pass",
                        f"Scheduler: {detail['scheduler']}",
