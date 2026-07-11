@@ -450,6 +450,17 @@ class ValidateProjectTests(unittest.TestCase):
         self.assertIn("github/codeql-action/init@v4", codeql)
         self.assertIn("github/codeql-action/analyze@v4", codeql)
 
+    def test_ci_covers_supported_python_versions_and_platforms(self):
+        ci = (PROJECT_ROOT / ".github" / "workflows" / "ci.yml").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn("os: [ubuntu-latest, windows-latest]", ci)
+        self.assertIn(
+            'python-version: ["3.10", "3.11", "3.12", "3.13"]',
+            ci,
+        )
+        self.assertIn("fail-fast: false", ci)
+
     def test_detects_missing_readme_quality_section(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
