@@ -125,13 +125,9 @@ class FileAccessTests(unittest.TestCase):
             link_info.linkname = "/etc/passwd"
             tar.addfile(link_info)
 
-        try:
-            result = restore_backup(tar_path, restore_dir)
-        except (tarfile.FilterError, tarfile.ExtractError, ValueError):
-            pass
-        else:
-            self.assertIsInstance(result, dict)
-            self.assertFalse((restore_dir / "evil_link.txt").exists())
+        with self.assertRaisesRegex(ValueError, "unsafe archive member"):
+            restore_backup(tar_path, restore_dir)
+        self.assertFalse((restore_dir / "evil_link.txt").exists())
 
 
 class DataIntegrityTests(unittest.TestCase):

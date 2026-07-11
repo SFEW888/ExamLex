@@ -1,9 +1,6 @@
 """Tests for operational readiness checks."""
+import io
 import json
-import os
-from pathlib import Path
-import subprocess
-import sys
 import unittest
 from unittest import mock
 
@@ -18,9 +15,6 @@ from examlex.scripts.ops import (
     CheckResult,
 )
 from examlex.scripts.config import TutorConfig
-
-
-REPO_ROOT = Path(__file__).resolve().parents[1]
 
 
 class OpsCheckTests(unittest.TestCase):
@@ -108,9 +102,9 @@ class OpsJSONOutputTests(unittest.TestCase):
     """Verify ops-check --json produces valid output."""
 
     def test_json_output_is_valid(self):
-        import io
         from examlex.scripts.cli_ops import main
 
+        import sys
         old_stdout = sys.stdout
         sys.stdout = io.StringIO()
         try:
@@ -125,18 +119,36 @@ class OpsJSONOutputTests(unittest.TestCase):
         self.assertIn("timestamp", data)
 
     def test_json_output_is_portable_on_non_utf8_windows_console(self):
-        env = os.environ.copy()
-        env["PYTHONIOENCODING"] = "cp1252"
-        result = subprocess.run(
-            [sys.executable, "-m", "examlex", "ops-check", "--json"],
-            capture_output=True,
-            text=True,
-            cwd=str(REPO_ROOT),
-            env=env,
+        from examlex.scripts.cli_ops import main
+
+        report = OpsReport(
+            timestamp="2026-07-11T00:00:00+00:00",
+            hostname="test host",
+            platform="Windows",
+            python_version="3.10",
+            checks=[
+                CheckResult(
+                    name="environment",
+                    status="pass",
+                    message="Chinese test message: \u4e2d\u6587",
+                    detail={"path": "C:\\\\Users\\\\test"},
+                )
+            ],
+            summary={"pass": 1, "warn": 0, "fail": 0, "skip": 0},
         )
 
-        self.assertIn(result.returncode, (0, 1), result.stderr)
-        self.assertIn("checks", json.loads(result.stdout))
+        raw_output = io.BytesIO()
+        cp1252_stdout = io.TextIOWrapper(raw_output, encoding="cp1252", newline="")
+        with mock.patch(
+            "examlex.scripts.cli_ops.run_all_checks", return_value=report
+        ), mock.patch("sys.stdout", cp1252_stdout):
+            return_code = main(["--json"])
+            cp1252_stdout.flush()
+
+        output = raw_output.getvalue().decode("cp1252")
+        self.assertEqual(return_code, 0)
+        self.assertIn("checks", json.loads(output))
+        self.assertIn("\\u", output)
 
 
 if __name__ == "__main__":
