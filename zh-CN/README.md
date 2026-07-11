@@ -1,6 +1,6 @@
 # ExamLex
 
-> **项目状态：ExamLex 尚未发布。** 当前仅支持从本地检出目录安装；本文档保持完全离线，不依赖远程链接或状态徽章。
+> **项目状态：ExamLex 尚未发布。** 当前仅支持从本地检出目录安装；本文档不依赖 ExamLex 的远程仓库地址或状态徽章，下方外链仅指向依赖工具的官方网站。
 
 > **四级 / 六级 / 专四 / 专八 / 考研英语备考一站式 AI Agent Skill 与自动化工具包——支持上传策略文件持续学习进化**
 > *CET-4 · CET-6 · TEM-4 · TEM-8 · Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning*
@@ -39,12 +39,12 @@
 | 功能 | 工具 | Windows 安装 | macOS/Linux 安装 |
 |------|------|--------------|------------------|
 | `text` / `person` | 无 | — | — |
-| `book`（PDF） | pdftotext | `winget install poppler` | `brew install poppler` / `apt install poppler-utils` |
+| `book`（PDF） | [pdftotext（Poppler）](https://poppler.freedesktop.org/) | `winget install poppler` | `brew install poppler` / `apt install poppler-utils` |
 | `book`（DOCX） | python-docx | `pip install python-docx` | `pip3 install python-docx` |
-| `book`（EPUB DRM） | calibre / ebook-convert | `winget install calibre` | `brew install calibre` |
-| `video`（下载/元数据） | yt-dlp | `pip install yt-dlp` | `pip3 install yt-dlp` |
-| `video`（合并/转换/抽取音频） | ffmpeg | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
-| `video`（语音识别） | whisper 或 `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
+| `book`（EPUB DRM） | [Calibre / ebook-convert](https://calibre-ebook.com/download) | `winget install calibre` | `brew install calibre` |
+| `video`（下载/元数据） | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | `pip install yt-dlp` | `pip3 install yt-dlp` |
+| `video`（合并/转换/抽取音频） | [FFmpeg](https://ffmpeg.org/download.html) | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
+| `video`（语音识别） | [Whisper](https://github.com/openai/whisper) 或 `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
 
 `ffmpeg` 就是视频链路需要的开源媒体转换器：`yt-dlp` 下载到分离的视频流和音频流时可能需要它完成合并；ExamLex 在语音识别前也用它抽取并转换音频。只下载某些单文件视频时可能暂时用不到，但完整的“视频 → 音频 → 转写”流程必须安装 `ffmpeg`。
 

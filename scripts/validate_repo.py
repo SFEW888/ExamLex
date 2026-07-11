@@ -33,6 +33,13 @@ SKILL_ALIASES = {
 }
 FORBIDDEN_PRIVATE_PROMPT = " ".join(("Act as a strict", "but helpful English", "grammar teacher"))
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)\n]+)\)")
+ALLOWED_EXTERNAL_URLS = {
+    "https://github.com/yt-dlp/yt-dlp",
+    "https://ffmpeg.org/download.html",
+    "https://github.com/openai/whisper",
+    "https://poppler.freedesktop.org/",
+    "https://calibre-ebook.com/download",
+}
 EXPECTED_REFERENCES = {
     "assistant-roster.md",
     "data-model.md",
@@ -329,7 +336,12 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
     for markdown_file in _maintained_markdown_files(root):
         relative = markdown_file.relative_to(root)
         text = markdown_file.read_text(encoding="utf-8")
-        if "http://" in text or "https://" in text:
+        text_without_allowed_urls = text
+        for allowed_url in ALLOWED_EXTERNAL_URLS:
+            text_without_allowed_urls = text_without_allowed_urls.replace(
+                allowed_url, ""
+            )
+        if "http://" in text_without_allowed_urls or "https://" in text_without_allowed_urls:
             errors.append(
                 f"external URL is forbidden in maintained Markdown: {relative.as_posix()}"
             )
@@ -339,6 +351,8 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
             if not target or target.startswith("#"):
                 continue
             if re.match(r"^[A-Za-z][A-Za-z0-9+.-]*:", target):
+                if target in ALLOWED_EXTERNAL_URLS:
+                    continue
                 errors.append(
                     f"external URL is forbidden in maintained Markdown: "
                     f"{relative.as_posix()} -> {target}"
@@ -377,7 +391,7 @@ def validate_project(root: str | Path) -> ValidationResult:
         warnings.append("README.md is not present yet; Task 9 may add it, so this is a warning only.")
     else:
         readme_text = (root_path / "README.md").read_text(encoding="utf-8")
-        for marker in ("your-org", "github.com/"):
+        for marker in ("your-org",):
             if marker in readme_text:
                 errors.append(f"README.md contains remote install placeholder: {marker}")
         for section in sorted(EXPECTED_README_SECTIONS):

@@ -85,7 +85,7 @@ class ValidateProjectTests(unittest.TestCase):
             any("broken local Markdown link" in error for error in result.errors)
         )
 
-    def test_unpublished_documentation_is_local_only(self):
+    def test_unpublished_documentation_has_no_project_remote_placeholder(self):
         readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
         zh_readme = (PROJECT_ROOT / "zh-CN" / "README.md").read_text(encoding="utf-8")
         env_example = (PROJECT_ROOT / ".env.example").read_text(encoding="utf-8")
@@ -94,7 +94,6 @@ class ValidateProjectTests(unittest.TestCase):
         self.assertIn("尚未发布", zh_readme)
         for text in (readme, zh_readme):
             self.assertNotIn("your-org", text)
-            self.assertNotIn("github.com/", text)
         self.assertIn("SILICONFLOW_API_KEY=", env_example)
         self.assertIn("EXAMLEX_PYTHON=python", env_example)
         self.assertNotIn("EXAMLEX_PROMPT_MODE", env_example)
@@ -116,6 +115,28 @@ class ValidateProjectTests(unittest.TestCase):
                 self.assertIn("ffmpeg", text)
                 self.assertIn("whisper", text.lower())
                 self.assertIn("SILICONFLOW_API_KEY", text)
+
+    def test_bilingual_readmes_link_to_official_dependency_sites(self):
+        official_links = {
+            "https://github.com/yt-dlp/yt-dlp",
+            "https://ffmpeg.org/download.html",
+            "https://github.com/openai/whisper",
+            "https://poppler.freedesktop.org/",
+            "https://calibre-ebook.com/download",
+        }
+        readmes = [
+            PROJECT_ROOT / "README.md",
+            PROJECT_ROOT / "zh-CN" / "README.md",
+        ]
+
+        for path in readmes:
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                text = path.read_text(encoding="utf-8")
+                for link in official_links:
+                    self.assertIn(link, text)
+
+        result = validate_repo.validate_project(PROJECT_ROOT)
+        self.assertEqual([], result.errors)
 
     def test_detects_remote_install_placeholder(self):
         with copy_project() as temp:

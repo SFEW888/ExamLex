@@ -1,6 +1,6 @@
 # ExamLex
 
-> **Status:** ExamLex is currently unpublished. Install it from a local checkout. This documentation is intentionally self-contained and does not depend on remote links or badges.
+> **Status:** ExamLex is currently unpublished. Install it from a local checkout. This documentation does not depend on a remote ExamLex repository URL or status badges; links below point only to official dependency sites.
 
 > CET-4 / CET-6 / Postgraduate English — Public-Safe Agent Skills + Deterministic Automation + Continuous Learning
 >
@@ -41,12 +41,12 @@ Core tutoring and direct-text ingestion need no third-party Python package. The 
 |--------|-------|-------------------|----------------------|
 | `text` | None | — | — |
 | `person` | None | — | — |
-| `book` (PDF) | pdftotext | `winget install poppler` | `brew install poppler` / `apt install poppler-utils` |
+| `book` (PDF) | [pdftotext (Poppler)](https://poppler.freedesktop.org/) | `winget install poppler` | `brew install poppler` / `apt install poppler-utils` |
 | `book` (DOCX) | python-docx | `pip install python-docx` | `pip3 install python-docx` |
-| `book` (EPUB DRM) | calibre | `winget install calibre` | `brew install calibre` |
-| `video` (download/metadata) | yt-dlp | `pip install yt-dlp` | `pip3 install yt-dlp` |
-| `video` (merge/convert/audio) | ffmpeg | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
-| `video` (ASR) | whisper or `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
+| `book` (EPUB DRM) | [Calibre / ebook-convert](https://calibre-ebook.com/download) | `winget install calibre` | `brew install calibre` |
+| `video` (download/metadata) | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | `pip install yt-dlp` | `pip3 install yt-dlp` |
+| `video` (merge/convert/audio) | [FFmpeg](https://ffmpeg.org/download.html) | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
+| `video` (ASR) | [Whisper](https://github.com/openai/whisper) or `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
 
 `ffmpeg` is the open-source media converter used in two places: `yt-dlp` may need it to merge separate video and audio streams, and ExamLex needs it to extract/convert audio before either local `whisper` or SiliconFlow ASR. A download-only path can sometimes work without `ffmpeg`, but the complete video-to-transcript pipeline cannot.
 
