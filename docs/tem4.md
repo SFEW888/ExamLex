@@ -38,3 +38,16 @@ In addition to CET modules, TEM-4 includes:
 | `LANG_VOCAB_DISCRIMINATE_FAIL` | language-knowledge | 词汇辨析 |
 | `DICTATION_ACCURACY_LOW` | dictation | 听写准确率 |
 | `DICTATION_SPELLING_SPEED_LOW` | dictation | 拼写速度 |
+
+## Usage Examples
+
+```powershell
+# Validate a TEM-4 learner profile
+examlex check tem4-learner-profile.json
+
+# Generate a TEM-4 daily plan
+examlex plan tem4-learner-profile.json `
+  --ability tem4-ability-profile.json `
+  --vocab-pool skills/examlex/assets/data/vocabulary/tem4-core-2000.json `
+  --output daily-plan.json
+```

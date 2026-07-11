@@ -1,55 +1,121 @@
 # 多源蒸馏方法论
 
-> 五种蒸馏路径全部内置于 examlex。无需外部 Skill 或工具（视频下载需要 yt-dlp + ffmpeg）。Agent 编排五阶段管线：提取 → 蒸馏 → 校验 → 评估 → 提交。
+> 五种蒸馏路径全部内置于 ExamLex。文本与人物路径只依赖标准库；完整视频路径需要 [yt-dlp](https://github.com/yt-dlp/yt-dlp) + [FFmpeg](https://ffmpeg.org/download.html)，转写可使用本地 [Whisper](https://github.com/openai/whisper) 或 SiliconFlow ASR。Agent 编排五阶段管线：提取 → 蒸馏 → 校验 → 评估 → 提交。
 
 ## 支持的来源类型
 
-| source_type | 典型输入 | distillation_method | 管线 |
-|-------------|---------|---------------------|------|
-| `text` | Markdown/纯文本策略笔记 | `direct` | 提取(文本) → 蒸馏 → 校验 → 评估 → 提交 |
-| `book` | 备考书籍 PDF/EPUB/DOCX | `book` | 提取(书籍) → RIA-TV++蒸馏 → 校验 → 评估 → 提交 |
-| `video` | B站/YouTube 链接或字幕 | `video` | 提取(yt-dlp+ASR) → RIA-TV++蒸馏 → 校验 → 评估 → 提交 |
-| `person` | 教师/专家姓名 | `person` | 提取(跳过) → 认知提取蒸馏 → 校验 → 评估 → 提交 |
-| `conversation` | 对话笔记 | `manual` | 提取(文本) → 蒸馏 → 校验 → 评估 → 提交 |
+| `source_type` | 典型输入 | `distillation_method` | 管线 |
+|---------------|----------|-----------------------|------|
+| `text` | Markdown / 纯文本策略笔记 | `direct` | 文本提取 → 蒸馏 → 校验 → 评估 → 提交 |
+| `book` | PDF / EPUB / DOCX 等备考书籍 | `book` | 图书提取 → RIA-TV++ → 校验 → 评估 → 提交 |
+| `video` | B站 / YouTube 链接或字幕 | `video` | yt-dlp + ASR → RIA-TV++ → 校验 → 评估 → 提交 |
+| `person` | 教师或专家姓名 | `person` | 跳过提取 → 认知提取 → 校验 → 评估 → 提交 |
+| `conversation` | 对话笔记 | `manual` | 文本提取 → 人工标记蒸馏 → 校验 → 评估 → 提交 |
 
 ## 管线阶段
 
-### 阶段 1: 提取
-```bash
-examlex extract --input <url|file|name> [--type auto|video|book|text|person]
+### 阶段 1：提取
+
+```powershell
+examlex extract --input <url|file|name> --type <auto|video|book|text|person>
 ```
-- **video**: yt-dlp下载 → ffmpeg音频提取 → SenseVoiceSmall/whisper ASR → transcript.txt
-- **book**: 多格式解析器 → full_text.txt + 章节结构 + 术语表
-- **text**: 读取 + 标准化 → full_text.txt
-- **person**: 无需提取，直接进入蒸馏阶段
 
-### 阶段 2: 蒸馏（Agent 推理）
-- **book/video**: 遵循 `prompts/ria.py` — RIA-TV++ 六阶段管线
-- **person**: 遵循 `prompts/cognitive.py` — 五层认知提取
+- **video**：yt-dlp 下载 → FFmpeg 合并/转换/音频提取 → SenseVoiceSmall 或 Whisper ASR → `transcript.txt` + `metadata.json`
+- **book**：多格式解析器（PDF/EPUB/DOCX/HTML/MD/RTF/MOBI）→ `full_text.txt` + 章节结构 + 术语表
+- **text**：读取并标准化 BOM 与换行符 → `full_text.txt`
+- **person**：无需本地提取，直接进入蒸馏阶段
 
-输出: `distilled.json`
+### 阶段 2：蒸馏（Agent 推理）
 
-### 阶段 3: 校验
-```bash
+书籍、视频、播客和课程遵循 `prompts/ria.py` 的 RIA-TV++ 六阶段管线：
+
+1. Phase 0：Adler 全文分析
+2. Phase 1：框架、原则、案例、反例、术语五路提取
+3. Phase 1.5：跨域一致性、预测力、独特性三重验证
+4. Phase 2：R/I/A1/A2/E/B 六段构造
+5. Phase 3：卡片式关联
+6. Phase 4–5：压力测试与交付
+
+人物来源遵循 `prompts/cognitive.py`：从著作、访谈、表达特征、外部评价、决策与时间线多角度采集，经三重验证后提取表达模式、心智模型、决策启发式、反模式与诚实边界。
+
+输出：产物目录中的 `distilled.json`。
+
+### 阶段 3：校验
+
+```powershell
 examlex validate --artifacts-dir <path>
 ```
-- 格式检查: 步骤编号、Schema合规、RIA++完整性
-- Darwin 结构评分: 6维度59分
 
-### 阶段 4: 评估（Agent 推理）
-效果评分: 维度7整体架构(12分) + 维度8实测表现(23分)
+- `validators/format_checker.py`：步骤编号、Schema、RIA++ 完整性和模糊表达检查
+- `validators/darwin_structure.py`：6 个结构维度，共 59 分
+  - frontmatter 质量：7 分
+  - 工作流清晰度：12 分
+  - 失败模式编码：12 分
+  - 检查点设计：6 分
+  - 可执行具体度：17 分
+  - 资源集成：4 分
 
-### 阶段 5: 提交
-```bash
+输出：`validation_report.json`。
+
+### 阶段 4：评估（Agent 推理）
+
+Agent 按 `prompts/effect.py` 生成：
+
+- 维度 7：整体架构（12 分）
+- 维度 8：实测表现（23 分），对比使用与不使用策略的测试提示
+- 若超过 30% 的评估为 dry run，则记录警告
+
+输出：`evaluation.json`。
+
+### 阶段 5：提交
+
+```powershell
 examlex commit --artifacts-dir <path> --library strategy-library.json
 ```
-棘轮检查 + 原子写入 + 自动备份
+
+- 合并结构分与效果分，得到最高 100 分的 Darwin 总分
+- 执行棘轮检查，分数不得低于基线
+- 原子写入并自动生成 `.bak` 备份
+- 保存本次校验和评估报告的 SHA-256 批准证据
+- 每条策略必须同时通过格式/结构校验并具备效果评估
+- 低于 70 分的策略保持草稿，不进入学习计划，并最多进行 3 轮爬坡优化
 
 ## Darwin 评分体系
 
-详见 [darwin-rubric.md](darwin-rubric.md)
+完整 9 维评分见 [Darwin 评分参考](darwin-rubric.md)。
+
+| 类别 | 维度 | 分值 | 评分者 |
+|------|------|------|--------|
+| 结构 | dim1–dim6 | 59 | Python 确定性评分 |
+| 效果 | dim7–dim8 | 35 | Agent 测试提示评估 |
+| 元技能 | dim9 | 6 | 优化阶段检查 |
+
+## 策略库 Schema
+
+`strategy-library.json` 中每条策略保留来源、修订和批准证据：
+
+```json
+{
+  "strategy_id": "cet4-reading-ab12cd-001",
+  "title": "四级阅读快速定位法",
+  "source_type": "video",
+  "distillation_method": "video",
+  "source_url": "VIDEO_URL",
+  "darwin_score": 80.0,
+  "score_history": [{"version": 1, "score": 80.0, "status": "baseline"}],
+  "revisions": [{"version": 1, "sha256": "...", "strategy": {"strategy_id": "cet4-reading-ab12cd-001"}}],
+  "approval_evidence": {"validation_sha256": "...", "evaluation_sha256": "...", "approved_at": "2026-07-10T00:00:00+00:00"},
+  "related_strategies": [{"strategy_id": "...", "relation": "complements"}],
+  "ria_structure": {"r_reading": "...", "e_execution": ["1.", "2."], "b_boundary": "..."}
+}
+```
 
 ## 会话管理
 
-中间产物存储在 `~/.examlex/sessions/<日期>/<uuid>/`。
-长任务可续跑: `examlex resume <session-id>`
+中间产物写入平台数据目录下的 `ExamLex/sessions/<日期>/<uuid>/`：Windows 使用 `%LOCALAPPDATA%/ExamLex/sessions`，macOS 使用 `~/Library/Application Support/ExamLex/sessions`，Linux 使用 `$XDG_DATA_HOME/ExamLex/sessions`。
+
+长任务可通过以下命令续跑：
+
+```powershell
+examlex resume <session-id>
+```

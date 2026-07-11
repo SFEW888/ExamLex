@@ -28,7 +28,7 @@
 
 ### 环境要求
 
-- **Python 3.10+**
+- **Python 3.10 / Python 3.11 / Python 3.12 / Python 3.13**
 - **Git**
 - 以下任一 AI 编程助手：**Claude Code** / **Codex CLI** / **Codex App** / **Cursor**
 
@@ -230,14 +230,24 @@ python -m examlex daily-plan --profile learner-profile.json --ability ability-pr
 
 ### 知识摄入与持续学习
 
-除了七大脚本，项目新增三个知识管理脚本，让 Skill 具备"持续学习进化"能力——用户上传考试策略、做题方法、作文模板等文件，Agent 自动提取结构化知识存入策略库，后续计划和建议自动引用：
+除学习闭环自动化外，项目还提供三个知识管理脚本，让 Skill 具备持续学习能力——用户上传考试策略、做题方法、作文模板等文件，Agent 自动提取结构化知识存入策略库，后续计划和建议自动引用：
 
 | 脚本 | 说明 |
 |:----:|------|
 | 📥 **`ingest_strategy.py`** | Agent 读取用户上传的文件后，提取结构化策略（标题/适用考试/模块/方法步骤）并写入策略库 |
 | 📋 **`list_strategies.py`** | 列出/搜索策略库：支持按关键词检索、按考试/模块分布统计、最新条目 |
+| ✅ **`validate_strategy.py`** | 校验策略库字段、生命周期状态和引用完整性 |
 
 **联动机制**：`generate_daily_plan.py` 新增可选 `--strategies` 参数——生成每日计划时自动检索策略库，为每个模块附上用户沉淀的对应方法论。详见下方「持续学习」章节。
+
+高级蒸馏管线和运维检查命令：
+
+```powershell
+examlex extract --input <url|file|name> --type <auto|video|book|text|person>
+examlex validate --artifacts-dir <path>
+examlex commit --artifacts-dir <path> --library strategy-library.json
+examlex ops-check
+```
 
 ---
 
@@ -333,8 +343,8 @@ Agent：[调用 generate_daily_plan.py]
 | 大学英语四级 | `CET4` | `425~499`、`500~550`、`550+`、`600+` |
 | 大学英语六级 | `CET6` | `425~499`、`500~550`、`550+`、`600+` |
 | 考研英语 | `POSTGRADUATE_ENGLISH` | `50+`、`70~80`、`80+`、`90+` |
-| 英语专业四级 🔜 | `TEM4` | `60~69`、`70~79`、`80+` |
-| 英语专业八级 🔜 | `TEM8` | `60~69`、`70~79`、`80+` |
+| 英语专业四级 | `TEM4` | `60~69`、`70~79`、`80+` |
+| 英语专业八级 | `TEM8` | `60~69`、`70~79`、`80+` |
 
 **基础水平分级与策略**：
 
@@ -412,7 +422,7 @@ Agent 对话层 (Claude Code / Codex / Cursor)
 │   └── skill/references/            #   中文版参考文档
 │
 ├── examples/                        # 示例文件（档案/画像/记录/作文版本）
-├── tests/                           # 单元测试
+├── tests/                           # 333+ 项单元测试
 ├── scripts/                         # 维护者验证器与底层安装器
 ├── .github/                         # Issue/PR 模板、CI/CD、Dependabot
 └── pyproject.toml                   # 包元数据

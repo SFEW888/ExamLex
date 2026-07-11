@@ -36,3 +36,23 @@ In addition to CET modules, TEM-8 includes:
 | `PROOFREAD_ARTICLE_MISS` | proofreading | 冠词错误 |
 | `PROOFREAD_COLLOCATION_FAIL` | proofreading | 搭配错误 |
 | `PROOFREAD_LOGIC_INCOHERENT` | proofreading | 逻辑错误 |
+
+## Usage Examples
+
+```powershell
+# Validate a TEM-8 learner profile
+examlex check tem8-learner-profile.json
+
+# Generate a TEM-8 daily plan with timed-practice evidence
+examlex plan tem8-learner-profile.json `
+  --ability tem8-ability-profile.json `
+  --vocab-pool skills/examlex/assets/data/vocabulary/tem8-core-2000.json `
+  --output daily-plan.json
+
+# Record timed TEM-8 proofreading practice
+examlex log practice-ledger.json `
+  --date 2026-07-06 --exam-type TEM8 --module proofreading `
+  --task-id proofread-001 --duration 15 --total 10 --correct 7 `
+  --timed --time-limit 15 `
+  --error-tags PROOFREAD_COLLOCATION_FAIL
+```

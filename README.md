@@ -29,7 +29,7 @@ See [zh-CN/README.md](zh-CN/README.md) for the Chinese version.
 
 ### Requirements
 
-- Python 3.10+
+- Python 3.10 / Python 3.11 / Python 3.12 / Python 3.13
 - Git
 - One of: Claude Code / Codex CLI / Codex App / Cursor
 
@@ -70,6 +70,23 @@ Restart your agent, then invoke:
 /grammar-corrector Check this essay and give me a correction report.
 ```
 
+### Installation Verification
+
+After restarting the Agent, verify the installed Skill and run a quick request:
+
+```text
+/examlex Show the available exam-preparation workflows.
+/examlex Create a one-day CET4 study plan for a learner with a weak foundation.
+```
+
+Installation locations:
+
+| Platform | Personal skills root | Project-local root |
+|----------|----------------------|--------------------|
+| Claude Code | `~/.claude/skills/` | `.claude/skills/` |
+| Codex CLI / Codex App | `~/.agents/skills/` | `.agents/skills/` |
+| Cursor | `~/.cursor/skills/` | `.cursor/skills/` |
+
 ### Standalone CLI (optional)
 
 ```bash
@@ -84,6 +101,26 @@ examlex daily-plan --profile learner-profile.json --ability ability-profile.json
 ```
 
 > The Git installation installs only the CLI script engine. Agent conversation features require cloning the repository and running the Agent installer above. Contributors can use `python -m pip install -e .` in a checkout.
+
+---
+
+## Workflow
+
+ExamLex turns preparation into a repeatable evidence loop:
+
+```text
+1. Create or validate learner-profile.json
+2. Estimate vocabulary and initialize ability-profile.yaml
+3. Generate a daily plan from the profile, evidence, and strategy library
+4. Complete timed or untimed practice
+5. Record results in exercise-record.json
+6. Attribute errors and summarize recurring weaknesses
+7. Update the ability profile and analyze trends
+8. Review the HTML report and writing-version-record.yaml
+9. Feed the new evidence into the next plan
+```
+
+At any stage, `examlex ingest` or the extract → validate → commit pipeline can add new methods to `strategy-library.json`. The next planning and tutoring session can then use those methods without replacing the learner's historical evidence.
 
 ---
 
@@ -156,6 +193,60 @@ See [skills/examlex/references/multi-source-distillation.md](skills/examlex/refe
 
 ---
 
+## Use Cases
+
+| Need | Recommended route | Result |
+|------|-------------------|--------|
+| Build an exam plan | `learning-planner` + `generate_daily_plan.py` | Constraint-solved daily tasks from foundation, target, and time budget |
+| Fix weak vocabulary retention | `vocabulary-builder` + `tag_error.py` | Diagnose meaning, spelling, audio recognition, and context use separately |
+| Improve reading | `reading-navigator` + `summarize_errors.py` | Separate evidence for long sentences, location, inference, and paraphrase |
+| Develop an essay | `structure-planner` → `grammar-corrector` → `polish-wizard` | Versioned structure, correction, and expression improvement |
+| Stop recurring grammar errors | `grammar-corrector` + `update_ability_profile.py` | Tagged evidence feeds the next priority plan |
+| Measure progress | `analyze_trends.py` + `examlex report` | Trend evidence plus a local HTML report |
+| Practice dialogue and context | `scenario-dialog` + `culture-guide` | Guided situational practice with cultural explanation |
+| Run the full loop | `/examlex` | Diagnosis → plan → practice → attribution → update → iteration |
+| Preserve personal methods | strategy file → `ingest_strategy.py` | Reuse the method in later plans and tutor guidance |
+| Distill a whole book | book extraction → RIA++ → validate → commit | Approved, source-traceable strategies in the library |
+| Distill a preparation video | yt-dlp + FFmpeg + ASR → RIA++ | Transcript-backed strategies with validation evidence |
+| Distill an expert's methodology | cognitive extraction → validate → commit | Mental models and heuristics with explicit source boundaries |
+
+### Use Case Examples
+
+**From essay structure to a versioned revision**
+
+```text
+User: /structure-planner I need to write a CET-4 argumentative essay about environmental protection.
+
+Agent: Plan a three-paragraph structure:
+       1. Context, position, and preview of the argument.
+       2. Personal actions plus policy-level measures.
+       3. Synthesis and a concrete call to action.
+       Write V1 from this structure, then preserve it before correction.
+
+User: /polish-wizard Polish my V1 without changing my position.
+
+Agent: Return the revised text, a change list, and the reason for each grammar,
+       cohesion, or expression change; append V2 instead of overwriting V1.
+```
+
+**Turn a recurring grammar error into tomorrow's plan**
+
+```text
+User: /grammar-corrector Check this essay.
+
+Agent: Detect repeated article omissions and agreement errors, then record
+       WRITING_ARTICLE_OMISSION and WRITING_LANGUAGE_ACCURACY_FAIL evidence.
+       The 30-day summary shows article omission as the highest-frequency tag.
+
+User: Make tomorrow's plan focus on articles.
+
+Agent: Generate a targeted grammar drill, a short writing task with an article
+       self-check, and reading annotation practice. Preserve review_urgency and
+       the evidence count that caused this priority.
+```
+
+---
+
 ## Usage
 
 ### Quick Examples
@@ -190,6 +281,9 @@ examlex ingest reading-strategy.md --library strategy-library.json --exam-types 
 examlex extract --input ./cet4-guide.pdf --type book
 examlex validate --artifacts-dir <path>
 examlex commit --artifacts-dir <path> --library strategy-library.json
+
+# Back up local learning data
+examlex backup ./local/data
 ```
 
 ### CLI Wrappers
@@ -205,6 +299,8 @@ The project provides `bin/examlex` (bash) and `bin/examlex.ps1` (PowerShell) wra
 | `examlex score <essay>` | Estimate writing score |
 | `examlex ingest <file>` | Ingest strategy file |
 | `examlex extract --input <url>` | Extract from video/book/text |
+| `examlex backup <dir>` | Back up local learner and strategy data |
+| `examlex report --ability-history ...` | Generate a local HTML progress report |
 | `examlex check-deps` | Check tool dependencies |
 | `examlex ops-check` | 13-point operational check |
 
@@ -293,11 +389,92 @@ No. All five distillation paths are implemented by local project code. Heavy ext
 ├── docs/                            # English docs
 ├── zh-CN/                           # Chinese docs
 ├── examples/                        # Sample profiles, ledgers, etc.
-├── tests/                           # 210+ tests
+├── tests/                           # 333+ tests
 ├── scripts/                         # Repo validators and installers
 ├── .github/                         # CI/CD, issue/PR templates
 └── pyproject.toml                   # Package metadata
 ```
+
+### Design Principles
+
+- **Two-track separation:** `skills/examlex/` is the portable Agent-readable Skill package, while `examlex/` is the importable Python mirror used by tests and the CLI. Their script fields and behavior stay synchronized.
+- **Determinism first:** planning, validation, attribution, and scoring scripts favor auditable and reproducible rules over probabilistic hidden state.
+- **Public safety:** the repository publishes role boundaries, templates, schemas, script interfaces, and placeholders only. The original eight tutor prompt bodies never enter public history.
+
+---
+
+## Data Model
+
+ExamLex stores learner state in JSON-compatible structures. YAML and Markdown templates remain available for convenient editing, but field names must stay compatible with the scripts.
+
+| Data file | Purpose | Template or producer |
+|-----------|---------|----------------------|
+| **Learner profile** | Exam type, foundation level, target band, and daily time budget | `learner-profile.json` / `.yaml` |
+| **Ability profile** | Module ability nodes, status, level, and accuracy evidence | `ability-profile.yaml` |
+| **Practice ledger** | Date, module, task, duration, item totals, correct items, and error tags | `exercise-record.json` / `.yaml` |
+| **Error summary** | Counts by tag, module, dimension, urgency, and speed evidence | Produced by `summarize_errors.py` |
+| **Writing versions** | Versioned V1/V2/V3 drafts, revision notes, and parent links | `writing-version-record.yaml` |
+| **Writing score** | Deterministic, explicitly non-official rubric estimate with dimension scores | Produced by `score_writing_rubric.py` |
+| **Strategy library** | Structured exam strategies, methods, templates, provenance, and audit evidence | `strategy-library.json`, written by `ingest_strategy.py` or `examlex commit` |
+
+---
+
+## Continuous Learning (Knowledge Ingestion)
+
+Continuous learning accepts more than plain text. A preparation book, long video, podcast transcript, teacher methodology, or conversation note can be distilled into a strategy artifact and later used by planning and tutoring.
+
+### Multi-Source Distillation Architecture
+
+```text
+text ─────── direct ──────┐
+book ─────── structural ──┤
+video ────── RIA++ ───────┼─> extract -> validate -> commit
+person ───── cognitive ───┤          │
+conversation ─ manual ────┘          v
+                                strategy-library.json
+                                         │
+                         ┌───────────────┼───────────────┐
+                         v               v               v
+                     daily plan      tutor guidance   search/list
+```
+
+### Strategy Library Structure
+
+Each strategy retains enough provenance to be audited:
+
+| Field | Meaning | Example |
+|-------|---------|---------|
+| `strategy_id` | Stable identifier | `cet4-reading-speed-001` |
+| `title` | Human-readable strategy name | Fast CET-4 reading location method |
+| `source_type` | Source category | `text`, `book`, `video`, `person`, `conversation` |
+| `distillation_method` | Extraction method | `direct`, `structural`, `ria`, `cognitive`, `manual` |
+| `source_file` | Local source name | `cet4-reading-notes.md` |
+| `source_url` | Original URL, ISBN, or source reference | Video URL or book ISBN |
+| `exam_types` | Supported exams | `["CET4", "CET6"]` |
+| `modules` | Related modules | `["reading"]` |
+| `ability_nodes` | Related ability nodes | `["reading_speed", "evidence_location"]` |
+| `content` | Core method | Read the question stem before locating evidence |
+| `steps` | Executable steps | `["Scan stems", "Locate in order"]` |
+
+### Examples
+
+**Book:** extract candidate methods from a PDF or EPUB, reject generic or single-source claims, validate the remaining structured artifacts, and commit only approved strategies.
+
+**Video:** use `yt-dlp` for acquisition, FFmpeg for merging/conversion and audio extraction, then local Whisper or SiliconFlow ASR for transcription before RIA++ distillation. A complete video-to-transcript pipeline requires FFmpeg even when a downloader can fetch a single stream without it.
+
+**Person:** collect evidence from multiple independent books, interviews, lessons, and learner reports; distinguish stable mental models from one-off tips; retain source references and confidence evidence.
+
+**Conversation:** turn user-provided notes into explicitly manual strategies without presenting them as independently verified facts.
+
+### Workflow Integration
+
+- With source material: choose the matching extraction method, validate the artifact, commit it, and make it available to later plans and tutor sessions.
+- Without source material: all ordinary tutoring and automation continue with an empty or unchanged strategy library.
+- At any stage: new knowledge can be added without discarding learner history.
+- Across profiles: one strategy library can serve multiple learner profiles.
+- For every strategy: retain `source_type`, `distillation_method`, and source provenance.
+
+See [the multi-source distillation reference](skills/examlex/references/multi-source-distillation.md) for gates, audit fields, and failure handling.
 
 ---
 
@@ -311,7 +488,11 @@ No. All five distillation paths are implemented by local project code. Heavy ext
 | TEM-4 | `TEM4` | `60~69`, `70~79`, `80+` |
 | TEM-8 | `TEM8` | `60~69`, `70~79`, `80+` |
 
-Foundation levels: `基础偏弱` (weak) / `中等基础` (moderate) / `基础较好` (strong).
+| Foundation level | Identifier | Planning emphasis |
+|------------------|------------|-------------------|
+| Weak | `基础偏弱` | High-frequency vocabulary, grammar repair, supported slow reading, and short guided output |
+| Moderate | `中等基础` | Balanced module practice with evidence-driven weak-point repair |
+| Strong | `基础较好` | Timed practice, advanced expression, speed, and high-impact error elimination |
 
 ---
 
@@ -387,10 +568,15 @@ examlex ops-check                          # 13-point operational readiness chec
 | [Configuration](docs/configuration.md) | Authoritative configuration and environment variables. |
 | [Usage](docs/usage.md) | Complete learning workflow. |
 | [Architecture](docs/architecture.md) | Repository layers and boundaries. |
+| [Design](docs/design.md) | Public-safe, deterministic, two-track design principles. |
+| [Prompt Policy](docs/prompt-policy.md) | Rules for public-safe and full-local prompt modes. |
 | [Development](docs/development.md) | Source layout and local checks. |
 | [Troubleshooting](docs/troubleshooting.md) | Common failures and remedies. |
 | [Release](docs/release.md) | Versioning and release checklist. |
 | [Roadmap](docs/roadmap.md) | Implemented and planned work. |
+| [Project Quality](docs/project-quality.md) | Repository quality and release checks. |
+| [CET-4](docs/cet4.md) / [CET-6](docs/cet6.md) / [Postgraduate](docs/postgraduate.md) | Exam-specific guidance. |
+| [TEM-4](docs/tem4.md) / [TEM-8](docs/tem8.md) | English-major exam guidance. |
 | [CLI Reference](cli-reference.md) | Short and full command names. |
 
 ---
@@ -404,6 +590,22 @@ examlex ops-check                          # 13-point operational readiness chec
 - [x] 13-point operational readiness check (`examlex ops-check`)
 - [ ] IELTS / TOEFL support
 - [ ] Web UI for strategy library browsing
+
+---
+
+## Keyword Index
+
+English exam · CET-4 · CET-6 · TEM-4 · TEM-8 · postgraduate English · AI tutor · learning planner · vocabulary builder · grammar correction · reading training · writing revision · error taxonomy · ability profile · daily plan · continuous learning · multi-source distillation · knowledge ingestion · strategy library · RIA++ · cognitive extraction · Agent Skill · public-safe · Claude Code · Codex · Cursor
+
+---
+
+## Community
+
+- [Contribution Guide](CONTRIBUTING.md)
+- [Security Policy](SECURITY.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Support](SUPPORT.md)
+- [Changelog](CHANGELOG.md)
 
 ---
 

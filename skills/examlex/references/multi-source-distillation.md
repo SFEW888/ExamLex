@@ -106,7 +106,7 @@ Each strategy entry in `strategy-library.json` carries full provenance:
 
 ## Session Management
 
-All intermediate artifacts are stored under `~/.examlex/sessions/<date>/<uuid>/`.
+Intermediate artifacts are stored under the platform data directory at `ExamLex/sessions/<date>/<uuid>/`: `%LOCALAPPDATA%/ExamLex/sessions` on Windows, `~/Library/Application Support/ExamLex/sessions` on macOS, or `$XDG_DATA_HOME/ExamLex/sessions` on Linux.
 Long-running distillations can be resumed:
 ```bash
 examlex resume <session-id>

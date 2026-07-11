@@ -1,6 +1,18 @@
 # 工作流
 
-四级、六级和考研英语助教会话使用这个闭环。
+四级、六级、专四、专八和考研英语助教会话使用这个闭环。
+
+## 0. 知识摄入（可选，多来源）
+
+在诊断前或任意后续阶段，均可把新方法加入策略库：
+
+1. `examlex extract --input <url|file|name> --type <video|book|text|person>` 提取原始素材。
+2. Agent 按来源选择 RIA++、认知提取或直接摄入方法，写入会话产物。
+3. `examlex validate --artifacts-dir <path>` 执行格式和 Darwin 结构校验。
+4. 为每条策略生成效果评估证据。
+5. `examlex commit --artifacts-dir <path> --library strategy-library.json` 原子提交获批策略。
+
+仅 `approved` 策略可进入每日计划；摄入失败或没有策略库时，普通学习闭环仍可继续。
 
 ## 1. 诊断
 

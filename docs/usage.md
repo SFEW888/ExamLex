@@ -37,6 +37,62 @@ Use slash calls in Agent chat:
 6. Keep writing drafts versioned and anchor scoring against model essay references.
 7. Visualize progress: `examlex report --ability-history <path> --ledger <path>` generates a standalone HTML report with SVG charts.
 
+## Step-by-Step Learning Loop
+
+The following PowerShell examples make the evidence handoff between stages explicit.
+
+### 1. Validate the Repository and Learner Profile
+
+```powershell
+python scripts\validate_repo.py --root . --json
+python -m examlex validate-profile --profile examples\sample-learner-profile.yaml
+```
+
+Fix profile errors before generating a plan.
+
+### 2. Generate the First and Next Daily Plans
+
+```powershell
+python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ability examples\sample-ability-profile.yaml --strategies strategy-library.json --output daily-plan.json
+python -m examlex daily-plan --profile examples\sample-learner-profile.yaml --ability ability-profile.next.json --strategies strategy-library.json --errors error-summary.json --output daily-plan.next.json
+```
+
+The first plan can omit `--errors`. Later plans should consume the latest error summary and ability evidence.
+
+### 3. Record Practice and Preserve Strategy Revision Evidence
+
+```powershell
+python -m examlex record-practice --ledger practice-ledger.json --date 2026-07-05 --exam-type CET6 --module reading --task-id reading-long-sentence-01 --duration-minutes 25 --total-items 12 --correct-items 8 --error-tags READING_LONG_SENTENCE_FAIL READING_PARAPHRASE_FAIL --print-record
+python -m examlex record-practice --ledger practice-ledger.json --plan daily-plan.next.json --plan-task-index 0 --date 2026-07-05 --exam-type CET6 --module reading --task-id reading-long-sentence-01 --duration-minutes 25 --total-items 12 --correct-items 8
+```
+
+Providing `--plan` and `--plan-task-index` links the practice evidence to the exact approved strategy revision used by that task.
+
+### 4. Attribute Errors and Update Ability
+
+```powershell
+python -m examlex summarize-errors --ledger practice-ledger.json --output error-summary.json
+python -m examlex update-ability --ability examples\sample-ability-profile.yaml --ledger practice-ledger.json --output ability-profile.next.json
+```
+
+### 5. Keep the Writing Loop Versioned
+
+```powershell
+python -m examlex writing-version --file writing-versions.json --writing-id essay-001 --text "First draft text"
+python -m examlex score-writing --text "I will compare two views and explain why consistent practice matters for postgraduate English preparation." --exam-type POSTGRADUATE_ENGLISH --output writing-score.json
+```
+
+The score is revision guidance, not an official exam score. Append new versions instead of overwriting earlier drafts.
+
+### 6. Run the Weekly Review
+
+```powershell
+python -m examlex summarize-errors --ledger practice-ledger.json --output weekly-error-summary.json
+python -m examlex analyze-trends --ledger practice-ledger.json --history ability-history.json --output weekly-trends.json
+```
+
+Use `skills\examlex\assets\templates\weekly-review.md` to write a learner-facing review grounded in completed tasks, recurring error tags, and measured ability changes.
+
 ## Internal CLI
 
 The Agent may run the internal CLI after the Skill has interpreted the task. Humans can run it for debugging:

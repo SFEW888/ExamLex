@@ -1,18 +1,18 @@
 # Workflow
 
-Use this loop for CET-4, CET-6, and postgraduate English tutoring sessions.
+Use this loop for CET-4, CET-6, TEM-4, TEM-8, and postgraduate English tutoring sessions.
 
 ## 0. Knowledge Ingestion (optional, multi-source)
 
-Before or alongside the main loop, ingest exam strategies from books, videos, people, and conversations into the strategy library. See [multi-source-distillation.md](multi-source-distillation.md) for full reference.
+Before diagnosis or at any later stage, add methods through the gated strategy pipeline:
 
-- **Direct text**: `ingest_strategy.py --source-type text --distillation-method direct`
-- **Book/PDF**: Agent reads content → structural extraction (frameworks+verification+structuring) → `ingest_strategy.py --source-type book --distillation-method book`
-- **Video/Podcast transcript**: Agent applies RIA++ pipeline internally (analysis→extraction→triple verification→RIA++ construction) → `ingest_strategy.py --source-type video --distillation-method video`
-- **Person/Teacher**: Agent applies cognitive extraction (multi-angle collection→triple verification→5-layer extraction) → `ingest_strategy.py --source-type person --distillation-method person`
-- **Conversation**: extract methods from dialog → `ingest_strategy.py --source-type conversation --distillation-method manual`
+1. Run `examlex extract --input <url|file|name> --type <video|book|text|person>` to capture source material.
+2. Let the Agent apply RIA++, cognitive extraction, or direct ingestion according to source type and write session artifacts.
+3. Run `examlex validate --artifacts-dir <path>` for format and Darwin structure checks.
+4. Produce effectiveness evaluation evidence for every candidate strategy.
+5. Run `examlex commit --artifacts-dir <path> --library strategy-library.json` for atomic approval and commit.
 
-Post-ingestion: `validate_strategy.py` then `list_strategies.py`.
+Only `approved` strategies may enter a daily plan. If ingestion fails or no strategy library exists, the ordinary learning loop continues normally. See [multi-source-distillation.md](multi-source-distillation.md) for the complete contract.
 
 ## 1. Diagnosis
 

@@ -188,6 +188,81 @@ class ValidateProjectTests(unittest.TestCase):
         result = validate_repo.validate_project(PROJECT_ROOT)
         self.assertEqual([], result.errors)
 
+    def test_bilingual_readmes_cover_the_current_feature_contract(self):
+        readmes = {
+            PROJECT_ROOT / "README.md": (
+                "### Installation Verification",
+                "## Workflow",
+                "## Use Cases",
+                "### Design Principles",
+                "## Data Model",
+            ),
+            PROJECT_ROOT / "zh-CN" / "README.md": (
+                "### 安装后验证",
+                "## 使用流程",
+                "## 适用场景",
+                "### 设计原则",
+                "## 数据模型",
+            ),
+        }
+        shared_markers = (
+            "Python 3.10",
+            "Python 3.11",
+            "Python 3.12",
+            "Python 3.13",
+            "examlex backup",
+            "examlex report",
+            "exercise-record.json",
+            "writing-version-record.yaml",
+            "strategy-library.json",
+            "examlex ops-check",
+        )
+
+        for path, language_markers in readmes.items():
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                text = path.read_text(encoding="utf-8")
+                for marker in (*language_markers, *shared_markers):
+                    self.assertIn(marker, text)
+
+    def test_bilingual_reference_pairs_cover_current_operational_contracts(self):
+        document_contracts = {
+            (
+                PROJECT_ROOT / "docs" / "configuration.md",
+                PROJECT_ROOT / "zh-CN" / "docs" / "configuration.md",
+            ): ("darwin_max_rounds", "sessions_root", "ffmpeg_path", "to_dict()"),
+            (
+                PROJECT_ROOT / "skills" / "examlex" / "references" / "data-model.md",
+                PROJECT_ROOT / "zh-CN" / "skill" / "references" / "data-model.md",
+            ): ("strategy-library.json", "approval_evidence", "lifecycle_status", "revisions"),
+            (
+                PROJECT_ROOT / "skills" / "examlex" / "references" / "multi-source-distillation.md",
+                PROJECT_ROOT / "zh-CN" / "skill" / "references" / "multi-source-distillation.md",
+            ): ("validation_report.json", "evaluation.json", "approval_evidence", "%LOCALAPPDATA%"),
+            (
+                PROJECT_ROOT / "skills" / "examlex" / "references" / "workflow.md",
+                PROJECT_ROOT / "zh-CN" / "skill" / "references" / "workflow.md",
+            ): ("examlex extract", "examlex validate", "examlex commit", "approved"),
+            (
+                PROJECT_ROOT / "docs" / "usage.md",
+                PROJECT_ROOT / "zh-CN" / "docs" / "usage.md",
+            ): ("--plan-task-index", "writing-version", "summarize-errors", "backup"),
+            (
+                PROJECT_ROOT / "docs" / "tem4.md",
+                PROJECT_ROOT / "zh-CN" / "docs" / "tem4.md",
+            ): ("examlex check", "examlex plan", "tem4-core-2000.json"),
+            (
+                PROJECT_ROOT / "docs" / "tem8.md",
+                PROJECT_ROOT / "zh-CN" / "docs" / "tem8.md",
+            ): ("examlex check", "examlex plan", "tem8-core-2000.json", "examlex log"),
+        }
+
+        for paths, markers in document_contracts.items():
+            for path in paths:
+                with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                    text = path.read_text(encoding="utf-8")
+                    for marker in markers:
+                        self.assertIn(marker, text)
+
     def test_detects_remote_install_placeholder(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"

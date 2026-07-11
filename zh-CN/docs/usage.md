@@ -1,6 +1,31 @@
 # 使用流程
 
-以下流程默认在项目根目录中使用 PowerShell。
+优先通过 Agent Skill 使用本项目。`SKILL.md` 不是终端程序；`python -m examlex ...` 是供 Agent、开发和排错使用的内部自动化 CLI。
+
+以下命令行流程默认在项目根目录中使用 PowerShell。
+
+## Agent Skill 调用
+
+在 Agent 对话中使用斜杠调用：
+
+```text
+/examlex 根据我的学习者档案、能力画像和最新错误汇总，制定今天的 CET4 550+ 计划。
+/learning-planner 为基础偏弱、目标 CET4 550+ 的学习者制定 30 天计划。
+/grammar-corrector 检查这段作文并返回纠错报告。
+/reading-navigator 拆解这个长难句，并指出答案的原文证据。
+```
+
+| 场景 | 调用方式 |
+|------|----------|
+| 完整助教工作流 | `/examlex` |
+| 学习规划 | `/learning-planner` |
+| 词汇 | `/vocabulary-builder` |
+| 阅读 | `/reading-navigator` |
+| 写作结构 | `/structure-planner` |
+| 语法纠错 | `/grammar-corrector` |
+| 表达润色 | `/polish-wizard` |
+| 情景对话 | `/scenario-dialog` |
+| 文化语境 | `/culture-guide` |
 
 ## 1. 校验仓库
 

@@ -4,7 +4,7 @@
 
 ## 环境要求
 
-- Python 3.10 或更新版本
+- Python 3.10、3.11、3.12 或 3.13
 - PowerShell 或 POSIX shell
 
 核心助教功能和纯文本摄入不依赖第三方 Python 包。多源摄入按功能使用以下依赖：

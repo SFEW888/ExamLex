@@ -109,3 +109,35 @@ ledger 是一个 JSON 列表。每条记录应包含：
 - `dimensions`
 
 分数是确定性的修改参考，不是官方考试评分。
+
+## 策略库
+
+由 `scripts/ingest_strategy.py` 或 `examlex commit` 生成，默认文件为 `strategy-library.json`。
+
+每条策略的必填字段：
+
+- `strategy_id`：唯一标识（`{exam}-{module}-{digest}-{seq}`）
+- `title`：策略名称
+- `source_file`：来源文件名
+- `source_type`：`text`、`book`、`video`、`podcast`、`person`、`course`、`conversation` 之一
+- `distillation_method`：`direct`、`book`、`video`、`person`、`manual` 之一
+- `added_at`：ISO 8601 日期
+- `exam_types`：适用考试类型标识列表
+- `modules`：关联能力模块列表
+- `content`：核心方法说明（20–5000 字符）
+
+可选和审计字段：
+
+- `source_provenance`：来源文件名、可选 URL、原始来源 SHA-256 和 UTC 采集时间
+- `revisions`：不可变的内容寻址快照（`version`、`sha256`、`strategy`）；练习记录引用修订哈希
+- `approval_evidence`：校验报告与评估报告的 SHA-256，以及 UTC 批准时间
+- `lifecycle_status`：`draft`、`approved` 或 `deprecated`；仅 `approved` 策略可进入每日计划
+- `source_url`：视频链接、书籍 ISBN 或人物主页等原始来源
+- `ability_nodes`：策略针对的具体能力节点
+- `steps`：从内容中提取的有序执行步骤
+- `tags`：用于分类和搜索的标签
+- `ria_structure`：RIA++ 六段结果 `r_reading`、`i_interpretation`、`a1_past`、`a2_trigger`、`e_execution`、`b_boundary`
+- `mental_model`：认知提取结果，包括名称、摘要、证据、应用与限制
+- `heuristic`：启发式结果，包括名称、规则、场景与示例
+
+策略库是全局数据：一个文件可服务多个学习者档案。通过 `generate_daily_plan.py --strategies` 把获批策略关联到计划任务。完整摄入流程见 [多源蒸馏方法论](multi-source-distillation.md)。

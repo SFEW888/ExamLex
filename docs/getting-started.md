@@ -4,7 +4,7 @@ Use this guide to install ExamLex from the public [SFEW888/ExamLex](https://gith
 
 ## Requirements
 
-- Python 3.10 or newer
+- Python 3.10, 3.11, 3.12, or 3.13
 - PowerShell or a POSIX shell for the local installer
 
 Core tutoring and direct-text ingestion require no third-party Python package. Multi-source ingestion has feature-specific dependencies:
