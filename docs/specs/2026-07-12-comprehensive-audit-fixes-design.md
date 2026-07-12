@@ -35,12 +35,12 @@ Both wrappers will query the selected interpreter and reject versions below Pyth
 Canonical vocabulary files will use truthful names:
 
 - `cet4-core-200.json`
-- `cet6-core-150.json`
+- `cet6-core-149.json` (the generator contains 149 unique entries; the previous 150-row file repeated `allege`)
 - `postgraduate-core-100.json`
 - `tem4-core-100.json`
 - `tem8-core-100.json`
 
-The old numeric filenames will remain packaged as deprecated compatibility copies for direct-path users. The vocabulary index will distinguish canonical pools from legacy aliases and state both included count and intended exam scope. Documentation will explicitly describe the 650 entries as a curated starter set, not a full exam lexicon.
+The old numeric filenames will remain packaged as deprecated compatibility copies for direct-path users. The vocabulary index will distinguish canonical pools from legacy aliases and state both included count and intended exam scope. Documentation will explicitly describe the 649 unique entries as a curated starter set, not a full exam lexicon.
 
 Repository validation will verify that each canonical filename's numeric suffix equals the JSON entry count and that compatibility copies match their canonical source.
 

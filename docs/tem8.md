@@ -46,7 +46,7 @@ examlex check tem8-learner-profile.json
 # Generate a TEM-8 daily plan with timed-practice evidence
 examlex plan tem8-learner-profile.json `
   --ability tem8-ability-profile.json `
-  --vocab-pool skills/examlex/assets/data/vocabulary/tem8-core-2000.json `
+  --vocab-pool skills/examlex/assets/data/vocabulary/tem8-core-100.json `
   --output daily-plan.json
 
 # Record timed TEM-8 proofreading practice

@@ -436,6 +436,60 @@ def validate_template_contracts(root: Path, errors: list[str]) -> None:
             errors.append("writing template must contain a JSON list")
 
 
+def validate_vocab_contracts(root: Path, errors: list[str]) -> None:
+    vocab_dir = root / "skills" / SKILL_NAME / "assets" / "data" / "vocabulary"
+    try:
+        index = json.loads((vocab_dir / "index.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"vocabulary index is not valid JSON: {exc}")
+        return
+    if not isinstance(index, dict):
+        errors.append("vocabulary index must contain an object")
+        return
+
+    for key, metadata in index.items():
+        if not isinstance(metadata, dict):
+            errors.append(f"vocabulary index entry must be an object: {key}")
+            continue
+        filename = metadata.get("path")
+        if not isinstance(filename, str):
+            errors.append(f"vocabulary index entry has no path: {key}")
+            continue
+        match = re.search(r"-(\d+)\.json$", filename)
+        if match is None:
+            errors.append(f"canonical vocabulary filename must end with its count: {filename}")
+            continue
+        try:
+            entries = json.loads((vocab_dir / filename).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"canonical vocabulary file is invalid: {filename}: {exc}")
+            continue
+        expected_count = int(match.group(1))
+        if not isinstance(entries, list) or len(entries) != expected_count:
+            errors.append(f"canonical vocabulary filename count mismatch: {filename}")
+            continue
+        if metadata.get("count") != expected_count:
+            errors.append(f"vocabulary index count mismatch: {filename}")
+        if metadata.get("scope") != "curated_starter":
+            errors.append(f"vocabulary index scope must be curated_starter: {key}")
+        legacy_paths = metadata.get("legacy_paths")
+        if not isinstance(legacy_paths, list) or not legacy_paths:
+            errors.append(f"vocabulary index must list legacy_paths: {key}")
+            continue
+        for legacy_path in legacy_paths:
+            try:
+                legacy_entries = json.loads(
+                    (vocab_dir / legacy_path).read_text(encoding="utf-8")
+                )
+            except (OSError, json.JSONDecodeError) as exc:
+                errors.append(f"legacy vocabulary file is invalid: {legacy_path}: {exc}")
+                continue
+            if legacy_entries != entries:
+                errors.append(
+                    f"legacy vocabulary data differs from canonical file: {legacy_path}"
+                )
+
+
 def validate_project(root: str | Path) -> ValidationResult:
     root_path = Path(root).resolve()
     result = ValidationResult(root=str(root_path))
@@ -592,6 +646,7 @@ def validate_project(root: str | Path) -> ValidationResult:
     validate_resource_mirror(skill_dir, importable_dir, errors)
     validate_writing_article_omission(portable_scripts / "common.py", errors)
     validate_template_contracts(root_path, errors)
+    validate_vocab_contracts(root_path, errors)
     validate_documentation(root_path, errors)
     return result
 

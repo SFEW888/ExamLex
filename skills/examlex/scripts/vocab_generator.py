@@ -357,35 +357,45 @@ def _merge_words(embedded: list, imported: list) -> list:
 
 LEVEL_CONFIG = {
     "CET4": {
-        "filename": "cet4-core-2000.json",
+        "index_key": "cet4-core",
+        "filename": "cet4-core-200.json",
+        "legacy_paths": ["cet4-core-2000.json"],
         "words": _merge_words(_WORDS_CET4, CET4_WORDS),
         "exam_types": ["CET4"],
         "description": "四级高频核心词汇，按真题出现频率降序排列",
         "source": "基于 CET-4 历年真题词频统计（public domain 数据源）",
     },
     "CET6": {
-        "filename": "cet6-core-1500.json",
+        "index_key": "cet6-core",
+        "filename": "cet6-core-149.json",
+        "legacy_paths": ["cet6-core-1500.json"],
         "words": _merge_words(_WORDS_CET6, CET6_WORDS),
         "exam_types": ["CET6"],
         "description": "六级增量高频词汇，假设用户已掌握四级词表",
         "source": "基于 CET-6 历年真题词频统计",
     },
     "POSTGRADUATE": {
-        "filename": "postgraduate-core-1000.json",
+        "index_key": "postgraduate-core",
+        "filename": "postgraduate-core-100.json",
+        "legacy_paths": ["postgraduate-core-1000.json"],
         "words": _merge_words(_WORDS_POSTGRAD, POSTGRAD_WORDS),
         "exam_types": ["POSTGRADUATE_ENGLISH"],
         "description": "考研英语增量高频词汇",
         "source": "基于考研英语(一/二)历年真题词频统计",
     },
     "TEM4": {
-        "filename": "tem4-core-2000.json",
+        "index_key": "tem4-core",
+        "filename": "tem4-core-100.json",
+        "legacy_paths": ["tem4-core-2000.json"],
         "words": _merge_words(_WORDS_TEM4, TEM4_WORDS),
         "exam_types": ["TEM4"],
         "description": "英语专业四级高频词汇",
         "source": "基于 TEM-4 历年真题词频统计",
     },
     "TEM8": {
-        "filename": "tem8-core-2000.json",
+        "index_key": "tem8-core",
+        "filename": "tem8-core-100.json",
+        "legacy_paths": ["tem8-core-2000.json"],
         "words": _merge_words(_WORDS_TEM8, TEM8_WORDS),
         "exam_types": ["TEM8"],
         "description": "英语专业八级高频进阶词汇",
@@ -444,12 +454,16 @@ def generate_all():
         # Write file
         path = VOCAB_DIR / config["filename"]
         write_json(entries, path)
+        for legacy_path in config["legacy_paths"]:
+            write_json(entries, VOCAB_DIR / legacy_path)
         print(f"  [{level}] {path.name} — {len(entries)} entries")
 
         # Build index entry
-        index[config["filename"].replace(".json", "")] = {
+        index[config["index_key"]] = {
             "path": config["filename"],
             "count": len(entries),
+            "scope": "curated_starter",
+            "legacy_paths": config["legacy_paths"],
             "exam_types": config["exam_types"],
             "description": config["description"],
             "source": config["source"],
@@ -477,9 +491,11 @@ def _rebuild_index() -> Path:
             data = json.loads(path.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             continue
-        index[config["filename"].replace(".json", "")] = {
+        index[config["index_key"]] = {
             "path": config["filename"],
             "count": len(data),
+            "scope": "curated_starter",
+            "legacy_paths": config["legacy_paths"],
             "exam_types": config["exam_types"],
             "description": config["description"],
             "source": config["source"],
@@ -519,7 +535,7 @@ def validate_existing():
     if index_path.exists():
         index = json.loads(index_path.read_text(encoding="utf-8"))
         for key, info in index.items():
-            if key not in [c["filename"].replace(".json", "") for c in LEVEL_CONFIG.values()]:
+            if key not in [c["index_key"] for c in LEVEL_CONFIG.values()]:
                 print(f"  [INDEX] Extra entry in index: {key}")
         print(f"  [INDEX] index.json — {len(index)} entries")
     else:
@@ -552,6 +568,8 @@ def main():
             config = LEVEL_CONFIG[level]
             path = VOCAB_DIR / config["filename"]
             write_json(entries, path)
+            for legacy_path in config["legacy_paths"]:
+                write_json(entries, VOCAB_DIR / legacy_path)
             print(f"  Written {len(entries)} entries to {path.name}")
             # Keep index.json in sync after writing a single level.
             _rebuild_index()

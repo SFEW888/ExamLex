@@ -19,6 +19,7 @@ class TestVocabPool(unittest.TestCase):
     def setUpClass(cls):
         cls.vocab_dir = REPO_ROOT / "skills" / "examlex" / "assets" / "data" / "vocabulary"
         cls.schema = load_schema()
+        cls.index = json.loads((cls.vocab_dir / "index.json").read_text(encoding="utf-8"))
 
     def test_index_exists(self):
         """index.json can be loaded and all paths exist."""
@@ -34,9 +35,44 @@ class TestVocabPool(unittest.TestCase):
         """index.json covers all 5 exam levels."""
         index_path = self.vocab_dir / "index.json"
         index = json.loads(index_path.read_text(encoding="utf-8"))
-        expected_keys = {"cet4-core-2000", "cet6-core-1500", "postgraduate-core-1000",
-                         "tem4-core-2000", "tem8-core-2000"}
+        expected_keys = {"cet4-core", "cet6-core", "postgraduate-core",
+                         "tem4-core", "tem8-core"}
         self.assertEqual(set(index.keys()), expected_keys)
+
+    def test_canonical_filename_count_matches_entries(self):
+        for info in self.index.values():
+            path = self.vocab_dir / info["path"]
+            advertised = int(path.stem.rsplit("-", 1)[1])
+            entries = json.loads(path.read_text(encoding="utf-8"))
+            self.assertEqual(advertised, len(entries), path.name)
+            self.assertEqual(info["count"], len(entries), path.name)
+            self.assertEqual(info["scope"], "curated_starter")
+
+    def test_legacy_pools_match_canonical_data(self):
+        for info in self.index.values():
+            canonical = json.loads(
+                (self.vocab_dir / info["path"]).read_text(encoding="utf-8")
+            )
+            self.assertTrue(info["legacy_paths"])
+            for legacy_path in info["legacy_paths"]:
+                legacy = json.loads(
+                    (self.vocab_dir / legacy_path).read_text(encoding="utf-8")
+                )
+                self.assertEqual(canonical, legacy, legacy_path)
+
+    def test_canonical_pools_do_not_repeat_words(self):
+        for info in self.index.values():
+            entries = json.loads(
+                (self.vocab_dir / info["path"]).read_text(encoding="utf-8")
+            )
+            words = [entry["word"].casefold() for entry in entries]
+            self.assertEqual(len(words), len(set(words)), info["path"])
+
+    def test_generator_metadata_uses_truthful_names_and_legacy_paths(self):
+        for level, config in vocab_generator.LEVEL_CONFIG.items():
+            advertised = int(Path(config["filename"]).stem.rsplit("-", 1)[1])
+            self.assertEqual(advertised, len(generate_level(level)))
+            self.assertTrue(config["legacy_paths"])
 
     def test_all_entries_valid(self):
         """All vocabulary entries pass schema validation."""
@@ -53,15 +89,15 @@ class TestVocabPool(unittest.TestCase):
         self.assertEqual(total_errors, 0, f"Found {total_errors} validation errors in vocabulary entries")
 
     def test_cet4_sorted_by_frequency(self):
-        """cet4-core-2000.json entries are sorted by frequency_rank ascending."""
-        path = self.vocab_dir / "cet4-core-2000.json"
+        """cet4-core-200.json entries are sorted by frequency_rank ascending."""
+        path = self.vocab_dir / "cet4-core-200.json"
         data = json.loads(path.read_text(encoding="utf-8"))
         ranks = [e["frequency_rank"] for e in data]
         self.assertEqual(ranks, sorted(ranks), "cet4-core-2000 should be sorted by frequency_rank")
 
     def test_cet6_sorted_by_frequency(self):
-        """cet6-core-1500.json entries are sorted by frequency_rank ascending."""
-        path = self.vocab_dir / "cet6-core-1500.json"
+        """cet6-core-149.json entries are sorted by frequency_rank ascending."""
+        path = self.vocab_dir / "cet6-core-149.json"
         data = json.loads(path.read_text(encoding="utf-8"))
         ranks = [e["frequency_rank"] for e in data]
         self.assertEqual(ranks, sorted(ranks))

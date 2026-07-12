@@ -44,6 +44,13 @@ def copy_project():
 
 
 class ValidateProjectTests(unittest.TestCase):
+    def test_repository_vocabulary_contract_is_valid(self):
+        errors: list[str] = []
+
+        validate_repo.validate_vocab_contracts(PROJECT_ROOT, errors)
+
+        self.assertEqual([], errors)
+
     def test_detects_invalid_packaged_template_contract(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
@@ -331,11 +338,11 @@ class ValidateProjectTests(unittest.TestCase):
             (
                 PROJECT_ROOT / "docs" / "tem4.md",
                 PROJECT_ROOT / "zh-CN" / "docs" / "tem4.md",
-            ): ("examlex check", "examlex plan", "tem4-core-2000.json"),
+            ): ("examlex check", "examlex plan", "tem4-core-100.json"),
             (
                 PROJECT_ROOT / "docs" / "tem8.md",
                 PROJECT_ROOT / "zh-CN" / "docs" / "tem8.md",
-            ): ("examlex check", "examlex plan", "tem8-core-2000.json", "examlex log"),
+            ): ("examlex check", "examlex plan", "tem8-core-100.json", "examlex log"),
         }
 
         for paths, markers in document_contracts.items():

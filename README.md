@@ -267,7 +267,7 @@ examlex check examples/sample-learner-profile.yaml
 # Plan with vocab pool and spaced repetition
 examlex plan examples/sample-learner-profile.yaml \
   --ability examples/sample-ability-profile.yaml \
-  --vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-2000.json \
+  --vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-200.json \
   --output daily-plan.json
 
 # Record timed practice

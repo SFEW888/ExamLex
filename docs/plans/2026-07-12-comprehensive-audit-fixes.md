@@ -58,19 +58,19 @@
 ### Task 3: Publish truthful canonical vocabulary pools
 
 **Files:**
-- Create: `examlex/assets/data/vocabulary/cet4-core-200.json`, `cet6-core-150.json`, `postgraduate-core-100.json`, `tem4-core-100.json`, `tem8-core-100.json`
+- Create: `examlex/assets/data/vocabulary/cet4-core-200.json`, `cet6-core-149.json`, `postgraduate-core-100.json`, `tem4-core-100.json`, `tem8-core-100.json`
 - Modify: `examlex/assets/data/vocabulary/index.json`, bilingual README and vocabulary documentation, `scripts/validate_repo.py`
 - Test: `tests/test_vocab_pool.py`, `tests/test_validate_project.py`
 
 **Interfaces:**
 - Produces: canonical index entries containing `path`, exact `count`, `scope: "curated_starter"`, and `legacy_paths`.
 
-- [ ] **Step 1: Add failing tests.** Parse each canonical filename's final numeric suffix and assert it equals JSON length; assert every legacy file's parsed data equals its canonical file.
-- [ ] **Step 2: Run RED.** `python -m unittest tests.test_vocab_pool`; expect missing canonical paths and metadata.
-- [ ] **Step 3: Create canonical copies and index.** Use keys `cet4-core`, `cet6-core`, `postgraduate-core`, `tem4-core`, `tem8-core`; preserve each old path in `legacy_paths`.
-- [ ] **Step 4: Update examples and validation.** Maintained examples use canonical paths and call all 650 entries a curated starter set; validator rejects suffix/count and legacy-data mismatches.
-- [ ] **Step 5: Run GREEN.** `python -m unittest tests.test_vocab_pool tests.test_validate_project`; expect canonical and legacy paths pass.
-- [ ] **Step 6: Commit.** Commit data, index, docs, validator, and tests as `fix: publish truthful vocabulary pool names`.
+- [x] **Step 1: Add failing tests.** Parse each canonical filename's final numeric suffix and assert it equals JSON length; assert every legacy file's parsed data equals its canonical file.
+- [x] **Step 2: Run RED.** `python -m unittest tests.test_vocab_pool`; expect missing canonical paths and metadata.
+- [x] **Step 3: Create canonical copies and index.** Use keys `cet4-core`, `cet6-core`, `postgraduate-core`, `tem4-core`, `tem8-core`; preserve each old path in `legacy_paths`.
+- [x] **Step 4: Update examples and validation.** Maintained examples use canonical paths and call all 649 unique entries a curated starter set; validator rejects suffix/count and legacy-data mismatches.
+- [x] **Step 5: Run GREEN.** `python -m unittest tests.test_vocab_pool tests.test_validate_project`; expect canonical and legacy paths pass.
+- [x] **Step 6: Commit.** Commit data, index, docs, validator, and tests as `fix: publish truthful vocabulary pool names`.
 
 ### Task 4: Make record updates atomic and concurrency-safe
 

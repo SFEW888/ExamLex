@@ -1,43 +1,63 @@
 {
-  "cet4-core-2000": {
-    "path": "cet4-core-2000.json",
+  "cet4-core": {
+    "path": "cet4-core-200.json",
     "count": 200,
+    "scope": "curated_starter",
+    "legacy_paths": [
+      "cet4-core-2000.json"
+    ],
     "exam_types": [
       "CET4"
     ],
     "description": "四级高频核心词汇，按真题出现频率降序排列",
     "source": "基于 CET-4 历年真题词频统计（public domain 数据源）"
   },
-  "cet6-core-1500": {
-    "path": "cet6-core-1500.json",
-    "count": 150,
+  "cet6-core": {
+    "path": "cet6-core-149.json",
+    "count": 149,
+    "scope": "curated_starter",
+    "legacy_paths": [
+      "cet6-core-1500.json"
+    ],
     "exam_types": [
       "CET6"
     ],
     "description": "六级增量高频词汇，假设用户已掌握四级词表",
     "source": "基于 CET-6 历年真题词频统计"
   },
-  "postgraduate-core-1000": {
-    "path": "postgraduate-core-1000.json",
+  "postgraduate-core": {
+    "path": "postgraduate-core-100.json",
     "count": 100,
+    "scope": "curated_starter",
+    "legacy_paths": [
+      "postgraduate-core-1000.json"
+    ],
     "exam_types": [
       "POSTGRADUATE_ENGLISH"
     ],
     "description": "考研英语增量高频词汇",
     "source": "基于考研英语(一/二)历年真题词频统计"
   },
-  "tem4-core-2000": {
-    "path": "tem4-core-2000.json",
+  "tem4-core": {
+    "path": "tem4-core-100.json",
     "count": 100,
+    "scope": "curated_starter",
+    "legacy_paths": [
+      "tem4-core-2000.json"
+    ],
     "exam_types": [
       "TEM4"
     ],
     "description": "英语专业四级高频词汇",
     "source": "基于 TEM-4 历年真题词频统计"
   },
-  "tem8-core-2000": {
-    "path": "tem8-core-2000.json",
+  "tem8-core": {
+    "path": "tem8-core-100.json",
     "count": 100,
+    "scope": "curated_starter",
+    "legacy_paths": [
+      "tem8-core-2000.json"
+    ],
     "exam_types": [
       "TEM8"
     ],
