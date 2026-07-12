@@ -7,6 +7,7 @@ import json
 import sys
 from pathlib import Path
 
+from .common import canonical_json_sha256
 from .validators.format_checker import FormatChecker
 from .validators.darwin_structure import DarwinStructureScorer
 
@@ -89,6 +90,7 @@ def main(argv: list[str] | None = None) -> int:
             results.append({
                 "strategy_id": sid,
                 "title": title,
+                "strategy_sha256": canonical_json_sha256(strategy),
                 "format_passed": False,
                 "format_errors": 1,
                 "format_warnings": 0,
@@ -106,6 +108,7 @@ def main(argv: list[str] | None = None) -> int:
         entry = {
             "strategy_id": strategy.get("strategy_id", "unknown"),
             "title": strategy.get("title", ""),
+            "strategy_sha256": canonical_json_sha256(strategy),
             "format_passed": format_report.passed,
             "format_errors": len(format_report.errors),
             "format_warnings": len(format_report.warnings),

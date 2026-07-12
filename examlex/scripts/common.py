@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import tempfile
@@ -59,6 +60,18 @@ ERROR_TAG_TO_ABILITY = {
     "DICTATION_ACCURACY_LOW": ("dictation", "听写准确率"),
     "DICTATION_SPELLING_SPEED_LOW": ("dictation", "拼写速度"),
 }
+
+
+def canonical_json_sha256(value: Any) -> str:
+    """Return a stable content digest for a JSON-compatible value."""
+    encoded = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        allow_nan=False,
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 def load_data(path: str | Path) -> Any:

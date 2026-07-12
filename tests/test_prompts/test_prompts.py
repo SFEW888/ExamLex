@@ -67,6 +67,8 @@ class EffectGuideTests(unittest.TestCase):
         item_props = schema["properties"]["strategies"]["items"]["required"]
         self.assertIn("dim7_architecture", item_props)
         self.assertIn("dim8_performance", item_props)
+        self.assertIn("strategy_sha256", item_props)
+        self.assertIn("strategy_sha256", self.guide.stage_instructions("evaluate"))
 
 
 class ClimbGuideTests(unittest.TestCase):

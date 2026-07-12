@@ -176,8 +176,9 @@
           "approval_evidence": {
             "type": "object",
             "description": "Content-addressed reports used to approve this strategy",
-            "required": ["validation_sha256", "evaluation_sha256", "approved_at"],
+            "required": ["strategy_sha256", "validation_sha256", "evaluation_sha256", "approved_at"],
             "properties": {
+              "strategy_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
               "validation_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
               "evaluation_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
               "approved_at": {"type": "string", "format": "date-time"}

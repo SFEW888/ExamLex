@@ -2,16 +2,115 @@ import hashlib
 import io
 import tempfile
 import tarfile
+import threading
+import time
 import unittest
 from pathlib import Path
 
 import json
 
-from examlex.scripts import analyze_trends, backup_data, cli_commit, generate_daily_plan, ingest_strategy, record_practice
+from examlex.scripts import analyze_trends, backup_data, cli_commit, cli_validate, generate_daily_plan, ingest_strategy, record_practice
 from examlex.scripts.optimizers.ratchet import StrategyRatchet
 
 
 class ContinuousLearningP1Tests(unittest.TestCase):
+    def test_strategy_library_schema_requires_content_bound_approval_evidence(self):
+        schema_path = (
+            Path(__file__).resolve().parents[1]
+            / "examlex/assets/schemas/strategy-library.schema.json"
+        )
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        evidence = schema["properties"]["strategies"]["items"]["properties"][
+            "approval_evidence"
+        ]
+
+        self.assertIn("strategy_sha256", evidence["required"])
+        self.assertEqual(
+            "^[a-f0-9]{64}$",
+            evidence["properties"]["strategy_sha256"]["pattern"],
+        )
+
+    def test_validation_report_binds_each_strategy_content(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            strategy = {
+                "strategy_id": "cet4-reading-method-001",
+                "title": "Method",
+                "content": "Use a concrete evidence-location method for every item.",
+                "steps": ["Read the question", "Locate evidence"],
+                "source_file": "method.md",
+                "exam_types": ["CET4"],
+                "modules": ["reading"],
+                "added_at": "2026-07-10",
+            }
+            (root / "distilled.json").write_text(
+                json.dumps({"strategies": [strategy]}), encoding="utf-8"
+            )
+
+            self.assertIn(cli_validate.main(["--artifacts-dir", str(root)]), (0, 1))
+
+            report = json.loads((root / "validation_report.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                hashlib.sha256(
+                    json.dumps(
+                        strategy,
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ).encode("utf-8")
+                ).hexdigest(),
+                report["results"][0]["strategy_sha256"],
+            )
+
+    def test_concurrent_ingest_keeps_both_strategies(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            library = root / "library.json"
+            library.write_text('{"strategies": []}\n', encoding="utf-8")
+            sources = []
+            for index in range(2):
+                source = root / f"method-{index}.md"
+                source.write_text(
+                    f"Method {index}\n\n1. Read question {index}\n2. Verify evidence {index}",
+                    encoding="utf-8",
+                )
+                sources.append(source)
+            start = threading.Barrier(3)
+            errors = []
+            original_load = ingest_strategy.common.load_data
+
+            def delayed_load(path):
+                data = original_load(path)
+                if Path(path) == library:
+                    time.sleep(0.05)
+                return data
+
+            def worker(source):
+                try:
+                    start.wait()
+                    ingest_strategy.ingest_strategy(
+                        file_path=source,
+                        library_path=library,
+                        exam_types=["CET4"],
+                        modules=["reading"],
+                    )
+                except Exception as exc:  # pragma: no cover - asserted below
+                    errors.append(exc)
+
+            with unittest.mock.patch.object(
+                ingest_strategy.common, "load_data", side_effect=delayed_load
+            ):
+                threads = [threading.Thread(target=worker, args=(source,)) for source in sources]
+                for thread in threads:
+                    thread.start()
+                start.wait()
+                for thread in threads:
+                    thread.join()
+
+            self.assertEqual([], errors)
+            saved = json.loads(library.read_text(encoding="utf-8"))
+            self.assertEqual(2, len(saved["strategies"]))
+
     def test_ingest_records_content_addressed_source_provenance(self):
         with self._temporary_dir() as temp:
             root = Path(temp)
@@ -180,18 +279,24 @@ class ContinuousLearningP1Tests(unittest.TestCase):
             root = Path(temp)
             library = root / "library.json"
             strategy_id = "cet4-reading-method-001"
-            (root / "distilled.json").write_text(json.dumps({"strategies": [{
+            strategy = {
                 "strategy_id": strategy_id, "title": "Method", "exam_types": ["CET4"],
                 "modules": ["reading"], "content": "Use a concrete evidence-location method for every item.",
                 "source_file": "method.md", "added_at": "2026-07-10",
-            }]}), encoding="utf-8")
+            }
+            digest = hashlib.sha256(json.dumps(
+                strategy, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")).hexdigest()
+            (root / "distilled.json").write_text(json.dumps({"strategies": [strategy]}), encoding="utf-8")
             (root / "validation_report.json").write_text(json.dumps({
                 "all_format_passed": True,
                 "results": [{"strategy_id": strategy_id, "format_passed": True,
-                             "structure_passed": True, "structure_score": 59}],
+                             "structure_passed": True, "structure_score": 59,
+                             "strategy_sha256": digest}],
             }), encoding="utf-8")
             (root / "evaluation.json").write_text(json.dumps({
-                "strategies": [{"strategy_id": strategy_id, "effect_total": 11}],
+                "strategies": [{"strategy_id": strategy_id, "effect_total": 11,
+                                "strategy_sha256": digest}],
             }), encoding="utf-8")
 
             self.assertEqual(cli_commit.main(["--artifacts-dir", str(root), "--library", str(library)]), 0)
@@ -199,6 +304,7 @@ class ContinuousLearningP1Tests(unittest.TestCase):
             evidence = approved["approval_evidence"]
             self.assertRegex(evidence["validation_sha256"], r"^[a-f0-9]{64}$")
             self.assertRegex(evidence["evaluation_sha256"], r"^[a-f0-9]{64}$")
+            self.assertEqual(digest, evidence["strategy_sha256"])
 
     @staticmethod
     def _temporary_dir():

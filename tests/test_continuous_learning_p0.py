@@ -1,4 +1,5 @@
 import io
+import hashlib
 import json
 import re
 import tempfile
@@ -9,6 +10,13 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from examlex.scripts import cli_commit, cli_extract, generate_daily_plan, ingest_strategy
+
+
+def _strategy_digest(strategy):
+    encoded = json.dumps(
+        strategy, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
 
 
 class _FakeExtractor:
@@ -106,13 +114,17 @@ class ContinuousLearningP0Tests(unittest.TestCase):
         with self._temporary_dir() as temp:
             root = Path(temp)
             self._write_distilled(root)
+            strategy = json.loads((root / "distilled.json").read_text(encoding="utf-8"))["strategies"][0]
+            digest = _strategy_digest(strategy)
             (root / "validation_report.json").write_text(json.dumps({
                 "all_format_passed": True,
                 "results": [{"strategy_id": "cet4-reading-locate-001", "format_passed": True,
-                             "structure_passed": True, "structure_score": 59}],
+                             "structure_passed": True, "structure_score": 59,
+                             "strategy_sha256": digest}],
             }), encoding="utf-8")
             (root / "evaluation.json").write_text(json.dumps({
-                "strategies": [{"strategy_id": "cet4-reading-locate-001", "effect_total": 10}],
+                "strategies": [{"strategy_id": "cet4-reading-locate-001", "effect_total": 10,
+                                "strategy_sha256": digest}],
             }), encoding="utf-8")
 
             with redirect_stdout(io.StringIO()):
@@ -125,13 +137,17 @@ class ContinuousLearningP0Tests(unittest.TestCase):
             root = Path(temp)
             library = root / "library.json"
             self._write_distilled(root)
+            strategy = json.loads((root / "distilled.json").read_text(encoding="utf-8"))["strategies"][0]
+            digest = _strategy_digest(strategy)
             (root / "validation_report.json").write_text(json.dumps({
                 "all_format_passed": True,
                 "results": [{"strategy_id": "cet4-reading-locate-001", "format_passed": True,
-                             "structure_passed": True, "structure_score": 59}],
+                             "structure_passed": True, "structure_score": 59,
+                             "strategy_sha256": digest}],
             }), encoding="utf-8")
             (root / "evaluation.json").write_text(json.dumps({
-                "strategies": [{"strategy_id": "cet4-reading-locate-001", "effect_total": 11}],
+                "strategies": [{"strategy_id": "cet4-reading-locate-001", "effect_total": 11,
+                                "strategy_sha256": digest}],
             }), encoding="utf-8")
 
             with redirect_stdout(io.StringIO()):
@@ -141,6 +157,76 @@ class ContinuousLearningP0Tests(unittest.TestCase):
             committed = json.loads(library.read_text(encoding="utf-8"))["strategies"][0]
             self.assertEqual(committed["lifecycle_status"], "approved")
             self.assertEqual(committed["darwin_score"], 70)
+
+    def test_commit_rejects_reports_for_previous_strategy_content(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            library = root / "library.json"
+            self._write_distilled(root)
+            distilled_path = root / "distilled.json"
+            distilled = json.loads(distilled_path.read_text(encoding="utf-8"))
+            strategy = distilled["strategies"][0]
+            digest = _strategy_digest(strategy)
+            (root / "validation_report.json").write_text(json.dumps({
+                "all_format_passed": True,
+                "results": [{
+                    "strategy_id": strategy["strategy_id"],
+                    "strategy_sha256": digest,
+                    "format_passed": True,
+                    "structure_passed": True,
+                    "structure_score": 59,
+                }],
+            }), encoding="utf-8")
+            (root / "evaluation.json").write_text(json.dumps({
+                "strategies": [{
+                    "strategy_id": strategy["strategy_id"],
+                    "strategy_sha256": digest,
+                    "effect_total": 11,
+                }],
+            }), encoding="utf-8")
+            strategy["content"] = "Tampered after approval reports were produced."
+            distilled_path.write_text(json.dumps(distilled), encoding="utf-8")
+
+            with redirect_stdout(io.StringIO()):
+                result = cli_commit.main([
+                    "--artifacts-dir", str(root), "--library", str(library)
+                ])
+
+            self.assertEqual(2, result)
+            self.assertFalse(library.exists())
+
+    def test_commit_rejects_duplicate_validation_evidence(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            self._write_distilled(root)
+            strategy = json.loads((root / "distilled.json").read_text(encoding="utf-8"))["strategies"][0]
+            digest = _strategy_digest(strategy)
+            validation_entry = {
+                "strategy_id": strategy["strategy_id"],
+                "strategy_sha256": digest,
+                "format_passed": True,
+                "structure_passed": True,
+                "structure_score": 59,
+            }
+            (root / "validation_report.json").write_text(json.dumps({
+                "all_format_passed": True,
+                "results": [validation_entry, dict(validation_entry)],
+            }), encoding="utf-8")
+            (root / "evaluation.json").write_text(json.dumps({
+                "strategies": [{
+                    "strategy_id": strategy["strategy_id"],
+                    "strategy_sha256": digest,
+                    "effect_total": 11,
+                }],
+            }), encoding="utf-8")
+
+            with redirect_stdout(io.StringIO()):
+                result = cli_commit.main([
+                    "--artifacts-dir", str(root),
+                    "--library", str(root / "library.json"),
+                ])
+
+            self.assertEqual(2, result)
 
     @staticmethod
     def _write_distilled(root):

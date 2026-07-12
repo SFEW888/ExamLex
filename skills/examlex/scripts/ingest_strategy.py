@@ -5,20 +5,35 @@ import datetime as dt
 import hashlib
 import json
 import logging
-import os
 import re
 import sys
+from functools import wraps
 from pathlib import Path
 from typing import Any
 
 try:
     from . import common
+    from .file_lock import exclusive_file_lock
+    from .strategy_store import atomic_save_strategy_library
 except ImportError:  # pragma: no cover - supports direct script execution.
     import common  # type: ignore[no-redef]
+    from file_lock import exclusive_file_lock  # type: ignore[no-redef]
+    from strategy_store import atomic_save_strategy_library  # type: ignore[no-redef]
 
 _LOGGER = logging.getLogger(__name__)
 
 
+def _locked_library_update(function):
+    @wraps(function)
+    def wrapped(*args, **kwargs):
+        library_path = Path(kwargs["library_path"])
+        with exclusive_file_lock(library_path):
+            return function(*args, **kwargs)
+
+    return wrapped
+
+
+@_locked_library_update
 def ingest_strategy(
     *,
     file_path: str | Path,
@@ -137,18 +152,8 @@ def ingest_strategy(
 
 
 def _atomic_save(path: Path, data: Any) -> None:
-    """Write JSON atomically so a concurrent reader never sees a partial file."""
-    text = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
-    tmp = path.with_name(f"{path.name}.{os.getpid()}.tmp")
-    try:
-        tmp.write_text(text, encoding="utf-8")
-        os.replace(tmp, path)
-    except Exception:
-        try:
-            tmp.unlink(missing_ok=True)
-        except Exception:
-            pass
-        raise
+    """Write a complete library with a unique, fsynced temporary file."""
+    atomic_save_strategy_library(data, path)
 
 
 def _validate_values(values: list[str], allowed: set[str], label: str) -> None:

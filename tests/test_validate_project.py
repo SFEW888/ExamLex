@@ -383,11 +383,11 @@ class ValidateProjectTests(unittest.TestCase):
             (
                 PROJECT_ROOT / "skills" / "examlex" / "references" / "data-model.md",
                 PROJECT_ROOT / "zh-CN" / "skill" / "references" / "data-model.md",
-            ): ("strategy-library.json", "approval_evidence", "lifecycle_status", "revisions"),
+            ): ("strategy-library.json", "approval_evidence", "strategy_sha256", "lifecycle_status", "revisions"),
             (
                 PROJECT_ROOT / "skills" / "examlex" / "references" / "multi-source-distillation.md",
                 PROJECT_ROOT / "zh-CN" / "skill" / "references" / "multi-source-distillation.md",
-            ): ("validation_report.json", "evaluation.json", "approval_evidence", "%LOCALAPPDATA%"),
+            ): ("validation_report.json", "evaluation.json", "strategy_sha256", "approval_evidence", "%LOCALAPPDATA%"),
             (
                 PROJECT_ROOT / "skills" / "examlex" / "references" / "workflow.md",
                 PROJECT_ROOT / "zh-CN" / "skill" / "references" / "workflow.md",

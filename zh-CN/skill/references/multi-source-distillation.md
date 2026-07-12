@@ -55,7 +55,7 @@ examlex validate --artifacts-dir <path>
   - 可执行具体度：17 分
   - 资源集成：4 分
 
-输出：`validation_report.json`。
+输出：`validation_report.json`。每条结果都包含 `strategy_sha256`，它绑定本次实际校验的规范化策略内容。
 
 ### 阶段 4：评估（Agent 推理）
 
@@ -64,6 +64,7 @@ Agent 按 `prompts/effect.py` 生成：
 - 维度 7：整体架构（12 分）
 - 维度 8：实测表现（23 分），对比使用与不使用策略的测试提示
 - 若超过 30% 的评估为 dry run，则记录警告
+- 将 `validation_report.json` 中对应的 `strategy_sha256` 原样写入评估结果；不得用旧摘要评估已修改的内容
 
 输出：`evaluation.json`。
 
@@ -77,6 +78,7 @@ examlex commit --artifacts-dir <path> --library strategy-library.json
 - 执行棘轮检查，分数不得低于基线
 - 原子写入并自动生成 `.bak` 备份
 - 保存本次校验和评估报告的 SHA-256 批准证据
+- 校验与评估中的 `strategy_sha256` 必须和当前蒸馏策略内容一致
 - 每条策略必须同时通过格式/结构校验并具备效果评估
 - 低于 70 分的策略保持草稿，不进入学习计划，并最多进行 3 轮爬坡优化
 
@@ -104,7 +106,7 @@ examlex commit --artifacts-dir <path> --library strategy-library.json
   "darwin_score": 80.0,
   "score_history": [{"version": 1, "score": 80.0, "status": "baseline"}],
   "revisions": [{"version": 1, "sha256": "...", "strategy": {"strategy_id": "cet4-reading-ab12cd-001"}}],
-  "approval_evidence": {"validation_sha256": "...", "evaluation_sha256": "...", "approved_at": "2026-07-10T00:00:00+00:00"},
+  "approval_evidence": {"strategy_sha256": "...", "validation_sha256": "...", "evaluation_sha256": "...", "approved_at": "2026-07-10T00:00:00+00:00"},
   "related_strategies": [{"strategy_id": "...", "relation": "complements"}],
   "ria_structure": {"r_reading": "...", "e_execution": ["1.", "2."], "b_boundary": "..."}
 }

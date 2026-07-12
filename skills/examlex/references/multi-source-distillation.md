@@ -53,13 +53,14 @@ examlex validate --artifacts-dir <path>
   - dim5: Actionable specificity (17)
   - dim6: Resource integration (4)
 
-Output: `validation_report.json`
+Output: `validation_report.json`. Every result includes `strategy_sha256`, the canonical digest of the exact strategy content that was validated.
 
 ### Stage 4: Evaluate (Agent reasoning)
 Agent follows `prompts/effect.py`:
 - Dimension 7: Overall architecture (12 pts)
 - Dimension 8: Performance (23 pts) — run test prompts, compare with/without strategy
 - Dry run detection: if >30% of evaluations are dry runs, flag warning
+- Copy each matching `strategy_sha256` exactly from `validation_report.json` into the evaluation result. Do not evaluate different or edited content under an old digest.
 
 Output: `evaluation.json`
 
@@ -71,6 +72,7 @@ examlex commit --artifacts-dir <path> --library strategy-library.json
 - Ratchet check: score must improve or baseline
 - Atomic write with auto-backup (.bak)
 - Stores SHA-256 evidence for the exact validation and evaluation reports used for approval.
+- Requires the validation and evaluation `strategy_sha256` values to match the current distilled strategy content.
 - Commit requires passing format and structure validation plus an evaluation result for every strategy.
 - Strategies below 70 are rejected and remain drafts; only approved strategies are eligible for learner plans.
 - Score < 70 → triggers hill-climb optimization (max 3 rounds)
@@ -98,7 +100,7 @@ Each strategy entry in `strategy-library.json` carries full provenance:
   "darwin_score": 80.0,
   "score_history": [{"version": 1, "score": 80.0, "status": "baseline"}],
   "revisions": [{"version": 1, "sha256": "...", "strategy": {"strategy_id": "cet4-reading-ab12cd-001"}}],
-  "approval_evidence": {"validation_sha256": "...", "evaluation_sha256": "...", "approved_at": "2026-07-10T00:00:00+00:00"},
+  "approval_evidence": {"strategy_sha256": "...", "validation_sha256": "...", "evaluation_sha256": "...", "approved_at": "2026-07-10T00:00:00+00:00"},
   "related_strategies": [{"strategy_id": "...", "relation": "complements"}],
   "ria_structure": {"r_reading": "...", "e_execution": ["1.", "2."], "b_boundary": "..."}
 }

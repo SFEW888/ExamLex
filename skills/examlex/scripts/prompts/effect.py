@@ -50,6 +50,7 @@ Write to {artifacts_dir}/evaluation.json with structure:
   "strategies": [
     {{
       "strategy_id": "...",
+      "strategy_sha256": "copy the exact digest from validation_report.json",
       "dim7_architecture": {{"score": 8, "notes": "..."}},
       "dim8_performance": {{"score": 7, "test_results": [...], "eval_mode": "full_test|dry_run"}},
       "effect_total": 22.0
@@ -72,9 +73,13 @@ Write to {artifacts_dir}/evaluation.json with structure:
                     "type": "array",
                     "items": {
                         "type": "object",
-                        "required": ["strategy_id", "dim7_architecture", "dim8_performance", "effect_total"],
+                        "required": ["strategy_id", "strategy_sha256", "dim7_architecture", "dim8_performance", "effect_total"],
                         "properties": {
                             "strategy_id": {"type": "string"},
+                            "strategy_sha256": {
+                                "type": "string",
+                                "pattern": "^[a-f0-9]{64}$",
+                            },
                             "dim7_architecture": {"type": "object"},
                             "dim8_performance": {"type": "object"},
                             "effect_total": {"type": "number"},
