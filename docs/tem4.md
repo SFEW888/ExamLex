@@ -48,6 +48,6 @@ examlex check tem4-learner-profile.json
 # Generate a TEM-4 daily plan
 examlex plan tem4-learner-profile.json `
   --ability tem4-ability-profile.json `
-  --vocab-pool skills/examlex/assets/data/vocabulary/tem4-core-2000.json `
+  --vocab-pool skills/examlex/assets/data/vocabulary/tem4-core-100.json `
   --output daily-plan.json
 ```

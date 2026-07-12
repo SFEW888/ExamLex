@@ -1,0 +1,2110 @@
+[
+  {
+    "word": "abate",
+    "phonetic": "/əˈbeɪt/",
+    "pos": "v.",
+    "meaning_cn": "减弱；减轻",
+    "frequency_rank": 1,
+    "example": "The storm abated by morning.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abate pollution",
+      "the rain abated"
+    ],
+    "synonyms": [
+      "subside",
+      "diminish",
+      "decrease"
+    ],
+    "confusable_words": [
+      "intensify"
+    ]
+  },
+  {
+    "word": "aberration",
+    "phonetic": "/ˌæbəˈreɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "异常；偏差",
+    "frequency_rank": 2,
+    "example": "The incident was considered an aberration.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "statistical aberration",
+      "temporary aberration"
+    ],
+    "synonyms": [
+      "anomaly",
+      "deviation",
+      "irregularity"
+    ],
+    "confusable_words": [
+      "norm"
+    ]
+  },
+  {
+    "word": "abject",
+    "phonetic": "/ˈæbdʒekt/",
+    "pos": "adj.",
+    "meaning_cn": "悲惨的；卑下的",
+    "frequency_rank": 3,
+    "example": "They lived in abject poverty.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abject poverty",
+      "abject failure",
+      "abject misery"
+    ],
+    "synonyms": [
+      "wretched",
+      "miserable",
+      "hopeless"
+    ],
+    "confusable_words": [
+      "prosperous"
+    ]
+  },
+  {
+    "word": "abnegation",
+    "phonetic": "/ˌæbnɪˈɡeɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "放弃；自我克制",
+    "frequency_rank": 4,
+    "example": "Monastic life requires self-abnegation.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "self-abnegation",
+      "abnegation of responsibility"
+    ],
+    "synonyms": [
+      "renunciation",
+      "self-denial",
+      "sacrifice"
+    ],
+    "confusable_words": [
+      "indulgence"
+    ]
+  },
+  {
+    "word": "abominate",
+    "phonetic": "/əˈbɒmɪneɪt/",
+    "pos": "v.",
+    "meaning_cn": "痛恨；憎恶",
+    "frequency_rank": 5,
+    "example": "She abominates cruelty to animals.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abominate violence",
+      "utterly abominate"
+    ],
+    "synonyms": [
+      "detest",
+      "loathe",
+      "hate"
+    ],
+    "confusable_words": [
+      "adore",
+      "love"
+    ]
+  },
+  {
+    "word": "abrogate",
+    "phonetic": "/ˈæbrəɡeɪt/",
+    "pos": "v.",
+    "meaning_cn": "废除；取消",
+    "frequency_rank": 6,
+    "example": "The government abrogated the treaty.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abrogate a law",
+      "abrogate an agreement"
+    ],
+    "synonyms": [
+      "abolish",
+      "annul",
+      "repeal"
+    ],
+    "confusable_words": [
+      "ratify",
+      "uphold"
+    ]
+  },
+  {
+    "word": "abstemious",
+    "phonetic": "/əbˈstiːmiəs/",
+    "pos": "adj.",
+    "meaning_cn": "有节制的；饮食有度的",
+    "frequency_rank": 7,
+    "example": "He led an abstemious life.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "abstemious lifestyle",
+      "abstemious diet"
+    ],
+    "synonyms": [
+      "moderate",
+      "temperate",
+      "restrained"
+    ],
+    "confusable_words": [
+      "indulgent"
+    ]
+  },
+  {
+    "word": "acarpous",
+    "phonetic": "/eɪˈkɑːpəs/",
+    "pos": "adj.",
+    "meaning_cn": "不结果的",
+    "frequency_rank": 8,
+    "example": "The acarpous tree provided only shade.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "acarpous plant"
+    ],
+    "synonyms": [
+      "sterile",
+      "barren",
+      "unfruitful"
+    ],
+    "confusable_words": [
+      "fruitful",
+      "fertile"
+    ]
+  },
+  {
+    "word": "acerbic",
+    "phonetic": "/əˈsɜːbɪk/",
+    "pos": "adj.",
+    "meaning_cn": "尖刻的；酸的",
+    "frequency_rank": 9,
+    "example": "His acerbic wit offended some guests.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "acerbic comment",
+      "acerbic tone"
+    ],
+    "synonyms": [
+      "sharp",
+      "biting",
+      "caustic"
+    ],
+    "confusable_words": [
+      "mild",
+      "gentle"
+    ]
+  },
+  {
+    "word": "acquiescent",
+    "phonetic": "/ˌækwiˈesnt/",
+    "pos": "adj.",
+    "meaning_cn": "默许的；顺从的",
+    "frequency_rank": 10,
+    "example": "The acquiescent workers accepted the pay cut.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "acquiescent attitude",
+      "acquiescent silence"
+    ],
+    "synonyms": [
+      "compliant",
+      "submissive",
+      "resigned"
+    ],
+    "confusable_words": [
+      "resistant"
+    ]
+  },
+  {
+    "word": "adumbrate",
+    "phonetic": "/ˈædʌmbreɪt/",
+    "pos": "v.",
+    "meaning_cn": "预示；概述",
+    "frequency_rank": 11,
+    "example": "The report adumbrates future policy changes.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "adumbrate a plan",
+      "adumbrate the future"
+    ],
+    "synonyms": [
+      "foreshadow",
+      "outline",
+      "sketch"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aegis",
+    "phonetic": "/ˈiːdʒɪs/",
+    "pos": "n.",
+    "meaning_cn": "庇护；支持",
+    "frequency_rank": 12,
+    "example": "The program operates under the aegis of the UN.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "under the aegis of",
+      "under the aegis"
+    ],
+    "synonyms": [
+      "protection",
+      "auspices",
+      "sponsorship"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "afflatus",
+    "phonetic": "/əˈfleɪtəs/",
+    "pos": "n.",
+    "meaning_cn": "灵感；神感",
+    "frequency_rank": 13,
+    "example": "The poet claimed divine afflatus.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "creative afflatus",
+      "poetic afflatus"
+    ],
+    "synonyms": [
+      "inspiration",
+      "muse",
+      "revelation"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "aggrandize",
+    "phonetic": "/əˈɡrændaɪz/",
+    "pos": "v.",
+    "meaning_cn": "扩大；增强",
+    "frequency_rank": 14,
+    "example": "He used the position to aggrandize himself.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "self-aggrandizing",
+      "aggrandize power"
+    ],
+    "synonyms": [
+      "enlarge",
+      "magnify",
+      "exalt"
+    ],
+    "confusable_words": [
+      "diminish"
+    ]
+  },
+  {
+    "word": "alacritous",
+    "phonetic": "/əˈlækrɪtəs/",
+    "pos": "adj.",
+    "meaning_cn": "乐意的；敏捷的",
+    "frequency_rank": 15,
+    "example": "The team responded with alacritous enthusiasm.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "alacritous response",
+      "alacritous manner"
+    ],
+    "synonyms": [
+      "eager",
+      "willing",
+      "prompt"
+    ],
+    "confusable_words": [
+      "reluctant",
+      "slow"
+    ]
+  },
+  {
+    "word": "amalgamate",
+    "phonetic": "/əˈmælɡəmeɪt/",
+    "pos": "v.",
+    "meaning_cn": "合并；混合",
+    "frequency_rank": 16,
+    "example": "The two companies amalgamated last year.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "amalgamate into",
+      "amalgamate with"
+    ],
+    "synonyms": [
+      "merge",
+      "combine",
+      "unite"
+    ],
+    "confusable_words": [
+      "separate",
+      "split"
+    ]
+  },
+  {
+    "word": "anathema",
+    "phonetic": "/əˈnæθəmə/",
+    "pos": "n.",
+    "meaning_cn": "诅咒；令人厌恶的事物",
+    "frequency_rank": 17,
+    "example": "Racism is anathema to a civilized society.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "anathema to",
+      "declare anathema"
+    ],
+    "synonyms": [
+      "curse",
+      "abomination",
+      "taboo"
+    ],
+    "confusable_words": [
+      "blessing"
+    ]
+  },
+  {
+    "word": "antediluvian",
+    "phonetic": "/ˌæntidɪˈluːviən/",
+    "pos": "adj.",
+    "meaning_cn": "古老的；过时的",
+    "frequency_rank": 18,
+    "example": "The office uses antediluvian computer systems.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "antediluvian methods",
+      "antediluvian attitudes"
+    ],
+    "synonyms": [
+      "ancient",
+      "outdated",
+      "prehistoric"
+    ],
+    "confusable_words": [
+      "modern"
+    ]
+  },
+  {
+    "word": "aplomb",
+    "phonetic": "/əˈplɒm/",
+    "pos": "n.",
+    "meaning_cn": "沉着；自信",
+    "frequency_rank": 19,
+    "example": "She handled the crisis with remarkable aplomb.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "with aplomb",
+      "great aplomb"
+    ],
+    "synonyms": [
+      "poise",
+      "composure",
+      "confidence"
+    ],
+    "confusable_words": [
+      "anxiety",
+      "nervousness"
+    ]
+  },
+  {
+    "word": "apocryphal",
+    "phonetic": "/əˈpɒkrɪfl/",
+    "pos": "adj.",
+    "meaning_cn": "不足凭信的；伪造的",
+    "frequency_rank": 20,
+    "example": "The story is probably apocryphal.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "apocryphal story",
+      "apocryphal account"
+    ],
+    "synonyms": [
+      "doubtful",
+      "unverified",
+      "fictitious"
+    ],
+    "confusable_words": [
+      "authentic",
+      "verified"
+    ]
+  },
+  {
+    "word": "approbation",
+    "phonetic": "/ˌæprəˈbeɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "认可；赞许",
+    "frequency_rank": 21,
+    "example": "The policy received widespread approbation.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "public approbation",
+      "receive approbation"
+    ],
+    "synonyms": [
+      "approval",
+      "praise",
+      "endorsement"
+    ],
+    "confusable_words": [
+      "disapproval"
+    ]
+  },
+  {
+    "word": "arrogate",
+    "phonetic": "/ˈærəɡeɪt/",
+    "pos": "v.",
+    "meaning_cn": "霸占；僭取",
+    "frequency_rank": 22,
+    "example": "He arrogated powers to himself.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "arrogate to oneself",
+      "arrogate power"
+    ],
+    "synonyms": [
+      "seize",
+      "usurp",
+      "claim"
+    ],
+    "confusable_words": [
+      "renounce"
+    ]
+  },
+  {
+    "word": "asperity",
+    "phonetic": "/æˈsperəti/",
+    "pos": "n.",
+    "meaning_cn": "严厉；粗暴；粗糙",
+    "frequency_rank": 23,
+    "example": "She spoke with asperity about the failure.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "with asperity",
+      "asperity of tone"
+    ],
+    "synonyms": [
+      "harshness",
+      "severity",
+      "roughness"
+    ],
+    "confusable_words": [
+      "mildness"
+    ]
+  },
+  {
+    "word": "assiduous",
+    "phonetic": "/əˈsɪdjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "勤奋的；刻苦的",
+    "frequency_rank": 24,
+    "example": "She was assiduous in her studies.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "assiduous work",
+      "assiduous attention"
+    ],
+    "synonyms": [
+      "diligent",
+      "hardworking",
+      "meticulous"
+    ],
+    "confusable_words": [
+      "lazy",
+      "negligent"
+    ]
+  },
+  {
+    "word": "attenuate",
+    "phonetic": "/əˈtenjueɪt/",
+    "pos": "v.",
+    "meaning_cn": "减弱；稀释",
+    "frequency_rank": 25,
+    "example": "The drug's effects were attenuated over time.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "attenuate the signal",
+      "attenuated virus"
+    ],
+    "synonyms": [
+      "weaken",
+      "reduce",
+      "diminish"
+    ],
+    "confusable_words": [
+      "strengthen"
+    ]
+  },
+  {
+    "word": "augury",
+    "phonetic": "/ˈɔːɡjʊri/",
+    "pos": "n.",
+    "meaning_cn": "预兆；征兆",
+    "frequency_rank": 26,
+    "example": "The early results were a good augury.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "good augury",
+      "augury of success"
+    ],
+    "synonyms": [
+      "omen",
+      "sign",
+      "portent"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "auspicate",
+    "phonetic": "/ˈɔːspɪkeɪt/",
+    "pos": "v.",
+    "meaning_cn": "预示；预言",
+    "frequency_rank": 27,
+    "example": "The ceremony auspicates a new era.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "auspicate well",
+      "auspicate the future"
+    ],
+    "synonyms": [
+      "foretell",
+      "predict",
+      "augur"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "bellicose",
+    "phonetic": "/ˈbelɪkəʊs/",
+    "pos": "adj.",
+    "meaning_cn": "好战的；好斗的",
+    "frequency_rank": 28,
+    "example": "The bellicose rhetoric alarmed diplomats.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "bellicose nation",
+      "bellicose statements"
+    ],
+    "synonyms": [
+      "aggressive",
+      "warlike",
+      "belligerent"
+    ],
+    "confusable_words": [
+      "peaceful"
+    ]
+  },
+  {
+    "word": "bifurcate",
+    "phonetic": "/ˈbaɪfəkeɪt/",
+    "pos": "v.",
+    "meaning_cn": "分叉；分成两支",
+    "frequency_rank": 29,
+    "example": "The road bifurcates at the old oak tree.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "bifurcate into",
+      "bifurcated structure"
+    ],
+    "synonyms": [
+      "fork",
+      "split",
+      "divide"
+    ],
+    "confusable_words": [
+      "merge"
+    ]
+  },
+  {
+    "word": "blandishment",
+    "phonetic": "/ˈblændɪʃmənt/",
+    "pos": "n.",
+    "meaning_cn": "奉承；哄劝",
+    "frequency_rank": 30,
+    "example": "She resisted all his blandishments.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "resort to blandishments",
+      "resist blandishments"
+    ],
+    "synonyms": [
+      "flattery",
+      "cajolery",
+      "persuasion"
+    ],
+    "confusable_words": [
+      "criticism"
+    ]
+  },
+  {
+    "word": "cachinnate",
+    "phonetic": "/ˈkækɪneɪt/",
+    "pos": "v.",
+    "meaning_cn": "大笑；狂笑",
+    "frequency_rank": 31,
+    "example": "The audience cachinnated at the comedian's jokes.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "cachinnate loudly"
+    ],
+    "synonyms": [
+      "laugh",
+      "guffaw",
+      "roar"
+    ],
+    "confusable_words": [
+      "weep"
+    ]
+  },
+  {
+    "word": "calumniate",
+    "phonetic": "/kəˈlʌmnieɪt/",
+    "pos": "v.",
+    "meaning_cn": "诽谤；中伤",
+    "frequency_rank": 32,
+    "example": "They calumniated his character in the press.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "calumniate publicly",
+      "calumniate a rival"
+    ],
+    "synonyms": [
+      "slander",
+      "defame",
+      "libel"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "captious",
+    "phonetic": "/ˈkæpʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "吹毛求疵的；挑剔的",
+    "frequency_rank": 33,
+    "example": "The critic was captious and difficult to please.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "captious critic",
+      "captious objection"
+    ],
+    "synonyms": [
+      "fault-finding",
+      "carping",
+      "critical"
+    ],
+    "confusable_words": [
+      "uncritical"
+    ]
+  },
+  {
+    "word": "cavil",
+    "phonetic": "/ˈkævɪl/",
+    "pos": "v./n.",
+    "meaning_cn": "挑剔；吹毛求疵",
+    "frequency_rank": 34,
+    "example": "He caviled at every detail of the proposal.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "cavil at",
+      "cavil about"
+    ],
+    "synonyms": [
+      "quibble",
+      "nitpick",
+      "complain"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "chimerical",
+    "phonetic": "/kaɪˈmerɪkl/",
+    "pos": "adj.",
+    "meaning_cn": "幻想的；空想的",
+    "frequency_rank": 35,
+    "example": "His plans were dismissed as chimerical.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "chimerical scheme",
+      "chimerical dream"
+    ],
+    "synonyms": [
+      "unrealistic",
+      "fanciful",
+      "delusional"
+    ],
+    "confusable_words": [
+      "realistic"
+    ]
+  },
+  {
+    "word": "circumlocution",
+    "phonetic": "/ˌsɜːkəmləˈkjuːʃn/",
+    "pos": "n.",
+    "meaning_cn": "迂回说法；婉转",
+    "frequency_rank": 36,
+    "example": "His speech was full of circumlocution.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "use circumlocution",
+      "avoid circumlocution"
+    ],
+    "synonyms": [
+      "verbosity",
+      "periphrasis",
+      "wordiness"
+    ],
+    "confusable_words": [
+      "directness"
+    ]
+  },
+  {
+    "word": "commensurate",
+    "phonetic": "/kəˈmenʃərət/",
+    "pos": "adj.",
+    "meaning_cn": "相称的；相当的",
+    "frequency_rank": 37,
+    "example": "The salary is commensurate with experience.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "commensurate with",
+      "commensurate rewards"
+    ],
+    "synonyms": [
+      "proportional",
+      "corresponding",
+      "equivalent"
+    ],
+    "confusable_words": [
+      "disproportionate"
+    ]
+  },
+  {
+    "word": "compendious",
+    "phonetic": "/kəmˈpendiəs/",
+    "pos": "adj.",
+    "meaning_cn": "简洁的；扼要的",
+    "frequency_rank": 38,
+    "example": "She wrote a compendious guide to grammar.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "compendious volume",
+      "compendious account"
+    ],
+    "synonyms": [
+      "concise",
+      "succinct",
+      "compact"
+    ],
+    "confusable_words": [
+      "lengthy"
+    ]
+  },
+  {
+    "word": "concupiscent",
+    "phonetic": "/kɒnˈkjuːpɪsnt/",
+    "pos": "adj.",
+    "meaning_cn": "欲望强烈的",
+    "frequency_rank": 39,
+    "example": "The novel explores concupiscent desire.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "concupiscent nature"
+    ],
+    "synonyms": [
+      "lustful",
+      "desirous",
+      "passionate"
+    ],
+    "confusable_words": [
+      "indifferent"
+    ]
+  },
+  {
+    "word": "contumacious",
+    "phonetic": "/ˌkɒntjuˈmeɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "拒不服从的；顽固的",
+    "frequency_rank": 40,
+    "example": "The contumacious witness was held in contempt.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "contumacious behavior",
+      "contumacious refusal"
+    ],
+    "synonyms": [
+      "defiant",
+      "rebellious",
+      "stubborn"
+    ],
+    "confusable_words": [
+      "obedient"
+    ]
+  },
+  {
+    "word": "coruscate",
+    "phonetic": "/ˈkɒrəskeɪt/",
+    "pos": "v.",
+    "meaning_cn": "闪耀；闪烁",
+    "frequency_rank": 41,
+    "example": "The diamond coruscated in the sunlight.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "coruscate with light",
+      "coruscating wit"
+    ],
+    "synonyms": [
+      "sparkle",
+      "glitter",
+      "flash"
+    ],
+    "confusable_words": [
+      "dull"
+    ]
+  },
+  {
+    "word": "cynosure",
+    "phonetic": "/ˈsaɪnəzjʊə/",
+    "pos": "n.",
+    "meaning_cn": "众人瞩目的焦点",
+    "frequency_rank": 42,
+    "example": "The bride was the cynosure of all eyes.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "cynosure of attention",
+      "cynosure of the event"
+    ],
+    "synonyms": [
+      "center",
+      "focus",
+      "star"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "deleterious",
+    "phonetic": "/ˌdeləˈtɪəriəs/",
+    "pos": "adj.",
+    "meaning_cn": "有害的；有毒的",
+    "frequency_rank": 43,
+    "example": "The additive has deleterious health effects.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "deleterious effect",
+      "deleterious to health"
+    ],
+    "synonyms": [
+      "harmful",
+      "damaging",
+      "detrimental"
+    ],
+    "confusable_words": [
+      "beneficial"
+    ]
+  },
+  {
+    "word": "demagogue",
+    "phonetic": "/ˈdeməɡɒɡ/",
+    "pos": "n.",
+    "meaning_cn": "煽动者；蛊惑民心的政客",
+    "frequency_rank": 44,
+    "example": "The senator was accused of being a demagogue.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "political demagogue",
+      "dangerous demagogue"
+    ],
+    "synonyms": [
+      "agitator",
+      "rabble-rouser",
+      "firebrand"
+    ],
+    "confusable_words": [
+      "statesman"
+    ]
+  },
+  {
+    "word": "denouement",
+    "phonetic": "/deɪˈnuːmɒ̃/",
+    "pos": "n.",
+    "meaning_cn": "结局；收场",
+    "frequency_rank": 45,
+    "example": "The novel's denouement was satisfying.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "dramatic denouement",
+      "final denouement"
+    ],
+    "synonyms": [
+      "conclusion",
+      "resolution",
+      "outcome"
+    ],
+    "confusable_words": [
+      "beginning"
+    ]
+  },
+  {
+    "word": "desideratum",
+    "phonetic": "/dɪˌzɪdəˈrɑːtəm/",
+    "pos": "n.",
+    "meaning_cn": "迫切需要的事物",
+    "frequency_rank": 46,
+    "example": "World peace remains a desideratum.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "major desideratum",
+      "political desideratum"
+    ],
+    "synonyms": [
+      "necessity",
+      "requirement",
+      "essential"
+    ],
+    "confusable_words": [
+      "luxury"
+    ]
+  },
+  {
+    "word": "desuetude",
+    "phonetic": "/ˈdeswɪtjuːd/",
+    "pos": "n.",
+    "meaning_cn": "废弃；废止",
+    "frequency_rank": 47,
+    "example": "The custom fell into desuetude long ago.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "fall into desuetude",
+      "in desuetude"
+    ],
+    "synonyms": [
+      "disuse",
+      "obsolescence",
+      "neglect"
+    ],
+    "confusable_words": [
+      "use"
+    ]
+  },
+  {
+    "word": "disquisition",
+    "phonetic": "/ˌdɪskwɪˈzɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "长篇论述；专题论文",
+    "frequency_rank": 48,
+    "example": "The book is a disquisition on justice.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "lengthy disquisition",
+      "disquisition on"
+    ],
+    "synonyms": [
+      "dissertation",
+      "treatise",
+      "discourse"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "draconian",
+    "phonetic": "/drəˈkəʊniən/",
+    "pos": "adj.",
+    "meaning_cn": "严厉的；严酷的",
+    "frequency_rank": 49,
+    "example": "The government imposed draconian measures.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "draconian law",
+      "draconian punishment"
+    ],
+    "synonyms": [
+      "harsh",
+      "severe",
+      "strict"
+    ],
+    "confusable_words": [
+      "lenient",
+      "mild"
+    ]
+  },
+  {
+    "word": "eclat",
+    "phonetic": "/eɪˈklɑː/",
+    "pos": "n.",
+    "meaning_cn": "辉煌成就；喝彩",
+    "frequency_rank": 50,
+    "example": "She performed with great eclat.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "with eclat",
+      "great eclat"
+    ],
+    "synonyms": [
+      "brilliance",
+      "acclaim",
+      "splendor"
+    ],
+    "confusable_words": [
+      "dullness"
+    ]
+  },
+  {
+    "word": "effulgent",
+    "phonetic": "/ɪˈfʌldʒənt/",
+    "pos": "adj.",
+    "meaning_cn": "光辉的；灿烂的",
+    "frequency_rank": 51,
+    "example": "The effulgent sunrise painted the sky.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "effulgent light",
+      "effulgent beauty"
+    ],
+    "synonyms": [
+      "radiant",
+      "brilliant",
+      "shining"
+    ],
+    "confusable_words": [
+      "dull",
+      "dark"
+    ]
+  },
+  {
+    "word": "eidolon",
+    "phonetic": "/aɪˈdəʊlɒn/",
+    "pos": "n.",
+    "meaning_cn": "幻象；理想形象",
+    "frequency_rank": 52,
+    "example": "She pursued an eidolon of perfect beauty.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "chase an eidolon",
+      "eidolon of perfection"
+    ],
+    "synonyms": [
+      "phantom",
+      "ideal",
+      "apparition"
+    ],
+    "confusable_words": [
+      "reality"
+    ]
+  },
+  {
+    "word": "emollient",
+    "phonetic": "/ɪˈmɒliənt/",
+    "pos": "n./adj.",
+    "meaning_cn": "润肤剂；使柔软的",
+    "frequency_rank": 53,
+    "example": "The cream has emollient properties.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "emollient cream",
+      "emollient effect"
+    ],
+    "synonyms": [
+      "softening",
+      "soothing",
+      "moisturizing"
+    ],
+    "confusable_words": [
+      "irritant"
+    ]
+  },
+  {
+    "word": "epicene",
+    "phonetic": "/ˈepɪsiːn/",
+    "pos": "adj.",
+    "meaning_cn": "兼具两性特征的",
+    "frequency_rank": 54,
+    "example": "The fashion brand promotes an epicene style.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "epicene features",
+      "epicene fashion"
+    ],
+    "synonyms": [
+      "androgynous",
+      "gender-neutral",
+      "unisex"
+    ],
+    "confusable_words": [
+      "gendered"
+    ]
+  },
+  {
+    "word": "epigone",
+    "phonetic": "/ˈepɪɡəʊn/",
+    "pos": "n.",
+    "meaning_cn": "模仿者；追随者",
+    "frequency_rank": 55,
+    "example": "He was dismissed as a mere epigone.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "mere epigone",
+      "epigone of the master"
+    ],
+    "synonyms": [
+      "imitator",
+      "follower",
+      "copycat"
+    ],
+    "confusable_words": [
+      "original",
+      "innovator"
+    ]
+  },
+  {
+    "word": "eristic",
+    "phonetic": "/eˈrɪstɪk/",
+    "pos": "adj.",
+    "meaning_cn": "争论的；好辩的",
+    "frequency_rank": 56,
+    "example": "His eristic nature made meetings difficult.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "eristic argument",
+      "eristic personality"
+    ],
+    "synonyms": [
+      "argumentative",
+      "contentious",
+      "disputatious"
+    ],
+    "confusable_words": [
+      "agreeable"
+    ]
+  },
+  {
+    "word": "excoriation",
+    "phonetic": "/ɪkˌskɔːriˈeɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "严厉批评；擦伤",
+    "frequency_rank": 57,
+    "example": "The report was an excoriation of government policy.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "severe excoriation",
+      "public excoriation"
+    ],
+    "synonyms": [
+      "condemnation",
+      "denunciation",
+      "abrasion"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "execrable",
+    "phonetic": "/ˈeksɪkrəbl/",
+    "pos": "adj.",
+    "meaning_cn": "极坏的；可恶的",
+    "frequency_rank": 58,
+    "example": "The food at the cafeteria was execrable.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "execrable taste",
+      "execrable behavior"
+    ],
+    "synonyms": [
+      "terrible",
+      "awful",
+      "abominable"
+    ],
+    "confusable_words": [
+      "excellent"
+    ]
+  },
+  {
+    "word": "exegesis",
+    "phonetic": "/ˌeksɪˈdʒiːsɪs/",
+    "pos": "n.",
+    "meaning_cn": "注释；诠释",
+    "frequency_rank": 59,
+    "example": "Theologians offered an exegesis of the text.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "biblical exegesis",
+      "detailed exegesis"
+    ],
+    "synonyms": [
+      "interpretation",
+      "explanation",
+      "analysis"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "exiguous",
+    "phonetic": "/eɡˈzɪɡjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "稀少的；微小的",
+    "frequency_rank": 60,
+    "example": "They survived on exiguous rations.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "exiguous resources",
+      "exiguous income"
+    ],
+    "synonyms": [
+      "meager",
+      "scant",
+      "sparse"
+    ],
+    "confusable_words": [
+      "abundant"
+    ]
+  },
+  {
+    "word": "factitious",
+    "phonetic": "/fækˈtɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "人为的；不自然的",
+    "frequency_rank": 61,
+    "example": "The excitement seemed factitious and forced.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "factitious enthusiasm",
+      "factitious demand"
+    ],
+    "synonyms": [
+      "artificial",
+      "fake",
+      "contrived"
+    ],
+    "confusable_words": [
+      "genuine",
+      "natural"
+    ]
+  },
+  {
+    "word": "farrago",
+    "phonetic": "/fəˈrɑːɡəʊ/",
+    "pos": "n.",
+    "meaning_cn": "大杂烩；混杂物",
+    "frequency_rank": 62,
+    "example": "The essay was a farrago of unrelated ideas.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "farrago of nonsense",
+      "farrago of ideas"
+    ],
+    "synonyms": [
+      "mixture",
+      "jumble",
+      "medley"
+    ],
+    "confusable_words": [
+      "order"
+    ]
+  },
+  {
+    "word": "fatuous",
+    "phonetic": "/ˈfætʃuəs/",
+    "pos": "adj.",
+    "meaning_cn": "愚蠢的；昏庸的",
+    "frequency_rank": 63,
+    "example": "He made a fatuous remark about the crisis.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "fatuous comment",
+      "fatuous smile"
+    ],
+    "synonyms": [
+      "foolish",
+      "silly",
+      "stupid"
+    ],
+    "confusable_words": [
+      "wise",
+      "intelligent"
+    ]
+  },
+  {
+    "word": "flagitious",
+    "phonetic": "/fləˈdʒɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "罪大恶极的",
+    "frequency_rank": 64,
+    "example": "The dictator committed flagitious crimes.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "flagitious act",
+      "flagitious crime"
+    ],
+    "synonyms": [
+      "heinous",
+      "atrocious",
+      "wicked"
+    ],
+    "confusable_words": [
+      "virtuous"
+    ]
+  },
+  {
+    "word": "flippant",
+    "phonetic": "/ˈflɪpənt/",
+    "pos": "adj.",
+    "meaning_cn": "轻率的；无礼的",
+    "frequency_rank": 65,
+    "example": "His flippant response angered the interviewer.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "flippant remark",
+      "flippant attitude"
+    ],
+    "synonyms": [
+      "disrespectful",
+      "casual",
+      "glib"
+    ],
+    "confusable_words": [
+      "serious",
+      "respectful"
+    ]
+  },
+  {
+    "word": "fractious",
+    "phonetic": "/ˈfrækʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "易怒的；捣乱的",
+    "frequency_rank": 66,
+    "example": "The fractious child refused to sit still.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "fractious behavior",
+      "fractious debate"
+    ],
+    "synonyms": [
+      "irritable",
+      "unruly",
+      "difficult"
+    ],
+    "confusable_words": [
+      "calm",
+      "cooperative"
+    ]
+  },
+  {
+    "word": "fulminate",
+    "phonetic": "/ˈfʊlmɪneɪt/",
+    "pos": "v.",
+    "meaning_cn": "怒斥；强烈谴责",
+    "frequency_rank": 67,
+    "example": "He fulminated against the injustice.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "fulminate against",
+      "fulminate about"
+    ],
+    "synonyms": [
+      "denounce",
+      "condemn",
+      "rage"
+    ],
+    "confusable_words": [
+      "praise"
+    ]
+  },
+  {
+    "word": "gainsay",
+    "phonetic": "/ɡeɪnˈseɪ/",
+    "pos": "v.",
+    "meaning_cn": "否认；反驳",
+    "frequency_rank": 68,
+    "example": "No one can gainsay the importance of education.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "difficult to gainsay",
+      "cannot gainsay"
+    ],
+    "synonyms": [
+      "deny",
+      "contradict",
+      "dispute"
+    ],
+    "confusable_words": [
+      "confirm",
+      "agree"
+    ]
+  },
+  {
+    "word": "gasconade",
+    "phonetic": "/ˌɡæskəˈneɪd/",
+    "pos": "n./v.",
+    "meaning_cn": "夸口；吹牛",
+    "frequency_rank": 69,
+    "example": "His stories were dismissed as gasconade.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "mere gasconade",
+      "indulge in gasconade"
+    ],
+    "synonyms": [
+      "boasting",
+      "bragging",
+      "exaggeration"
+    ],
+    "confusable_words": [
+      "humility"
+    ]
+  },
+  {
+    "word": "grandiloquent",
+    "phonetic": "/ɡrænˈdɪləkwənt/",
+    "pos": "adj.",
+    "meaning_cn": "夸大的；大言不惭的",
+    "frequency_rank": 70,
+    "example": "The politician's grandiloquent speech fell flat.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "grandiloquent language",
+      "grandiloquent style"
+    ],
+    "synonyms": [
+      "pompous",
+      "bombastic",
+      "pretentious"
+    ],
+    "confusable_words": [
+      "humble",
+      "simple"
+    ]
+  },
+  {
+    "word": "hebdomadal",
+    "phonetic": "/hebˈdɒmədl/",
+    "pos": "adj.",
+    "meaning_cn": "每周的",
+    "frequency_rank": 71,
+    "example": "The hebdomadal meeting was held on Monday.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "hebdomadal publication",
+      "hebdomadal routine"
+    ],
+    "synonyms": [
+      "weekly"
+    ],
+    "confusable_words": [
+      "daily",
+      "monthly"
+    ]
+  },
+  {
+    "word": "hegemony",
+    "phonetic": "/hɪˈdʒeməni/",
+    "pos": "n.",
+    "meaning_cn": "霸权；领导权",
+    "frequency_rank": 72,
+    "example": "The country sought cultural hegemony.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "cultural hegemony",
+      "economic hegemony"
+    ],
+    "synonyms": [
+      "dominance",
+      "supremacy",
+      "leadership"
+    ],
+    "confusable_words": [
+      "subordination"
+    ]
+  },
+  {
+    "word": "hermeneutics",
+    "phonetic": "/ˌhɜːməˈnjuːtɪks/",
+    "pos": "n.",
+    "meaning_cn": "诠释学；释经学",
+    "frequency_rank": 73,
+    "example": "Hermeneutics is central to biblical studies.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "biblical hermeneutics",
+      "philosophical hermeneutics"
+    ],
+    "synonyms": [
+      "interpretation",
+      "exegesis",
+      "analysis"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "hirsute",
+    "phonetic": "/ˈhɜːsjuːt/",
+    "pos": "adj.",
+    "meaning_cn": "多毛的；毛发蓬乱的",
+    "frequency_rank": 74,
+    "example": "He had a hirsute chest and beard.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "hirsute appearance",
+      "hirsute individual"
+    ],
+    "synonyms": [
+      "hairy",
+      "shaggy",
+      "bushy"
+    ],
+    "confusable_words": [
+      "bald",
+      "hairless"
+    ]
+  },
+  {
+    "word": "idoneous",
+    "phonetic": "/aɪˈdəʊniəs/",
+    "pos": "adj.",
+    "meaning_cn": "适合的；适当的",
+    "frequency_rank": 75,
+    "example": "They sought an idoneous candidate.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "idoneous for the role"
+    ],
+    "synonyms": [
+      "suitable",
+      "appropriate",
+      "fit"
+    ],
+    "confusable_words": [
+      "unsuitable"
+    ]
+  },
+  {
+    "word": "ignominious",
+    "phonetic": "/ˌɪɡnəˈmɪniəs/",
+    "pos": "adj.",
+    "meaning_cn": "可耻的；不光彩的",
+    "frequency_rank": 76,
+    "example": "The army suffered an ignominious defeat.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "ignominious defeat",
+      "ignominious retreat"
+    ],
+    "synonyms": [
+      "shameful",
+      "disgraceful",
+      "humiliating"
+    ],
+    "confusable_words": [
+      "glorious"
+    ]
+  },
+  {
+    "word": "imbroglio",
+    "phonetic": "/ɪmˈbrəʊliəʊ/",
+    "pos": "n.",
+    "meaning_cn": "混乱局面；纠葛",
+    "frequency_rank": 77,
+    "example": "The scandal became a political imbroglio.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "political imbroglio",
+      "financial imbroglio"
+    ],
+    "synonyms": [
+      "confusion",
+      "entanglement",
+      "mess"
+    ],
+    "confusable_words": [
+      "order"
+    ]
+  },
+  {
+    "word": "inchoate",
+    "phonetic": "/ɪnˈkəʊət/",
+    "pos": "adj.",
+    "meaning_cn": "刚开始的；未形成的",
+    "frequency_rank": 78,
+    "example": "The plan is still inchoate and needs work.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "inchoate idea",
+      "inchoate stage"
+    ],
+    "synonyms": [
+      "undeveloped",
+      "embryonic",
+      "nascent"
+    ],
+    "confusable_words": [
+      "mature",
+      "developed"
+    ]
+  },
+  {
+    "word": "insouciant",
+    "phonetic": "/ɪnˈsuːsiənt/",
+    "pos": "adj.",
+    "meaning_cn": "无忧无虑的；漫不经心的",
+    "frequency_rank": 79,
+    "example": "He had an insouciant attitude to money.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "insouciant charm",
+      "insouciant manner"
+    ],
+    "synonyms": [
+      "carefree",
+      "nonchalant",
+      "casual"
+    ],
+    "confusable_words": [
+      "worried",
+      "anxious"
+    ]
+  },
+  {
+    "word": "internecine",
+    "phonetic": "/ˌɪntəˈniːsaɪn/",
+    "pos": "adj.",
+    "meaning_cn": "内讧的；两败俱伤的",
+    "frequency_rank": 80,
+    "example": "The party was torn apart by internecine conflict.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "internecine strife",
+      "internecine warfare"
+    ],
+    "synonyms": [
+      "internal",
+      "destructive",
+      "mutual"
+    ],
+    "confusable_words": [
+      "cooperative"
+    ]
+  },
+  {
+    "word": "inveigle",
+    "phonetic": "/ɪnˈveɪɡl/",
+    "pos": "v.",
+    "meaning_cn": "诱骗；哄骗",
+    "frequency_rank": 81,
+    "example": "He inveigled his way into the meeting.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "inveigle into",
+      "inveigle someone into doing"
+    ],
+    "synonyms": [
+      "entice",
+      "lure",
+      "manipulate"
+    ],
+    "confusable_words": [
+      "repel"
+    ]
+  },
+  {
+    "word": "jejune",
+    "phonetic": "/dʒɪˈdʒuːn/",
+    "pos": "adj.",
+    "meaning_cn": "枯燥的；空洞的",
+    "frequency_rank": 82,
+    "example": "The lecture was jejune and uninspiring.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "jejune prose",
+      "jejune argument"
+    ],
+    "synonyms": [
+      "dull",
+      "boring",
+      "insipid"
+    ],
+    "confusable_words": [
+      "interesting",
+      "engaging"
+    ]
+  },
+  {
+    "word": "laconic",
+    "phonetic": "/ləˈkɒnɪk/",
+    "pos": "adj.",
+    "meaning_cn": "简洁的；简明的",
+    "frequency_rank": 83,
+    "example": "His laconic reply ended the discussion.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "laconic response",
+      "laconic style"
+    ],
+    "synonyms": [
+      "concise",
+      "terse",
+      "brief"
+    ],
+    "confusable_words": [
+      "verbose",
+      "wordy"
+    ]
+  },
+  {
+    "word": "lambent",
+    "phonetic": "/ˈlæmbənt/",
+    "pos": "adj.",
+    "meaning_cn": "柔和闪烁的；巧妙的",
+    "frequency_rank": 84,
+    "example": "Lambent flames flickered in the fireplace.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "lambent light",
+      "lambent wit"
+    ],
+    "synonyms": [
+      "flickering",
+      "glowing",
+      "gentle"
+    ],
+    "confusable_words": [
+      "harsh",
+      "glaring"
+    ]
+  },
+  {
+    "word": "lugubrious",
+    "phonetic": "/ləˈɡuːbriəs/",
+    "pos": "adj.",
+    "meaning_cn": "悲伤的；阴郁的",
+    "frequency_rank": 85,
+    "example": "He spoke in a lugubrious tone.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "lugubrious expression",
+      "lugubrious music"
+    ],
+    "synonyms": [
+      "mournful",
+      "gloomy",
+      "dismal"
+    ],
+    "confusable_words": [
+      "cheerful"
+    ]
+  },
+  {
+    "word": "magniloquent",
+    "phonetic": "/mæɡˈnɪləkwənt/",
+    "pos": "adj.",
+    "meaning_cn": "夸张的；夸大的",
+    "frequency_rank": 86,
+    "example": "The magniloquent speech drew laughter.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "magniloquent rhetoric",
+      "magniloquent style"
+    ],
+    "synonyms": [
+      "grandiose",
+      "pompous",
+      "bombastic"
+    ],
+    "confusable_words": [
+      "humble"
+    ]
+  },
+  {
+    "word": "mendacious",
+    "phonetic": "/menˈdeɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "说谎的；虚假的",
+    "frequency_rank": 87,
+    "example": "The report was full of mendacious claims.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "mendacious statement",
+      "mendacious politician"
+    ],
+    "synonyms": [
+      "lying",
+      "deceitful",
+      "false"
+    ],
+    "confusable_words": [
+      "truthful"
+    ]
+  },
+  {
+    "word": "meretricious",
+    "phonetic": "/ˌmerɪˈtrɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "华而不实的；俗丽的",
+    "frequency_rank": 88,
+    "example": "The decor was meretricious and tasteless.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "meretricious charm",
+      "meretricious display"
+    ],
+    "synonyms": [
+      "gaudy",
+      "flashy",
+      "tawdry"
+    ],
+    "confusable_words": [
+      "tasteful"
+    ]
+  },
+  {
+    "word": "mordant",
+    "phonetic": "/ˈmɔːdnt/",
+    "pos": "adj.",
+    "meaning_cn": "尖刻的；辛辣的",
+    "frequency_rank": 89,
+    "example": "His mordant wit offended some guests.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "mordant humor",
+      "mordant criticism"
+    ],
+    "synonyms": [
+      "caustic",
+      "biting",
+      "sarcastic"
+    ],
+    "confusable_words": [
+      "mild",
+      "gentle"
+    ]
+  },
+  {
+    "word": "nugatory",
+    "phonetic": "/ˈnjuːɡətəri/",
+    "pos": "adj.",
+    "meaning_cn": "无价值的；无效的",
+    "frequency_rank": 90,
+    "example": "The committee's recommendations were nugatory.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "nugatory effort",
+      "render nugatory"
+    ],
+    "synonyms": [
+      "worthless",
+      "futile",
+      "pointless"
+    ],
+    "confusable_words": [
+      "valuable"
+    ]
+  },
+  {
+    "word": "obfuscate",
+    "phonetic": "/ˈɒbfʌskeɪt/",
+    "pos": "v.",
+    "meaning_cn": "使模糊；使困惑",
+    "frequency_rank": 91,
+    "example": "The jargon obfuscated the real issues.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "obfuscate the truth",
+      "deliberately obfuscate"
+    ],
+    "synonyms": [
+      "confuse",
+      "obscure",
+      "cloud"
+    ],
+    "confusable_words": [
+      "clarify"
+    ]
+  },
+  {
+    "word": "obstreperous",
+    "phonetic": "/əbˈstrepərəs/",
+    "pos": "adj.",
+    "meaning_cn": "吵闹的；难管束的",
+    "frequency_rank": 92,
+    "example": "The obstreperous crowd refused to disperse.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "obstreperous behavior",
+      "obstreperous child"
+    ],
+    "synonyms": [
+      "noisy",
+      "unruly",
+      "boisterous"
+    ],
+    "confusable_words": [
+      "quiet",
+      "calm"
+    ]
+  },
+  {
+    "word": "opprobrious",
+    "phonetic": "/əˈprəʊbriəs/",
+    "pos": "adj.",
+    "meaning_cn": "辱骂的；可耻的",
+    "frequency_rank": 93,
+    "example": "He received opprobrious treatment in prison.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "opprobrious language",
+      "opprobrious conduct"
+    ],
+    "synonyms": [
+      "abusive",
+      "insulting",
+      "disgraceful"
+    ],
+    "confusable_words": [
+      "respectful"
+    ]
+  },
+  {
+    "word": "pellucid",
+    "phonetic": "/pəˈluːsɪd/",
+    "pos": "adj.",
+    "meaning_cn": "清澈的；明晰的",
+    "frequency_rank": 94,
+    "example": "The pellucid water revealed the lake bottom.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "pellucid prose",
+      "pellucid stream"
+    ],
+    "synonyms": [
+      "clear",
+      "transparent",
+      "limpid"
+    ],
+    "confusable_words": [
+      "opaque",
+      "muddy"
+    ]
+  },
+  {
+    "word": "perfidious",
+    "phonetic": "/pəˈfɪdiəs/",
+    "pos": "adj.",
+    "meaning_cn": "背信弃义的；不忠的",
+    "frequency_rank": 95,
+    "example": "The perfidious ally switched sides in the war.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "perfidious act",
+      "perfidious friend"
+    ],
+    "synonyms": [
+      "treacherous",
+      "disloyal",
+      "deceitful"
+    ],
+    "confusable_words": [
+      "loyal",
+      "faithful"
+    ]
+  },
+  {
+    "word": "perspicacious",
+    "phonetic": "/ˌpɜːspɪˈkeɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "敏锐的；有洞察力的",
+    "frequency_rank": 96,
+    "example": "The perspicacious critic spotted the flaw immediately.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "perspicacious observer",
+      "perspicacious insight"
+    ],
+    "synonyms": [
+      "perceptive",
+      "astute",
+      "sharp"
+    ],
+    "confusable_words": [
+      "obtuse",
+      "dull"
+    ]
+  },
+  {
+    "word": "phlegmatic",
+    "phonetic": "/fleɡˈmætɪk/",
+    "pos": "adj.",
+    "meaning_cn": "冷静的；迟钝的",
+    "frequency_rank": 97,
+    "example": "He remained phlegmatic throughout the crisis.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "phlegmatic temperament",
+      "phlegmatic response"
+    ],
+    "synonyms": [
+      "calm",
+      "stoic",
+      "unemotional"
+    ],
+    "confusable_words": [
+      "excitable"
+    ]
+  },
+  {
+    "word": "propitious",
+    "phonetic": "/prəˈpɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "有利的；吉利的",
+    "frequency_rank": 98,
+    "example": "The timing was propitious for the launch.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "propitious moment",
+      "propitious conditions"
+    ],
+    "synonyms": [
+      "favorable",
+      "auspicious",
+      "promising"
+    ],
+    "confusable_words": [
+      "unfavorable"
+    ]
+  },
+  {
+    "word": "pugnacious",
+    "phonetic": "/pʌɡˈneɪʃəs/",
+    "pos": "adj.",
+    "meaning_cn": "好斗的；好争吵的",
+    "frequency_rank": 99,
+    "example": "The pugnacious boxer intimidated opponents.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "pugnacious attitude",
+      "pugnacious nature"
+    ],
+    "synonyms": [
+      "aggressive",
+      "combative",
+      "bellicose"
+    ],
+    "confusable_words": [
+      "peaceful"
+    ]
+  },
+  {
+    "word": "recalcitrant",
+    "phonetic": "/rɪˈkælsɪtrənt/",
+    "pos": "adj.",
+    "meaning_cn": "顽抗的；不服从的",
+    "frequency_rank": 100,
+    "example": "The recalcitrant student was expelled.",
+    "cet_level": "TEM8",
+    "collocations": [
+      "recalcitrant child",
+      "recalcitrant attitude"
+    ],
+    "synonyms": [
+      "defiant",
+      "uncooperative",
+      "stubborn"
+    ],
+    "confusable_words": [
+      "compliant",
+      "obedient"
+    ]
+  }
+]

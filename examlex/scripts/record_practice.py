@@ -8,8 +8,10 @@ from typing import Any
 
 try:
     from . import common
+    from .file_lock import exclusive_file_lock
 except ImportError:  # pragma: no cover - supports direct script execution.
     import common  # type: ignore[no-redef]
+    from file_lock import exclusive_file_lock  # type: ignore[no-redef]
 
 
 _SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
@@ -21,12 +23,12 @@ def record_practice(ledger_path: str | Path, record: dict[str, Any]) -> dict[str
     normalized["accuracy"] = round(normalized["correct_items"] / normalized["total_items"], 2)
 
     path = Path(ledger_path)
-    ledger = common.load_data(path) if path.exists() else []
-    if not isinstance(ledger, list):
-        raise ValueError("ledger must contain a list of practice records")
-    ledger.append(normalized)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    common.save_data(path, ledger)
+    with exclusive_file_lock(path):
+        ledger = common.load_data(path) if path.exists() else []
+        if not isinstance(ledger, list):
+            raise ValueError("ledger must contain a list of practice records")
+        ledger.append(normalized)
+        common.atomic_save_data(path, ledger)
     return normalized
 
 

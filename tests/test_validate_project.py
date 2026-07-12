@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import shutil
+import re
 import unittest
 import uuid
 from contextlib import contextmanager
@@ -44,6 +45,56 @@ def copy_project():
 
 
 class ValidateProjectTests(unittest.TestCase):
+    def test_workflows_use_least_privilege_and_immutable_action_pins(self):
+        ci = (PROJECT_ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        codeql = (PROJECT_ROOT / ".github/workflows/codeql.yml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("permissions:\n  contents: read", ci)
+        uses = re.findall(r"uses:\s*([^\s#]+)", ci + "\n" + codeql)
+        self.assertTrue(uses)
+        for action in uses:
+            self.assertRegex(action, r"@[0-9a-f]{40}$")
+        self.assertIn(
+            "actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0", ci
+        )
+        self.assertIn(
+            "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1", ci
+        )
+        self.assertIn(
+            "github/codeql-action/init@99df26d4f13ea111d4ec1a7dddef6063f76b97e9",
+            codeql,
+        )
+        self.assertIn(
+            "github/codeql-action/analyze@99df26d4f13ea111d4ec1a7dddef6063f76b97e9",
+            codeql,
+        )
+
+    def test_repository_vocabulary_contract_is_valid(self):
+        errors: list[str] = []
+
+        validate_repo.validate_vocab_contracts(PROJECT_ROOT, errors)
+
+        self.assertEqual([], errors)
+
+    def test_detects_invalid_packaged_template_contract(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            invalid = '{"total_items": 0, "correct_items": 0}\n'
+            for relative in (
+                "examlex/assets/templates/exercise-record.json",
+                "skills/examlex/assets/templates/exercise-record.json",
+            ):
+                (root / relative).write_text(invalid, encoding="utf-8")
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(
+            any("practice template must contain a JSON list" in error for error in result.errors),
+            result.errors,
+        )
+
     def test_detects_missing_chinese_document_counterpart(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
@@ -69,6 +120,32 @@ class ValidateProjectTests(unittest.TestCase):
                 encoding="utf-8",
             )
 
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(any("external URL" in error for error in result.errors))
+
+    def test_allowed_url_prefix_cannot_hide_bare_external_url(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            readme = root / "README.md"
+            readme.write_text(
+                readme.read_text(encoding="utf-8")
+                + "\nhttps://github.com/SFEW888/ExamLex.evil.invalid\n",
+                encoding="utf-8",
+            )
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(any("external URL" in error for error in result.errors))
+
+    def test_allowed_badge_prefix_cannot_hide_markdown_external_url(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            readme = root / "README.md"
+            readme.write_text(
+                readme.read_text(encoding="utf-8")
+                + "\n[bad](https://img.shields.io/badge/License-MIT-yellow.svg.evil)\n",
+                encoding="utf-8",
+            )
             result = validate_repo.validate_project(root)
 
         self.assertTrue(any("external URL" in error for error in result.errors))
@@ -314,11 +391,11 @@ class ValidateProjectTests(unittest.TestCase):
             (
                 PROJECT_ROOT / "docs" / "tem4.md",
                 PROJECT_ROOT / "zh-CN" / "docs" / "tem4.md",
-            ): ("examlex check", "examlex plan", "tem4-core-2000.json"),
+            ): ("examlex check", "examlex plan", "tem4-core-100.json"),
             (
                 PROJECT_ROOT / "docs" / "tem8.md",
                 PROJECT_ROOT / "zh-CN" / "docs" / "tem8.md",
-            ): ("examlex check", "examlex plan", "tem8-core-2000.json", "examlex log"),
+            ): ("examlex check", "examlex plan", "tem8-core-100.json", "examlex log"),
         }
 
         for paths, markers in document_contracts.items():
@@ -584,11 +661,11 @@ class ValidateProjectTests(unittest.TestCase):
             PROJECT_ROOT / ".github" / "workflows" / "codeql.yml"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("actions/checkout@v7", ci)
-        self.assertIn("actions/setup-python@v6", ci)
-        self.assertIn("actions/checkout@v7", codeql)
-        self.assertIn("github/codeql-action/init@v4", codeql)
-        self.assertIn("github/codeql-action/analyze@v4", codeql)
+        self.assertIn("actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7", ci)
+        self.assertIn("actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6", ci)
+        self.assertIn("actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7", codeql)
+        self.assertIn("github/codeql-action/init@99df26d4f13ea111d4ec1a7dddef6063f76b97e9 # v4", codeql)
+        self.assertIn("github/codeql-action/analyze@99df26d4f13ea111d4ec1a7dddef6063f76b97e9 # v4", codeql)
 
     def test_ci_covers_supported_python_versions_and_platforms(self):
         ci = (PROJECT_ROOT / ".github" / "workflows" / "ci.yml").read_text(

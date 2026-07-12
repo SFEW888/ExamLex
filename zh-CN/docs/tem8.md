@@ -46,7 +46,7 @@ examlex check tem8-learner-profile.json
 # 生成 TEM-8 每日计划（含计时训练）
 examlex plan tem8-learner-profile.json `
   --ability tem8-ability-profile.json `
-  --vocab-pool skills/examlex/assets/data/vocabulary/tem8-core-2000.json `
+  --vocab-pool skills/examlex/assets/data/vocabulary/tem8-core-100.json `
   --output daily-plan.json
 
 # 记录 TEM-8 计时改错练习

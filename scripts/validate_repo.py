@@ -7,7 +7,7 @@ import json
 import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import unquote, urlsplit, urlunsplit
 
 
 SKILL_NAME = "examlex"
@@ -33,9 +33,11 @@ SKILL_ALIASES = {
 }
 FORBIDDEN_PRIVATE_PROMPT = " ".join(("Act as a strict", "but helpful English", "grammar teacher"))
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)\n]+)\)")
+EXTERNAL_URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+")
 REPOSITORY_URL = "https://github.com/SFEW888/ExamLex"
 ALLOWED_EXTERNAL_URLS = {
     REPOSITORY_URL,
+    f"{REPOSITORY_URL}.git",
     f"{REPOSITORY_URL}/issues",
     "https://github.com/yt-dlp/yt-dlp",
     "https://ffmpeg.org/download.html",
@@ -163,6 +165,22 @@ class ValidationResult:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _normalize_external_url(url: str) -> str:
+    parts = urlsplit(url)
+    return urlunsplit(
+        (parts.scheme.lower(), parts.netloc.lower(), parts.path, parts.query, parts.fragment)
+    )
+
+
+def extract_external_urls(text: str) -> set[str]:
+    urls: set[str] = set()
+    for match in EXTERNAL_URL_RE.finditer(text):
+        candidate = match.group(0).rstrip(").,;:!?]}`")
+        if candidate:
+            urls.add(_normalize_external_url(candidate))
+    return urls
 
 
 def parse_front_matter(text: str) -> dict[str, str]:
@@ -358,14 +376,14 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
         allowed_urls = ALLOWED_EXTERNAL_URLS
         if relative in README_BADGE_PATHS:
             allowed_urls = ALLOWED_EXTERNAL_URLS | README_BADGE_URLS
-        text_without_allowed_urls = text
-        for allowed_url in allowed_urls:
-            text_without_allowed_urls = text_without_allowed_urls.replace(
-                allowed_url, ""
-            )
-        if "http://" in text_without_allowed_urls or "https://" in text_without_allowed_urls:
+        normalized_allowed_urls = {
+            _normalize_external_url(allowed_url) for allowed_url in allowed_urls
+        }
+        disallowed_urls = extract_external_urls(text) - normalized_allowed_urls
+        if disallowed_urls:
             errors.append(
                 f"external URL is forbidden in maintained Markdown: {relative.as_posix()}"
+                f" -> {sorted(disallowed_urls)[0]}"
             )
 
         for match in MARKDOWN_LINK_RE.finditer(text):
@@ -394,6 +412,99 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
             if not resolved.exists():
                 errors.append(
                     f"broken local Markdown link in {relative.as_posix()}: {target}"
+                )
+
+
+def validate_template_contracts(root: Path, errors: list[str]) -> None:
+    templates = root / IMPORTABLE_NAME / "assets" / "templates"
+    try:
+        ability = json.loads((templates / "ability-profile.yaml").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"ability-profile template is not valid JSON-compatible YAML: {exc}")
+    else:
+        modules = ability.get("modules") if isinstance(ability, dict) else None
+        if not isinstance(modules, dict) or not all(
+            isinstance(nodes, list)
+            and all(
+                isinstance(node, dict)
+                and isinstance(node.get("node"), str)
+                and bool(node["node"].strip())
+                for node in nodes
+            )
+            for nodes in modules.values()
+        ):
+            errors.append("ability-profile template modules must contain ability-node objects")
+
+    for filename in ("exercise-record.json", "exercise-record.yaml"):
+        try:
+            ledger = json.loads((templates / filename).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"practice template {filename} is not valid JSON-compatible YAML: {exc}")
+        else:
+            if not isinstance(ledger, list):
+                errors.append(f"practice template must contain a JSON list: {filename}")
+
+    filename = "writing-version-record.yaml"
+    try:
+        versions = json.loads((templates / filename).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"writing template is not valid JSON-compatible YAML: {exc}")
+    else:
+        if not isinstance(versions, list):
+            errors.append("writing template must contain a JSON list")
+
+
+def validate_vocab_contracts(root: Path, errors: list[str]) -> None:
+    vocab_dir = root / "skills" / SKILL_NAME / "assets" / "data" / "vocabulary"
+    try:
+        index = json.loads((vocab_dir / "index.json").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"vocabulary index is not valid JSON: {exc}")
+        return
+    if not isinstance(index, dict):
+        errors.append("vocabulary index must contain an object")
+        return
+
+    for key, metadata in index.items():
+        if not isinstance(metadata, dict):
+            errors.append(f"vocabulary index entry must be an object: {key}")
+            continue
+        filename = metadata.get("path")
+        if not isinstance(filename, str):
+            errors.append(f"vocabulary index entry has no path: {key}")
+            continue
+        match = re.search(r"-(\d+)\.json$", filename)
+        if match is None:
+            errors.append(f"canonical vocabulary filename must end with its count: {filename}")
+            continue
+        try:
+            entries = json.loads((vocab_dir / filename).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"canonical vocabulary file is invalid: {filename}: {exc}")
+            continue
+        expected_count = int(match.group(1))
+        if not isinstance(entries, list) or len(entries) != expected_count:
+            errors.append(f"canonical vocabulary filename count mismatch: {filename}")
+            continue
+        if metadata.get("count") != expected_count:
+            errors.append(f"vocabulary index count mismatch: {filename}")
+        if metadata.get("scope") != "curated_starter":
+            errors.append(f"vocabulary index scope must be curated_starter: {key}")
+        legacy_paths = metadata.get("legacy_paths")
+        if not isinstance(legacy_paths, list) or not legacy_paths:
+            errors.append(f"vocabulary index must list legacy_paths: {key}")
+            continue
+        for legacy_path in legacy_paths:
+            try:
+                legacy_entries = json.loads(
+                    (vocab_dir / legacy_path).read_text(encoding="utf-8")
+                )
+            except (OSError, json.JSONDecodeError) as exc:
+                errors.append(f"legacy vocabulary file is invalid: {legacy_path}: {exc}")
+                continue
+            if legacy_entries != entries:
+                errors.append(
+                    f"legacy vocabulary data differs from canonical file: {legacy_path}"
                 )
 
 
@@ -552,6 +663,8 @@ def validate_project(root: str | Path) -> ValidationResult:
 
     validate_resource_mirror(skill_dir, importable_dir, errors)
     validate_writing_article_omission(portable_scripts / "common.py", errors)
+    validate_template_contracts(root_path, errors)
+    validate_vocab_contracts(root_path, errors)
     validate_documentation(root_path, errors)
     return result
 

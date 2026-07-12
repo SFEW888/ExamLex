@@ -403,25 +403,6 @@
     "confusable_words": []
   },
   {
-    "word": "allege",
-    "phonetic": "/əˈledʒ/",
-    "pos": "v.",
-    "meaning_cn": "指控；宣称",
-    "frequency_rank": 21,
-    "example": "The plaintiff alleges breach of contract.",
-    "cet_level": "CET6",
-    "collocations": [
-      "allege that",
-      "it is alleged that"
-    ],
-    "synonyms": [
-      "claim",
-      "assert",
-      "accuse"
-    ],
-    "confusable_words": []
-  },
-  {
     "word": "alleviate",
     "phonetic": "/əˈliːvieɪt/",
     "pos": "v.",

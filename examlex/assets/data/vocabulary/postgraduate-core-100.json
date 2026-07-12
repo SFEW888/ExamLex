@@ -1,0 +1,2041 @@
+[
+  {
+    "word": "abolish",
+    "phonetic": "/əˈbɒlɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "废除；废止",
+    "frequency_rank": 1,
+    "example": "The law was finally abolished after decades of protest.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "abolish the death penalty",
+      "abolish slavery"
+    ],
+    "synonyms": [
+      "eliminate",
+      "annul",
+      "do away with"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "abound",
+    "phonetic": "/əˈbaʊnd/",
+    "pos": "v.",
+    "meaning_cn": "充满；大量存在",
+    "frequency_rank": 2,
+    "example": "Opportunities abound in the tech industry.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "abound in",
+      "abound with"
+    ],
+    "synonyms": [
+      "thrive",
+      "flourish",
+      "teem"
+    ],
+    "confusable_words": [
+      "lack"
+    ]
+  },
+  {
+    "word": "abstain",
+    "phonetic": "/əbˈsteɪn/",
+    "pos": "v.",
+    "meaning_cn": "弃权；戒除",
+    "frequency_rank": 3,
+    "example": "Several members abstained from voting.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "abstain from",
+      "abstain from alcohol"
+    ],
+    "synonyms": [
+      "refrain",
+      "withhold",
+      "forgo"
+    ],
+    "confusable_words": [
+      "indulge"
+    ]
+  },
+  {
+    "word": "acclaim",
+    "phonetic": "/əˈkleɪm/",
+    "pos": "v./n.",
+    "meaning_cn": "称赞；喝彩",
+    "frequency_rank": 4,
+    "example": "The book was widely acclaimed by critics.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "critically acclaimed",
+      "public acclaim"
+    ],
+    "synonyms": [
+      "praise",
+      "applaud",
+      "commend"
+    ],
+    "confusable_words": [
+      "criticize"
+    ]
+  },
+  {
+    "word": "accord",
+    "phonetic": "/əˈkɔːd/",
+    "pos": "n./v.",
+    "meaning_cn": "一致；协议；给予",
+    "frequency_rank": 5,
+    "example": "They reached an accord on trade issues.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "in accord with",
+      "of one's own accord",
+      "peace accord"
+    ],
+    "synonyms": [
+      "agreement",
+      "harmony",
+      "grant"
+    ],
+    "confusable_words": [
+      "discord"
+    ]
+  },
+  {
+    "word": "accountability",
+    "phonetic": "/əˌkaʊntəˈbɪləti/",
+    "pos": "n.",
+    "meaning_cn": "问责制；责任",
+    "frequency_rank": 6,
+    "example": "Corporate accountability has improved recently.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "political accountability",
+      "demand accountability"
+    ],
+    "synonyms": [
+      "responsibility",
+      "answerability"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "acquisition",
+    "phonetic": "/ˌækwɪˈzɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "获得；收购",
+    "frequency_rank": 7,
+    "example": "The company announced a major acquisition.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "merger and acquisition",
+      "language acquisition"
+    ],
+    "synonyms": [
+      "obtaining",
+      "procurement",
+      "takeover"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adhere",
+    "phonetic": "/ədˈhɪə/",
+    "pos": "v.",
+    "meaning_cn": "坚持；遵守；粘附",
+    "frequency_rank": 8,
+    "example": "All members must adhere to the code of conduct.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "adhere to",
+      "strictly adhere"
+    ],
+    "synonyms": [
+      "stick to",
+      "comply with",
+      "follow"
+    ],
+    "confusable_words": [
+      "deviate"
+    ]
+  },
+  {
+    "word": "adjacent",
+    "phonetic": "/əˈdʒeɪsnt/",
+    "pos": "adj.",
+    "meaning_cn": "邻近的；毗连的",
+    "frequency_rank": 9,
+    "example": "The hotel is adjacent to the train station.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "adjacent to",
+      "adjacent rooms"
+    ],
+    "synonyms": [
+      "neighboring",
+      "next to",
+      "bordering"
+    ],
+    "confusable_words": [
+      "distant"
+    ]
+  },
+  {
+    "word": "administer",
+    "phonetic": "/ədˈmɪnɪstə/",
+    "pos": "v.",
+    "meaning_cn": "管理；执行；给予",
+    "frequency_rank": 10,
+    "example": "The fund is administered by a board of trustees.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "administer a trust",
+      "administer medication"
+    ],
+    "synonyms": [
+      "manage",
+      "execute",
+      "supervise"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adolescence",
+    "phonetic": "/ˌædəˈlesns/",
+    "pos": "n.",
+    "meaning_cn": "青春期",
+    "frequency_rank": 11,
+    "example": "Adolescence is a time of great change.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "during adolescence",
+      "early adolescence"
+    ],
+    "synonyms": [
+      "youth",
+      "teenage years",
+      "puberty"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "advent",
+    "phonetic": "/ˈædvent/",
+    "pos": "n.",
+    "meaning_cn": "到来；出现",
+    "frequency_rank": 12,
+    "example": "The advent of the internet changed everything.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "the advent of",
+      "with the advent of"
+    ],
+    "synonyms": [
+      "arrival",
+      "emergence",
+      "dawn"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "adversary",
+    "phonetic": "/ˈædvəsəri/",
+    "pos": "n.",
+    "meaning_cn": "对手；敌手",
+    "frequency_rank": 13,
+    "example": "He faced a formidable adversary in court.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "political adversary",
+      "worthy adversary"
+    ],
+    "synonyms": [
+      "opponent",
+      "rival",
+      "enemy"
+    ],
+    "confusable_words": [
+      "ally"
+    ]
+  },
+  {
+    "word": "advocacy",
+    "phonetic": "/ˈædvəkəsi/",
+    "pos": "n.",
+    "meaning_cn": "倡导；支持",
+    "frequency_rank": 14,
+    "example": "She is known for her advocacy of human rights.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "public advocacy",
+      "advocacy group"
+    ],
+    "synonyms": [
+      "support",
+      "championship",
+      "promotion"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "affiliate",
+    "phonetic": "/əˈfɪlieɪt/",
+    "pos": "v./n.",
+    "meaning_cn": "隶属；附属机构",
+    "frequency_rank": 15,
+    "example": "The hospital is affiliated with the university.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "affiliated with",
+      "affiliate member"
+    ],
+    "synonyms": [
+      "associate",
+      "subsidiary",
+      "branch"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "affluent",
+    "phonetic": "/ˈæfluənt/",
+    "pos": "adj.",
+    "meaning_cn": "富裕的；富足的",
+    "frequency_rank": 16,
+    "example": "They live in an affluent neighborhood.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "affluent society",
+      "affluent family"
+    ],
+    "synonyms": [
+      "wealthy",
+      "prosperous",
+      "rich"
+    ],
+    "confusable_words": [
+      "impoverished"
+    ]
+  },
+  {
+    "word": "alleviate",
+    "phonetic": "/əˈliːvieɪt/",
+    "pos": "v.",
+    "meaning_cn": "减轻；缓解",
+    "frequency_rank": 17,
+    "example": "The medicine helped alleviate her pain.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "alleviate suffering",
+      "alleviate poverty"
+    ],
+    "synonyms": [
+      "relieve",
+      "ease",
+      "lessen"
+    ],
+    "confusable_words": [
+      "aggravate"
+    ]
+  },
+  {
+    "word": "allocate",
+    "phonetic": "/ˈæləkeɪt/",
+    "pos": "v.",
+    "meaning_cn": "分配；拨出",
+    "frequency_rank": 18,
+    "example": "The government allocated funds for education.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "allocate resources",
+      "allocate to"
+    ],
+    "synonyms": [
+      "assign",
+      "distribute",
+      "apportion"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "ambiguous",
+    "phonetic": "/æmˈbɪɡjuəs/",
+    "pos": "adj.",
+    "meaning_cn": "模棱两可的；模糊的",
+    "frequency_rank": 19,
+    "example": "The wording of the contract is ambiguous.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "ambiguous statement",
+      "deliberately ambiguous"
+    ],
+    "synonyms": [
+      "vague",
+      "unclear",
+      "equivocal"
+    ],
+    "confusable_words": [
+      "clear",
+      "unambiguous"
+    ]
+  },
+  {
+    "word": "amend",
+    "phonetic": "/əˈmend/",
+    "pos": "v.",
+    "meaning_cn": "修改；修正",
+    "frequency_rank": 20,
+    "example": "The constitution was amended in 2020.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "amend the law",
+      "amend a document"
+    ],
+    "synonyms": [
+      "revise",
+      "modify",
+      "correct"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "analogy",
+    "phonetic": "/əˈnælədʒi/",
+    "pos": "n.",
+    "meaning_cn": "类比；比喻",
+    "frequency_rank": 21,
+    "example": "She drew an analogy between life and a journey.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "draw an analogy",
+      "by analogy"
+    ],
+    "synonyms": [
+      "comparison",
+      "similarity",
+      "parallel"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "arbitrary",
+    "phonetic": "/ˈɑːbɪtrəri/",
+    "pos": "adj.",
+    "meaning_cn": "任意的；武断的",
+    "frequency_rank": 22,
+    "example": "The rules seemed arbitrary and unfair.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "arbitrary decision",
+      "arbitrary arrest"
+    ],
+    "synonyms": [
+      "random",
+      "capricious",
+      "subjective"
+    ],
+    "confusable_words": [
+      "reasonable"
+    ]
+  },
+  {
+    "word": "articulate",
+    "phonetic": "/ɑːˈtɪkjuleɪt/",
+    "pos": "v./adj.",
+    "meaning_cn": "清晰表达；善于表达的",
+    "frequency_rank": 23,
+    "example": "She articulated her concerns clearly.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "articulate clearly",
+      "highly articulate"
+    ],
+    "synonyms": [
+      "express",
+      "voice",
+      "eloquent"
+    ],
+    "confusable_words": [
+      "inarticulate"
+    ]
+  },
+  {
+    "word": "assertive",
+    "phonetic": "/əˈsɜːtɪv/",
+    "pos": "adj.",
+    "meaning_cn": "果断的；自信的",
+    "frequency_rank": 24,
+    "example": "You need to be more assertive in meetings.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "assertive behavior",
+      "be assertive"
+    ],
+    "synonyms": [
+      "confident",
+      "forceful",
+      "decisive"
+    ],
+    "confusable_words": [
+      "passive",
+      "timid"
+    ]
+  },
+  {
+    "word": "assimilate",
+    "phonetic": "/əˈsɪməleɪt/",
+    "pos": "v.",
+    "meaning_cn": "吸收；同化",
+    "frequency_rank": 25,
+    "example": "Newcomers assimilated into the community.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "assimilate into",
+      "assimilate knowledge"
+    ],
+    "synonyms": [
+      "absorb",
+      "integrate",
+      "adapt"
+    ],
+    "confusable_words": [
+      "reject"
+    ]
+  },
+  {
+    "word": "attain",
+    "phonetic": "/əˈteɪn/",
+    "pos": "v.",
+    "meaning_cn": "达到；获得",
+    "frequency_rank": 26,
+    "example": "She attained her goal of becoming a doctor.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "attain a goal",
+      "attain success"
+    ],
+    "synonyms": [
+      "achieve",
+      "reach",
+      "accomplish"
+    ],
+    "confusable_words": [
+      "fail"
+    ]
+  },
+  {
+    "word": "autonomy",
+    "phonetic": "/ɔːˈtɒnəmi/",
+    "pos": "n.",
+    "meaning_cn": "自治；自主权",
+    "frequency_rank": 27,
+    "example": "The region was granted greater autonomy.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "local autonomy",
+      "personal autonomy"
+    ],
+    "synonyms": [
+      "independence",
+      "self-rule",
+      "freedom"
+    ],
+    "confusable_words": [
+      "dependence"
+    ]
+  },
+  {
+    "word": "bias",
+    "phonetic": "/ˈbaɪəs/",
+    "pos": "n./v.",
+    "meaning_cn": "偏见；偏袒",
+    "frequency_rank": 28,
+    "example": "The study showed a clear gender bias.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "unconscious bias",
+      "bias against"
+    ],
+    "synonyms": [
+      "prejudice",
+      "partiality",
+      "favoritism"
+    ],
+    "confusable_words": [
+      "impartiality"
+    ]
+  },
+  {
+    "word": "bureaucracy",
+    "phonetic": "/bjʊəˈrɒkrəsi/",
+    "pos": "n.",
+    "meaning_cn": "官僚机构；官僚主义",
+    "frequency_rank": 29,
+    "example": "Red tape and bureaucracy delayed the project.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "government bureaucracy",
+      "reduce bureaucracy"
+    ],
+    "synonyms": [
+      "officialdom",
+      "administration",
+      "red tape"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "chronic",
+    "phonetic": "/ˈkrɒnɪk/",
+    "pos": "adj.",
+    "meaning_cn": "慢性的；长期的",
+    "frequency_rank": 30,
+    "example": "The region suffers from chronic unemployment.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "chronic disease",
+      "chronic shortage"
+    ],
+    "synonyms": [
+      "persistent",
+      "long-term",
+      "constant"
+    ],
+    "confusable_words": [
+      "acute",
+      "temporary"
+    ]
+  },
+  {
+    "word": "cognitive",
+    "phonetic": "/ˈkɒɡnətɪv/",
+    "pos": "adj.",
+    "meaning_cn": "认知的",
+    "frequency_rank": 31,
+    "example": "Cognitive decline is a concern in aging populations.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "cognitive ability",
+      "cognitive science",
+      "cognitive development"
+    ],
+    "synonyms": [
+      "mental",
+      "intellectual"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "coherent",
+    "phonetic": "/kəʊˈhɪərənt/",
+    "pos": "adj.",
+    "meaning_cn": "连贯的；一致的",
+    "frequency_rank": 32,
+    "example": "She gave a coherent account of events.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "coherent argument",
+      "coherent policy"
+    ],
+    "synonyms": [
+      "logical",
+      "consistent",
+      "clear"
+    ],
+    "confusable_words": [
+      "incoherent"
+    ]
+  },
+  {
+    "word": "commodity",
+    "phonetic": "/kəˈmɒdəti/",
+    "pos": "n.",
+    "meaning_cn": "商品；日用品",
+    "frequency_rank": 33,
+    "example": "Water is a precious commodity in arid regions.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "commodity market",
+      "scarce commodity"
+    ],
+    "synonyms": [
+      "product",
+      "goods",
+      "resource"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "complacency",
+    "phonetic": "/kəmˈpleɪsnsi/",
+    "pos": "n.",
+    "meaning_cn": "自满；自得",
+    "frequency_rank": 34,
+    "example": "Success led to dangerous complacency.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "breed complacency",
+      "avoid complacency"
+    ],
+    "synonyms": [
+      "smugness",
+      "self-satisfaction",
+      "pride"
+    ],
+    "confusable_words": [
+      "anxiety"
+    ]
+  },
+  {
+    "word": "comply",
+    "phonetic": "/kəmˈplaɪ/",
+    "pos": "v.",
+    "meaning_cn": "遵守；遵从",
+    "frequency_rank": 35,
+    "example": "All firms must comply with safety regulations.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "comply with",
+      "fully comply",
+      "refuse to comply"
+    ],
+    "synonyms": [
+      "obey",
+      "follow",
+      "conform"
+    ],
+    "confusable_words": [
+      "defy"
+    ]
+  },
+  {
+    "word": "compulsory",
+    "phonetic": "/kəmˈpʌlsəri/",
+    "pos": "adj.",
+    "meaning_cn": "强制的；必修的",
+    "frequency_rank": 36,
+    "example": "English is a compulsory subject.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "compulsory education",
+      "compulsory course"
+    ],
+    "synonyms": [
+      "mandatory",
+      "obligatory",
+      "required"
+    ],
+    "confusable_words": [
+      "optional"
+    ]
+  },
+  {
+    "word": "conceive",
+    "phonetic": "/kənˈsiːv/",
+    "pos": "v.",
+    "meaning_cn": "构思；设想",
+    "frequency_rank": 37,
+    "example": "It's hard to conceive of such cruelty.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "conceive of",
+      "conceive a plan"
+    ],
+    "synonyms": [
+      "imagine",
+      "think up",
+      "devise"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "condemn",
+    "phonetic": "/kənˈdem/",
+    "pos": "v.",
+    "meaning_cn": "谴责；判刑",
+    "frequency_rank": 38,
+    "example": "The UN condemned the attack.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "strongly condemn",
+      "condemn to death"
+    ],
+    "synonyms": [
+      "criticize",
+      "denounce",
+      "sentence"
+    ],
+    "confusable_words": [
+      "approve",
+      "praise"
+    ]
+  },
+  {
+    "word": "conform",
+    "phonetic": "/kənˈfɔːm/",
+    "pos": "v.",
+    "meaning_cn": "遵守；符合；一致",
+    "frequency_rank": 39,
+    "example": "The product conforms to safety standards.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "conform to",
+      "conform with"
+    ],
+    "synonyms": [
+      "comply",
+      "follow",
+      "fit"
+    ],
+    "confusable_words": [
+      "deviate"
+    ]
+  },
+  {
+    "word": "conscience",
+    "phonetic": "/ˈkɒnʃəns/",
+    "pos": "n.",
+    "meaning_cn": "良心；良知",
+    "frequency_rank": 40,
+    "example": "Let your conscience be your guide.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "guilty conscience",
+      "crisis of conscience"
+    ],
+    "synonyms": [
+      "morals",
+      "ethics",
+      "principles"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "consensus",
+    "phonetic": "/kənˈsensəs/",
+    "pos": "n.",
+    "meaning_cn": "共识；一致意见",
+    "frequency_rank": 41,
+    "example": "There is broad consensus on the need for reform.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "reach a consensus",
+      "general consensus"
+    ],
+    "synonyms": [
+      "agreement",
+      "accord",
+      "unanimity"
+    ],
+    "confusable_words": [
+      "disagreement"
+    ]
+  },
+  {
+    "word": "consolidate",
+    "phonetic": "/kənˈsɒlɪdeɪt/",
+    "pos": "v.",
+    "meaning_cn": "巩固；合并",
+    "frequency_rank": 42,
+    "example": "The company consolidated its market position.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "consolidate power",
+      "consolidate gains"
+    ],
+    "synonyms": [
+      "strengthen",
+      "merge",
+      "reinforce"
+    ],
+    "confusable_words": [
+      "weaken"
+    ]
+  },
+  {
+    "word": "constrain",
+    "phonetic": "/kənˈstreɪn/",
+    "pos": "v.",
+    "meaning_cn": "限制；约束",
+    "frequency_rank": 43,
+    "example": "Budget cuts constrain our options.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "constrain by",
+      "severely constrained"
+    ],
+    "synonyms": [
+      "restrict",
+      "limit",
+      "restrain"
+    ],
+    "confusable_words": [
+      "free",
+      "release"
+    ]
+  },
+  {
+    "word": "contemplate",
+    "phonetic": "/ˈkɒntəmpleɪt/",
+    "pos": "v.",
+    "meaning_cn": "沉思；考虑",
+    "frequency_rank": 44,
+    "example": "He contemplated the meaning of life.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "contemplate doing",
+      "contemplate the future"
+    ],
+    "synonyms": [
+      "consider",
+      "ponder",
+      "reflect on"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "contend",
+    "phonetic": "/kənˈtend/",
+    "pos": "v.",
+    "meaning_cn": "竞争；主张",
+    "frequency_rank": 45,
+    "example": "Several parties contend for power.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "contend with",
+      "contend that",
+      "contend for"
+    ],
+    "synonyms": [
+      "compete",
+      "argue",
+      "struggle"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "converge",
+    "phonetic": "/kənˈvɜːdʒ/",
+    "pos": "v.",
+    "meaning_cn": "汇集；趋同",
+    "frequency_rank": 46,
+    "example": "Economic policies began to converge.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "converge on",
+      "converge towards"
+    ],
+    "synonyms": [
+      "meet",
+      "merge",
+      "coincide"
+    ],
+    "confusable_words": [
+      "diverge"
+    ]
+  },
+  {
+    "word": "correlate",
+    "phonetic": "/ˈkɒrəleɪt/",
+    "pos": "v.",
+    "meaning_cn": "使关联；相关",
+    "frequency_rank": 47,
+    "example": "Poverty correlates strongly with poor health.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "correlate with",
+      "positively correlated"
+    ],
+    "synonyms": [
+      "associate",
+      "connect",
+      "link"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "corrode",
+    "phonetic": "/kəˈrəʊd/",
+    "pos": "v.",
+    "meaning_cn": "腐蚀；侵蚀",
+    "frequency_rank": 48,
+    "example": "Corruption corrodes public trust.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "corrode away",
+      "corrode trust"
+    ],
+    "synonyms": [
+      "erode",
+      "rust",
+      "deteriorate"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "cynical",
+    "phonetic": "/ˈsɪnɪkl/",
+    "pos": "adj.",
+    "meaning_cn": "愤世嫉俗的",
+    "frequency_rank": 49,
+    "example": "Voters have become cynical about politics.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "cynical about",
+      "cynical view"
+    ],
+    "synonyms": [
+      "skeptical",
+      "pessimistic",
+      "distrustful"
+    ],
+    "confusable_words": [
+      "optimistic"
+    ]
+  },
+  {
+    "word": "decisive",
+    "phonetic": "/dɪˈsaɪsɪv/",
+    "pos": "adj.",
+    "meaning_cn": "决定性的；果断的",
+    "frequency_rank": 50,
+    "example": "The battle was a decisive turning point.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "decisive action",
+      "decisive role"
+    ],
+    "synonyms": [
+      "conclusive",
+      "determined",
+      "critical"
+    ],
+    "confusable_words": [
+      "indecisive"
+    ]
+  },
+  {
+    "word": "deduce",
+    "phonetic": "/dɪˈdjuːs/",
+    "pos": "v.",
+    "meaning_cn": "推断；演绎",
+    "frequency_rank": 51,
+    "example": "From the clues, she deduced the answer.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "deduce from",
+      "deduce that"
+    ],
+    "synonyms": [
+      "infer",
+      "conclude",
+      "reason"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "deficiency",
+    "phonetic": "/dɪˈfɪʃnsi/",
+    "pos": "n.",
+    "meaning_cn": "缺乏；缺陷",
+    "frequency_rank": 52,
+    "example": "Iron deficiency is common in developing countries.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "vitamin deficiency",
+      "deficiency in"
+    ],
+    "synonyms": [
+      "lack",
+      "shortage",
+      "insufficiency"
+    ],
+    "confusable_words": [
+      "surplus"
+    ]
+  },
+  {
+    "word": "degradation",
+    "phonetic": "/ˌdeɡrəˈdeɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "退化；恶化；降解",
+    "frequency_rank": 53,
+    "example": "Environmental degradation threatens biodiversity.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "environmental degradation",
+      "land degradation"
+    ],
+    "synonyms": [
+      "deterioration",
+      "decline",
+      "decay"
+    ],
+    "confusable_words": [
+      "improvement"
+    ]
+  },
+  {
+    "word": "deliberate",
+    "phonetic": "/dɪˈlɪbərət/",
+    "pos": "adj.",
+    "meaning_cn": "故意的；审慎的",
+    "frequency_rank": 54,
+    "example": "The omission was deliberate, not accidental.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "deliberate attempt",
+      "deliberate decision"
+    ],
+    "synonyms": [
+      "intentional",
+      "planned",
+      "conscious"
+    ],
+    "confusable_words": [
+      "accidental"
+    ]
+  },
+  {
+    "word": "democratic",
+    "phonetic": "/ˌdeməˈkrætɪk/",
+    "pos": "adj.",
+    "meaning_cn": "民主的",
+    "frequency_rank": 55,
+    "example": "A democratic society values free speech.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "democratic election",
+      "democratic process"
+    ],
+    "synonyms": [
+      "representative",
+      "popular",
+      "free"
+    ],
+    "confusable_words": [
+      "authoritarian"
+    ]
+  },
+  {
+    "word": "denote",
+    "phonetic": "/dɪˈnəʊt/",
+    "pos": "v.",
+    "meaning_cn": "表示；意味着",
+    "frequency_rank": 56,
+    "example": "The symbol denotes a warning.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "clearly denote",
+      "denote that"
+    ],
+    "synonyms": [
+      "indicate",
+      "signify",
+      "mean"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "depict",
+    "phonetic": "/dɪˈpɪkt/",
+    "pos": "v.",
+    "meaning_cn": "描绘；描述",
+    "frequency_rank": 57,
+    "example": "The novel depicts life in Victorian England.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "vividly depict",
+      "depict as"
+    ],
+    "synonyms": [
+      "portray",
+      "describe",
+      "represent"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "deprive",
+    "phonetic": "/dɪˈpraɪv/",
+    "pos": "v.",
+    "meaning_cn": "剥夺；使丧失",
+    "frequency_rank": 58,
+    "example": "No one should be deprived of basic rights.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "deprive of",
+      "deprived child"
+    ],
+    "synonyms": [
+      "deny",
+      "strip",
+      "take away"
+    ],
+    "confusable_words": [
+      "provide"
+    ]
+  },
+  {
+    "word": "destined",
+    "phonetic": "/ˈdestɪnd/",
+    "pos": "adj.",
+    "meaning_cn": "注定的；命定的",
+    "frequency_rank": 59,
+    "example": "She seemed destined for a career in science.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "destined for",
+      "destined to be"
+    ],
+    "synonyms": [
+      "fated",
+      "bound",
+      "meant"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "deteriorate",
+    "phonetic": "/dɪˈtɪəriəreɪt/",
+    "pos": "v.",
+    "meaning_cn": "恶化；退化",
+    "frequency_rank": 60,
+    "example": "Conditions deteriorated rapidly after the storm.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "deteriorate into",
+      "rapidly deteriorate"
+    ],
+    "synonyms": [
+      "worsen",
+      "decline",
+      "decay"
+    ],
+    "confusable_words": [
+      "improve"
+    ]
+  },
+  {
+    "word": "deviate",
+    "phonetic": "/ˈdiːvieɪt/",
+    "pos": "v.",
+    "meaning_cn": "偏离；背离",
+    "frequency_rank": 61,
+    "example": "The plane deviated from its flight path.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "deviate from",
+      "deviate significantly"
+    ],
+    "synonyms": [
+      "stray",
+      "diverge",
+      "depart"
+    ],
+    "confusable_words": [
+      "conform"
+    ]
+  },
+  {
+    "word": "differentiate",
+    "phonetic": "/ˌdɪfəˈrenʃieɪt/",
+    "pos": "v.",
+    "meaning_cn": "区分；区别",
+    "frequency_rank": 62,
+    "example": "What differentiates humans from other animals?",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "differentiate between",
+      "differentiate from"
+    ],
+    "synonyms": [
+      "distinguish",
+      "tell apart",
+      "discriminate"
+    ],
+    "confusable_words": [
+      "confuse"
+    ]
+  },
+  {
+    "word": "dilemma",
+    "phonetic": "/dɪˈlemə/",
+    "pos": "n.",
+    "meaning_cn": "困境；进退两难",
+    "frequency_rank": 63,
+    "example": "The country faces a serious economic dilemma.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "face a dilemma",
+      "moral dilemma"
+    ],
+    "synonyms": [
+      "predicament",
+      "quandary",
+      "problem"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "diminish",
+    "phonetic": "/dɪˈmɪnɪʃ/",
+    "pos": "v.",
+    "meaning_cn": "减少；削弱",
+    "frequency_rank": 64,
+    "example": "The influence of traditional media is diminishing.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "diminish the value",
+      "diminish over time"
+    ],
+    "synonyms": [
+      "decrease",
+      "reduce",
+      "weaken"
+    ],
+    "confusable_words": [
+      "increase",
+      "grow"
+    ]
+  },
+  {
+    "word": "discern",
+    "phonetic": "/dɪˈsɜːn/",
+    "pos": "v.",
+    "meaning_cn": "辨别；识别",
+    "frequency_rank": 65,
+    "example": "It's difficult to discern the author's intent.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "discern between",
+      "hard to discern"
+    ],
+    "synonyms": [
+      "perceive",
+      "detect",
+      "distinguish"
+    ],
+    "confusable_words": [
+      "miss"
+    ]
+  },
+  {
+    "word": "discourse",
+    "phonetic": "/ˈdɪskɔːs/",
+    "pos": "n.",
+    "meaning_cn": "话语；论述；交谈",
+    "frequency_rank": 66,
+    "example": "Academic discourse has shifted on this topic.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "public discourse",
+      "political discourse"
+    ],
+    "synonyms": [
+      "discussion",
+      "conversation",
+      "debate"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "discrepancy",
+    "phonetic": "/dɪsˈkrepənsi/",
+    "pos": "n.",
+    "meaning_cn": "差异；不一致",
+    "frequency_rank": 67,
+    "example": "There is a discrepancy in the accounts.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "discrepancy between",
+      "apparent discrepancy"
+    ],
+    "synonyms": [
+      "difference",
+      "inconsistency",
+      "gap"
+    ],
+    "confusable_words": [
+      "agreement"
+    ]
+  },
+  {
+    "word": "discretion",
+    "phonetic": "/dɪˈskreʃn/",
+    "pos": "n.",
+    "meaning_cn": "谨慎；自由裁量权",
+    "frequency_rank": 68,
+    "example": "Use your discretion in such matters.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "at one's discretion",
+      "exercise discretion"
+    ],
+    "synonyms": [
+      "judgment",
+      "prudence",
+      "choice"
+    ],
+    "confusable_words": [
+      "indiscretion"
+    ]
+  },
+  {
+    "word": "displace",
+    "phonetic": "/dɪsˈpleɪs/",
+    "pos": "v.",
+    "meaning_cn": "取代；使流离失所",
+    "frequency_rank": 69,
+    "example": "Technology has displaced many workers.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "displace workers",
+      "internally displaced"
+    ],
+    "synonyms": [
+      "replace",
+      "supplant",
+      "move"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "disposition",
+    "phonetic": "/ˌdɪspəˈzɪʃn/",
+    "pos": "n.",
+    "meaning_cn": "性格；倾向；安排",
+    "frequency_rank": 70,
+    "example": "She has a cheerful disposition.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "sunny disposition",
+      "disposition towards"
+    ],
+    "synonyms": [
+      "temperament",
+      "nature",
+      "inclination"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "dissolve",
+    "phonetic": "/dɪˈzɒlv/",
+    "pos": "v.",
+    "meaning_cn": "溶解；解散；消失",
+    "frequency_rank": 71,
+    "example": "The committee was dissolved in 2020.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "dissolve in",
+      "dissolve parliament"
+    ],
+    "synonyms": [
+      "disband",
+      "melt",
+      "disappear"
+    ],
+    "confusable_words": [
+      "form"
+    ]
+  },
+  {
+    "word": "distort",
+    "phonetic": "/dɪˈstɔːt/",
+    "pos": "v.",
+    "meaning_cn": "扭曲；歪曲",
+    "frequency_rank": 72,
+    "example": "The media often distorts scientific findings.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "distort the truth",
+      "distorted image"
+    ],
+    "synonyms": [
+      "twist",
+      "misrepresent",
+      "warp"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "divert",
+    "phonetic": "/daɪˈvɜːt/",
+    "pos": "v.",
+    "meaning_cn": "转移；使转向",
+    "frequency_rank": 73,
+    "example": "Water was diverted from the river for irrigation.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "divert attention",
+      "divert from",
+      "divert resources"
+    ],
+    "synonyms": [
+      "redirect",
+      "deflect",
+      "channel"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "doctrine",
+    "phonetic": "/ˈdɒktrɪn/",
+    "pos": "n.",
+    "meaning_cn": "学说；教义；主义",
+    "frequency_rank": 74,
+    "example": "The Monroe Doctrine shaped US foreign policy.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "religious doctrine",
+      "legal doctrine"
+    ],
+    "synonyms": [
+      "principle",
+      "teaching",
+      "belief"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "domain",
+    "phonetic": "/dəˈmeɪn/",
+    "pos": "n.",
+    "meaning_cn": "领域；范围；领地",
+    "frequency_rank": 75,
+    "example": "This falls outside my domain of expertise.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "in the domain of",
+      "public domain",
+      "domain name"
+    ],
+    "synonyms": [
+      "field",
+      "area",
+      "realm"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "drastic",
+    "phonetic": "/ˈdræstɪk/",
+    "pos": "adj.",
+    "meaning_cn": "激烈的；极端的",
+    "frequency_rank": 76,
+    "example": "Drastic measures were needed to save the company.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "drastic action",
+      "drastic change"
+    ],
+    "synonyms": [
+      "extreme",
+      "severe",
+      "radical"
+    ],
+    "confusable_words": [
+      "moderate",
+      "mild"
+    ]
+  },
+  {
+    "word": "durable",
+    "phonetic": "/ˈdjʊərəbl/",
+    "pos": "adj.",
+    "meaning_cn": "耐用的；持久的",
+    "frequency_rank": 77,
+    "example": "We need a durable solution to the problem.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "durable goods",
+      "durable peace"
+    ],
+    "synonyms": [
+      "lasting",
+      "enduring",
+      "sturdy"
+    ],
+    "confusable_words": [
+      "fragile"
+    ]
+  },
+  {
+    "word": "elaborate",
+    "phonetic": "/ɪˈlæbərət/",
+    "pos": "adj./v.",
+    "meaning_cn": "详尽的；精心制作",
+    "frequency_rank": 78,
+    "example": "Can you elaborate on that point?",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "elaborate on",
+      "elaborate design"
+    ],
+    "synonyms": [
+      "detailed",
+      "complex",
+      "explain"
+    ],
+    "confusable_words": [
+      "simple",
+      "brief"
+    ]
+  },
+  {
+    "word": "elevate",
+    "phonetic": "/ˈelɪveɪt/",
+    "pos": "v.",
+    "meaning_cn": "提升；抬高",
+    "frequency_rank": 79,
+    "example": "Reading good literature elevates the mind.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "elevate to",
+      "elevate the status"
+    ],
+    "synonyms": [
+      "raise",
+      "lift",
+      "promote"
+    ],
+    "confusable_words": [
+      "lower"
+    ]
+  },
+  {
+    "word": "elicit",
+    "phonetic": "/ɪˈlɪsɪt/",
+    "pos": "v.",
+    "meaning_cn": "引出；诱出",
+    "frequency_rank": 80,
+    "example": "The question elicited a surprising response.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "elicit from",
+      "elicit a reaction"
+    ],
+    "synonyms": [
+      "draw out",
+      "evoke",
+      "extract"
+    ],
+    "confusable_words": [
+      "suppress"
+    ]
+  },
+  {
+    "word": "eloquent",
+    "phonetic": "/ˈeləkwənt/",
+    "pos": "adj.",
+    "meaning_cn": "雄辩的；有口才的",
+    "frequency_rank": 81,
+    "example": "She gave an eloquent defense of free speech.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "eloquent speech",
+      "eloquent testimony"
+    ],
+    "synonyms": [
+      "articulate",
+      "fluent",
+      "persuasive"
+    ],
+    "confusable_words": [
+      "inarticulate"
+    ]
+  },
+  {
+    "word": "embody",
+    "phonetic": "/ɪmˈbɒdi/",
+    "pos": "v.",
+    "meaning_cn": "体现；包含",
+    "frequency_rank": 82,
+    "example": "The statue embodies the spirit of freedom.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "embody the principle",
+      "embody the idea"
+    ],
+    "synonyms": [
+      "represent",
+      "manifest",
+      "personify"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "empirical",
+    "phonetic": "/ɪmˈpɪrɪkl/",
+    "pos": "adj.",
+    "meaning_cn": "经验主义的；以观察为依据的",
+    "frequency_rank": 83,
+    "example": "The theory needs empirical evidence.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "empirical evidence",
+      "empirical research"
+    ],
+    "synonyms": [
+      "observational",
+      "experimental",
+      "practical"
+    ],
+    "confusable_words": [
+      "theoretical"
+    ]
+  },
+  {
+    "word": "encompass",
+    "phonetic": "/ɪnˈkʌmpəs/",
+    "pos": "v.",
+    "meaning_cn": "包含；围绕",
+    "frequency_rank": 84,
+    "example": "The course encompasses a wide range of topics.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "encompass all",
+      "broadly encompass"
+    ],
+    "synonyms": [
+      "include",
+      "cover",
+      "embrace"
+    ],
+    "confusable_words": [
+      "exclude"
+    ]
+  },
+  {
+    "word": "endeavor",
+    "phonetic": "/ɪnˈdevə/",
+    "pos": "n./v.",
+    "meaning_cn": "努力；尽力",
+    "frequency_rank": 85,
+    "example": "Scientific endeavor requires patience and funding.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "human endeavor",
+      "endeavor to",
+      "best endeavors"
+    ],
+    "synonyms": [
+      "effort",
+      "attempt",
+      "strive"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "endow",
+    "phonetic": "/ɪnˈdaʊ/",
+    "pos": "v.",
+    "meaning_cn": "捐赠；赋予",
+    "frequency_rank": 86,
+    "example": "She is endowed with great musical talent.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "endow with",
+      "well endowed",
+      "endow a chair"
+    ],
+    "synonyms": [
+      "give",
+      "grant",
+      "bestow"
+    ],
+    "confusable_words": [
+      "deprive"
+    ]
+  },
+  {
+    "word": "enlighten",
+    "phonetic": "/ɪnˈlaɪtn/",
+    "pos": "v.",
+    "meaning_cn": "启发；开导",
+    "frequency_rank": 87,
+    "example": "Can you enlighten me on this subject?",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "enlighten about",
+      "enlightening experience"
+    ],
+    "synonyms": [
+      "inform",
+      "educate",
+      "illuminate"
+    ],
+    "confusable_words": [
+      "confuse"
+    ]
+  },
+  {
+    "word": "ensue",
+    "phonetic": "/ɪnˈsjuː/",
+    "pos": "v.",
+    "meaning_cn": "接着发生；随之而来",
+    "frequency_rank": 88,
+    "example": "Chaos ensued after the announcement.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "ensue from",
+      "ensuing chaos"
+    ],
+    "synonyms": [
+      "follow",
+      "result",
+      "happen"
+    ],
+    "confusable_words": [
+      "precede"
+    ]
+  },
+  {
+    "word": "entail",
+    "phonetic": "/ɪnˈteɪl/",
+    "pos": "v.",
+    "meaning_cn": "需要；必然导致",
+    "frequency_rank": 89,
+    "example": "The plan entails considerable risk.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "entail risk",
+      "entail consequences"
+    ],
+    "synonyms": [
+      "involve",
+      "require",
+      "necessitate"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "entity",
+    "phonetic": "/ˈentəti/",
+    "pos": "n.",
+    "meaning_cn": "实体；存在",
+    "frequency_rank": 90,
+    "example": "The company is a separate legal entity.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "legal entity",
+      "separate entity"
+    ],
+    "synonyms": [
+      "being",
+      "body",
+      "organization"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "entrepreneur",
+    "phonetic": "/ˌɒntrəprəˈnɜː/",
+    "pos": "n.",
+    "meaning_cn": "企业家",
+    "frequency_rank": 91,
+    "example": "She is a successful tech entrepreneur.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "young entrepreneur",
+      "social entrepreneur"
+    ],
+    "synonyms": [
+      "businessperson",
+      "founder",
+      "innovator"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "envision",
+    "phonetic": "/ɪnˈvɪʒn/",
+    "pos": "v.",
+    "meaning_cn": "设想；展望",
+    "frequency_rank": 92,
+    "example": "Can you envision a world without poverty?",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "envision a future",
+      "envision for"
+    ],
+    "synonyms": [
+      "imagine",
+      "foresee",
+      "visualize"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "epidemic",
+    "phonetic": "/ˌepɪˈdemɪk/",
+    "pos": "n./adj.",
+    "meaning_cn": "流行病；流行的",
+    "frequency_rank": 93,
+    "example": "The obesity epidemic is a public health crisis.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "epidemic of",
+      "global epidemic",
+      "reach epidemic proportions"
+    ],
+    "synonyms": [
+      "outbreak",
+      "plague",
+      "widespread"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "equity",
+    "phonetic": "/ˈekwəti/",
+    "pos": "n.",
+    "meaning_cn": "公平；公正；股权",
+    "frequency_rank": 94,
+    "example": "The policy aims to promote social equity.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "social equity",
+      "equity and justice"
+    ],
+    "synonyms": [
+      "fairness",
+      "justice",
+      "impartiality"
+    ],
+    "confusable_words": [
+      "inequity"
+    ]
+  },
+  {
+    "word": "erode",
+    "phonetic": "/ɪˈrəʊd/",
+    "pos": "v.",
+    "meaning_cn": "侵蚀；腐蚀；削弱",
+    "frequency_rank": 95,
+    "example": "Inflation erodes the value of savings.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "erode away",
+      "erode confidence"
+    ],
+    "synonyms": [
+      "wear away",
+      "corrode",
+      "undermine"
+    ],
+    "confusable_words": [
+      "build"
+    ]
+  },
+  {
+    "word": "essence",
+    "phonetic": "/ˈesns/",
+    "pos": "n.",
+    "meaning_cn": "本质；精髓",
+    "frequency_rank": 96,
+    "example": "Time is of the essence in this matter.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "in essence",
+      "capture the essence",
+      "of the essence"
+    ],
+    "synonyms": [
+      "nature",
+      "core",
+      "spirit"
+    ],
+    "confusable_words": []
+  },
+  {
+    "word": "ethical",
+    "phonetic": "/ˈeθɪkl/",
+    "pos": "adj.",
+    "meaning_cn": "道德的；伦理的",
+    "frequency_rank": 97,
+    "example": "The experiment raised ethical concerns.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "ethical issue",
+      "ethical standard",
+      "ethical dilemma"
+    ],
+    "synonyms": [
+      "moral",
+      "principled",
+      "right"
+    ],
+    "confusable_words": [
+      "unethical"
+    ]
+  },
+  {
+    "word": "evoke",
+    "phonetic": "/ɪˈvəʊk/",
+    "pos": "v.",
+    "meaning_cn": "唤起；引起",
+    "frequency_rank": 98,
+    "example": "The photograph evoked memories of childhood.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "evoke memories",
+      "evoke sympathy"
+    ],
+    "synonyms": [
+      "arouse",
+      "elicit",
+      "provoke"
+    ],
+    "confusable_words": [
+      "suppress"
+    ]
+  },
+  {
+    "word": "exacerbate",
+    "phonetic": "/ɪɡˈzæsəbeɪt/",
+    "pos": "v.",
+    "meaning_cn": "使恶化；加剧",
+    "frequency_rank": 99,
+    "example": "The drought exacerbated food shortages.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "exacerbate the problem",
+      "exacerbate tensions"
+    ],
+    "synonyms": [
+      "worsen",
+      "aggravate",
+      "intensify"
+    ],
+    "confusable_words": [
+      "alleviate"
+    ]
+  },
+  {
+    "word": "explicit",
+    "phonetic": "/ɪkˈsplɪsɪt/",
+    "pos": "adj.",
+    "meaning_cn": "明确的；直言的",
+    "frequency_rank": 100,
+    "example": "The instructions were very explicit.",
+    "cet_level": "POSTGRADUATE",
+    "collocations": [
+      "explicit about",
+      "explicit consent",
+      "explicit content"
+    ],
+    "synonyms": [
+      "clear",
+      "direct",
+      "specific"
+    ],
+    "confusable_words": [
+      "implicit",
+      "vague"
+    ]
+  }
+]

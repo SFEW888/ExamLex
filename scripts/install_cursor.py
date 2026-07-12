@@ -11,7 +11,7 @@ except ModuleNotFoundError:
 
 
 def default_dest() -> Path:
-    return Path.home() / ".cursor" / "rules" / "skills"
+    return Path.home() / ".cursor" / "skills"
 
 
 def build_parser() -> argparse.ArgumentParser:

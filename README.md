@@ -70,6 +70,8 @@ cd ExamLex
 .\install.ps1 claude   # PowerShell
 ```
 
+Installers preserve an existing Skill directory by default. To replace an existing installation explicitly, add `--force` to `install.sh` or `-Force` to `install.ps1`.
+
 Restart your agent, then invoke:
 ```text
 /examlex Create a 30-day CET4 plan for a weak-foundation learner targeting 550+.
@@ -265,7 +267,7 @@ examlex check examples/sample-learner-profile.yaml
 # Plan with vocab pool and spaced repetition
 examlex plan examples/sample-learner-profile.yaml \
   --ability examples/sample-ability-profile.yaml \
-  --vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-2000.json \
+  --vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-200.json \
   --output daily-plan.json
 
 # Record timed practice
