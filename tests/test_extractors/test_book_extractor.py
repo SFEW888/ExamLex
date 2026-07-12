@@ -1,16 +1,58 @@
 """Tests for book extractor."""
-import tempfile
+import shutil
 import unittest
+import uuid
+import zipfile
 from pathlib import Path
+from unittest.mock import patch
 
 from examlex.scripts.extractors.book import BookExtractor
 
 
 class BookExtractorTests(unittest.TestCase):
     def setUp(self):
-        self.tmp = tempfile.mkdtemp()
+        root = Path(__file__).resolve().parents[2] / ".task8-test-tmp"
+        root.mkdir(parents=True, exist_ok=True)
+        self.tmp = str(root / f"book-{uuid.uuid4().hex}")
+        Path(self.tmp).mkdir()
         self.output_dir = Path(self.tmp) / "artifacts"
         self.extractor = BookExtractor()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _write_epub(self, name, entries):
+        path = Path(self.tmp) / name
+        with zipfile.ZipFile(path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
+            for filename, content in entries:
+                archive.writestr(filename, content)
+        return path
+
+    def test_epub_rejects_excessive_entry_count(self):
+        source = self._write_epub("entries.epub", [("a.xhtml", "a"), ("b.xhtml", "b")])
+        with patch.object(BookExtractor, "MAX_EPUB_ENTRIES", 1):
+            with self.assertRaisesRegex(ValueError, "entry count"):
+                self.extractor._extract_epub_simple(source)
+
+    def test_epub_rejects_large_html_entry(self):
+        source = self._write_epub("large.epub", [("a.xhtml", "a" * 20)])
+        with patch.object(BookExtractor, "MAX_EPUB_HTML_BYTES", 10):
+            with self.assertRaisesRegex(ValueError, "HTML entry"):
+                self.extractor._extract_epub_simple(source)
+
+    def test_epub_rejects_large_total_html(self):
+        source = self._write_epub(
+            "total.epub", [("a.xhtml", "a" * 10), ("b.xhtml", "b" * 10)]
+        )
+        with patch.object(BookExtractor, "MAX_EPUB_TOTAL_HTML_BYTES", 15):
+            with self.assertRaisesRegex(ValueError, "total HTML"):
+                self.extractor._extract_epub_simple(source)
+
+    def test_epub_rejects_suspicious_compression_ratio(self):
+        source = self._write_epub("ratio.epub", [("a.xhtml", "a" * 1000)])
+        with patch.object(BookExtractor, "MAX_EPUB_COMPRESSION_RATIO", 2):
+            with self.assertRaisesRegex(ValueError, "compression ratio"):
+                self.extractor._extract_epub_simple(source)
 
     def test_check_dependencies_empty(self):
         # Book extractor has no hard requirements (uses Python libs)

@@ -99,11 +99,11 @@
 **Interfaces:**
 - Produces limits: 2,000 entries, 10 MiB per HTML file, 50 MiB cumulative HTML, compression ratio 100.
 
-- [ ] **Step 1: Add failing tests.** Build small EPUBs with patched `ZipInfo` metadata and assert rejection for entry count, one uncompressed HTML size, cumulative size, and compression ratio; retain ordinary EPUB success.
-- [ ] **Step 2: Run RED.** `python -m unittest tests.test_extractors.test_book_extractor`; expect unsafe cases accepted.
-- [ ] **Step 3: Validate metadata before reads.** Reject negative/inconsistent sizes, excessive entry count, per-file/total HTML bytes, zero-byte compressed positive output, and ratio above 100 with actionable `ValueError` messages.
-- [ ] **Step 4: Run GREEN.** Re-run the extractor module; expect normal input pass and all unsafe cases fail closed.
-- [ ] **Step 5: Commit.** Commit as `fix: bound EPUB fallback extraction`.
+- [x] **Step 1: Add failing tests.** Build small EPUBs with patched `ZipInfo` metadata and assert rejection for entry count, one uncompressed HTML size, cumulative size, and compression ratio; retain ordinary EPUB success.
+- [x] **Step 2: Run RED.** `python -m unittest tests.test_extractors.test_book_extractor`; expect unsafe cases accepted.
+- [x] **Step 3: Validate metadata before reads.** Reject negative/inconsistent sizes, excessive entry count, per-file/total HTML bytes, zero-byte compressed positive output, and ratio above 100 with actionable `ValueError` messages.
+- [x] **Step 4: Run GREEN.** Re-run the extractor module; expect normal input pass and all unsafe cases fail closed.
+- [x] **Step 5: Commit.** Commit as `fix: bound EPUB fallback extraction`.
 
 ### Task 6: Make external URL validation exact
 
