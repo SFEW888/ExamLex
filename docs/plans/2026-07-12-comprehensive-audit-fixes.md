@@ -48,12 +48,12 @@
 **Interfaces:**
 - Produces: Cursor default `Path.home() / ".cursor" / "skills"`, explicit force flags, and Python 3.10 version rejection.
 
-- [ ] **Step 1: Add failing tests.** Assert the Cursor default equals `~/.cursor/skills`; PowerShell contains `[switch]$Force` and no `if (-not $NoForce)`; shell contains `force=false`; fake Python 3.9 interpreters produce `Python 3.10+ is required` and a nonzero exit.
-- [ ] **Step 2: Run RED.** `python -m unittest tests.test_install_scripts`; expect path, implicit-force, and version-check failures.
-- [ ] **Step 3: Implement safe defaults.** Append `--force` only for explicit `-Force`/`--force`; validate `sys.version_info >= (3, 10)` before invoking installer modules.
-- [ ] **Step 4: Correct Cursor docs and destinations.** Use `.cursor/skills` for personal/project installation in code, dry runs, and both READMEs.
-- [ ] **Step 5: Run GREEN.** `python -m unittest tests.test_install_scripts tests.test_validate_project`; expect all pass.
-- [ ] **Step 6: Commit.** Commit the wrappers, Cursor installer, READMEs, and tests as `fix: make skill installation safe by default`.
+- [x] **Step 1: Add failing tests.** Assert the Cursor default equals `~/.cursor/skills`; PowerShell contains `[switch]$Force` and no `if (-not $NoForce)`; shell contains `force=false`; fake Python 3.9 interpreters produce `Python 3.10+ is required` and a nonzero exit.
+- [x] **Step 2: Run RED.** `python -m unittest tests.test_install_scripts`; expect path, implicit-force, and version-check failures.
+- [x] **Step 3: Implement safe defaults.** Append `--force` only for explicit `-Force`/`--force`; validate `sys.version_info >= (3, 10)` before invoking installer modules.
+- [x] **Step 4: Correct Cursor docs and destinations.** Use `.cursor/skills` for personal/project installation in code, dry runs, and both READMEs.
+- [x] **Step 5: Run GREEN.** `python -m unittest tests.test_install_scripts tests.test_validate_project`; expect all pass.
+- [x] **Step 6: Commit.** Commit the wrappers, Cursor installer, READMEs, and tests as `fix: make skill installation safe by default`.
 
 ### Task 3: Publish truthful canonical vocabulary pools
 

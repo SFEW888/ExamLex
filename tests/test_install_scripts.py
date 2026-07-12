@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 import subprocess
 import sys
 import unittest
@@ -29,6 +30,56 @@ def temp_dir():
 
 
 class InstallScriptTests(unittest.TestCase):
+    def test_cursor_default_destination_is_skills_directory(self):
+        self.assertEqual(
+            install_cursor.default_dest(), Path.home() / ".cursor" / "skills"
+        )
+
+    def test_wrappers_use_safe_cursor_project_path_and_no_force_default(self):
+        powershell = (PROJECT_ROOT / "install.ps1").read_text(encoding="utf-8")
+        shell = (PROJECT_ROOT / "install.sh").read_text(encoding="utf-8")
+
+        self.assertIn('[switch]$Force', powershell)
+        self.assertNotIn("if (-not $NoForce)", powershell)
+        self.assertIn('.cursor\\skills', powershell)
+        self.assertIn("force=false", shell)
+        self.assertIn('.cursor/skills', shell)
+
+    @unittest.skipUnless(os.name == "nt", "PowerShell wrapper test requires Windows")
+    def test_powershell_wrapper_rejects_python_3_9_before_install(self):
+        with temp_dir() as temp:
+            fake_python = Path(temp) / "python.cmd"
+            fake_python.write_text(
+                '@echo off\r\nif "%1"=="-c" echo 3.9.18\r\nexit /b 0\r\n',
+                encoding="utf-8",
+            )
+            env = os.environ.copy()
+            env["PATH"] = temp
+            powershell = (
+                Path(os.environ.get("SystemRoot", r"C:\Windows"))
+                / "System32/WindowsPowerShell/v1.0/powershell.exe"
+            )
+
+            result = subprocess.run(
+                [
+                    str(powershell),
+                    "-NoProfile",
+                    "-File",
+                    str(PROJECT_ROOT / "install.ps1"),
+                    "cursor",
+                    "-DryRun",
+                ],
+                cwd=temp,
+                env=env,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                capture_output=True,
+            )
+
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("Python 3.10+ is required", result.stderr + result.stdout)
+
     def test_dry_run_does_not_write_files(self):
         with temp_dir() as temp:
             dest = Path(temp) / "skills"

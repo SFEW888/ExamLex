@@ -4,7 +4,7 @@ set -eu
 repository_url="https://github.com/SFEW888/ExamLex"
 
 usage() {
-  echo "Usage: ./install.sh [codex|claude|cursor] [--project] [--dry-run] [--no-force]"
+  echo "Usage: ./install.sh [codex|claude|cursor] [--project] [--dry-run] [--force]"
   echo "Repository: $repository_url"
   echo "Clone: git clone $repository_url.git"
 }
@@ -27,12 +27,13 @@ esac
 
 project=false
 dry_run=false
-force=true
+force=false
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
     --project) project=true ;;
     --dry-run) dry_run=true ;;
+    --force) force=true ;;
     --no-force) force=false ;;
     --help|-h) usage; exit 0 ;;
     *)
@@ -52,6 +53,11 @@ else
   exit 1
 fi
 
+if ! "$python_cmd" -c 'import sys; raise SystemExit(0 if sys.version_info >= (3, 10) else 1)' >/dev/null 2>&1; then
+  echo "Python 3.10+ is required for the installer." >&2
+  exit 1
+fi
+
 script="scripts/install_${agent}.py"
 set --
 
@@ -59,7 +65,7 @@ if [ "$project" = true ]; then
   case "$agent" in
     codex) set -- "$@" --dest ".agents/skills" ;;
     claude) set -- "$@" --dest ".claude/skills" ;;
-    cursor) set -- "$@" --dest ".cursor/rules/skills" ;;
+    cursor) set -- "$@" --dest ".cursor/skills" ;;
   esac
 fi
 

@@ -76,6 +76,8 @@ Set-Location ExamLex
 ./install.sh claude   # 也可替换为 codex 或 cursor
 ```
 
+安装脚本默认保留已有 Skill 目录。如需明确覆盖已有安装，请为 `install.sh` 添加 `--force`，或为 `install.ps1` 添加 `-Force`。
+
 然后重启 Claude Code，在对话中调用：
 
 ```text
