@@ -97,6 +97,32 @@ class ValidateProjectTests(unittest.TestCase):
 
         self.assertTrue(any("external URL" in error for error in result.errors))
 
+    def test_allowed_url_prefix_cannot_hide_bare_external_url(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            readme = root / "README.md"
+            readme.write_text(
+                readme.read_text(encoding="utf-8")
+                + "\nhttps://github.com/SFEW888/ExamLex.evil.invalid\n",
+                encoding="utf-8",
+            )
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(any("external URL" in error for error in result.errors))
+
+    def test_allowed_badge_prefix_cannot_hide_markdown_external_url(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            readme = root / "README.md"
+            readme.write_text(
+                readme.read_text(encoding="utf-8")
+                + "\n[bad](https://img.shields.io/badge/License-MIT-yellow.svg.evil)\n",
+                encoding="utf-8",
+            )
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(any("external URL" in error for error in result.errors))
+
     def test_allows_project_status_badges_in_bilingual_readmes(self):
         result = validate_repo.validate_project(PROJECT_ROOT)
 

@@ -114,11 +114,11 @@
 **Interfaces:**
 - Produces: `extract_external_urls(text: str) -> set[str]` and exact normalized allowlist membership.
 
-- [ ] **Step 1: Add failing bypass tests.** Place bare `https://github.com/SFEW888/ExamLex.evil.invalid` and an allowed badge URL with an appended suffix in maintained Markdown; assert both report `external URL`.
-- [ ] **Step 2: Run RED.** `python -m unittest tests.test_validate_project`; expect the bare prefix bypass to be accepted incorrectly.
-- [ ] **Step 3: Implement exact parsing.** Extract Markdown targets and bare HTTP(S) tokens; trim terminal Markdown punctuation; normalize only scheme/host casing with `urllib.parse.urlsplit`; compare complete values to the allowlist.
-- [ ] **Step 4: Run GREEN.** Re-run validator tests; expect known badges pass and both bypasses fail.
-- [ ] **Step 5: Commit.** Commit as `fix: validate external URLs by exact value`.
+- [x] **Step 1: Add failing bypass tests.** Append an attacker-controlled suffix to the canonical repository URL and to an allowed badge URL in maintained Markdown; assert both report `external URL`.
+- [x] **Step 2: Run RED.** `python -m unittest tests.test_validate_project`; expect the bare prefix bypass to be accepted incorrectly.
+- [x] **Step 3: Implement exact parsing.** Extract Markdown targets and bare HTTP(S) tokens; trim terminal Markdown punctuation; normalize only scheme/host casing with `urllib.parse.urlsplit`; compare complete values to the allowlist.
+- [x] **Step 4: Run GREEN.** Re-run validator tests; expect known badges pass and both bypasses fail.
+- [x] **Step 5: Commit.** Commit as `fix: validate external URLs by exact value`.
 
 ### Task 7: Harden CI and remove stale execution documentation
 

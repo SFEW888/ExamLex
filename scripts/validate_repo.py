@@ -7,7 +7,7 @@ import json
 import re
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
-from urllib.parse import unquote
+from urllib.parse import unquote, urlsplit, urlunsplit
 
 
 SKILL_NAME = "examlex"
@@ -33,9 +33,11 @@ SKILL_ALIASES = {
 }
 FORBIDDEN_PRIVATE_PROMPT = " ".join(("Act as a strict", "but helpful English", "grammar teacher"))
 MARKDOWN_LINK_RE = re.compile(r"!?\[[^\]]*\]\(([^)\n]+)\)")
+EXTERNAL_URL_RE = re.compile(r"https?://[A-Za-z0-9._~:/?#@!$&*+,;=%-]+")
 REPOSITORY_URL = "https://github.com/SFEW888/ExamLex"
 ALLOWED_EXTERNAL_URLS = {
     REPOSITORY_URL,
+    f"{REPOSITORY_URL}.git",
     f"{REPOSITORY_URL}/issues",
     "https://github.com/yt-dlp/yt-dlp",
     "https://ffmpeg.org/download.html",
@@ -163,6 +165,22 @@ class ValidationResult:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _normalize_external_url(url: str) -> str:
+    parts = urlsplit(url)
+    return urlunsplit(
+        (parts.scheme.lower(), parts.netloc.lower(), parts.path, parts.query, parts.fragment)
+    )
+
+
+def extract_external_urls(text: str) -> set[str]:
+    urls: set[str] = set()
+    for match in EXTERNAL_URL_RE.finditer(text):
+        candidate = match.group(0).rstrip(").,;:!?]}`")
+        if candidate:
+            urls.add(_normalize_external_url(candidate))
+    return urls
 
 
 def parse_front_matter(text: str) -> dict[str, str]:
@@ -358,14 +376,14 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
         allowed_urls = ALLOWED_EXTERNAL_URLS
         if relative in README_BADGE_PATHS:
             allowed_urls = ALLOWED_EXTERNAL_URLS | README_BADGE_URLS
-        text_without_allowed_urls = text
-        for allowed_url in allowed_urls:
-            text_without_allowed_urls = text_without_allowed_urls.replace(
-                allowed_url, ""
-            )
-        if "http://" in text_without_allowed_urls or "https://" in text_without_allowed_urls:
+        normalized_allowed_urls = {
+            _normalize_external_url(allowed_url) for allowed_url in allowed_urls
+        }
+        disallowed_urls = extract_external_urls(text) - normalized_allowed_urls
+        if disallowed_urls:
             errors.append(
                 f"external URL is forbidden in maintained Markdown: {relative.as_posix()}"
+                f" -> {sorted(disallowed_urls)[0]}"
             )
 
         for match in MARKDOWN_LINK_RE.finditer(text):
