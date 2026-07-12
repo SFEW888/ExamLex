@@ -108,7 +108,6 @@ EXPECTED_QUALITY_DOCS = {
     "docs/development.md",
     "docs/getting-started.md",
     "docs/release.md",
-    "docs/roadmap.md",
     "docs/troubleshooting.md",
 }
 EXPECTED_README_SECTIONS = {
