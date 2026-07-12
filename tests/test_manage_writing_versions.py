@@ -1,8 +1,11 @@
 import json
+import threading
+import time
 import unittest
 from contextlib import redirect_stdout
 from io import StringIO
 from pathlib import Path
+from unittest.mock import patch
 
 from examlex.scripts import manage_writing_versions
 
@@ -11,6 +14,37 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class ManageWritingVersionsTests(unittest.TestCase):
+    def test_concurrent_cli_appends_keep_both_versions(self):
+        versions_path = Path("test-artifacts") / "concurrent-writing-versions.json"
+        versions_path.parent.mkdir(exist_ok=True)
+        versions_path.write_text("[]\n", encoding="utf-8")
+        original_load = manage_writing_versions._load_records
+
+        def delayed_load(path):
+            records = original_load(path)
+            time.sleep(0.05)
+            return records
+
+        def append(writing_id):
+            self.assertEqual(
+                0,
+                manage_writing_versions.main(
+                    ["--file", str(versions_path), "--writing-id", writing_id, "--text", "draft"]
+                ),
+            )
+
+        try:
+            with patch.object(manage_writing_versions, "_load_records", side_effect=delayed_load):
+                workers = [threading.Thread(target=append, args=(f"essay-{i}",)) for i in range(2)]
+                for worker in workers:
+                    worker.start()
+                for worker in workers:
+                    worker.join()
+            saved = json.loads(versions_path.read_text(encoding="utf-8"))
+            self.assertEqual({"essay-0", "essay-1"}, {item["writing_id"] for item in saved})
+        finally:
+            versions_path.unlink(missing_ok=True)
+
     def test_packaged_writing_template_is_an_appendable_store(self):
         template = json.loads(
             (

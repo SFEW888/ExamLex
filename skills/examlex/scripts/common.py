@@ -1,6 +1,8 @@
 from __future__ import annotations
 
 import json
+import os
+import tempfile
 from pathlib import Path
 from typing import Any
 
@@ -81,7 +83,7 @@ def load_data(path: str | Path) -> Any:
         raise OSError(f"Error reading data file '{path}': {e}") from e
 
 
-def save_data(path: str | Path, data: Any) -> None:
+def atomic_save_data(path: str | Path, data: Any) -> None:
     """Save JSON data to a file, creating parent directories if needed.
 
     Raises:
@@ -95,12 +97,33 @@ def save_data(path: str | Path, data: Any) -> None:
         raise TypeError(f"Data is not JSON-serializable: {e}")
     p = Path(path)
     p.parent.mkdir(parents=True, exist_ok=True)
+    temporary: Path | None = None
     try:
-        p.write_text(text, encoding="utf-8")
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=p.parent,
+            prefix=p.name + ".",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            stream.write(text)
+            stream.flush()
+            os.fsync(stream.fileno())
+        temporary.replace(p)
     except PermissionError:
         raise PermissionError(f"Permission denied writing: {path}")
     except OSError as e:
         raise OSError(f"Error writing data file '{path}': {e}") from e
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def save_data(path: str | Path, data: Any) -> None:
+    """Backward-compatible atomic JSON save."""
+    atomic_save_data(path, data)
 
 
 def target_bands_for(exam_type: str) -> set[str]:

@@ -9,8 +9,10 @@ from typing import Any
 
 try:
     from . import common
+    from .file_lock import exclusive_file_lock
 except ImportError:  # pragma: no cover - supports direct script execution.
     import common  # type: ignore[no-redef]
+    from file_lock import exclusive_file_lock  # type: ignore[no-redef]
 
 
 VERSION_RE = re.compile(r"^V([1-9][0-9]*)$")
@@ -91,26 +93,22 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     source = Path(args.file)
+    output = Path(args.output) if args.output else source
     try:
-        records = _load_records(source)
-        updated, record = add_writing_version(
-            records,
-            writing_id=args.writing_id,
-            text=args.text,
-            version=args.version,
-            source_version=args.source_version,
-            changes=args.changes,
-        )
+        with exclusive_file_lock(output):
+            records = _load_records(source)
+            updated, record = add_writing_version(
+                records,
+                writing_id=args.writing_id,
+                text=args.text,
+                version=args.version,
+                source_version=args.source_version,
+                changes=args.changes,
+            )
+            common.atomic_save_data(output, updated)
     except (OSError, ValueError) as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
-    output = Path(args.output) if args.output else source
-    output.parent.mkdir(parents=True, exist_ok=True)
-    # Atomic write: write to a temp file then rename over the target so an
-    # interrupted run cannot leave a truncated/corrupt JSON file behind.
-    tmp = output.with_suffix(output.suffix + ".tmp")
-    common.save_data(tmp, updated)
-    tmp.replace(output)
     if args.print_record:
         print(json.dumps(record, ensure_ascii=False))
     return 0

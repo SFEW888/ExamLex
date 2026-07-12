@@ -82,13 +82,13 @@
 **Interfaces:**
 - Produces: `exclusive_file_lock(target: Path, timeout_seconds=5.0, stale_after_seconds=60.0)` and `atomic_save_data(path, data)`.
 
-- [ ] **Step 1: Add failing tests.** Patch `Path.replace` to raise and assert original JSON is unchanged; use two threads appending distinct records and assert both survive; test timeout and stale-lock recovery.
-- [ ] **Step 2: Run RED.** Run the four persistence/security test modules; expect missing APIs and unsafe update failures.
-- [ ] **Step 3: Implement atomic save.** Serialize first; write a unique same-directory `NamedTemporaryFile`; flush and `os.fsync`; replace target; remove an unused temporary file in `finally`.
-- [ ] **Step 4: Implement bounded lock files.** Acquire `<target>.lock` with `O_CREAT|O_EXCL`, record PID/time, retry to a monotonic deadline, remove locks older than 60 seconds, and release only the acquired lock; timeout text is `Timed out waiting for file lock: <path>`.
-- [ ] **Step 5: Lock read-modify-write transactions.** Practice and writing commands hold the lock from load through atomic replace and convert lock/I/O failures to one-line CLI errors.
-- [ ] **Step 6: Run GREEN.** Run all persistence/security modules; expect atomicity and concurrent-append tests pass.
-- [ ] **Step 7: Commit.** Commit implementation and tests as `fix: protect learner records from partial writes`.
+- [x] **Step 1: Add failing tests.** Patch `Path.replace` to raise and assert original JSON is unchanged; use two threads appending distinct records and assert both survive; test timeout and stale-lock recovery.
+- [x] **Step 2: Run RED.** Run the four persistence/security test modules; expect missing APIs and unsafe update failures.
+- [x] **Step 3: Implement atomic save.** Serialize first; write a unique same-directory `NamedTemporaryFile`; flush and `os.fsync`; replace target; remove an unused temporary file in `finally`.
+- [x] **Step 4: Implement bounded lock files.** Acquire `<target>.lock` with `O_CREAT|O_EXCL`, record PID/time, retry to a monotonic deadline, remove locks older than 60 seconds, and release only the acquired lock; timeout text is `Timed out waiting for file lock: <path>`.
+- [x] **Step 5: Lock read-modify-write transactions.** Practice and writing commands hold the lock from load through atomic replace and convert lock/I/O failures to one-line CLI errors.
+- [x] **Step 6: Run GREEN.** Run all persistence/security modules; expect atomicity and concurrent-append tests pass.
+- [x] **Step 7: Commit.** Commit implementation and tests as `fix: protect learner records from partial writes`.
 
 ### Task 5: Bound EPUB fallback extraction
 
