@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import shutil
+import re
 import unittest
 import uuid
 from contextlib import contextmanager
@@ -44,6 +45,32 @@ def copy_project():
 
 
 class ValidateProjectTests(unittest.TestCase):
+    def test_workflows_use_least_privilege_and_immutable_action_pins(self):
+        ci = (PROJECT_ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
+        codeql = (PROJECT_ROOT / ".github/workflows/codeql.yml").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("permissions:\n  contents: read", ci)
+        uses = re.findall(r"uses:\s*([^\s#]+)", ci + "\n" + codeql)
+        self.assertTrue(uses)
+        for action in uses:
+            self.assertRegex(action, r"@[0-9a-f]{40}$")
+        self.assertIn(
+            "actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0", ci
+        )
+        self.assertIn(
+            "actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1", ci
+        )
+        self.assertIn(
+            "github/codeql-action/init@99df26d4f13ea111d4ec1a7dddef6063f76b97e9",
+            codeql,
+        )
+        self.assertIn(
+            "github/codeql-action/analyze@99df26d4f13ea111d4ec1a7dddef6063f76b97e9",
+            codeql,
+        )
+
     def test_repository_vocabulary_contract_is_valid(self):
         errors: list[str] = []
 
@@ -634,11 +661,11 @@ class ValidateProjectTests(unittest.TestCase):
             PROJECT_ROOT / ".github" / "workflows" / "codeql.yml"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("actions/checkout@v7", ci)
-        self.assertIn("actions/setup-python@v6", ci)
-        self.assertIn("actions/checkout@v7", codeql)
-        self.assertIn("github/codeql-action/init@v4", codeql)
-        self.assertIn("github/codeql-action/analyze@v4", codeql)
+        self.assertIn("actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7", ci)
+        self.assertIn("actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6", ci)
+        self.assertIn("actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7", codeql)
+        self.assertIn("github/codeql-action/init@99df26d4f13ea111d4ec1a7dddef6063f76b97e9 # v4", codeql)
+        self.assertIn("github/codeql-action/analyze@99df26d4f13ea111d4ec1a7dddef6063f76b97e9 # v4", codeql)
 
     def test_ci_covers_supported_python_versions_and_platforms(self):
         ci = (PROJECT_ROOT / ".github" / "workflows" / "ci.yml").read_text(

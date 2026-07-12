@@ -129,12 +129,12 @@
 **Interfaces:**
 - Produces: least-privilege workflows pinned to immutable official commits.
 
-- [ ] **Step 1: Add failing workflow policy tests.** Require CI top-level `permissions: contents: read`; require all `uses:` values to end in 40 hex characters; approve checkout `9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0`, setup-python `ece7cb06caefa5fff74198d8649806c4678c61a1`, and CodeQL `99df26d4f13ea111d4ec1a7dddef6063f76b97e9`.
-- [ ] **Step 2: Run RED.** `python -m unittest tests.test_validate_project`; expect mutable-tag and permission failures.
-- [ ] **Step 3: Pin workflows.** Replace tags with approved SHAs plus version comments; add CI `permissions: contents: read`; retain CodeQL `security-events: write`.
-- [ ] **Step 4: Delete stale plan.** Remove only `docs/plans/2026-07-11-python-compatibility.md`, retaining its design record.
-- [ ] **Step 5: Run GREEN.** Run validator tests and repository validation; expect no errors or warnings.
-- [ ] **Step 6: Commit.** Commit as `ci: enforce least privilege and immutable actions`.
+- [x] **Step 1: Add failing workflow policy tests.** Require CI top-level `permissions: contents: read`; require all `uses:` values to end in 40 hex characters; approve checkout `9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0`, setup-python `ece7cb06caefa5fff74198d8649806c4678c61a1`, and CodeQL `99df26d4f13ea111d4ec1a7dddef6063f76b97e9`.
+- [x] **Step 2: Run RED.** `python -m unittest tests.test_validate_project`; expect mutable-tag and permission failures.
+- [x] **Step 3: Pin workflows.** Replace tags with approved SHAs plus version comments; add CI `permissions: contents: read`; retain CodeQL `security-events: write`.
+- [x] **Step 4: Delete stale plan.** Remove only `docs/plans/2026-07-11-python-compatibility.md`, retaining its design record.
+- [x] **Step 5: Run GREEN.** Run validator tests and repository validation; expect no errors or warnings.
+- [x] **Step 6: Commit.** Commit as `ci: enforce least privilege and immutable actions`.
 
 ### Task 8: Verify, publish, merge, and protect `master`
 
