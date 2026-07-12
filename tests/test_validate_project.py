@@ -98,14 +98,14 @@ class ValidateProjectTests(unittest.TestCase):
     def test_detects_missing_chinese_document_counterpart(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
-            (root / "zh-CN" / "docs" / "roadmap.md").unlink(missing_ok=True)
+            (root / "zh-CN" / "docs" / "configuration.md").unlink(missing_ok=True)
 
             result = validate_repo.validate_project(root)
 
         self.assertTrue(
             any(
                 "missing Chinese documentation counterpart" in error
-                and "zh-CN/docs/roadmap.md" in error
+                and "zh-CN/docs/configuration.md" in error
                 for error in result.errors
             )
         )
@@ -355,11 +355,19 @@ class ValidateProjectTests(unittest.TestCase):
                 for exam in ("CET-4", "CET-6", "TEM-4", "TEM-8", "Postgraduate English"):
                     self.assertIn(exam, opening)
 
-    def test_english_readme_omits_roadmap(self):
+    def test_bilingual_public_docs_omit_roadmap(self):
         readme = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+        zh_readme = (PROJECT_ROOT / "zh-CN" / "README.md").read_text(encoding="utf-8")
+        zh_optimization = (
+            PROJECT_ROOT / "zh-CN" / "docs" / "optimization-plan.md"
+        ).read_text(encoding="utf-8")
 
         self.assertNotIn("## Roadmap", readme)
         self.assertNotIn("[Roadmap]", readme)
+        self.assertNotIn("路线图", zh_readme)
+        self.assertNotIn("路线图", zh_optimization)
+        self.assertFalse((PROJECT_ROOT / "docs" / "roadmap.md").exists())
+        self.assertFalse((PROJECT_ROOT / "zh-CN" / "docs" / "roadmap.md").exists())
 
     def test_internal_bilingual_sync_plan_is_not_published(self):
         plan = PROJECT_ROOT / "docs" / "plans" / "2026-07-11-bilingual-documentation-sync.md"

@@ -1,6 +1,6 @@
 # Optimization Plan
 
-This roadmap records implemented optimization work and the remaining release priorities. Keep README claims limited to commands that exist and are covered by tests.
+This document records implemented optimization work and the remaining release priorities. Keep README claims limited to commands that exist and are covered by tests.
 
 ## Implemented In This Repository
 

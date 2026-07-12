@@ -429,7 +429,7 @@ Agent 对话层 (Claude Code / Codex / Cursor)
 │
 ├── docs/                            # 英文文档
 ├── zh-CN/                           # 中文文档目录
-│   ├── docs/                        #   中文版设计/配置/开发/排错/发布/路线图/项目质量
+│   ├── docs/                        #   中文版设计/配置/开发/排错/发布/项目质量
 │   └── skill/references/            #   中文版参考文档
 │
 ├── examples/                        # 示例文件（档案/画像/记录/作文版本）
@@ -717,7 +717,7 @@ examlex backup ./local/data
 
 **"为什么不支持雅思/托福？"**
 
-当前优先覆盖国内高频英语考试（四级/六级/考研/专四/专八）。雅思/托福的评分体系完全不同（band score 1-9），需要独立设计。在路线图中属于后续扩展。
+当前优先覆盖国内高频英语考试（四级/六级/考研/专四/专八）。雅思/托福的评分体系完全不同（band score 1-9），需要独立设计，属于后续扩展。
 
 ---
 
@@ -757,7 +757,6 @@ Get-ChildItem -Name skills\examlex | Where-Object { $_ -in @('README.md','INSTAL
 | [开发](docs/development.md) | 开发环境搭建与贡献流程 |
 | [排错](docs/troubleshooting.md) | 常见问题与解决方法 |
 | [发布](docs/release.md) | 版本发布流程 |
-| [路线图](docs/roadmap.md) | 未来计划 |
 | [项目质量](docs/project-quality.md) | 项目质量与发布检查 |
 | [四级指南](docs/cet4.md) | CET-4 备考专项说明 |
 | [六级指南](docs/cet6.md) | CET-6 备考专项说明 |
