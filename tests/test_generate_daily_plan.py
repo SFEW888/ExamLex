@@ -9,6 +9,36 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class GenerateDailyPlanTests(unittest.TestCase):
+    def test_official_ninety_minute_profile_reserves_vocabulary_work(self):
+        profile = json.loads(
+            (PROJECT_ROOT / "examlex/assets/templates/learner-profile.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        profile["learner_id"] = "learner-001"
+        ability = json.loads(
+            (PROJECT_ROOT / "examlex/assets/templates/ability-profile.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        vocab_pool = json.loads(
+            (
+                PROJECT_ROOT
+                / "examlex/assets/data/vocabulary/cet4-core-200.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        plan = generate_daily_plan.generate_daily_plan(
+            profile, ability, vocab_pool=vocab_pool
+        )
+
+        vocabulary_tasks = [
+            task for task in plan["tasks"] if task.get("module") == "vocabulary"
+        ]
+        self.assertEqual(1, len(vocabulary_tasks), plan)
+        self.assertGreater(len(vocabulary_tasks[0].get("vocab_items", [])), 0)
+        self.assertLessEqual(plan["total_planned_minutes"], 90)
+
     def test_packaged_ability_template_produces_real_candidates(self):
         ability = json.loads(
             (PROJECT_ROOT / "examlex/assets/templates/ability-profile.yaml").read_text(

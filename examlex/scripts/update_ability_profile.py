@@ -20,6 +20,15 @@ def update_ability_profile(ability_profile: dict[str, Any], ledger: list[dict[st
     if not isinstance(modules, dict):
         raise ValueError("ability profile modules must be an object")
 
+    # The CLI accepts the complete practice ledger, so derived statistics must
+    # be rebuilt from that ledger rather than accumulated onto a previous run.
+    for nodes in modules.values():
+        if not isinstance(nodes, list):
+            continue
+        for node in nodes:
+            if isinstance(node, dict):
+                node["stats"] = {**_empty_stats(), "accuracy": None}
+
     module_stats: dict[str, dict[str, int]] = {}
     dimension_errors: dict[tuple[str, str], int] = {}
 
@@ -35,13 +44,13 @@ def update_ability_profile(ability_profile: dict[str, Any], ledger: list[dict[st
             module_name, dimension = common.ERROR_TAG_TO_ABILITY[tag]
             dimension_errors[(module_name, dimension)] = dimension_errors.get((module_name, dimension), 0) + 1
 
-    for module, stats in module_stats.items():
-        for node in _nodes_for_module(modules, module):
-            _merge_stats(node, stats)
-
     for (module, dimension), count in dimension_errors.items():
         node = _find_or_create_node(modules, module, dimension)
         _merge_stats(node, {"total_items": 0, "correct_items": 0, "error_count": count})
+
+    for module, stats in module_stats.items():
+        for node in _nodes_for_module(modules, module):
+            _merge_stats(node, stats)
 
     for nodes in modules.values():
         if not isinstance(nodes, list):
