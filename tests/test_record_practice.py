@@ -1,10 +1,23 @@
 import unittest
+import json
 from pathlib import Path
 
 from examlex.scripts import record_practice
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
 class RecordPracticeTests(unittest.TestCase):
+    def test_packaged_practice_template_is_an_appendable_ledger(self):
+        template = json.loads(
+            (PROJECT_ROOT / "examlex/assets/templates/exercise-record.json").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        self.assertIsInstance(template, list)
+
     def test_appends_record_and_computes_accuracy_from_items(self):
         ledger = Path("test-artifacts") / "task5-record-ledger.json"
         ledger.parent.mkdir(exist_ok=True)

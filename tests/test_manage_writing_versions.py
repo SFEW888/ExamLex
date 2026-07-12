@@ -7,7 +7,20 @@ from pathlib import Path
 from examlex.scripts import manage_writing_versions
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
 class ManageWritingVersionsTests(unittest.TestCase):
+    def test_packaged_writing_template_is_an_appendable_store(self):
+        template = json.loads(
+            (
+                PROJECT_ROOT
+                / "examlex/assets/templates/writing-version-record.yaml"
+            ).read_text(encoding="utf-8")
+        )
+
+        self.assertIsInstance(template, list)
+
     def test_adds_next_version_for_existing_writing_id(self):
         data = [
             {

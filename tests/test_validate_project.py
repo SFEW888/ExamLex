@@ -44,6 +44,23 @@ def copy_project():
 
 
 class ValidateProjectTests(unittest.TestCase):
+    def test_detects_invalid_packaged_template_contract(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            invalid = '{"total_items": 0, "correct_items": 0}\n'
+            for relative in (
+                "examlex/assets/templates/exercise-record.json",
+                "skills/examlex/assets/templates/exercise-record.json",
+            ):
+                (root / relative).write_text(invalid, encoding="utf-8")
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(
+            any("practice template must contain a JSON list" in error for error in result.errors),
+            result.errors,
+        )
+
     def test_detects_missing_chinese_document_counterpart(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"

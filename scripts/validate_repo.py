@@ -397,6 +397,45 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
                 )
 
 
+def validate_template_contracts(root: Path, errors: list[str]) -> None:
+    templates = root / IMPORTABLE_NAME / "assets" / "templates"
+    try:
+        ability = json.loads((templates / "ability-profile.yaml").read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"ability-profile template is not valid JSON-compatible YAML: {exc}")
+    else:
+        modules = ability.get("modules") if isinstance(ability, dict) else None
+        if not isinstance(modules, dict) or not all(
+            isinstance(nodes, list)
+            and all(
+                isinstance(node, dict)
+                and isinstance(node.get("node"), str)
+                and bool(node["node"].strip())
+                for node in nodes
+            )
+            for nodes in modules.values()
+        ):
+            errors.append("ability-profile template modules must contain ability-node objects")
+
+    for filename in ("exercise-record.json", "exercise-record.yaml"):
+        try:
+            ledger = json.loads((templates / filename).read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            errors.append(f"practice template {filename} is not valid JSON-compatible YAML: {exc}")
+        else:
+            if not isinstance(ledger, list):
+                errors.append(f"practice template must contain a JSON list: {filename}")
+
+    filename = "writing-version-record.yaml"
+    try:
+        versions = json.loads((templates / filename).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"writing template is not valid JSON-compatible YAML: {exc}")
+    else:
+        if not isinstance(versions, list):
+            errors.append("writing template must contain a JSON list")
+
+
 def validate_project(root: str | Path) -> ValidationResult:
     root_path = Path(root).resolve()
     result = ValidationResult(root=str(root_path))
@@ -552,6 +591,7 @@ def validate_project(root: str | Path) -> ValidationResult:
 
     validate_resource_mirror(skill_dir, importable_dir, errors)
     validate_writing_article_omission(portable_scripts / "common.py", errors)
+    validate_template_contracts(root_path, errors)
     validate_documentation(root_path, errors)
     return result
 

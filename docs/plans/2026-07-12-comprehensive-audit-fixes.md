@@ -32,12 +32,12 @@
 - Consumes: `generate_daily_plan._ability_candidates`, `record_practice.record_practice`, `manage_writing_versions._load_records`.
 - Produces: accepted packaged templates and `validate_template_contracts(root, result)`.
 
-- [ ] **Step 1: Add failing integration tests.** Load the ability template and assert at least five non-fallback candidates; load practice and writing templates and assert each top level is a list accepted by its append command.
-- [ ] **Step 2: Run RED.** `python -m unittest tests.test_generate_daily_plan tests.test_record_practice tests.test_manage_writing_versions`; expect failures for string nodes and object-shaped stores.
-- [ ] **Step 3: Fix template shapes.** Represent every ability node as `{"node":"阅读速度","level":1,"status":"needs_work","stats":{"total_items":0,"correct_items":0,"error_count":0,"accuracy":0.0}}`; wrap practice and writing examples in arrays; remove unsupported `notes` and `next_action`.
-- [ ] **Step 4: Add contract validation.** Reject non-object ability nodes and non-list practice/writing templates with file-specific errors.
-- [ ] **Step 5: Run GREEN.** Run the four focused modules plus `python scripts/validate_repo.py --root . --json`; expect all pass and `"ok": true`.
-- [ ] **Step 6: Commit.** Stage the four templates, validator, and four tests; commit `fix: align starter templates with CLI contracts`.
+- [x] **Step 1: Add failing integration tests.** Load the ability template and assert at least five non-fallback candidates; load practice and writing templates and assert each top level is a list accepted by its append command.
+- [x] **Step 2: Run RED.** `python -m unittest tests.test_generate_daily_plan tests.test_record_practice tests.test_manage_writing_versions`; expect failures for string nodes and object-shaped stores.
+- [x] **Step 3: Fix template shapes.** Represent every ability node as `{"node":"阅读速度","level":1,"status":"needs_work","stats":{"total_items":0,"correct_items":0,"error_count":0,"accuracy":0.0}}`; wrap practice and writing examples in arrays; remove unsupported `notes` and `next_action`.
+- [x] **Step 4: Add contract validation.** Reject non-object ability nodes and non-list practice/writing templates with file-specific errors.
+- [x] **Step 5: Run GREEN.** Run the four focused modules plus `python scripts/validate_repo.py --root . --json`; expect all pass and `"ok": true`.
+- [x] **Step 6: Commit.** Stage the four templates, validator, and four tests; commit `fix: align starter templates with CLI contracts`.
 
 ### Task 2: Make installers truthful and non-destructive
 

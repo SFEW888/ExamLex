@@ -1,10 +1,28 @@
 import unittest
+import json
 from pathlib import Path
 
 from examlex.scripts import generate_daily_plan
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
 class GenerateDailyPlanTests(unittest.TestCase):
+    def test_packaged_ability_template_produces_real_candidates(self):
+        ability = json.loads(
+            (PROJECT_ROOT / "examlex/assets/templates/ability-profile.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+
+        candidates = generate_daily_plan._ability_candidates(ability)
+
+        self.assertGreaterEqual(len(candidates), 5)
+        self.assertTrue(
+            all(candidate["node"] != candidate["module"] for candidate in candidates)
+        )
+
     def test_plan_never_exceeds_daily_budget_and_prioritizes_errors(self):
         profile = {
             "learner_id": "learner-001",
