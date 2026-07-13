@@ -292,6 +292,63 @@ class ContinuousLearningP1Tests(unittest.TestCase):
             self.assertEqual(provenance["sha256"], hashlib.sha256(raw).hexdigest())
             self.assertEqual(provenance["source_url"], "https://example.invalid/source")
             self.assertEqual(provenance["source_file"], "method.md")
+            self.assertRegex(provenance["ingest_fingerprint"], r"^[a-f0-9]{64}$")
+
+    def test_repeated_ingest_with_same_scope_is_idempotent(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "method.md"
+            source.write_text(
+                "Use question-first reading.\n\n1. Read the stem\n2. Verify evidence",
+                encoding="utf-8",
+            )
+            library = root / "library.json"
+
+            first = ingest_strategy.ingest_strategy(
+                file_path=source,
+                library_path=library,
+                exam_types=["CET4"],
+                modules=["reading"],
+            )
+            first_bytes = library.read_bytes()
+            second = ingest_strategy.ingest_strategy(
+                file_path=source,
+                library_path=library,
+                exam_types=["CET4"],
+                modules=["reading"],
+            )
+
+            saved = json.loads(library.read_text(encoding="utf-8"))
+            self.assertEqual(first["strategy_id"], second["strategy_id"])
+            self.assertEqual(1, len(saved["strategies"]))
+            self.assertEqual(first_bytes, library.read_bytes())
+
+    def test_same_source_with_different_module_is_not_deduplicated(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "method.md"
+            source.write_text(
+                "Compare the prompt with the evidence before answering.",
+                encoding="utf-8",
+            )
+            library = root / "library.json"
+
+            reading = ingest_strategy.ingest_strategy(
+                file_path=source,
+                library_path=library,
+                exam_types=["CET4"],
+                modules=["reading"],
+            )
+            writing = ingest_strategy.ingest_strategy(
+                file_path=source,
+                library_path=library,
+                exam_types=["CET4"],
+                modules=["writing"],
+            )
+
+            saved = json.loads(library.read_text(encoding="utf-8"))
+            self.assertNotEqual(reading["strategy_id"], writing["strategy_id"])
+            self.assertEqual(2, len(saved["strategies"]))
 
     def test_backup_verification_detects_tampered_member(self):
         with self._temporary_dir() as temp:

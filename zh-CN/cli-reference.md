@@ -212,6 +212,10 @@ examlex ingest <file>
 examlex ingest "四级阅读技巧.md" --library strategy-library.json
 ```
 
+相同源文件在考试类型、模块、来源类型、蒸馏方式、来源 URL 和显式结构化参数均相同
+时，重复摄入会直接复用已有策略，不再追加重复条目。同一文件用于不同考试或模块时，
+仍可生成独立策略。
+
 ### `examlex strategies` — 策略库
 
 ```bash
@@ -380,14 +384,19 @@ examlex resume 12345678-1234-1234-1234-123456789abc --json
 
 该命令读取已有的管线状态，返回当前阶段、产物目录和下一步操作，不会创建新会话。
 
-### `examlex sessions-cleanup` — 陈旧会话归档
+### `examlex sessions-cleanup` — 陈旧会话归档或瘦身
 
 ```bash
 examlex sessions-cleanup [--sessions-root <dir>] [--archive-root <dir>] [--older-than-hours 24]
 examlex sessions-cleanup --sessions-root sessions --older-than-hours 24 --apply
+examlex sessions-cleanup --older-than-hours 168 --prune-terminal-artifacts
+examlex sessions-cleanup --older-than-hours 168 --prune-terminal-artifacts --apply
 ```
 
-默认只预览，不修改文件。`--apply` 仅移动符合条件的非终态会话，并拒绝覆盖已经存在的归档目标。
+默认只预览，不修改文件。未指定瘦身选项时，`--apply` 仅移动符合条件的非终态会话，
+并拒绝覆盖已经存在的归档目标。`--prune-terminal-artifacts` 改为选择陈旧且已经
+提交成功的会话；只有再加 `--apply`，才会删除可重新生成的全文、音频、转录稿和章节
+提取物。管线状态、蒸馏策略、验证/评估报告及其他审计文件仍会保留。
 
 ### `examlex check-deps` — 检查依赖
 

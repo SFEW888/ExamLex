@@ -52,6 +52,7 @@ def ingest_strategy(
         raise FileNotFoundError(f"strategy source file not found: {source}")
     raw_source = source.read_bytes()
     text = raw_source.decode("utf-8").lstrip("﻿")
+    source_sha256 = hashlib.sha256(raw_source).hexdigest()
     chosen_exam_types = exam_types if exam_types else common.DEFAULT_EXAM_TYPES
     chosen_modules = modules if modules else sorted(common.ABILITY_TREE.keys())
     _validate_values(chosen_exam_types, common.EXAM_TYPES, "exam type")
@@ -69,6 +70,32 @@ def ingest_strategy(
         existing_entries = []
     if not isinstance(existing_entries, list):
         raise ValueError("strategy library must contain a strategies list")
+    ingest_fingerprint = _ingest_fingerprint(
+        source_sha256=source_sha256,
+        exam_types=chosen_exam_types,
+        modules=chosen_modules,
+        source_type=source_type,
+        distillation_method=distillation_method,
+        source_url=source_url,
+        ria_structure=ria_structure,
+        mental_model=mental_model,
+        heuristic=heuristic,
+    )
+    duplicate = _find_duplicate_ingest(
+        existing_entries,
+        ingest_fingerprint=ingest_fingerprint,
+        source_sha256=source_sha256,
+        exam_types=chosen_exam_types,
+        modules=chosen_modules,
+        source_type=source_type,
+        distillation_method=distillation_method,
+    )
+    if duplicate is not None:
+        _LOGGER.info(
+            "strategy source already ingested with the same scope: %s",
+            duplicate.get("strategy_id", source.name),
+        )
+        return duplicate
     existing_ids = {
         entry.get("strategy_id") for entry in existing_entries if isinstance(entry, dict)
     }
@@ -112,7 +139,8 @@ def ingest_strategy(
         "source_provenance": {
             "source_file": source.name,
             "source_url": source_url,
-            "sha256": hashlib.sha256(raw_source).hexdigest(),
+            "sha256": source_sha256,
+            "ingest_fingerprint": ingest_fingerprint,
             "captured_at": dt.datetime.now(dt.timezone.utc).isoformat(),
         },
     }
@@ -160,6 +188,74 @@ def _validate_values(values: list[str], allowed: set[str], label: str) -> None:
     invalid = [value for value in values if value not in allowed]
     if invalid:
         raise ValueError(f"invalid {label}: {', '.join(invalid)}")
+
+
+def _ingest_fingerprint(
+    *,
+    source_sha256: str,
+    exam_types: list[str],
+    modules: list[str],
+    source_type: str,
+    distillation_method: str,
+    source_url: str | None,
+    ria_structure: dict[str, Any] | None,
+    mental_model: dict[str, Any] | None,
+    heuristic: dict[str, Any] | None,
+) -> str:
+    payload = {
+        "source_sha256": source_sha256,
+        "exam_types": sorted(set(exam_types)),
+        "modules": sorted(set(modules)),
+        "source_type": source_type,
+        "distillation_method": distillation_method,
+        "source_url": source_url,
+        "ria_structure": ria_structure,
+        "mental_model": mental_model,
+        "heuristic": heuristic,
+    }
+    encoded = json.dumps(
+        payload,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _find_duplicate_ingest(
+    entries: list[Any],
+    *,
+    ingest_fingerprint: str,
+    source_sha256: str,
+    exam_types: list[str],
+    modules: list[str],
+    source_type: str,
+    distillation_method: str,
+) -> dict[str, Any] | None:
+    expected_exams = sorted(set(exam_types))
+    expected_modules = sorted(set(modules))
+    for entry in entries:
+        if not isinstance(entry, dict):
+            continue
+        provenance = entry.get("source_provenance")
+        if not isinstance(provenance, dict):
+            continue
+        stored_fingerprint = provenance.get("ingest_fingerprint")
+        if stored_fingerprint == ingest_fingerprint:
+            return entry
+        # Backward-compatible matching for libraries created before fingerprints.
+        if stored_fingerprint is not None or provenance.get("sha256") != source_sha256:
+            continue
+        if sorted(set(entry.get("exam_types", []))) != expected_exams:
+            continue
+        if sorted(set(entry.get("modules", []))) != expected_modules:
+            continue
+        if entry.get("source_type") != source_type:
+            continue
+        if entry.get("distillation_method") != distillation_method:
+            continue
+        return entry
+    return None
 
 
 def _strategy_id(

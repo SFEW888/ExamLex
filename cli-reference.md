@@ -204,6 +204,12 @@ examlex ingest strategy.md --library strategy-library.json
 
 Equivalent full command: `ingest-strategy --file <file>`.
 
+Ingest is idempotent for the same source bytes and ingestion scope. Repeating
+the same file with the same exam types, modules, source type, distillation
+method, source URL, and explicit structured fields returns the existing
+strategy instead of appending a duplicate. The same source may still produce a
+separate strategy when its exam or module scope differs.
+
 ### `examlex strategies` — list strategies
 
 ```bash
@@ -285,14 +291,21 @@ examlex resume 12345678-1234-1234-1234-123456789abc --json
 
 The command reads the existing pipeline state and returns the current stage, artifacts directory, and next action without creating a new session.
 
-### `examlex sessions-cleanup` — archive stale sessions
+### `examlex sessions-cleanup` — archive or prune stale sessions
 
 ```bash
 examlex sessions-cleanup [--sessions-root <dir>] [--archive-root <dir>] [--older-than-hours 24]
 examlex sessions-cleanup --sessions-root sessions --older-than-hours 24 --apply
+examlex sessions-cleanup --older-than-hours 168 --prune-terminal-artifacts
+examlex sessions-cleanup --older-than-hours 168 --prune-terminal-artifacts --apply
 ```
 
-The default is a dry run. `--apply` moves eligible non-terminal sessions without overwriting an existing archive target.
+The default is a dry run. Without a pruning option, `--apply` moves eligible
+non-terminal sessions without overwriting an existing archive target.
+`--prune-terminal-artifacts` instead selects stale committed sessions and, only
+with `--apply`, removes reproducible `full_text`, audio, transcript, and chapter
+artifacts. Pipeline state, distilled strategies, validation/evaluation reports,
+and other audit files remain in place.
 
 ### `examlex check-deps` and `examlex ops-check`
 
