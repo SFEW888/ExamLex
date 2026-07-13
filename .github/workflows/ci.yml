@@ -10,7 +10,8 @@ permissions:
 
 jobs:
   quality:
-    name: Quality and coverage on Python 3.12
+    # Keep this name stable: branch protection requires the historical matrix check.
+    name: Python 3.12 on ubuntu-latest
     runs-on: ubuntu-latest
 
     steps:
