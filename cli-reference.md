@@ -44,6 +44,7 @@
 | `examlex restore <file> <dir> [opts]` | `restore` | U | Restore learner data. |
 | `examlex report [opts]` | `visualize` | U | Generate an HTML progress report. |
 | `examlex vocab [opts]` | `vocab-estimate` | U | Estimate vocabulary size by sampling. |
+| `examlex prompt-check --private-dir <dir> [opts]` | `prompt-check` | U | Validate an external private prompt set without exposing its text. |
 | `examlex resume <session-id> [opts]` | `resume` | U | Show guidance for resuming an existing distillation session. |
 | `examlex sessions-cleanup [opts]` | `sessions-cleanup` | M | Preview or archive stale sessions. |
 | `examlex check-deps [opts]` | `check-deps` | M | Check optional external tools. |
@@ -206,6 +207,15 @@ examlex vocab --wordlist answers.json [--json]
 
 Equivalent full command: `vocab-estimate`. Reference word data is included in the installed package.
 
+### `examlex prompt-check` — validate external private prompts
+
+```powershell
+examlex prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" [--json]
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+```
+
+The directory must contain exactly one UTF-8 `<role-id>.md` file for each of the eight public role contracts. The command validates filenames and file safety and reports byte sizes and SHA-256 hashes only. It never prints prompt bodies. Keep the directory outside the repository and never commit it.
+
 ### `examlex resume` — resume a distillation session
 
 ```bash
@@ -241,7 +251,8 @@ The dispatcher also accepts these full names directly:
 analyze-trends       backup              check-deps
 commit-strategies    daily-plan          extract
 ingest-strategy      list-strategies     ops-check
-record-practice      restore             resume
+prompt-check         record-practice     restore
+resume
 score-writing        sessions-cleanup    summarize-errors
 tag-error            update-ability      validate-profile
 validate-strategies  validate-strategy   visualize

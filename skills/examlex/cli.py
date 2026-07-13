@@ -27,6 +27,7 @@ from .scripts.cli_extract import main as extract_main
 from .scripts.cli_validate import main as validate_main
 from .scripts.cli_commit import main as commit_main
 from .scripts.cli_ops import main as ops_main
+from .scripts.cli_prompts import main as prompt_check_main
 from .scripts.config import TutorConfig
 
 CommandMain = Callable[[list[str] | None], int]
@@ -68,6 +69,7 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
     "commit-strategies": ("Commit strategies to library with ratchet check.", commit_main),
     "check-deps": ("Check external tool dependencies.", _check_deps_main),
     "ops-check": ("Run 13-point operational readiness check.", ops_main),
+    "prompt-check": ("Validate external private tutor prompts without exposing text.", prompt_check_main),
     "sessions-cleanup": ("Preview or archive stale sessions.", cleanup_sessions.main),
     "resume": ("Resume an existing distillation session.", session.resume_main),
     "vocab-estimate": ("Estimate vocabulary size via Yes/No sampling.", estimate_vocabulary.main),

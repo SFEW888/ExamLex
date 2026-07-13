@@ -13,7 +13,9 @@ Use this Skill to operate the portable English exam tutoring workspace for CET-4
 - Full-local mode: use the user's local private prompt assets if they exist outside this public-safe release. Do not rewrite the original eight tutor prompts while operating in this mode.
 - When unsure, default to public-safe mode and ask before using any private local prompt source.
 
-Read [references/prompt-modes.md](references/prompt-modes.md) before publishing, packaging, or syncing the Skill outside the local machine. Read [references/assistant-roster.md](references/assistant-roster.md) when selecting tutor roles.
+Read [references/prompt-modes.md](references/prompt-modes.md) before publishing, packaging, or syncing the Skill outside the local machine. Read [references/assistant-roster.md](references/assistant-roster.md) when selecting tutor roles. Use [references/tutor-role-contracts.json](references/tutor-role-contracts.json) as the public, machine-readable contract for role selection and the runtime behavior overlay.
+
+Before full-local use, keep one UTF-8 Markdown file per role in a private directory outside the repository and run `python run.py prompt-check --private-dir <path>`. This check reports metadata only; never print, copy, or commit the private prompt bodies.
 
 ## User-Facing Invocation
 
@@ -139,6 +141,7 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 
 - Do not rewrite the original eight tutor prompts in full-local mode.
 - Public release must use public-safe prompt placeholders and must not include full private/original prompts.
+- Keep full-local prompt directories outside the repository. Do not commit, archive, log, or display their prompt bodies.
 - Writing score output is a deterministic rubric estimate, not official exam scoring.
 - Practice records must use `total_items` and `correct_items`; do not use `total` or `correct`.
 - Timed practice records must include `timed: true`; `time_limit_minutes` is auto-looked-up from `EXAM_TIME_LIMITS` if omitted.
@@ -152,6 +155,7 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 ## References and Templates
 
 - [references/assistant-roster.md](references/assistant-roster.md): eight assistants, role boundaries, public-safe placeholders.
+- [references/tutor-role-contracts.json](references/tutor-role-contracts.json): machine-readable public role contracts used by the full-local prompt composer.
 - [references/error-taxonomy.md](references/error-taxonomy.md): module/dimension tree and valid error tags.
 - [references/exam-profiles.md](references/exam-profiles.md): supported exam types, foundation levels, target bands.
 - [references/prompt-modes.md](references/prompt-modes.md): public-safe versus full-local publishing rules.

@@ -13,7 +13,9 @@ Use this Skill to operate the portable English exam tutoring workspace for CET-4
 - Full-local mode: use the user's local private prompt assets if they exist outside this public-safe release. Do not rewrite the original eight tutor prompts while operating in this mode.
 - When unsure, default to public-safe mode and ask before using any private local prompt source.
 
-Read [references/prompt-modes.md](references/prompt-modes.md) before publishing, packaging, or syncing the Skill outside the local machine. Read [references/assistant-roster.md](references/assistant-roster.md) when selecting tutor roles.
+发布、打包或将 Skill 同步到本机之外前，阅读 [references/prompt-modes.md](references/prompt-modes.md)。选择助教角色时，阅读 [references/assistant-roster.md](references/assistant-roster.md)。使用 [公开助教角色契约](../../skills/examlex/references/tutor-role-contracts.json) 作为角色选择和运行时行为叠加层的机器可读依据。
+
+启用 full-local 前，在仓库外的私有目录中为每个角色保存一个 UTF-8 Markdown 文件，并运行 `python run.py prompt-check --private-dir <path>`。该检查只报告元数据；绝不能打印、复制或提交私有提示词正文。
 
 ## User-Facing Invocation
 
@@ -138,6 +140,7 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 
 - Do not rewrite the original eight tutor prompts in full-local mode.
 - Public release must use public-safe prompt placeholders and must not include full private/original prompts.
+- 将 full-local 提示词目录保存在仓库之外。不得提交、归档、记录或显示其中的提示词正文。
 - Writing score output is a deterministic rubric estimate, not official exam scoring.
 - Practice records must use `total_items` and `correct_items`; do not use `total` or `correct`.
 - Timed practice records must include `timed: true`; `time_limit_minutes` is auto-looked-up from `EXAM_TIME_LIMITS` if omitted.
@@ -151,6 +154,7 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 ## References and Templates
 
 - [references/assistant-roster.md](references/assistant-roster.md): eight assistants, role boundaries, public-safe placeholders.
+- [公开助教角色契约](../../skills/examlex/references/tutor-role-contracts.json)：供 full-local 提示词组合器使用的机器可读公开角色契约。
 - [references/error-taxonomy.md](references/error-taxonomy.md): module/dimension tree and valid error tags.
 - [references/exam-profiles.md](references/exam-profiles.md): supported exam types, foundation levels, target bands.
 - [references/prompt-modes.md](references/prompt-modes.md): public-safe versus full-local publishing rules.

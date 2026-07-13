@@ -55,6 +55,7 @@
 | 快捷命令 | 底层命令 | 触发 | 说明 |
 |----------|----------|:--:|------|
 | `examlex vocab [opts]` | `vocab-estimate` | 👤 | 抽样估算词汇量 |
+| `examlex prompt-check --private-dir <dir> [opts]` | `prompt-check` | 👤 | 校验仓库外的八助教私有提示词集，不输出正文 |
 
 ### 🔧 维护者
 
@@ -265,6 +266,15 @@ examlex vocab --wordlist <answers.json> [--output <path>]
 # 示例
 examlex vocab --interactive --output vocab-result.json
 ```
+
+### `examlex prompt-check` — 校验外部私有提示词
+
+```powershell
+examlex prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" [--json]
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+```
+
+目录中必须且只能包含八份 UTF-8 `<role-id>.md` 文件，分别对应八个公开角色契约。命令会校验文件名与文件安全性，只报告字节大小和 SHA-256 哈希，绝不打印提示词正文。私有目录必须放在仓库之外，且不得提交。
 
 ### `examlex extract` — 提取原始素材
 

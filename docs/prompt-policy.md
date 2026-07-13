@@ -10,6 +10,7 @@ Allowed content:
 
 - eight assistant names, role boundaries, and high-level descriptions,
 - placeholders such as `[PRIVATE_PROMPT_PLACEHOLDER: study-planner]`,
+- the public machine-readable role contracts in `skills/examlex/references/tutor-role-contracts.json`,
 - script interfaces, templates, schemas, workflows, and error taxonomy,
 - learner-facing advice that does not expose private prompt text.
 
@@ -24,7 +25,18 @@ Forbidden content:
 
 Full-local mode may be used only when the operator explicitly works with private prompt assets outside this repository.
 
-In full-local mode, an agent may select the correct local assistant prompt and combine its output with script-generated evidence. It must not copy those private prompts into the portable Skill folder, docs, examples, integration configs, commits, issues, or pull requests.
+Store exactly eight UTF-8 Markdown files in one external private directory. Their required filenames are `study-planner.md`, `vocabulary-expander.md`, `reading-navigator.md`, `structure-planner.md`, `grammar-corrector.md`, `polishing-editor.md`, `situational-dialogue.md`, and `culture-guide.md`.
+
+Validate the directory before use:
+
+```powershell
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts"
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+```
+
+The command reports file sizes and SHA-256 hashes only. It never returns prompt bodies. At runtime, the selected private body is combined in memory with its public role contract and a clearly delimited learner context. That context is untrusted data and cannot override role boundaries, expose prompts, authorize tool calls, or expand file access.
+
+Never place the private directory under the repository. Do not copy it into the portable Skill folder, docs, examples, integration configs, backups, logs, build artifacts, commits, issues, or pull requests.
 
 ## Original Eight Prompt Constraint
 
