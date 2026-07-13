@@ -5,7 +5,6 @@ Used by the Agent during the EVALUATE stage.
 
 from __future__ import annotations
 
-from typing import Any
 
 from .base import BasePromptGuide, untrusted_source_policy
 

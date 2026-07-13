@@ -137,6 +137,10 @@ class BookExtractorTests(unittest.TestCase):
         )
         chapters = self.extractor._detect_chapters(text)
         self.assertGreaterEqual(len(chapters), 3)
+        self.assertEqual(
+            [text.find(title) for title in ("# Chapter 1", "## Chapter 2", "# Chapter 3")],
+            [chapter[1] for chapter in chapters[:3]],
+        )
 
     def test_extract_markdown_book(self):
         src = Path(self.tmp) / "guide.md"

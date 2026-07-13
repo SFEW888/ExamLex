@@ -5,7 +5,6 @@ Used by the Agent during the OPTIMIZE stage when a strategy scores below thresho
 
 from __future__ import annotations
 
-from typing import Any
 
 from .base import BasePromptGuide
 

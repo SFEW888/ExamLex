@@ -51,7 +51,7 @@ def ingest_strategy(
     if not source.is_file():
         raise FileNotFoundError(f"strategy source file not found: {source}")
     raw_source = source.read_bytes()
-    text = source.read_text(encoding="utf-8").lstrip("﻿")
+    text = raw_source.decode("utf-8").lstrip("﻿")
     chosen_exam_types = exam_types if exam_types else common.DEFAULT_EXAM_TYPES
     chosen_modules = modules if modules else sorted(common.ABILITY_TREE.keys())
     _validate_values(chosen_exam_types, common.EXAM_TYPES, "exam type")

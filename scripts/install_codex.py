@@ -4,9 +4,13 @@ import argparse
 from pathlib import Path
 
 try:
-    from scripts.install_claude import install_skill, install_skills, result_to_json
+    from scripts.install_claude import (
+        install_skill as install_skill,
+        install_skills,
+        result_to_json,
+    )
 except ModuleNotFoundError:
-    from install_claude import install_skill, install_skills, result_to_json
+    from install_claude import install_skill as install_skill, install_skills, result_to_json
 
 
 def default_dest() -> Path:

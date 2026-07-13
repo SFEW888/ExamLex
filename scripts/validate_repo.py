@@ -4,6 +4,7 @@ import argparse
 import ast
 import hashlib
 import json
+import os
 import re
 import subprocess
 from dataclasses import asdict, dataclass, field
@@ -328,25 +329,74 @@ def validate_resource_mirror(skill_dir: Path, importable_dir: Path, errors: list
             )
 
 
-def _maintained_markdown_files(root: Path) -> list[Path]:
-    """Return maintained Markdown, excluding generated and internal planning trees."""
-    ignored_parts = {
-        ".git",
-        ".pytest_cache",
-        ".task8-test-tmp",
-        ".tmp-test",
-        ".venv",
-        ".worktrees",
-        "build",
-        "dist",
-        "test-artifacts",
-        "__pycache__",
+def validate_python_mirror(
+    skill_dir: Path,
+    importable_dir: Path,
+    errors: list[str],
+) -> None:
+    """Require the importable Python tree to be generated exactly from the Skill."""
+    source_root = skill_dir / "scripts"
+    target_root = importable_dir / "scripts"
+    source_files = {
+        path.relative_to(source_root): path
+        for path in source_root.rglob("*.py")
+        if "__pycache__" not in path.parts
     }
+    target_files = {
+        path.relative_to(target_root): path
+        for path in target_root.rglob("*.py")
+        if "__pycache__" not in path.parts
+    }
+    for relative, source in sorted(source_files.items()):
+        target = target_files.get(relative)
+        if target is None or sha256(source) != sha256(target):
+            errors.append(f"Python mirror mismatch: scripts/{relative.as_posix()}")
+    for relative in sorted(target_files.keys() - source_files.keys()):
+        errors.append(f"extra generated Python file: scripts/{relative.as_posix()}")
+
+    for filename in ("cli.py", "run.py"):
+        source = skill_dir / filename
+        target = importable_dir / filename
+        if source.is_file() and (not target.is_file() or sha256(source) != sha256(target)):
+            errors.append(f"Python mirror mismatch: {filename}")
+
+
+IGNORED_TREE_PARTS = {
+    ".git",
+    ".pytest_cache",
+    ".task8-test-tmp",
+    ".tmp-test",
+    ".venv",
+    ".worktrees",
+    "build",
+    "dist",
+    "test-artifacts",
+    "__pycache__",
+}
+
+
+def _project_files(root: Path) -> list[Path]:
+    """Inventory maintained files once while pruning ignored directory trees."""
     files: list[Path] = []
-    for path in root.rglob("*.md"):
-        relative = path.relative_to(root)
-        if ignored_parts.intersection(relative.parts):
+    for current, directories, filenames in os.walk(root):
+        directories[:] = [
+            name for name in directories if name not in IGNORED_TREE_PARTS
+        ]
+        current_path = Path(current)
+        files.extend(current_path / name for name in filenames)
+    return sorted(files)
+
+
+def _maintained_markdown_files(
+    root: Path,
+    project_files: list[Path] | None = None,
+) -> list[Path]:
+    """Return maintained Markdown, excluding generated and internal planning trees."""
+    files: list[Path] = []
+    for path in project_files if project_files is not None else _project_files(root):
+        if path.suffix.lower() != ".md":
             continue
+        relative = path.relative_to(root)
         if relative.parts[:2] == ("docs", "superpowers"):
             continue
         files.append(path)
@@ -383,7 +433,13 @@ def _markdown_link_target(raw_target: str) -> str:
     return target.split(maxsplit=1)[0] if target else ""
 
 
-def validate_documentation(root: Path, errors: list[str]) -> None:
+def validate_documentation(
+    root: Path,
+    errors: list[str],
+    *,
+    markdown_files: list[Path] | None = None,
+    text_cache: dict[Path, str] | None = None,
+) -> None:
     """Validate bilingual coverage, offline policy, and local link targets."""
     _validate_matching_basenames(
         root, root / "docs", root / "zh-CN" / "docs", "docs", errors
@@ -420,9 +476,18 @@ def validate_documentation(root: Path, errors: list[str]) -> None:
                 + english.relative_to(root).as_posix()
             )
 
-    for markdown_file in _maintained_markdown_files(root):
+    maintained_files = (
+        markdown_files
+        if markdown_files is not None
+        else _maintained_markdown_files(root)
+    )
+    for markdown_file in maintained_files:
         relative = markdown_file.relative_to(root)
-        text = markdown_file.read_text(encoding="utf-8")
+        text = (
+            text_cache[markdown_file]
+            if text_cache is not None and markdown_file in text_cache
+            else markdown_file.read_text(encoding="utf-8")
+        )
         allowed_urls = ALLOWED_EXTERNAL_URLS
         if relative in README_BADGE_PATHS:
             allowed_urls = ALLOWED_EXTERNAL_URLS | README_BADGE_URLS
@@ -563,6 +628,8 @@ def validate_project(root: str | Path) -> ValidationResult:
     result = ValidationResult(root=str(root_path))
     errors = result.errors
     warnings = result.warnings
+    project_files = _project_files(root_path)
+    text_cache: dict[Path, str] = {}
 
     for filename in ("LICENSE", "pyproject.toml", "SKILL.md", "install.sh", "install.ps1", "cli-reference.md"):
         if not (root_path / filename).is_file():
@@ -657,26 +724,13 @@ def validate_project(root: str | Path) -> ValidationResult:
         if SKILL_NAME not in alias_text:
             errors.append(f"Shortcut Skill {alias} must route back to {SKILL_NAME}.")
 
-    ignored_parts = {
-        ".git",
-        ".pytest_cache",
-        ".task8-test-tmp",
-        ".tmp-test",
-        ".venv",
-        ".worktrees",
-        "build",
-        "dist",
-        "test-artifacts",
-        "__pycache__",
-    }
-    for path in root_path.rglob("*"):
+    for path in project_files:
         relative_path = path.relative_to(root_path)
-        if ignored_parts.intersection(relative_path.parts) or path.is_dir():
-            continue
         try:
             text = path.read_text(encoding="utf-8")
         except UnicodeDecodeError:
             continue
+        text_cache[path] = text
         if FORBIDDEN_PRIVATE_PROMPT in text:
             errors.append(f"Found forbidden private prompt sentence in {path.relative_to(root_path).as_posix()}.")
         for identifier in LEGACY_IDENTIFIERS:
@@ -712,10 +766,16 @@ def validate_project(root: str | Path) -> ValidationResult:
             errors.append(f"Automation script mirror mismatch: {script_name}")
 
     validate_resource_mirror(skill_dir, importable_dir, errors)
+    validate_python_mirror(skill_dir, importable_dir, errors)
     validate_writing_article_omission(portable_scripts / "common.py", errors)
     validate_template_contracts(root_path, errors)
     validate_vocab_contracts(root_path, errors)
-    validate_documentation(root_path, errors)
+    validate_documentation(
+        root_path,
+        errors,
+        markdown_files=_maintained_markdown_files(root_path, project_files),
+        text_cache=text_cache,
+    )
     validate_tracked_learner_artifacts(root_path, errors)
     return result
 

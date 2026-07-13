@@ -339,13 +339,15 @@ examlex check-deps
 examlex ops-check
   [--library <strategy-library.json>]    # 可选，用于业务结果检查
   [--json]                               # JSON 格式输出
+  [--offline]                            # 跳过哔哩哔哩、YouTube 和 SiliconFlow 联网检查
 
 # 示例
 examlex ops-check
 examlex ops-check --library strategy-library.json --json
+examlex ops-check --offline --json
 ```
 
-底层命令：`ops-check`。运行 13 项运维就绪检查（环境、配置、数据完整性等），返回通过/警告/失败报告。
+底层命令：`ops-check`。运行 13 项运维就绪检查（环境、配置、数据完整性等），返回通过/警告/失败报告。需要离线或确定性 CI 诊断时使用 `--offline`。
 
 ---
 

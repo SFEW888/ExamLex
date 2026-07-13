@@ -16,11 +16,20 @@ def main(argv: list[str] | None = None) -> int:
     )
     parser.add_argument("--library", help="Path to strategy-library.json (for business result check)")
     parser.add_argument("--json", action="store_true", help="JSON output")
+    parser.add_argument(
+        "--offline",
+        action="store_true",
+        help="Skip live Bilibili, YouTube, and SiliconFlow connectivity checks",
+    )
     args = parser.parse_args(argv)
 
     cfg = TutorConfig()
     try:
-        report = run_all_checks(cfg, args.library)
+        report = run_all_checks(
+            cfg,
+            args.library,
+            include_network=not args.offline,
+        )
     except Exception as exc:
         if args.json:
             print(json.dumps({"error": str(exc)}, ensure_ascii=True))
@@ -52,7 +61,7 @@ def main(argv: list[str] | None = None) -> int:
     # Human-readable output
     status_icon = {"pass": "[OK]", "warn": "[WARN]", "fail": "[FAIL]", "skip": "[SKIP]"}
 
-    print(f"Operational Readiness Report")
+    print("Operational Readiness Report")
     print(f"Host: {report.hostname} | Platform: {report.platform}")
     print(f"Python: {report.python_version} | Time: {report.timestamp}")
     print(f"Summary: {report.summary.get('pass', 0)} pass, {report.summary.get('warn', 0)} warn, "

@@ -72,7 +72,6 @@ class TestTEMDailyPlan(unittest.TestCase):
         ability = json.loads((FIXTURES / "tem4-ability-profile.json").read_text("utf-8"))
         plan = generate_daily_plan(profile, ability)
         self.assertIn("tasks", plan)
-        modules_in_plan = {t.get("module") for t in plan["tasks"]}
         # dictation is in the TEM ability profile, so it should appear
         # (the plan prioritizes by status, so it may or may not include dictation
         #  depending on budget — just verify it handles TEM modules without error)

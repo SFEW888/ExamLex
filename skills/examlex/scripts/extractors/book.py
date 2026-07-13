@@ -339,13 +339,14 @@ class BookExtractor(BaseExtractor):
         lines = text.split("\n")
         chapter_starts = []
 
+        char_pos = 0
         for i, line in enumerate(lines):
             for pat in _CHAPTER_PATTERNS:
                 if pat.match(line.strip()):
                     title = line.strip().lstrip("#").strip()
-                    char_pos = sum(len(l) + 1 for l in lines[:i])
                     chapter_starts.append((title, char_pos, i))
                     break
+            char_pos += len(line) + 1
 
         if not chapter_starts:
             return []

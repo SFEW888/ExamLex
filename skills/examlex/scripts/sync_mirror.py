@@ -6,7 +6,6 @@ Usage: python sync_mirror.py [--check]
 """
 
 import filecmp
-import os
 import shutil
 import sys
 from pathlib import Path
@@ -20,29 +19,57 @@ def sync_scripts(check_only: bool = False) -> list[str]:
     """Sync scripts/ directory. Returns list of mismatched files."""
     src = SKILL_ROOT / "scripts"
     dst = PACKAGE_ROOT / "scripts"
-    mismatches = []
+    source_files = _python_files(src)
+    target_files = _python_files(dst)
+    mismatches: list[str] = []
 
-    for root, _dirs, files in os.walk(src):
-        root_path = Path(root)
-        rel = root_path.relative_to(src)
-        for fname in files:
-            if not fname.endswith(".py"):  # __init__.py is already covered by .py suffix
-                continue
-            src_file = root_path / fname
-            dst_file = dst / rel / fname
-            try:
-                if not dst_file.exists():
-                    mismatches.append(f"missing: {dst_file}")
-                    if not check_only:
-                        _mirror_file(src_file, dst_file)
-                elif not filecmp.cmp(str(src_file), str(dst_file), shallow=False):
-                    mismatches.append(f"mismatch: {rel / fname}")
-                    if not check_only:
-                        _mirror_file(src_file, dst_file)
-            except OSError as exc:
-                mismatches.append(f"error: {rel / fname}: {exc}")
+    for relative, src_file in sorted(source_files.items()):
+        dst_file = dst / relative
+        try:
+            if not dst_file.exists():
+                mismatches.append(f"missing: {dst_file}")
+                if not check_only:
+                    _mirror_file(src_file, dst_file)
+            elif not filecmp.cmp(str(src_file), str(dst_file), shallow=False):
+                mismatches.append(f"mismatch: {relative}")
+                if not check_only:
+                    _mirror_file(src_file, dst_file)
+        except OSError as exc:
+            mismatches.append(f"error: {relative}: {exc}")
+
+    for relative, dst_file in sorted(target_files.items()):
+        if relative in source_files:
+            continue
+        mismatches.append(f"extra script: {relative}")
+        if not check_only:
+            dst_file.unlink()
+
+    if not check_only and dst.exists():
+        _remove_empty_directories(dst)
 
     return mismatches
+
+
+def _python_files(root: Path) -> dict[Path, Path]:
+    if not root.exists():
+        return {}
+    return {
+        path.relative_to(root): path
+        for path in root.rglob("*.py")
+        if "__pycache__" not in path.parts
+    }
+
+
+def _remove_empty_directories(root: Path) -> None:
+    for directory in sorted(
+        (path for path in root.rglob("*") if path.is_dir()),
+        key=lambda path: len(path.parts),
+        reverse=True,
+    ):
+        try:
+            directory.rmdir()
+        except OSError:
+            pass
 
 
 def _mirror_file(src_file: Path, dst_file: Path) -> None:
@@ -114,15 +141,7 @@ def _sync_resource_tree(directory_name: str, check_only: bool) -> list[str]:
                 target.unlink()
 
     if not check_only and target_root.exists():
-        for directory in sorted(
-            (path for path in target_root.rglob("*") if path.is_dir()),
-            key=lambda path: len(path.parts),
-            reverse=True,
-        ):
-            try:
-                directory.rmdir()
-            except OSError:
-                pass
+        _remove_empty_directories(target_root)
 
     return mismatches
 

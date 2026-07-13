@@ -7,7 +7,8 @@ The public [SFEW888/ExamLex](https://github.com/SFEW888/ExamLex) repository is o
 - Clear first screen: `README.md` explains the purpose, supported exams, quick start, installation, prompt modes, layout, documentation, and validation.
 - Community health: root-level `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`, `SUPPORT.md`, `LICENSE`, and `CHANGELOG.md`.
 - Contribution workflow: `.github/ISSUE_TEMPLATE/`, `.github/PULL_REQUEST_TEMPLATE.md`, and `.github/workflows/ci.yml`.
-- Deterministic checks: `scripts/validate_repo.py`, unit tests, and `git diff --check`.
+- Deterministic checks: `scripts/validate_repo.py`, 55% branch-coverage floor, Ruff, unit tests, exact generated-mirror validation, and `git diff --check`.
+- Efficient CI: all supported Python and operating-system combinations run tests, while repository validation, distribution builds, and isolated wheel smoke tests run only once.
 - Skill portability: `skills/examlex/` keeps only the required Skill package files and resources.
 - Prompt safety: public files use placeholders and keep private prompt bodies out of the repository.
 
@@ -17,7 +18,11 @@ Before publishing or tagging a release:
 
 ```powershell
 python scripts\validate_repo.py --root . --json
-python -m unittest discover -s tests
+python skills\examlex\scripts\sync_mirror.py --check
+python -m pip install ".[quality]"
+python -m ruff check .
+python -m coverage run -m unittest discover -s tests -q
+python -m coverage report
 git diff --check
 ```
 

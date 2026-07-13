@@ -14,7 +14,6 @@ import json
 import math
 import sys
 from pathlib import Path
-from typing import Any
 
 try:
     from . import common
@@ -33,10 +32,6 @@ def _svg_radar(modules_data: dict[str, float], width=400, height=400) -> str:
         return '<svg width="400" height="100"><text x="10" y="30">Not enough data for radar chart</text></svg>'
 
     cx, cy, r = width / 2, height / 2, 140
-    center = f"{cx},{cy}"
-    colors = ["#4A90D9", "#E67E22", "#2ECC71", "#E74C3C", "#9B59B6",
-              "#1ABC9C", "#F39C12", "#3498DB"]
-
     parts = []
     # Background rings
     for level in [0.25, 0.5, 0.75, 1.0]:

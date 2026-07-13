@@ -1,7 +1,5 @@
 """Simulated user onboarding — first-time experience from clone to first strategy."""
 
-import json
-import os
 import shutil
 import tempfile
 import unittest
@@ -214,7 +212,8 @@ class CLIOnboardingTests(unittest.TestCase):
     def test_check_deps_cli(self):
         """examlex check-deps should run without crashing."""
         from examlex.cli import _check_deps_main
-        import io, sys
+        import io
+        import sys
         old_stdout = sys.stdout
         sys.stdout = io.StringIO()
         try:

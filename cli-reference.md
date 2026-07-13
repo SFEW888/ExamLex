@@ -228,10 +228,10 @@ The default is a dry run. `--apply` moves eligible non-terminal sessions without
 
 ```bash
 examlex check-deps [--json]
-examlex ops-check [--library <file>] [--json]
+examlex ops-check [--library <file>] [--json] [--offline]
 ```
 
-`check-deps` reports optional tools. `ops-check` runs the operational readiness suite.
+`check-deps` reports optional tools. `ops-check` runs the operational readiness suite. Use `--offline` for deterministic local or CI diagnostics without live Bilibili, YouTube, or SiliconFlow requests.
 
 ## Full Command Names
 
