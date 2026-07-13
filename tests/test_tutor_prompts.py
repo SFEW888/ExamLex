@@ -9,7 +9,7 @@ import uuid
 from pathlib import Path
 from unittest import mock
 
-from skills.examlex.scripts import cli_prompts, tutor_prompts
+from examlex.scripts import cli_prompts, tutor_prompts
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]

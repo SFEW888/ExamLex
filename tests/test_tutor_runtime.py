@@ -10,8 +10,8 @@ from pathlib import Path
 from typing import Any
 from unittest import mock
 
-from skills.examlex import cli as examlex_cli
-from skills.examlex.scripts import cli_tutor, tutor_prompts, tutor_runtime
+from examlex import cli as examlex_cli
+from examlex.scripts import cli_tutor, tutor_prompts, tutor_runtime
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
