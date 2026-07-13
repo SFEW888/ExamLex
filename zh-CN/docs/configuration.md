@@ -63,6 +63,17 @@ Darwin 评分控制持续学习各轮的自适应通过阈值。
 | `sessions_root` | 平台默认目录 | Windows：`%LOCALAPPDATA%/ExamLex/sessions`；macOS：`~/Library/Application Support/ExamLex/sessions`；Linux：`$XDG_DATA_HOME/ExamLex/sessions` |
 | `auto_cleanup` | `True` | 是否自动清理旧会话产物 |
 
+### 题源语料目录
+
+`source-list` 不访问网络。`source-collect` 默认写入系统本地的
+`ExamLex/source-corpus`，也可以用 `--output-dir` 指定目录。默认采用
+`--content-mode metadata`、最多 20 条，并在请求之间等待 1 秒。
+`source-fetch --kind media` 默认硬限制为 100 MiB，可用 `--max-media-mb`
+调整，最大 1024 MiB。
+
+题源语料使用 CLI 参数而不是秘密环境变量；采集器不会读取浏览器 Cookie 或
+API 密钥。
+
 ### 内容限制
 
 | 字段 | 默认值 | 说明 |

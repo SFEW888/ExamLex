@@ -68,6 +68,7 @@ EXPECTED_REFERENCES = {
     "error-taxonomy.md",
     "exam-profiles.md",
     "prompt-modes.md",
+    "source-collection.md",
     "tutor-runtime.md",
     "workflow.md",
 }
@@ -183,6 +184,7 @@ LEARNER_ARTIFACT_NAMES = {
     "writing-versions.json",
 }
 LEARNER_ARTIFACT_ALLOWED_PARTS = {"examples", "fixtures", "templates"}
+LOCAL_DATA_DIRECTORY_NAMES = {"learner-data", "source-corpus"}
 BACKUP_ARTIFACT_RE = re.compile(r"^backup-.+\.tar\.gz(?:\.sha256)?$")
 
 
@@ -229,7 +231,7 @@ def validate_tracked_learner_artifacts(
         if parts.intersection(LEARNER_ARTIFACT_ALLOWED_PARTS):
             continue
         name = relative.name
-        is_private_directory = bool(relative.parts) and relative.parts[0] == "learner-data"
+        is_private_directory = bool(relative.parts) and relative.parts[0] in LOCAL_DATA_DIRECTORY_NAMES
         is_standard_name = name in LEARNER_ARTIFACT_NAMES
         is_backup = BACKUP_ARTIFACT_RE.fullmatch(name) is not None
         is_sidecar = name.endswith((".bak", ".lock", ".tmp"))
@@ -744,6 +746,100 @@ def validate_vocab_contracts(root: Path, errors: list[str]) -> None:
                 )
 
 
+def validate_source_catalog_contracts(root: Path, errors: list[str]) -> None:
+    catalog_path = (
+        root / "skills" / SKILL_NAME / "assets" / "data" / "source-catalog.json"
+    )
+    try:
+        raw = catalog_path.read_text(encoding="utf-8")
+        catalog = json.loads(raw)
+    except (OSError, json.JSONDecodeError) as exc:
+        errors.append(f"source catalog is not valid JSON: {exc}")
+        return
+    if not isinstance(catalog, dict) or catalog.get("schema_version") != 1:
+        errors.append("source catalog schema_version must be 1")
+        return
+    levels = catalog.get("evidence_levels")
+    if not isinstance(levels, dict) or set(levels) != {"S", "A", "B", "C", "R"}:
+        errors.append("source catalog must define S/A/B/C/R evidence levels")
+    sources = catalog.get("sources")
+    if not isinstance(sources, list) or len(sources) < 50:
+        errors.append("source catalog must contain at least 50 merged media sources")
+        return
+    references = catalog.get("reference_corpora")
+    if not isinstance(references, list) or len(references) < 15:
+        errors.append("source catalog must contain at least 15 R-level reference corpora")
+    required_ids = {
+        "atlantic",
+        "bbc",
+        "christian-science-monitor",
+        "economist",
+        "guardian",
+        "nature",
+        "npr",
+        "scientific-american",
+        "ted-talks",
+    }
+    source_ids: set[str] = set()
+    feed_ids: set[str] = set()
+    for source in sources:
+        if not isinstance(source, dict):
+            errors.append("source catalog entries must be objects")
+            continue
+        source_id = source.get("source_id")
+        if not isinstance(source_id, str) or not source_id:
+            errors.append("source catalog entry has no source_id")
+            continue
+        if source_id in source_ids:
+            errors.append(f"source catalog has duplicate source_id: {source_id}")
+        source_ids.add(source_id)
+        domains = source.get("domains")
+        if not isinstance(domains, list) or not domains:
+            errors.append(f"source catalog entry has no domains: {source_id}")
+            domains = []
+        usage_entries = source.get("usage")
+        if not isinstance(usage_entries, list) or not usage_entries:
+            errors.append(f"source catalog entry has no exam usage: {source_id}")
+            usage_entries = []
+        for usage in usage_entries:
+            if not isinstance(usage, dict):
+                errors.append(f"source catalog usage must be an object: {source_id}")
+                continue
+            evidence = usage.get("evidence")
+            if evidence not in {"A", "B", "C"}:
+                errors.append(f"source catalog named source has invalid evidence: {source_id}")
+            if evidence == "A" and not usage.get("trace_ids"):
+                errors.append(
+                    f"source catalog A-level usage must cite article trace ids: {source_id}"
+                )
+        for feed in source.get("feeds", []):
+            if not isinstance(feed, dict):
+                errors.append(f"source feed must be an object: {source_id}")
+                continue
+            feed_id = feed.get("feed_id")
+            if not isinstance(feed_id, str) or not feed_id:
+                errors.append(f"source feed has no feed_id: {source_id}")
+                continue
+            if feed_id in feed_ids:
+                errors.append(f"source catalog has duplicate feed_id: {feed_id}")
+            feed_ids.add(feed_id)
+            try:
+                parts = urlsplit(str(feed.get("url", "")))
+            except ValueError:
+                parts = None
+            if parts is None or parts.scheme != "https" or not parts.hostname:
+                errors.append(f"source feed must use HTTPS: {feed_id}")
+                continue
+            host = parts.hostname.lower().rstrip(".")
+            if not any(host == domain or host.endswith("." + domain) for domain in domains):
+                errors.append(f"source feed host is outside maintained domains: {feed_id}")
+    missing = required_ids - source_ids
+    if missing:
+        errors.append(f"source catalog is missing required merged sources: {sorted(missing)}")
+    if "%" in raw or re.search(r"\bpercent(?:age)?\b", raw, re.IGNORECASE):
+        errors.append("source catalog must not contain unsupported percentage claims")
+
+
 def validate_project(root: str | Path) -> ValidationResult:
     root_path = Path(root).resolve()
     result = ValidationResult(root=str(root_path))
@@ -892,6 +988,7 @@ def validate_project(root: str | Path) -> ValidationResult:
     validate_writing_article_omission(portable_scripts / "common.py", errors)
     validate_template_contracts(root_path, errors)
     validate_vocab_contracts(root_path, errors)
+    validate_source_catalog_contracts(root_path, errors)
     validate_documentation(
         root_path,
         errors,

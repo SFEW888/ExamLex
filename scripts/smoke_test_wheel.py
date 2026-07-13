@@ -75,6 +75,17 @@ def smoke_test(wheel: Path) -> dict[str, object]:
         tutor_prepare_help_result = run_checked(
             [str(examlex_command), "tutor-prepare", "--help"], runtime_dir, env
         )
+        source_collect_help_result = run_checked(
+            [str(examlex_command), "source-collect", "--help"], runtime_dir, env
+        )
+        source_fetch_help_result = run_checked(
+            [str(examlex_command), "source-fetch", "--help"], runtime_dir, env
+        )
+        source_list_result = run_checked(
+            [str(examlex_command), "source-list", "--collectable", "--json"],
+            runtime_dir,
+            env,
+        )
         if "usage: examlex" not in help_result.stdout:
             raise RuntimeError("Installed examlex command did not expose its main help")
         if "usage: examlex resume" not in resume_help_result.stdout:
@@ -83,6 +94,13 @@ def smoke_test(wheel: Path) -> dict[str, object]:
             raise RuntimeError("Installed examlex command did not expose prompt-check help")
         if "--request" not in tutor_prepare_help_result.stdout:
             raise RuntimeError("Installed examlex command did not expose tutor-prepare help")
+        if "--content-mode" not in source_collect_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose source-collect help")
+        if "--kind" not in source_fetch_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose source-fetch help")
+        source_list_payload = json.loads(source_list_result.stdout)
+        if source_list_payload.get("count", 0) < 5:
+            raise RuntimeError("Installed source catalog did not expose collectable sources")
         resource_result = run_checked(
             [
                 str(python),
@@ -92,13 +110,17 @@ def smoke_test(wheel: Path) -> dict[str, object]:
                     "from examlex.scripts.estimate_vocabulary import _DEFAULT_REF; "
                     "from examlex.scripts.tutor_prompts import load_role_contracts; "
                     "from examlex.scripts.tutor_runtime import prepare_tutor_turn; "
+                    "from examlex.scripts.source_catalog import load_source_catalog; "
                     "root = Path(examlex.__file__).resolve().parent; "
                     "required = [root / 'SKILL.md', root / 'assets' / 'schemas', "
                     "root / 'assets' / 'templates', root / 'references', _DEFAULT_REF, "
                     "root / 'references' / 'tutor-role-contracts.json', "
-                    "root / 'references' / 'tutor-runtime.md']; "
+                    "root / 'references' / 'tutor-runtime.md', "
+                    "root / 'references' / 'source-collection.md', "
+                    "root / 'assets' / 'data' / 'source-catalog.json']; "
                     "missing = [str(path) for path in required if not path.exists()]; "
                     "assert not missing, missing; assert len(load_role_contracts()) == 8; "
+                    "assert len(load_source_catalog()['sources']) >= 50; "
                     "assert prepare_tutor_turn('Correct my grammar', "
                     "role_id='grammar-corrector').clarification_questions; "
                     "print(json.dumps([str(path) for path in required]))"
@@ -132,6 +154,9 @@ def smoke_test(wheel: Path) -> dict[str, object]:
             "resume_help": True,
             "prompt_check_help": True,
             "tutor_prepare_help": True,
+            "source_collect_help": True,
+            "source_fetch_help": True,
+            "source_catalog_count": source_list_payload["count"],
             "resources": json.loads(resource_result.stdout),
             "quiz_word_count": len(vocab_payload["quiz_words"]),
         }

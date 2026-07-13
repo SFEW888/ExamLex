@@ -28,6 +28,9 @@ from .scripts.cli_validate import main as validate_main
 from .scripts.cli_commit import main as commit_main
 from .scripts.cli_ops import main as ops_main
 from .scripts.cli_prompts import main as prompt_check_main
+from .scripts.cli_sources import collect_main as source_collect_main
+from .scripts.cli_sources import fetch_main as source_fetch_main
+from .scripts.cli_sources import list_main as source_list_main
 from .scripts.cli_tutor import main as tutor_prepare_main
 from .scripts.config import TutorConfig
 
@@ -71,6 +74,9 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
     "check-deps": ("Check external tool dependencies.", _check_deps_main),
     "ops-check": ("Run 13-point operational readiness check.", ops_main),
     "prompt-check": ("Validate external private tutor prompts without exposing text.", prompt_check_main),
+    "source-list": ("List maintained exam-source candidates and evidence labels.", source_list_main),
+    "source-collect": ("Collect source metadata through verified RSS/Atom feeds.", source_collect_main),
+    "source-fetch": ("Materialize one indexed article or media item.", source_fetch_main),
     "tutor-prepare": ("Route a tutor request and return safe clarification metadata.", tutor_prepare_main),
     "sessions-cleanup": ("Preview or archive stale sessions.", cleanup_sessions.main),
     "resume": ("Resume an existing distillation session.", session.resume_main),

@@ -291,6 +291,14 @@ examlex report --ability-history ability-history.json \
 # Ingest strategy
 examlex ingest reading-strategy.md --library strategy-library.json --exam-types CET4,CET6 --modules reading
 
+# Build a local evidence-labeled source corpus (metadata-only by default)
+examlex source-list --exam cet --section reading
+examlex source-list --exam postgraduate --section reading_a
+examlex source-collect --source bbc --limit 20
+examlex source-collect --source ted-talks --limit 10
+# Explicitly fetch one indexed public article or media enclosure
+examlex source-fetch --source guardian --item <item-id> --kind text
+
 # Full pipeline
 examlex extract --input ./cet4-guide.pdf --type book
 examlex validate --artifacts-dir <path>
@@ -299,6 +307,11 @@ examlex commit --artifacts-dir <path> --library strategy-library.json
 # Back up local learning data
 examlex backup ./local/data
 ```
+
+Source collection is RSS/Atom-first, metadata-only by default, and stores its
+corpus outside the repository. Evidence levels, robots/paywall boundaries, and
+simulation provenance are documented in
+[Exam Source Collection](skills/examlex/references/source-collection.md).
 
 ### CLI Wrappers
 
@@ -313,6 +326,9 @@ The project provides `bin/examlex` (bash) and `bin/examlex.ps1` (PowerShell) wra
 | `examlex score <essay>` | Estimate writing score |
 | `examlex ingest <file>` | Ingest strategy file |
 | `examlex extract --input <url>` | Extract from video/book/text |
+| `examlex source-list [opts]` | List merged CET/postgraduate source candidates and evidence labels |
+| `examlex source-collect --source <id>` | Collect verified RSS/Atom metadata into a local corpus |
+| `examlex source-fetch --source <id> --item <id> --kind <text|media>` | Explicitly materialize one indexed item |
 | `examlex backup <dir>` | Back up local learner and strategy data |
 | `examlex report --ability-history ...` | Generate a local HTML progress report |
 | `examlex tutor-prepare --request "..."` | Route a tutor request and avoid repeated intake questions |
