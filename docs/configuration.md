@@ -63,6 +63,17 @@ The "Darwin" scoring system controls adaptive pass thresholds for learning round
 | `sessions_root` | Platform-specific default | Root directory for session artifacts. On Windows: `%LOCALAPPDATA%/ExamLex/sessions`. On macOS: `~/Library/Application Support/ExamLex/sessions`. On Linux: `$XDG_DATA_HOME/ExamLex/sessions` |
 | `auto_cleanup` | `True` | Whether to automatically clean up old session artifacts |
 
+### Source Corpus
+
+`source-list` needs no network access. `source-collect` writes to the platform
+default `ExamLex/source-corpus` directory unless `--output-dir` is supplied.
+The collector defaults to `--content-mode metadata`, a 20-item limit, and a
+one-second delay between requests. `source-fetch --kind media` has a 100 MiB
+default hard limit, adjustable with `--max-media-mb` up to 1024 MiB.
+
+Corpus settings are CLI-scoped rather than secret environment variables. The
+collector never reads browser cookies or API keys.
+
 ### Content Limits
 
 | Field | Default | Description |

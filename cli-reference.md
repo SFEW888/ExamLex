@@ -31,6 +31,9 @@
 | Short command | Full command | Class | Purpose |
 |---------------|--------------|:-----:|---------|
 | `examlex extract --input <source> [opts]` | `extract` | A | Extract source material from text, books, videos, or people. |
+| `examlex source-list [opts]` | `source-list` | U | List merged CET/postgraduate source candidates and evidence labels. |
+| `examlex source-collect --source <id> [opts]` | `source-collect` | A | Collect verified RSS/Atom metadata into a local corpus. |
+| `examlex source-fetch --source <id> --item <id> --kind <text\|media>` | `source-fetch` | A | Explicitly materialize one indexed public item. |
 | `examlex ingest <file> [opts]` | `ingest-strategy` | U | Ingest strategies into a library. |
 | `examlex strategies [opts]` | `list-strategies` | U | List or search ingested strategies. |
 | `examlex validate --artifacts-dir <path>` | `validate-strategies` | A | Validate distilled strategies and calculate structure scores. |
@@ -134,6 +137,53 @@ examlex score essay.txt --exam-type CET6 --json
 ```
 
 Equivalent full command: `score-writing --text-file <essay-file>`. Results are local estimates, not official exam scores.
+
+### `examlex source-list` — inspect the evidence-labeled source catalog
+
+```bash
+examlex source-list
+  [--exam cet|postgraduate]
+  [--section <section>]
+  [--evidence S|A|B|C|R]
+  [--media article|audio|video|report]
+  [--collectable]
+  [--references]
+  [--json]
+```
+
+Named outlets are maintained as `B` or `C` until an article-level trace supplies
+the exam, section, original title or URL, and comparison evidence. The catalog
+does not contain fixed outlet percentages.
+
+### `examlex source-collect` — index verified RSS/Atom feeds
+
+```bash
+examlex source-collect --source <id-or-alias>
+  [--limit 1..100]
+  [--content-mode metadata|text]
+  [--delay 0..60]
+  [--output-dir <dir>]
+  [--json]
+```
+
+`metadata` is the default. `text` also attempts readable-text extraction only
+when the source page is public and `robots.txt` allows it. No cookie, login, or
+paywall bypass is used.
+
+### `examlex source-fetch` — materialize one indexed item
+
+```bash
+examlex source-fetch --source <id-or-alias> --item <item-id> --kind text
+  [--output-dir <dir>] [--json]
+
+examlex source-fetch --source <id-or-alias> --item <item-id> --kind media
+  [--max-media-mb 1..1024] [--output-dir <dir>] [--json]
+```
+
+Media download requires an audio/video enclosure from a maintained source feed
+and an explicit item selection. The default hard limit is 100 MiB. See
+`skills/examlex/references/source-collection.md` for the evidence, safety, and
+simulation-provenance contract.
 
 ### `examlex extract` — extract source material
 

@@ -225,7 +225,15 @@ class CLIOnboardingTests(unittest.TestCase):
     def test_help_shows_new_commands(self):
         """examlex --help should list extract/validate/commit/check-deps."""
         from examlex.cli import ALL_COMMANDS
-        new_cmds = ["extract", "validate-strategies", "commit-strategies", "check-deps"]
+        new_cmds = [
+            "extract",
+            "validate-strategies",
+            "commit-strategies",
+            "check-deps",
+            "source-list",
+            "source-collect",
+            "source-fetch",
+        ]
         for cmd in new_cmds:
             self.assertIn(cmd, ALL_COMMANDS, f"Missing command: {cmd}")
 

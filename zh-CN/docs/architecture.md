@@ -37,6 +37,9 @@ flowchart LR
 - `skills/examlex/SKILL.md`：可移植 Skill 入口。
 - `skills/examlex/references/`：公开安全策略、工作流、数据模型、考试配置、助教角色表和错误标签。
 - `skills/examlex/assets/`：模板和 JSON Schema。
+- `skills/examlex/assets/data/source-catalog.json`：合并后的四六级/考研媒体目录，保存分考试证据等级、别名、域名和已验证订阅入口。
+- `source-list` / `source-collect` / `source-fetch`：RSS/Atom 优先的采集控制面；默认只建元数据索引，只有显式请求时才获取一条 robots 允许的正文或订阅内媒体。
+- 系统本地 `ExamLex/source-corpus/`：未跟踪的清单、条目元数据、可读正文和已选媒体，不进入安装包。
 - `skills/examlex/scripts/`：可移植脚本入口。
 - `examlex/scripts/`：用于测试和命令行的可导入脚本镜像。
 - `scripts/`：仓库校验器和平台安装器。

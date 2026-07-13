@@ -22,6 +22,7 @@ local/
 .worktrees/
 test-artifacts/
 sessions/
+source-corpus/
 _research/
 
 # Local learner data and generated reports

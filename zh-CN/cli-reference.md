@@ -35,6 +35,9 @@
 | 快捷命令 | 底层命令 | 触发 | 说明 |
 |----------|----------|:--:|------|
 | `examlex extract --input <url\|file\|name> [opts]` | `extract` | 🤖 | 从 URL/文件/人名提取原始素材（多源学习的第 1 阶段） |
+| `examlex source-list [opts]` | `source-list` | 👤 | 列出合并后的四六级/考研题源及证据等级 |
+| `examlex source-collect --source <id> [opts]` | `source-collect` | 🤖 | 从已验证 RSS/Atom 入口建立本地元数据索引 |
+| `examlex source-fetch --source <id> --item <id> --kind <text\|media>` | `source-fetch` | 🤖 | 显式获取一条已索引的公开正文或媒体 |
 | `examlex ingest <file> [opts]` | `ingest-strategy` | 👤 | 从文件提取策略写入策略库 |
 | `examlex strategies [opts]` | `list-strategies` | 👤 | 列出/搜索已摄入的策略 |
 | `examlex validate --artifacts-dir <path>` | `validate-strategies` | 🤖 | 验证蒸馏策略格式并计算 Darwin 6 维结构评分（第 3 阶段） |
@@ -285,6 +288,50 @@ python run.py tutor-prepare --request "制定六级学习计划" --json
 ```
 
 该公开安全预检不加载私有提示词，也不调用模型。它会选择一至三个角色，并返回最多两个关键澄清问题。后续轮次可重复传入 `--asked-field` 标记已经问过的字段，从而避免重复追问。真正的私有执行是通过 `run_tutor_turn()` 与注入的受信提供器完成的进程内库调用。
+
+### `examlex source-list` — 查看带证据等级的题源目录
+
+```bash
+examlex source-list
+  [--exam cet|postgraduate]
+  [--section <题型>]
+  [--evidence S|A|B|C|R]
+  [--media article|audio|video|report]
+  [--collectable]
+  [--references]
+  [--json]
+```
+
+媒体来源在完成文章级真题比对前保持 `B` 或 `C`。升级到 `A` 必须补齐考试、
+题型、原文标题或 URL 和比对证据。目录不保存互相冲突的媒体百分比。
+
+### `examlex source-collect` — 索引已验证 RSS/Atom
+
+```bash
+examlex source-collect --source <来源ID或别名>
+  [--limit 1..100]
+  [--content-mode metadata|text]
+  [--delay 0..60]
+  [--output-dir <目录>]
+  [--json]
+```
+
+默认使用 `metadata`。选择 `text` 后，也只会提取公开且 `robots.txt` 允许的
+网页正文，不发送 Cookie、登录信息，也不绕过付费墙。
+
+### `examlex source-fetch` — 获取一条已索引素材
+
+```bash
+examlex source-fetch --source <来源ID或别名> --item <item-id> --kind text
+  [--output-dir <目录>] [--json]
+
+examlex source-fetch --source <来源ID或别名> --item <item-id> --kind media
+  [--max-media-mb 1..1024] [--output-dir <目录>] [--json]
+```
+
+媒体下载必须来自维护订阅入口中的音频/视频 enclosure，并且必须显式选择条目；
+默认硬限制为 100 MiB。证据、安全和模拟题溯源规范见
+`skills/examlex/references/source-collection.md`。
 
 ### `examlex extract` — 提取原始素材
 

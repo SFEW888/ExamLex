@@ -151,6 +151,7 @@ class ValidateProjectTests(unittest.TestCase):
             "strategy-library.json.bak",
             "strategy-library.json.lock",
             "learner-data/private-profile.json",
+            "source-corpus/manifest.jsonl",
         )
         for relative in artifact_paths:
             with self.subTest(relative=relative):
@@ -169,9 +170,10 @@ class ValidateProjectTests(unittest.TestCase):
                 "examples/sample-learner-profile.yaml",
                 "practice-ledger.json",
                 "learner-data/private-profile.json",
+                "source-corpus/manifest.jsonl",
             ],
         )
-        self.assertEqual(2, len(errors), errors)
+        self.assertEqual(3, len(errors), errors)
         self.assertTrue(all("learner artifact" in error for error in errors))
 
     def test_installed_skill_docs_use_the_bundled_runner(self):
@@ -226,6 +228,28 @@ class ValidateProjectTests(unittest.TestCase):
         validate_repo.validate_vocab_contracts(PROJECT_ROOT, errors)
 
         self.assertEqual([], errors)
+
+    def test_repository_source_catalog_contract_is_valid(self):
+        errors: list[str] = []
+
+        validate_repo.validate_source_catalog_contracts(PROJECT_ROOT, errors)
+
+        self.assertEqual([], errors)
+
+    def test_source_catalog_rejects_unverified_a_level_claim(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            path = root / "skills" / "examlex" / "assets" / "data" / "source-catalog.json"
+            catalog = json.loads(path.read_text(encoding="utf-8"))
+            catalog["sources"][0]["usage"][0]["evidence"] = "A"
+            path.write_text(
+                json.dumps(catalog, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            errors: list[str] = []
+            validate_repo.validate_source_catalog_contracts(root, errors)
+
+        self.assertTrue(any("must cite article trace ids" in error for error in errors))
 
     def test_detects_invalid_packaged_template_contract(self):
         with copy_project() as temp:

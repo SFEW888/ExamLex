@@ -258,11 +258,21 @@ python -m examlex daily-plan --profile learner-profile.json --ability ability-pr
 
 ```powershell
 examlex extract --input <url|file|name> --type <auto|video|book|text|person>
+examlex source-list --exam cet --section reading
+examlex source-list --exam postgraduate --section reading_a
+examlex source-collect --source bbc --limit 20
+examlex source-collect --source ted-talks --limit 10
+# 仅在明确选择后获取一条公开正文或订阅中的媒体附件
+examlex source-fetch --source guardian --item <item-id> --kind text
 examlex validate --artifacts-dir <path>
 examlex commit --artifacts-dir <path> --library strategy-library.json
 examlex ops-check
 examlex ops-check --offline    # 不发起真实网络请求的确定性检查
 ```
+
+题源采集优先使用 RSS/Atom，默认只保存元数据，并将语料放在仓库之外。证据等级、
+robots/付费墙边界和模拟题溯源规则见
+[考试题源采集](skill/references/source-collection.md)。
 
 ---
 
@@ -667,6 +677,9 @@ examlex backup ./local/data
 | 趋势分析 | `examlex trends <file>` | 「我最近进步了吗」 |
 | 作文评分 | `examlex score <essay>` | 「这篇作文能打多少分」 |
 | 摄入策略 | `examlex ingest <file>` | 「记住这份技巧文件」 |
+| 题源目录 | `examlex source-list [opts]` | 「列出四六级和考研题源及证据等级」 |
+| 采集题源 | `examlex source-collect --source <id>` | 「从已验证订阅入口建立本地素材索引」 |
+| 获取素材 | `examlex source-fetch --source <id> --item <id> --kind <text|media>` | 「显式获取一条正文或音视频」 |
 | 数据备份 | `examlex backup <dir>` | 「备份我的学习数据」 |
 | 进度报告 | `examlex report --ability-history ...` | 「生成一份学习报告」 |
 | 助教预检 | `examlex tutor-prepare --request "..."` | 「识别需求，最多一次问两个关键问题」 |
