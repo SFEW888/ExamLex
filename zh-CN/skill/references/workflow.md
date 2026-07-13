@@ -6,11 +6,11 @@
 
 在诊断前或任意后续阶段，均可把新方法加入策略库：
 
-1. `examlex extract --input <url|file|name> --type <video|book|text|person>` 提取原始素材。
+1. `python run.py extract --input <url|file|name> --type <video|book|text|person>` 提取原始素材。
 2. Agent 按来源选择 RIA++、认知提取或直接摄入方法，写入会话产物。
-3. `examlex validate --artifacts-dir <path>` 执行格式和 Darwin 结构校验。
+3. `python run.py validate --artifacts-dir <path>` 执行格式和 Darwin 结构校验。
 4. 为每条策略生成效果评估证据。
-5. `examlex commit --artifacts-dir <path> --library strategy-library.json` 原子提交获批策略。
+5. `python run.py commit --artifacts-dir <path> --library strategy-library.json` 原子提交获批策略。
 
 仅 `approved` 策略可进入每日计划；摄入失败或没有策略库时，普通学习闭环仍可继续。
 
@@ -32,7 +32,7 @@
 根据学习者档案、能力画像和可选错误统计生成每日计划：
 
 ```bash
-python -m examlex daily-plan --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json
+python run.py daily-plan --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --strategies strategy-library.json --output daily-plan.json
 ```
 
 以生成任务为基线。可以调整面向学习者的文字表达，但模块、重点、分钟数和原因应保持一致，除非用户修改约束。
@@ -48,7 +48,7 @@ python -m examlex daily-plan --profile learner-profile.json --ability ability-pr
 用 `record-practice` 追加练习记录，再统计重复错误：
 
 ```bash
-python -m examlex summarize-errors --ledger practice-ledger.json --output error-summary.json
+python run.py summarize-errors --ledger practice-ledger.json --output error-summary.json
 ```
 
 错误统计是下一次计划的证据，不是对学习者的最终判断。
@@ -58,13 +58,13 @@ python -m examlex summarize-errors --ledger practice-ledger.json --output error-
 根据练习记录更新能力画像：
 
 ```bash
-python -m examlex update-ability --ability ability-profile.json --ledger practice-ledger.json
+python run.py update-ability --ability ability-profile.json --ledger practice-ledger.json
 ```
 
 当练习记录或能力历史有足够数据点时，分析趋势：
 
 ```bash
-python -m examlex analyze-trends --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json
+python run.py analyze-trends --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json
 ```
 
 ## 6. 作文闭环

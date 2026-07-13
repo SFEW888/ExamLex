@@ -7,10 +7,14 @@ file tracks progress so long-running distillations can be resumed.
 
 from __future__ import annotations
 
+import argparse
 import json
+import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+
+from .config import TutorConfig
 
 
 class Session:
@@ -151,3 +155,40 @@ class SessionManager:
             f"No session found with id '{session_id}'. "
             f"Checked under {self.sessions_root}."
         )
+
+
+def resume_main(argv: list[str] | None = None) -> int:
+    """Print structured guidance for resuming an existing session."""
+    parser = argparse.ArgumentParser(
+        prog="examlex resume",
+        description="Resume an existing ExamLex distillation session.",
+    )
+    parser.add_argument("session_id", help="Session identifier returned by extract.")
+    parser.add_argument(
+        "--sessions-root",
+        type=Path,
+        help="Session root to search; defaults to the configured ExamLex data directory.",
+    )
+    parser.add_argument("--json", action="store_true", help="Print machine-readable JSON.")
+    args = parser.parse_args(argv)
+
+    sessions_root = (args.sessions_root or TutorConfig().sessions_root).resolve()
+    try:
+        info = SessionManager(sessions_root).resume(args.session_id).resume_info()
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        if args.json:
+            print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        else:
+            print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    if args.json:
+        print(json.dumps(info, ensure_ascii=False, indent=2))
+    else:
+        print(f"Session: {info['session_id']}")
+        print(f"Stage: {info['current_stage']}")
+        if info["sub_stage"]:
+            print(f"Sub-stage: {info['sub_stage']}")
+        print(f"Artifacts: {info['artifacts_dir']}")
+        print(f"Next action: {info['next_action']}")
+    return 0

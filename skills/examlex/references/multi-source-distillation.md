@@ -16,7 +16,7 @@
 
 ### Stage 1: Extract
 ```bash
-examlex extract --input <url|file|name> [--type auto|video|book|text|person]
+python run.py extract --input <url|file|name> [--type auto|video|book|text|person]
 ```
 - **video**: yt-dlp download → ffmpeg audio extraction → SenseVoiceSmall/whisper ASR → transcript.txt + metadata.json
 - **book**: Multi-format parser (PDF/EPUB/DOCX/HTML/MD/RTF/MOBI) → full_text.txt + chapter structure + glossary
@@ -42,7 +42,7 @@ Output: `distilled.json` written to the artifacts directory.
 
 ### Stage 3: Validate
 ```bash
-examlex validate --artifacts-dir <path>
+python run.py validate --artifacts-dir <path>
 ```
 - Format check (`validators/format_checker.py`): step numbering, schema compliance, RIA++ completeness, vague phrase detection
 - Darwin structure scoring (`validators/darwin_structure.py`): 6 dimensions, 59 points
@@ -66,7 +66,7 @@ Output: `evaluation.json`
 
 ### Stage 5: Commit
 ```bash
-examlex commit --artifacts-dir <path> --library strategy-library.json
+python run.py commit --artifacts-dir <path> --library strategy-library.json
 ```
 - Combines structure + effect scores → total Darwin score (max 100)
 - Ratchet check: score must improve or baseline
@@ -111,5 +111,5 @@ Each strategy entry in `strategy-library.json` carries full provenance:
 Intermediate artifacts are stored under the platform data directory at `ExamLex/sessions/<date>/<uuid>/`: `%LOCALAPPDATA%/ExamLex/sessions` on Windows, `~/Library/Application Support/ExamLex/sessions` on macOS, or `$XDG_DATA_HOME/ExamLex/sessions` on Linux.
 Long-running distillations can be resumed:
 ```bash
-examlex resume <session-id>
+python run.py resume <session-id>
 ```

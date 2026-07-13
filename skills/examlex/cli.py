@@ -15,6 +15,7 @@ from .scripts import (
     manage_writing_versions,
     record_practice,
     score_writing_rubric,
+    session,
     summarize_errors,
     tag_error,
     update_ability_profile,
@@ -68,6 +69,7 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
     "check-deps": ("Check external tool dependencies.", _check_deps_main),
     "ops-check": ("Run 13-point operational readiness check.", ops_main),
     "sessions-cleanup": ("Preview or archive stale sessions.", cleanup_sessions.main),
+    "resume": ("Resume an existing distillation session.", session.resume_main),
     "vocab-estimate": ("Estimate vocabulary size via Yes/No sampling.", estimate_vocabulary.main),
     "visualize": ("Generate HTML progress report with SVG charts.", visualize.main),
 }

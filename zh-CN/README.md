@@ -102,6 +102,9 @@ Codex CLI:    /skills → 应看到 /examlex 和 8 个快捷 Skill
 /examlex 你好，介绍一下你能帮我做什么
 ```
 
+复制后的主 Skill 自带 CLI 入口。在已安装的 `examlex` Skill 目录中运行
+`python run.py --help`，无需保留仓库检出，也无需另行安装 `examlex` Python 包。
+
 ### 安装目录速查
 
 | 平台 | 全局路径 | 项目级路径 |
@@ -409,6 +412,7 @@ Agent 对话层 (Claude Code / Codex / Cursor)
 │
 ├── skills/examlex/    # 可移植 public-safe Skill 包
 │   ├── SKILL.md                     #   主 Skill 定义
+│   ├── run.py                       #   复制安装后可直接使用的 CLI 入口
 │   ├── assets/
 │   │   ├── schemas/                 #   JSON Schema（档案/记录/作文版本）
 │   │   └── templates/              #   模板（档案/画像/计划/记录/错误日志/作文版本）

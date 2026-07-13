@@ -52,9 +52,9 @@ def _mirror_file(src_file: Path, dst_file: Path) -> None:
 
 
 def sync_cli(check_only: bool = False) -> list[str]:
-    """Sync cli.py."""
+    """Sync CLI entry points."""
     mismatches = []
-    for fname in ("cli.py",):
+    for fname in ("cli.py", "run.py"):
         src = SKILL_ROOT / fname
         dst = PACKAGE_ROOT / fname
         if not src.exists():

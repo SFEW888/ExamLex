@@ -17,7 +17,7 @@
 ### 阶段 1：提取
 
 ```powershell
-examlex extract --input <url|file|name> --type <auto|video|book|text|person>
+python run.py extract --input <url|file|name> --type <auto|video|book|text|person>
 ```
 
 - **video**：yt-dlp 下载 → FFmpeg 合并/转换/音频提取 → SenseVoiceSmall 或 Whisper ASR → `transcript.txt` + `metadata.json`
@@ -43,7 +43,7 @@ examlex extract --input <url|file|name> --type <auto|video|book|text|person>
 ### 阶段 3：校验
 
 ```powershell
-examlex validate --artifacts-dir <path>
+python run.py validate --artifacts-dir <path>
 ```
 
 - `validators/format_checker.py`：步骤编号、Schema、RIA++ 完整性和模糊表达检查
@@ -71,7 +71,7 @@ Agent 按 `prompts/effect.py` 生成：
 ### 阶段 5：提交
 
 ```powershell
-examlex commit --artifacts-dir <path> --library strategy-library.json
+python run.py commit --artifacts-dir <path> --library strategy-library.json
 ```
 
 - 合并结构分与效果分，得到最高 100 分的 Darwin 总分
@@ -119,5 +119,5 @@ examlex commit --artifacts-dir <path> --library strategy-library.json
 长任务可通过以下命令续跑：
 
 ```powershell
-examlex resume <session-id>
+python run.py resume <session-id>
 ```

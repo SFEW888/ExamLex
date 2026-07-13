@@ -31,37 +31,37 @@ Do not ask the user to run Python commands unless they explicitly ask for develo
 After this Skill is invoked, parse the user's natural-language request, choose the relevant tutor role, and use scripts from the Skill directory only when deterministic state changes or validation are needed.
 
 0. Estimate vocabulary (optional first step):
-   `python skills/examlex/scripts/estimate_vocabulary.py --interactive --output vocab-estimate.json`
-   Or batch mode: `python skills/examlex/scripts/estimate_vocabulary.py --wordlist answers.json --output result.json`
+   `python run.py vocab --interactive --output vocab-estimate.json`
+   Or batch mode: `python run.py vocab --wordlist answers.json --output result.json`
 
 1. Validate intake:
-   `python skills/examlex/scripts/validate_profile.py --profile learner-profile.json`
+   `python run.py check learner-profile.json`
    Supports CET4, CET6, POSTGRADUATE_ENGLISH, TEM4, TEM8.
 
 2. Generate the daily plan:
-   `python skills/examlex/scripts/generate_daily_plan.py --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json`
+   `python run.py plan learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json`
    Optionally pass `--strategies strategy-library.json` to attach relevant user-ingested exam methods to planned modules.
    Optionally pass `--vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-2000.json` for vocabulary assignments.
    The plan automatically includes spaced-repetition review tasks for error tags with high review urgency.
 
 3. Record practice and tag errors (supports timed practice):
-   `python skills/examlex/scripts/tag_error.py --module writing --text "..."`
-   `python skills/examlex/scripts/record_practice.py --ledger practice-ledger.json --date 2026-07-05 --exam-type CET4 --module reading --task-id timed-reading-001 --duration-minutes 40 --total-items 20 --correct-items 14 --timed --time-limit-minutes 35 --overtime-items 3 --overtime-correct 1 --error-tags READING_SPEED_LOW`
+   `python run.py tag "..." --module writing`
+   `python run.py log practice-ledger.json --date 2026-07-05 --exam-type CET4 --module reading --task-id timed-reading-001 --duration-minutes 40 --total-items 20 --correct-items 14 --timed --time-limit-minutes 35 --overtime-items 3 --overtime-correct 1 --error-tags READING_SPEED_LOW`
 
 4. Summarize errors (includes spaced-repetition review urgency and speed analysis):
-   `python skills/examlex/scripts/summarize_errors.py --ledger practice-ledger.json --output error-summary.json --days 30`
+   `python run.py errors practice-ledger.json --output error-summary.json --days 30`
 
 5. Update ability and analyze trends:
-   `python skills/examlex/scripts/update_ability_profile.py --ability ability-profile.json --ledger practice-ledger.json`
-   `python skills/examlex/scripts/analyze_trends.py --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json`
+   `python run.py update ability-profile.json practice-ledger.json`
+   `python run.py trends practice-ledger.json --history ability-history.json --output trend-analysis.json`
 
 6. Manage writing drafts, score with rubric, and anchor against model essays:
-   `python skills/examlex/scripts/manage_writing_versions.py --file writing-versions.json --writing-id essay-001 --text "..."`
-   `python skills/examlex/scripts/score_writing_rubric.py --text-file essay.txt --exam-type CET4 --output writing-score.json`
+   `python run.py write essay-001 --file writing-versions.json --text "..."`
+   `python run.py score essay.txt --exam-type CET4 --output writing-score.json`
    Optionally pass `--reference-samples skills/examlex/assets/data/sample-essays/` to anchor scoring against model essays.
 
 7. Visualize progress (generates standalone HTML report with SVG charts):
-   `python skills/examlex/scripts/visualize.py --ability-history ability-history.json --ledger practice-ledger.json --error-summary error-summary.json --output progress-report.html --days 30`
+   `python run.py report --ability-history ability-history.json --ledger practice-ledger.json --error-summary error-summary.json --output progress-report.html --days 30`
 
 ## Multi-Source Continuous Learning
 
@@ -71,69 +71,69 @@ Extract exam strategies from any source — text files, books, videos, people, c
 
 Each distillation follows a 5-stage pipeline orchestrated by the Agent:
 
-1. **Extract**: `examlex extract --input <url|file|name>` — downloads and extracts raw materials.
+1. **Extract**: `python run.py extract --input <url|file|name>` — downloads and extracts raw materials.
 2. **Distill**: Agent follows the methodology guide (`scripts/prompts/ria.py` for video, `scripts/prompts/cognitive.py` for people) to produce structured strategies → `distilled.json`.
-3. **Validate**: `examlex validate --artifacts-dir <path>` — runs format checks + Darwin 6-dimension structure scoring (59 pts).
-   Also run `examlex validate-strategy` to validate the strategy library JSON file itself after manual edits.
+3. **Validate**: `python run.py validate --artifacts-dir <path>` — runs format checks + Darwin 6-dimension structure scoring (59 pts).
+   Also run `python run.py validate-strategy` to validate the strategy library JSON file itself after manual edits.
 4. **Evaluate**: Agent runs test prompts to score effectiveness (35 pts) → `evaluation.json`.
-5. **Commit**: `examlex commit --artifacts-dir <path> --library strategy-library.json` — ratchet check + atomic write.
+5. **Commit**: `python run.py commit --artifacts-dir <path> --library strategy-library.json` — ratchet check + atomic write.
 
 Total Darwin score < 70 triggers automatic hill-climb optimization (max 3 rounds).
 
 ### 7a. Direct text ingestion — `distillation-method direct`
 For plain-text strategy notes:
 ```bash
-examlex extract --input <note> --type text
+python run.py extract --input <note> --type text
 # → Agent reads methodology guide → distill
-examlex validate --artifacts-dir <path>
-examlex commit --artifacts-dir <path> --library strategy-library.json
+python run.py validate --artifacts-dir <path>
+python run.py commit --artifacts-dir <path> --library strategy-library.json
 ```
 
 ### 7b. Book / PDF — built-in `book`
 For exam prep books (PDF/EPUB/DOCX/TXT/HTML):
 ```bash
-examlex extract --input <book-file> --type book
+python run.py extract --input <book-file> --type book
 # Extracts full text + chapter structure + glossary
 # → Agent follows scripts/prompts/ria.py for RIA-TV++ distillation
-examlex validate --artifacts-dir <path>
-examlex commit --artifacts-dir <path> --library strategy-library.json
+python run.py validate --artifacts-dir <path>
+python run.py commit --artifacts-dir <path> --library strategy-library.json
 ```
 Methodology: scan for frameworks → triple-verify → RIA++: R(原文≤150字)/I(自述)/A1(案例)/A2(触发)/E(步骤)/B(边界).
 
 ### 7c. Video / Podcast — built-in `video`
 For B站/YouTube URLs or subtitle files:
 ```bash
-examlex extract --input <video-url> --type video
+python run.py extract --input <video-url> --type video
 # yt-dlp download → ffmpeg audio → SenseVoiceSmall/whisper ASR
 # → Agent follows scripts/prompts/ria.py for RIA-TV++ distillation
-examlex validate --artifacts-dir <path>
-examlex commit --artifacts-dir <path> --library strategy-library.json
+python run.py validate --artifacts-dir <path>
+python run.py commit --artifacts-dir <path> --library strategy-library.json
 ```
-Requires: yt-dlp + ffmpeg (run `examlex check-deps`).
+Requires: yt-dlp + ffmpeg (run `python run.py check-deps`).
 
 ### 7d. Person / Teacher — built-in `person`
 For distilling a teacher's methodology:
 ```bash
-examlex extract --input <person-name> --type person
+python run.py extract --input <person-name> --type person
 # → Agent follows scripts/prompts/cognitive.py for 5-layer cognitive extraction
 # → 6 parallel research agents → triple verification
-examlex validate --artifacts-dir <path>
-examlex commit --artifacts-dir <path> --library strategy-library.json
+python run.py validate --artifacts-dir <path>
+python run.py commit --artifacts-dir <path> --library strategy-library.json
 ```
 
 ### 7e. Conversation / manual notes — `distillation-method manual`
 ```bash
-examlex extract --input <notes-file> --type text
-examlex validate --artifacts-dir <path>
-examlex commit --artifacts-dir <path> --library strategy-library.json
+python run.py extract --input <notes-file> --type text
+python run.py validate --artifacts-dir <path>
+python run.py commit --artifacts-dir <path> --library strategy-library.json
 ```
 
 ### 7f. Darwin scoring and approval gate
-- Structure (59 pts): auto-scored by `examlex validate` via `scripts/validators/darwin_structure.py`
+- Structure (59 pts): auto-scored by `python run.py validate` via `scripts/validators/darwin_structure.py`
 - Effectiveness (35 pts): Agent-evaluated via test prompts (see `references/darwin-rubric.md`)
 - Meta-skill (6 pts): anti-pattern blacklist check
 - Score < 70 → automatic hill-climb optimization (max 3 rounds)
-- Check deps: `examlex check-deps`
+- Check deps: `python run.py check-deps`
 
 ## Constraints
 

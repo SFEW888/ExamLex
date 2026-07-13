@@ -88,6 +88,10 @@ After restarting the Agent, verify the installed Skill and run a quick request:
 /examlex Create a one-day CET4 study plan for a learner with a weak foundation.
 ```
 
+The copied main Skill also includes its own CLI runner. From the installed
+`examlex` Skill directory, `python run.py --help` works without a repository
+checkout or a separately installed `examlex` package.
+
 Installation locations:
 
 | Platform | Personal skills root | Project-local root |
@@ -381,6 +385,7 @@ No. All five distillation paths are implemented by local project code. Heavy ext
 │
 ├── skills/examlex/    # Portable public-safe Skill package
 │   ├── SKILL.md                     #   Main Skill definition
+│   ├── run.py                       #   Self-contained CLI runner
 │   ├── assets/schemas/              #   JSON Schemas
 │   ├── assets/templates/            #   YAML/JSON/Markdown templates
 │   ├── references/                  #   Reference docs
