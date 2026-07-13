@@ -45,7 +45,8 @@ def main(argv: list[str] | None = None) -> int:
         source_type, extractor_type, input_ref = extractor_specs[input_type]
         session = mgr.create(source_type=source_type)
         try:
-            result = extractor_type().extract(input_ref, session.artifacts_dir)
+            extractor = extractor_type(cfg) if extractor_type is VideoExtractor else extractor_type()
+            result = extractor.extract(input_ref, session.artifacts_dir)
         except (FileNotFoundError, IsADirectoryError, PermissionError, OSError, UnicodeDecodeError, ValueError, RuntimeError) as exc:
             output = {
                 "status": "error",

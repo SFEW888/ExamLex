@@ -30,6 +30,37 @@ def temp_dir():
 
 
 class InstallScriptTests(unittest.TestCase):
+    def test_copied_main_skill_runs_bundled_cli_without_repository(self):
+        with temp_dir() as temp:
+            dest = Path(temp) / "skills"
+            result = install_codex.install_skill(SOURCE, dest)
+            environment = os.environ.copy()
+            environment.pop("PYTHONPATH", None)
+            environment["PYTHONNOUSERSITE"] = "1"
+
+            completed = subprocess.run(
+                [sys.executable, str(result.target / "run.py"), "--help"],
+                cwd=temp,
+                env=environment,
+                text=True,
+                capture_output=True,
+            )
+
+            self.assertEqual(0, completed.returncode, completed.stderr)
+            self.assertIn("usage: examlex", completed.stdout)
+
+    def test_posix_entrypoints_are_executable_and_forced_to_lf(self):
+        indexed = subprocess.check_output(
+            ["git", "ls-files", "-s", "--", "install.sh", "bin/examlex"],
+            cwd=PROJECT_ROOT,
+            text=True,
+        )
+        attributes = (PROJECT_ROOT / ".gitattributes").read_text(encoding="utf-8")
+
+        self.assertEqual(2, indexed.count("100755"), indexed)
+        self.assertIn("*.sh text eol=lf", attributes)
+        self.assertIn("bin/examlex text eol=lf", attributes)
+
     def test_cursor_default_destination_is_skills_directory(self):
         self.assertEqual(
             install_cursor.default_dest(), Path.home() / ".cursor" / "skills"

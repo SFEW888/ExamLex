@@ -9,7 +9,7 @@ Template: `assets/templates/learner-profile.json` or `assets/templates/learner-p
 Required fields:
 
 - `learner_id`: stable learner identifier.
-- `exam_type`: `CET4`, `CET6`, or `POSTGRADUATE_ENGLISH`.
+- `exam_type`: `CET4`, `CET6`, `POSTGRADUATE_ENGLISH`, `TEM4`, or `TEM8`.
 - `foundation_level`: one of the supported foundation levels in `exam-profiles.md`.
 - `target_band`: target score band valid for the exam type.
 - `daily_time_budget_minutes`: positive integer.
@@ -131,7 +131,7 @@ Optional fields:
 
 - `source_provenance`: captured source filename, optional URL, raw-source SHA-256, and UTC capture time.
 - `revisions`: immutable content-addressed snapshots (`version`, `sha256`, `strategy`). Practice records refer to the revision hash.
-- `approval_evidence`: SHA-256 values of the validation and evaluation reports plus the UTC approval time.
+- `approval_evidence`: the canonical `strategy_sha256`, SHA-256 values of the validation and evaluation reports, and the UTC approval time. Commit rejects evidence whose strategy digest differs from the current distilled content.
 
 - `lifecycle_status`: `draft`, `approved`, or `deprecated`; only `approved` strategies are eligible for daily plans.
 - `source_url`: original source URL (video link, book ISBN, person profile)

@@ -16,6 +16,19 @@ from generate_daily_plan import generate_daily_plan, _module_order_for
 
 
 class TestTEMProfileValidation(unittest.TestCase):
+    def test_packaged_learner_schema_supports_all_runtime_exam_types(self):
+        schema = json.loads(
+            (
+                REPO_ROOT
+                / "examlex/assets/schemas/learner-profile.schema.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        exam_types = set(schema["properties"]["exam_type"]["enum"])
+        target_bands = set(schema["properties"]["target_band"]["enum"])
+        self.assertEqual(common.EXAM_TYPES, exam_types)
+        self.assertTrue({"60~69", "70~79", "80+"}.issubset(target_bands))
+
     def test_tem4_profile_validation_passes(self):
         """TEM-4 learner profile passes validation."""
         profile = json.loads((FIXTURES / "tem4-learner-profile.json").read_text("utf-8"))

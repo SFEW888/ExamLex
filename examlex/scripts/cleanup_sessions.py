@@ -12,8 +12,12 @@ from pathlib import Path
 
 try:
     from .config import TutorConfig
+    from .file_lock import exclusive_file_lock
+    from .session import session_lock_target
 except ImportError:
     from config import TutorConfig  # type: ignore[no-redef]
+    from file_lock import exclusive_file_lock  # type: ignore[no-redef]
+    from session import session_lock_target  # type: ignore[no-redef]
 
 
 TERMINAL_STAGES = {"committed", "failed"}
@@ -127,19 +131,39 @@ def archive_stale_sessions(
         if not _is_within(target, target_root):
             failures.append(f"archive target is outside archive root: {target}")
             continue
-        if target.exists():
-            failures.append(f"archive target already exists: {target}")
-            continue
+        moved = False
         try:
-            target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.move(str(source), str(target))
-            archived.append(str(target))
+            with exclusive_file_lock(session_lock_target(source)):
+                state_path = source / "pipeline_state.json"
+                try:
+                    state = json.loads(state_path.read_text(encoding="utf-8"))
+                except (FileNotFoundError, json.JSONDecodeError, OSError) as exc:
+                    failures.append(f"session changed before archive: {source}: {exc}")
+                    continue
+                current_stage = str(state.get("stage", "unknown"))
+                current_updated = _parse_updated_at(state.get("updated_at"))
+                if (
+                    current_stage in TERMINAL_STAGES
+                    or current_stage != candidate.stage
+                    or current_updated is None
+                    or current_updated.isoformat() != candidate.updated_at
+                ):
+                    failures.append(f"session changed before archive: {source}")
+                    continue
+                if target.exists():
+                    failures.append(f"archive target already exists: {target}")
+                    continue
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(source), str(target))
+                archived.append(str(target))
+                moved = True
+        except (OSError, TimeoutError) as exc:
+            failures.append(f"failed to archive {source}: {exc}")
+        if moved:
             try:
                 source.parent.rmdir()
             except OSError:
                 pass
-        except OSError as exc:
-            failures.append(f"failed to archive {source}: {exc}")
 
     return CleanupResult(archived=archived, failures=failures)
 

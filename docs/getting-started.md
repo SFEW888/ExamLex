@@ -13,7 +13,7 @@ Core tutoring and direct-text ingestion require no third-party Python package. M
 | --- | --- |
 | Video download and metadata | `yt-dlp` |
 | Video stream merge, media conversion, and audio extraction | `ffmpeg` |
-| Video speech-to-text | local `whisper` or `SILICONFLOW_API_KEY`; both paths still use `ffmpeg` for audio preparation |
+| Video speech-to-text | local `whisper` by default, or explicitly selected SiliconFlow with `SILICONFLOW_API_KEY`; both paths still use `ffmpeg` for audio preparation |
 | PDF extraction | `pdftotext` (Poppler) |
 | DRM-free e-book conversion fallback | `ebook-convert` (Calibre) |
 

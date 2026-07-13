@@ -15,12 +15,7 @@
     },
     "version": {
       "type": "string",
-      "enum": [
-        "V1",
-        "V2",
-        "V3",
-        "V4"
-      ]
+      "pattern": "^V[1-9][0-9]*$"
     },
     "source_version": {
       "type": [

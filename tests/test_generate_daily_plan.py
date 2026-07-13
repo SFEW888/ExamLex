@@ -1,3 +1,4 @@
+import hashlib
 import unittest
 import json
 from pathlib import Path
@@ -9,6 +10,83 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class GenerateDailyPlanTests(unittest.TestCase):
+    def test_plan_ignores_strategy_that_drifted_from_latest_revision(self):
+        snapshot = {
+            "strategy_id": "cet4-reading-method-001",
+            "title": "Approved title",
+            "exam_types": ["CET4"],
+            "modules": ["reading"],
+            "lifecycle_status": "approved",
+            "darwin_score": 80,
+            "steps": ["Use the approved method."],
+        }
+        digest = hashlib.sha256(
+            json.dumps(
+                snapshot,
+                ensure_ascii=False,
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+        drifted = dict(snapshot)
+        drifted["title"] = "Tampered title"
+        drifted["revisions"] = [
+            {"version": 1, "sha256": digest, "strategy": snapshot}
+        ]
+
+        plan = generate_daily_plan.generate_daily_plan(
+            {
+                "learner_id": "learner-001",
+                "exam_type": "CET4",
+                "daily_time_budget_minutes": 20,
+            },
+            {
+                "modules": {
+                    "reading": [
+                        {"node": "locating", "level": 1, "status": "priority"}
+                    ]
+                }
+            },
+            strategies={"strategies": [drifted]},
+        )
+
+        hints = [
+            hint
+            for task in plan["tasks"]
+            for hint in task.get("strategy_hints", [])
+        ]
+        self.assertEqual([], hints)
+
+    def test_official_ninety_minute_profile_reserves_vocabulary_work(self):
+        profile = json.loads(
+            (PROJECT_ROOT / "examlex/assets/templates/learner-profile.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        profile["learner_id"] = "learner-001"
+        ability = json.loads(
+            (PROJECT_ROOT / "examlex/assets/templates/ability-profile.yaml").read_text(
+                encoding="utf-8"
+            )
+        )
+        vocab_pool = json.loads(
+            (
+                PROJECT_ROOT
+                / "examlex/assets/data/vocabulary/cet4-core-200.json"
+            ).read_text(encoding="utf-8")
+        )
+
+        plan = generate_daily_plan.generate_daily_plan(
+            profile, ability, vocab_pool=vocab_pool
+        )
+
+        vocabulary_tasks = [
+            task for task in plan["tasks"] if task.get("module") == "vocabulary"
+        ]
+        self.assertEqual(1, len(vocabulary_tasks), plan)
+        self.assertGreater(len(vocabulary_tasks[0].get("vocab_items", [])), 0)
+        self.assertLessEqual(plan["total_planned_minutes"], 90)
+
     def test_packaged_ability_template_produces_real_candidates(self):
         ability = json.loads(
             (PROJECT_ROOT / "examlex/assets/templates/ability-profile.yaml").read_text(

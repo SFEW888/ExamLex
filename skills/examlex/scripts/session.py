@@ -7,10 +7,22 @@ file tracks progress so long-running distillations can be resumed.
 
 from __future__ import annotations
 
+import argparse
 import json
+import sys
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
+
+from .common import atomic_save_data
+from .config import TutorConfig
+from .file_lock import exclusive_file_lock
+
+
+def session_lock_target(artifacts_dir: Path) -> Path:
+    """Return a lock target outside the movable session directory."""
+    session_dir = Path(artifacts_dir)
+    return session_dir.parent / f".{session_dir.name}.session"
 
 
 class Session:
@@ -32,8 +44,6 @@ class Session:
 
     def checkpoint(self, stage: str, *, sub_stage: str | None = None) -> None:
         """Record progress to pipeline_state.json."""
-        self.current_stage = stage
-        self.sub_stage = sub_stage
         state = {
             "session_id": self.session_id,
             "source_type": self.source_type,
@@ -43,15 +53,15 @@ class Session:
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
         state_path = self.artifacts_dir / "pipeline_state.json"
-        if not self.artifacts_dir.exists():
-            raise FileNotFoundError(
-                f"Artifacts directory missing: {self.artifacts_dir}. "
-                "It may have been deleted or moved; create a new session."
-            )
-        state_path.write_text(
-            json.dumps(state, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        with exclusive_file_lock(session_lock_target(self.artifacts_dir)):
+            if not self.artifacts_dir.exists():
+                raise FileNotFoundError(
+                    f"Artifacts directory missing: {self.artifacts_dir}. "
+                    "It may have been deleted or moved; create a new session."
+                )
+            atomic_save_data(state_path, state)
+        self.current_stage = stage
+        self.sub_stage = sub_stage
 
     def resume_info(self) -> dict:
         """Return structured guidance for the Agent on how to resume."""
@@ -151,3 +161,40 @@ class SessionManager:
             f"No session found with id '{session_id}'. "
             f"Checked under {self.sessions_root}."
         )
+
+
+def resume_main(argv: list[str] | None = None) -> int:
+    """Print structured guidance for resuming an existing session."""
+    parser = argparse.ArgumentParser(
+        prog="examlex resume",
+        description="Resume an existing ExamLex distillation session.",
+    )
+    parser.add_argument("session_id", help="Session identifier returned by extract.")
+    parser.add_argument(
+        "--sessions-root",
+        type=Path,
+        help="Session root to search; defaults to the configured ExamLex data directory.",
+    )
+    parser.add_argument("--json", action="store_true", help="Print machine-readable JSON.")
+    args = parser.parse_args(argv)
+
+    sessions_root = (args.sessions_root or TutorConfig().sessions_root).resolve()
+    try:
+        info = SessionManager(sessions_root).resume(args.session_id).resume_info()
+    except (FileNotFoundError, OSError, ValueError) as exc:
+        if args.json:
+            print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False))
+        else:
+            print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    if args.json:
+        print(json.dumps(info, ensure_ascii=False, indent=2))
+    else:
+        print(f"Session: {info['session_id']}")
+        print(f"Stage: {info['current_stage']}")
+        if info["sub_stage"]:
+            print(f"Sub-stage: {info['sub_stage']}")
+        print(f"Artifacts: {info['artifacts_dir']}")
+        print(f"Next action: {info['next_action']}")
+    return 0

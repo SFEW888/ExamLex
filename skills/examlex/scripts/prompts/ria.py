@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .base import BasePromptGuide, triple_verify_guide
+from .base import BasePromptGuide, triple_verify_guide, untrusted_source_policy
 
 
 class RIAGuide(BasePromptGuide):
@@ -32,6 +32,8 @@ class RIAGuide(BasePromptGuide):
         return f"""# RIA-TV++ Distillation Guide
 
 You are distilling a video/podcast/course transcript into exam strategies.
+
+{untrusted_source_policy(["distilled.json"])}
 
 ## Input
 - Transcript: {artifacts_dir}/transcript.txt
@@ -78,6 +80,8 @@ Include pipeline_report with pass rate, verified count, rejected count.
 
     def _evaluate_instructions(self, artifacts_dir: str) -> str:
         return f"""# RIA Effect Evaluation
+
+{untrusted_source_policy(["evaluation.json"])}
 
 Read the distilled strategies from {artifacts_dir}/distilled.json.
 

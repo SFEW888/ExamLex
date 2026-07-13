@@ -1,15 +1,61 @@
 import io
+import json
+import shutil
 import unittest
 from contextlib import redirect_stdout
 from pathlib import Path
 
 from examlex import cli
+from examlex.scripts.session import SessionManager
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class CliTests(unittest.TestCase):
+    def test_resume_command_returns_existing_session_guidance(self):
+        sessions_root = Path("test-artifacts") / "cli-resume-sessions"
+        shutil.rmtree(sessions_root, ignore_errors=True)
+        try:
+            session = SessionManager(sessions_root).create(source_type="video")
+            session.checkpoint("extract", sub_stage="downloaded")
+            output = io.StringIO()
+
+            with redirect_stdout(output):
+                result = cli.main([
+                    "resume",
+                    session.session_id,
+                    "--sessions-root",
+                    str(sessions_root),
+                    "--json",
+                ])
+
+            self.assertEqual(0, result)
+            payload = json.loads(output.getvalue())
+            self.assertEqual("extract", payload["current_stage"])
+            self.assertEqual("downloaded", payload["sub_stage"])
+        finally:
+            shutil.rmtree(sessions_root, ignore_errors=True)
+
+    def test_english_cli_examples_match_runtime_signatures(self):
+        text = (PROJECT_ROOT / "cli-reference.md").read_text(encoding="utf-8")
+
+        self.assertIn("validate-profile --profile <profile>", text)
+        self.assertNotIn("--score <number>", text)
+        self.assertIn(
+            "writing-version --file <versions.json> --writing-id <writing-id> --text <essay>",
+            text,
+        )
+        self.assertNotIn("text|book|video|person|manual", text)
+
+    def test_bilingual_workflows_pass_the_strategy_library_to_planning(self):
+        for path in (
+            PROJECT_ROOT / "skills/examlex/references/workflow.md",
+            PROJECT_ROOT / "zh-CN/skill/references/workflow.md",
+        ):
+            with self.subTest(path=path):
+                self.assertIn("--strategies strategy-library.json", path.read_text(encoding="utf-8"))
+
     def test_documented_short_aliases_are_registered(self):
         for alias in ("vocab", "report", "validate", "commit"):
             with self.subTest(alias=alias):

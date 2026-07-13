@@ -53,7 +53,7 @@
 | `book`（EPUB DRM） | [Calibre / ebook-convert](https://calibre-ebook.com/download) | `winget install calibre` | `brew install calibre` |
 | `video`（下载/元数据） | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | `pip install yt-dlp` | `pip3 install yt-dlp` |
 | `video`（合并/转换/抽取音频） | [FFmpeg](https://ffmpeg.org/download.html) | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
-| `video`（语音识别） | [Whisper](https://github.com/openai/whisper) 或 `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
+| `video`（语音识别） | 本地 [Whisper](https://github.com/openai/whisper)，或显式选择 SiliconFlow 并配置 `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
 
 `ffmpeg` 就是视频链路需要的开源媒体转换器：`yt-dlp` 下载到分离的视频流和音频流时可能需要它完成合并；ExamLex 在语音识别前也用它抽取并转换音频。只下载某些单文件视频时可能暂时用不到，但完整的“视频 → 音频 → 转写”流程必须安装 `ffmpeg`。
 
@@ -101,6 +101,9 @@ Codex CLI:    /skills → 应看到 /examlex 和 8 个快捷 Skill
 # 快速测试
 /examlex 你好，介绍一下你能帮我做什么
 ```
+
+复制后的主 Skill 自带 CLI 入口。在已安装的 `examlex` Skill 目录中运行
+`python run.py --help`，无需保留仓库检出，也无需另行安装 `examlex` Python 包。
 
 ### 安装目录速查
 
@@ -409,6 +412,7 @@ Agent 对话层 (Claude Code / Codex / Cursor)
 │
 ├── skills/examlex/    # 可移植 public-safe Skill 包
 │   ├── SKILL.md                     #   主 Skill 定义
+│   ├── run.py                       #   复制安装后可直接使用的 CLI 入口
 │   ├── assets/
 │   │   ├── schemas/                 #   JSON Schema（档案/记录/作文版本）
 │   │   └── templates/              #   模板（档案/画像/计划/记录/错误日志/作文版本）
@@ -675,7 +679,7 @@ examlex backup ./local/data
 
 | 变量 | 必填 | 默认值 | 说明 |
 |------|:--:|--------|------|
-| `SILICONFLOW_API_KEY` | 否 | — | SiliconFlow 云端语音识别密钥 |
+| `SILICONFLOW_API_KEY` | 否 | — | SiliconFlow 云端语音识别密钥；仅显式设置 `asr_backend="siliconflow"` 时上传音频。 |
 | `EXAMLEX_PYTHON` | 否 | `python` | 本地 ExamLex 封装脚本使用的 Python 解释器 |
 
 > ⚠️ **安全提醒**：不要提交 `.env`、学习者身份信息、私有提示词正文、Token、密码或本地数据库凭据到公开仓库。

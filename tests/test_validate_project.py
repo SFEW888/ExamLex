@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import shutil
 import re
+import subprocess
 import unittest
 import uuid
 from contextlib import contextmanager
@@ -45,6 +46,65 @@ def copy_project():
 
 
 class ValidateProjectTests(unittest.TestCase):
+    def test_standard_learner_artifacts_are_ignored_and_cannot_be_tracked(self):
+        artifact_paths = (
+            "learner-profile.json",
+            "ability-profile.json",
+            "ability-history.json",
+            "practice-ledger.json",
+            "error-summary.json",
+            "daily-plan.json",
+            "strategy-library.json",
+            "writing-versions.json",
+            "progress-report.html",
+            "backup-2026-07-12.tar.gz",
+            "backup-2026-07-12.tar.gz.sha256",
+            "strategy-library.json.bak",
+            "strategy-library.json.lock",
+            "learner-data/private-profile.json",
+        )
+        for relative in artifact_paths:
+            with self.subTest(relative=relative):
+                completed = subprocess.run(
+                    ["git", "check-ignore", "--no-index", "--quiet", "--", relative],
+                    cwd=PROJECT_ROOT,
+                )
+                self.assertEqual(0, completed.returncode)
+
+        errors = []
+        validate_repo.validate_tracked_learner_artifacts(
+            PROJECT_ROOT,
+            errors,
+            tracked_files=[
+                "README.md",
+                "examples/sample-learner-profile.yaml",
+                "practice-ledger.json",
+                "learner-data/private-profile.json",
+            ],
+        )
+        self.assertEqual(2, len(errors), errors)
+        self.assertTrue(all("learner artifact" in error for error in errors))
+
+    def test_installed_skill_docs_use_the_bundled_runner(self):
+        paths = (
+            PROJECT_ROOT / "skills/examlex/SKILL.md",
+            PROJECT_ROOT / "skills/examlex/references/workflow.md",
+            PROJECT_ROOT / "skills/examlex/references/multi-source-distillation.md",
+            PROJECT_ROOT / "zh-CN/skill/SKILL.md",
+            PROJECT_ROOT / "zh-CN/skill/references/workflow.md",
+            PROJECT_ROOT / "zh-CN/skill/references/multi-source-distillation.md",
+        )
+        for path in paths:
+            text = path.read_text(encoding="utf-8")
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                self.assertNotIn("python skills/examlex/", text)
+                self.assertIn("python run.py", text)
+        for command in ("extract", "validate", "commit"):
+            with self.subTest(command=command):
+                self.assertIn(
+                    f"python run.py {command}",
+                    (PROJECT_ROOT / "skills/examlex/SKILL.md").read_text(encoding="utf-8"),
+                )
     def test_workflows_use_least_privilege_and_immutable_action_pins(self):
         ci = (PROJECT_ROOT / ".github/workflows/ci.yml").read_text(encoding="utf-8")
         codeql = (PROJECT_ROOT / ".github/workflows/codeql.yml").read_text(
@@ -383,15 +443,20 @@ class ValidateProjectTests(unittest.TestCase):
             (
                 PROJECT_ROOT / "skills" / "examlex" / "references" / "data-model.md",
                 PROJECT_ROOT / "zh-CN" / "skill" / "references" / "data-model.md",
-            ): ("strategy-library.json", "approval_evidence", "lifecycle_status", "revisions"),
+            ): ("strategy-library.json", "approval_evidence", "strategy_sha256", "lifecycle_status", "revisions"),
             (
                 PROJECT_ROOT / "skills" / "examlex" / "references" / "multi-source-distillation.md",
                 PROJECT_ROOT / "zh-CN" / "skill" / "references" / "multi-source-distillation.md",
-            ): ("validation_report.json", "evaluation.json", "approval_evidence", "%LOCALAPPDATA%"),
+            ): ("validation_report.json", "evaluation.json", "strategy_sha256", "approval_evidence", "%LOCALAPPDATA%"),
             (
                 PROJECT_ROOT / "skills" / "examlex" / "references" / "workflow.md",
                 PROJECT_ROOT / "zh-CN" / "skill" / "references" / "workflow.md",
-            ): ("examlex extract", "examlex validate", "examlex commit", "approved"),
+            ): (
+                "python run.py extract",
+                "python run.py validate",
+                "python run.py commit",
+                "approved",
+            ),
             (
                 PROJECT_ROOT / "docs" / "usage.md",
                 PROJECT_ROOT / "zh-CN" / "docs" / "usage.md",

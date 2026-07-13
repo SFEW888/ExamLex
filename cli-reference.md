@@ -1,6 +1,6 @@
 # CLI Command Reference
 
-> Run commands through the installed `examlex` console entry, `bin/examlex` on bash, `bin/examlex.ps1` on PowerShell, or `python -m examlex`.
+> Run commands through the installed `examlex` console entry, `bin/examlex` on bash, `bin/examlex.ps1` on PowerShell, `python -m examlex`, or `python run.py` inside a copied ExamLex Skill directory.
 
 ## Invocation Classes
 
@@ -30,7 +30,7 @@
 
 | Short command | Full command | Class | Purpose |
 |---------------|--------------|:-----:|---------|
-| `examlex extract --input <source> [opts]` | `extract` | A | Extract source material from text, books, videos, people, or manual input. |
+| `examlex extract --input <source> [opts]` | `extract` | A | Extract source material from text, books, videos, or people. |
 | `examlex ingest <file> [opts]` | `ingest-strategy` | U | Ingest strategies into a library. |
 | `examlex strategies [opts]` | `list-strategies` | U | List or search ingested strategies. |
 | `examlex validate --artifacts-dir <path>` | `validate-strategies` | A | Validate distilled strategies and calculate structure scores. |
@@ -44,6 +44,7 @@
 | `examlex restore <file> <dir> [opts]` | `restore` | U | Restore learner data. |
 | `examlex report [opts]` | `visualize` | U | Generate an HTML progress report. |
 | `examlex vocab [opts]` | `vocab-estimate` | U | Estimate vocabulary size by sampling. |
+| `examlex resume <session-id> [opts]` | `resume` | U | Show guidance for resuming an existing distillation session. |
 | `examlex sessions-cleanup [opts]` | `sessions-cleanup` | M | Preview or archive stale sessions. |
 | `examlex check-deps [opts]` | `check-deps` | M | Check optional external tools. |
 | `examlex ops-check [opts]` | `ops-check` | M | Run operational readiness checks. |
@@ -58,7 +59,7 @@ examlex check <profile>
 examlex check learner-profile.json
 ```
 
-Equivalent full command: `validate-profile --file <profile>`.
+Equivalent full command: `validate-profile --profile <profile>`.
 
 ### `examlex plan` — generate a daily plan
 
@@ -72,8 +73,8 @@ Equivalent full command: `daily-plan --profile <profile>`.
 ### `examlex log` — record practice
 
 ```bash
-examlex log <ledger> --module <module> --score <number> [options]
-examlex log practice.json --module reading --score 82 --duration-minutes 30
+examlex log <ledger> --date <YYYY-MM-DD> --exam-type <exam> --module <module> --task-id <id> --duration-minutes <minutes> --total-items <count> --correct-items <count> [options]
+examlex log practice.json --date 2026-07-13 --exam-type CET4 --module reading --task-id reading-001 --duration-minutes 30 --total-items 20 --correct-items 16
 ```
 
 Equivalent full command: `record-practice --ledger <ledger>`.
@@ -121,7 +122,7 @@ examlex write <writing-id> --file <versions.json> --text <essay> [options]
 examlex write essay-001 --file writing-versions.json --text "Improved version" --version V2
 ```
 
-Equivalent full command: `writing-version --learner-id <learner-id>`.
+Equivalent full command: `writing-version --file <versions.json> --writing-id <writing-id> --text <essay>`.
 
 ### `examlex score` — estimate writing quality
 
@@ -135,7 +136,7 @@ Equivalent full command: `score-writing --text-file <essay-file>`. Results are l
 ### `examlex extract` — extract source material
 
 ```bash
-examlex extract --input <file-or-symbolic-source> --type <text|book|video|person|manual> [options]
+examlex extract --input <file-or-symbolic-source> --type <auto|text|book|video|person> [options]
 examlex extract --input notes.txt --type text
 examlex extract --input VIDEO_URL --type video
 ```
@@ -205,6 +206,15 @@ examlex vocab --wordlist answers.json [--json]
 
 Equivalent full command: `vocab-estimate`. Reference word data is included in the installed package.
 
+### `examlex resume` — resume a distillation session
+
+```bash
+examlex resume <session-id> [--sessions-root <dir>] [--json]
+examlex resume 12345678-1234-1234-1234-123456789abc --json
+```
+
+The command reads the existing pipeline state and returns the current stage, artifacts directory, and next action without creating a new session.
+
 ### `examlex sessions-cleanup` — archive stale sessions
 
 ```bash
@@ -231,11 +241,11 @@ The dispatcher also accepts these full names directly:
 analyze-trends       backup              check-deps
 commit-strategies    daily-plan          extract
 ingest-strategy      list-strategies     ops-check
-record-practice      restore             score-writing
-sessions-cleanup     summarize-errors    tag-error
-update-ability       validate-profile    validate-strategies
-validate-strategy    visualize           vocab-estimate
-writing-version
+record-practice      restore             resume
+score-writing        sessions-cleanup    summarize-errors
+tag-error            update-ability      validate-profile
+validate-strategies  validate-strategy   visualize
+vocab-estimate       writing-version
 ```
 
 ## Equivalent Invocation Forms

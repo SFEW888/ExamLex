@@ -40,7 +40,7 @@ Paths to external CLI tools. When set to `None` (the default), the tool is locat
 
 | Field | Default | Description |
 |-------|---------|-------------|
-| `asr_backend` | `"auto"` | ASR backend selection. Options: `auto` (pick best available), `siliconflow`, `whisper`, `none` |
+| `asr_backend` | `"auto"` | ASR backend selection. `auto` uses local Whisper when available and never selects a cloud service; `siliconflow` must be selected explicitly; `none` disables ASR. |
 | `asr_model` | `"base"` | ASR model variant (e.g. `base`, `small`, `medium`, `large`) |
 | `asr_language` | `"auto"` | Language hint for ASR. `"auto"` enables language detection |
 

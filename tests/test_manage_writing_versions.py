@@ -1,4 +1,5 @@
 import json
+import re
 import threading
 import time
 import unittest
@@ -14,6 +15,19 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
 
 class ManageWritingVersionsTests(unittest.TestCase):
+    def test_packaged_schema_accepts_runtime_generated_v5_and_later(self):
+        schema = json.loads(
+            (
+                PROJECT_ROOT
+                / "examlex/assets/schemas/writing-version-record.schema.json"
+            ).read_text(encoding="utf-8")
+        )
+        pattern = schema["properties"]["version"]["pattern"]
+
+        self.assertIsNotNone(re.fullmatch(pattern, "V5"))
+        self.assertIsNotNone(re.fullmatch(pattern, "V100"))
+        self.assertIsNone(re.fullmatch(pattern, "V0"))
+
     def test_concurrent_cli_appends_keep_both_versions(self):
         versions_path = Path("test-artifacts") / "concurrent-writing-versions.json"
         versions_path.parent.mkdir(exist_ok=True)

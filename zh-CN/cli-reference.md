@@ -1,6 +1,6 @@
 # CLI 命令参考
 
-> 所有命令均可通过 `examlex`（bash）或 `examlex.ps1`（PowerShell）封装脚本调用，也可直通底层 `python -m examlex`。
+> 所有命令均可通过 `examlex`（bash）或 `examlex.ps1`（PowerShell）封装脚本调用，也可直通底层 `python -m examlex`；复制安装主 Skill 后，还可在其目录中使用 `python run.py`。
 
 ---
 
@@ -62,6 +62,7 @@
 |----------|:--:|------|
 | `check-deps` | 🔧 | 检查外部工具依赖（ffmpeg、yt-dlp 等） |
 | `ops-check` | 🔧 | 运行 13 项运维就绪检查 |
+| `resume` | 👤 | 读取已有蒸馏会话并返回续跑指引 |
 | `sessions-cleanup` | 🔧 | 预览或归档陈旧的非终态会话 |
 | `validate-strategy` | 🔧 | 校验策略库文件 |
 | `validate_repo.py` | 🔧 | 仓库完整性校验（非 CLI 命令） |
@@ -302,6 +303,15 @@ examlex commit --artifacts-dir ./sessions/session-001 --library strategy-library
 ```
 
 底层命令：`commit-strategies`。执行 ratchet 检查（新策略 Darwin 分需超过已有记录），原子写入策略库。
+
+### `examlex resume` — 续跑蒸馏会话
+
+```bash
+examlex resume <session-id> [--sessions-root <dir>] [--json]
+examlex resume 12345678-1234-1234-1234-123456789abc --json
+```
+
+该命令读取已有的管线状态，返回当前阶段、产物目录和下一步操作，不会创建新会话。
 
 ### `examlex sessions-cleanup` — 陈旧会话归档
 

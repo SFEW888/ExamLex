@@ -55,6 +55,20 @@ class RecordPracticeTests(unittest.TestCase):
         )
 
         self.assertIsInstance(template, list)
+        for record in template:
+            record_practice._validate_record(record)
+
+        schema = json.loads(
+            (
+                PROJECT_ROOT
+                / "examlex/assets/schemas/exercise-record.schema.json"
+            ).read_text(encoding="utf-8")
+        )
+        self.assertTrue(
+            {"total_items", "correct_items"}.issubset(schema["required"])
+        )
+        self.assertEqual(1, schema["properties"]["duration_minutes"]["minimum"])
+        self.assertEqual(1, schema["properties"]["total_items"]["minimum"])
 
     def test_appends_record_and_computes_accuracy_from_items(self):
         ledger = Path("test-artifacts") / "task5-record-ledger.json"

@@ -5,6 +5,53 @@ from examlex.scripts import common, update_ability_profile
 
 
 class UpdateAbilityProfileTests(unittest.TestCase):
+    def test_replaying_the_complete_ledger_is_idempotent(self):
+        profile = {
+            "modules": {
+                "reading": [
+                    {
+                        "node": "location",
+                        "level": 1,
+                        "status": "priority",
+                        "stats": {
+                            "total_items": 99,
+                            "correct_items": 1,
+                            "error_count": 7,
+                            "accuracy": 0.01,
+                        },
+                    }
+                ]
+            }
+        }
+        ledger = [
+            {
+                "module": "reading",
+                "total_items": 10,
+                "correct_items": 8,
+                "error_tags": ["READING_LOCATION_FAIL"],
+            }
+        ]
+
+        first = update_ability_profile.update_ability_profile(profile, ledger)
+        second = update_ability_profile.update_ability_profile(first, ledger)
+
+        self.assertEqual(first, second)
+        error_dimension = common.ERROR_TAG_TO_ABILITY["READING_LOCATION_FAIL"][1]
+        error_node = next(
+            node
+            for node in first["modules"]["reading"]
+            if node["node"] == error_dimension
+        )
+        self.assertEqual(
+            error_node["stats"],
+            {
+                "total_items": 10,
+                "correct_items": 8,
+                "error_count": 1,
+                "accuracy": 0.8,
+            },
+        )
+
     def test_updates_existing_nodes_with_item_stats_and_error_tag_stats(self):
         profile = {
             "learner_id": "learner-001",

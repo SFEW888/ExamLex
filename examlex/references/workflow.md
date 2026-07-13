@@ -6,11 +6,11 @@ Use this loop for CET-4, CET-6, TEM-4, TEM-8, and postgraduate English tutoring 
 
 Before diagnosis or at any later stage, add methods through the gated strategy pipeline:
 
-1. Run `examlex extract --input <url|file|name> --type <video|book|text|person>` to capture source material.
+1. Run `python run.py extract --input <url|file|name> --type <video|book|text|person>` to capture source material.
 2. Let the Agent apply RIA++, cognitive extraction, or direct ingestion according to source type and write session artifacts.
-3. Run `examlex validate --artifacts-dir <path>` for format and Darwin structure checks.
+3. Run `python run.py validate --artifacts-dir <path>` for format and Darwin structure checks.
 4. Produce effectiveness evaluation evidence for every candidate strategy.
-5. Run `examlex commit --artifacts-dir <path> --library strategy-library.json` for atomic approval and commit.
+5. Run `python run.py commit --artifacts-dir <path> --library strategy-library.json` for atomic approval and commit.
 
 Only `approved` strategies may enter a daily plan. If ingestion fails or no strategy library exists, the ordinary learning loop continues normally. See [multi-source-distillation.md](multi-source-distillation.md) for the complete contract.
 
@@ -32,7 +32,7 @@ Validate it with `scripts/validate_profile.py`. If validation fails, fix the pro
 Generate a daily plan from the learner profile, ability profile, and optional error summary. Pass `--strategies strategy-library.json` to attach relevant user-ingested exam methods to planned modules:
 
 ```bash
-python skills/examlex/scripts/generate_daily_plan.py --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --strategies strategy-library.json --output daily-plan.json
+python run.py daily-plan --profile learner-profile.json --ability ability-profile.json --errors error-summary.json --strategies strategy-library.json --output daily-plan.json
 ```
 
 Use the generated tasks as the baseline. Adapt wording for the learner, but keep module, focus, minutes, and reasons consistent unless the user changes constraints.
@@ -48,7 +48,7 @@ Use `tag_error.py` for deterministic first-pass tags when the learner provides e
 Append practice records with `record_practice.py`, then summarize repeated errors:
 
 ```bash
-python skills/examlex/scripts/summarize_errors.py --ledger practice-ledger.json --output error-summary.json
+python run.py summarize-errors --ledger practice-ledger.json --output error-summary.json
 ```
 
 Treat the summary as evidence for the next plan, not as a final judgment of the learner.
@@ -58,13 +58,13 @@ Treat the summary as evidence for the next plan, not as a final judgment of the 
 Update the ability profile from the ledger:
 
 ```bash
-python skills/examlex/scripts/update_ability_profile.py --ability ability-profile.json --ledger practice-ledger.json
+python run.py update-ability --ability ability-profile.json --ledger practice-ledger.json
 ```
 
 Analyze trends when a ledger or ability history has enough points:
 
 ```bash
-python skills/examlex/scripts/analyze_trends.py --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json
+python run.py analyze-trends --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json
 ```
 
 ## 6. Writing Loop

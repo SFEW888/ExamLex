@@ -10,12 +10,13 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
-import os
 from dataclasses import dataclass, field
 from datetime import date
 from enum import Enum
 from pathlib import Path
 from typing import Any
+
+from ..strategy_store import atomic_save_strategy_library
 
 
 class RatchetDecision(Enum):
@@ -174,31 +175,5 @@ class StrategyRatchet:
 
     @staticmethod
     def atomic_save(library: dict, path: Path) -> Path:
-        """Atomically write library to path (temp file + os.replace).
-        Also creates a .bak backup before overwriting.
-        """
-        text = json.dumps(library, ensure_ascii=False, indent=2) + "\n"
-        path = Path(path)
-
-        # Backup existing file
-        if path.exists():
-            bak = path.with_suffix(path.suffix + ".bak")
-            try:
-                bak.write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
-            except OSError:
-                pass  # non-critical
-
-        # Atomic write
-        tmp = path.with_suffix(path.suffix + ".tmp")
-        try:
-            tmp.write_text(text, encoding="utf-8")
-            os.replace(str(tmp), str(path))
-        finally:
-            # Clean up an orphaned temp file if the write/replace failed
-            # (on success it has already been renamed away).
-            if tmp.exists():
-                try:
-                    tmp.unlink()
-                except OSError:
-                    pass
-        return path
+        """Atomically write a complete library and preserve its previous bytes."""
+        return atomic_save_strategy_library(library, path)

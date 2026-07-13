@@ -307,27 +307,17 @@ def check_dry_run(cfg: TutorConfig, library_path: str | None = None) -> CheckRes
         if library_path:
             detail["last_step"] = "library_write"
             lib_path = Path(library_path)
+            trial_path = tmpdir / "strategy-library.json"
+            if lib_path.exists():
+                shutil.copy2(lib_path, trial_path)
             ratchet = StrategyRatchet()
             test_strategy["distillation_method"] = "direct"
             test_strategy["source_type"] = "text"
             scored = ratchet.baseline(test_strategy, structure.total)
-            lib = load_data(lib_path) if lib_path.exists() else {"strategies": []}
-            try:
-                ratchet.apply(scored, lib, None, structure.total)
-                StrategyRatchet.atomic_save(lib, lib_path)
-                detail["library_write"] = "ok"
-            finally:
-                # Always remove the dummy test entry, even if the write above
-                # failed partway, so it never persists in the real library.
-                try:
-                    loaded = load_data(lib_path) if lib_path.exists() else {"strategies": []}
-                    loaded["strategies"] = [
-                        s for s in loaded.get("strategies", [])
-                        if not (isinstance(s, dict) and s.get("strategy_id") == "dry-run-test-001")
-                    ]
-                    StrategyRatchet.atomic_save(loaded, lib_path)
-                except Exception as cleanup_err:
-                    detail["library_cleanup"] = f"failed to remove test entry: {cleanup_err}"
+            lib = load_data(trial_path) if trial_path.exists() else {"strategies": []}
+            ratchet.apply(scored, lib, None, structure.total)
+            StrategyRatchet.atomic_save(lib, trial_path)
+            detail["library_write"] = "ok (temporary copy)"
 
         import shutil as _shutil
         _shutil.rmtree(str(tmpdir), ignore_errors=True)

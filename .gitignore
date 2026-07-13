@@ -21,3 +21,20 @@ local/
 test-artifacts/
 sessions/
 _research/
+
+# Local learner data and generated reports
+/learner-data/
+/learner-profile.json
+/ability-profile.json
+/ability-history.json
+/practice-ledger.json
+/error-summary.json
+/daily-plan.json
+/strategy-library.json
+/writing-versions.json
+/progress-report.html
+/backup-*.tar.gz
+/backup-*.tar.gz.sha256
+/*.bak
+/*.lock
+/*.tmp

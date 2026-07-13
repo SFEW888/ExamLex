@@ -8,9 +8,11 @@ transcribed via SenseVoiceSmall (SiliconFlow API) or local whisper CLI.
 from __future__ import annotations
 
 import json
+import ipaddress
 import os
 import re
 import shutil
+import socket
 import subprocess
 import tempfile
 import uuid
@@ -20,23 +22,71 @@ from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
 from .base import BaseExtractor, ExtractionResult
+from ..config import TutorConfig
 
 
 # ── URL detection ──────────────────────────────────
 
-_VIDEO_HOSTS = [
-    r"(?:www\.)?bilibili\.com",
-    r"(?:www\.)?b23\.tv",
-    r"(?:www\.)?youtube\.com",
-    r"(?:www\.)?youtu\.be",
-    r"(?:www\.)?v\.douyin\.com",
-    r"(?:www\.)?xiaohongshu\.com",
-    r"(?:www\.)?xhslink\.com",
-]
-
-_VIDEO_PATTERN = re.compile(
-    r"^https?://(" + "|".join(_VIDEO_HOSTS) + r")/", re.IGNORECASE
+_VIDEO_HOSTS = frozenset(
+    {
+        "bilibili.com",
+        "www.bilibili.com",
+        "b23.tv",
+        "www.b23.tv",
+        "youtube.com",
+        "www.youtube.com",
+        "youtu.be",
+        "www.youtu.be",
+        "douyin.com",
+        "www.douyin.com",
+        "v.douyin.com",
+        "www.v.douyin.com",
+        "xiaohongshu.com",
+        "www.xiaohongshu.com",
+        "xhslink.com",
+        "www.xhslink.com",
+    }
 )
+
+
+def _video_url_parts(url: str):
+    try:
+        parts = urlparse(url)
+        port = parts.port
+    except (TypeError, ValueError) as exc:
+        raise ValueError(f"Invalid video URL: {exc}") from exc
+    if parts.scheme.lower() != "https":
+        raise ValueError("Video URL must use HTTPS.")
+    if parts.username is not None or parts.password is not None:
+        raise ValueError("Video URL must not contain user information.")
+    host = (parts.hostname or "").rstrip(".").lower()
+    if host not in _VIDEO_HOSTS:
+        raise ValueError(f"Unsupported video host: {host or '<missing>'}")
+    if port not in (None, 443):
+        raise ValueError("Video URL must use the standard HTTPS port.")
+    return parts, host
+
+
+def _validate_video_url(url: str) -> str:
+    """Validate a supported HTTPS URL and require public DNS addresses."""
+    _parts, host = _video_url_parts(url)
+    try:
+        addresses = socket.getaddrinfo(host, 443, type=socket.SOCK_STREAM)
+    except socket.gaierror as exc:
+        raise ValueError(f"Could not resolve video host '{host}': {exc}") from exc
+    if not addresses:
+        raise ValueError(f"Could not resolve video host '{host}'.")
+    for address in addresses:
+        raw_ip = address[4][0].split("%", 1)[0]
+        try:
+            parsed_ip = ipaddress.ip_address(raw_ip)
+        except ValueError as exc:
+            raise ValueError(f"Video host resolved to an invalid address: {raw_ip}") from exc
+        if not parsed_ip.is_global:
+            raise ValueError(
+                f"Video host must resolve only to public addresses; got {parsed_ip}."
+            )
+    return url
 
 # ── SiliconFlow ASR ────────────────────────────────
 
@@ -68,7 +118,11 @@ class VideoExtractor(BaseExtractor):
     ]
     REQUIRED_TOOLS = ["yt-dlp", "ffmpeg"]
 
+    def __init__(self, config: TutorConfig | None = None) -> None:
+        self.config = config or TutorConfig()
+
     def extract(self, input_ref: str, output_dir: Path) -> ExtractionResult:
+        validated_url = _validate_video_url(input_ref)
         output_dir.mkdir(parents=True, exist_ok=True)
         warnings: list[str] = []
 
@@ -80,7 +134,7 @@ class VideoExtractor(BaseExtractor):
                 )
 
         # 2. Download video + metadata via yt-dlp
-        metadata = self._extract_metadata(input_ref)
+        metadata = self._extract_metadata(validated_url)
 
         # Validate duration before any expensive download/ASR work
         duration = metadata.get("duration") or 0
@@ -92,7 +146,7 @@ class VideoExtractor(BaseExtractor):
             warnings.append(f"Video is {duration}s (>2h). Transcription may be slow.")
 
         item_id = self._item_id(metadata)
-        video_path = self._download_video(input_ref, output_dir, metadata, item_id)
+        video_path = self._download_video(validated_url, output_dir, metadata, item_id)
 
         # 3. Write post caption
         caption = self._post_caption(metadata)
@@ -101,7 +155,7 @@ class VideoExtractor(BaseExtractor):
 
         # 4. Write metadata
         meta_path = output_dir / "metadata.json"
-        normalized = self._normalize_metadata(input_ref, metadata, item_id, caption, video_path)
+        normalized = self._normalize_metadata(validated_url, metadata, item_id, caption, video_path)
         meta_path.write_text(
             json.dumps(normalized, ensure_ascii=False, indent=2),
             encoding="utf-8",
@@ -114,10 +168,13 @@ class VideoExtractor(BaseExtractor):
         }
 
         # 5. ASR
-        backend = _select_backend("auto")
+        backend = _select_backend(
+            self.config.asr_backend,
+            api_key=self.config.siliconflow_api_key,
+        )
         if backend and video_path:
             try:
-                model = _resolve_model(backend, "auto")
+                model = _resolve_model(backend, self.config.asr_model)
                 audio_suffix = ".mp3" if backend == "siliconflow" else ".m4a"
                 audio_path = output_dir / f"audio{audio_suffix}"
                 transcript_path = output_dir / "transcript.txt"
@@ -126,10 +183,12 @@ class VideoExtractor(BaseExtractor):
 
                 if backend == "siliconflow":
                     _transcribe_siliconflow(audio_path, transcript_path,
-                                            output_dir / "transcript.siliconflow.json", model)
+                                            output_dir / "transcript.siliconflow.json", model,
+                                            self.config.siliconflow_api_key)
                 else:
                     _transcribe_whisper(audio_path, output_dir, transcript_path,
-                                        output_dir / "transcript.whisper.json", model)
+                                        output_dir / "transcript.whisper.json", model,
+                                        self.config.asr_language)
 
                 artifacts["audio"] = audio_path
                 artifacts["transcript"] = transcript_path
@@ -138,10 +197,10 @@ class VideoExtractor(BaseExtractor):
 
         return ExtractionResult(
             source_type="video",
-            input_ref=input_ref,
+            input_ref=validated_url,
             artifacts=artifacts,
             metadata={
-                "platform": self._detect_platform(input_ref),
+                "platform": self._detect_platform(validated_url),
                 "duration_seconds": duration,
                 "title": metadata.get("title", ""),
                 "uploader": metadata.get("uploader") or metadata.get("channel", ""),
@@ -153,10 +212,14 @@ class VideoExtractor(BaseExtractor):
     # ── URL support ──
 
     def _supports(self, url: str) -> bool:
-        return bool(_VIDEO_PATTERN.search(url))
+        try:
+            _video_url_parts(url)
+        except ValueError:
+            return False
+        return True
 
     def _detect_platform(self, url: str) -> str:
-        host = urlparse(url).netloc.lower()
+        host = (urlparse(url).hostname or "").lower()
         if "bilibili" in host or "b23.tv" in host:
             return "bilibili"
         if "youtube" in host or "youtu.be" in host:
@@ -175,12 +238,12 @@ class VideoExtractor(BaseExtractor):
             raise FileNotFoundError(
                 "yt-dlp is required but not found. Install it and retry."
             )
-        cmd = [yt_dlp, "--no-playlist", "--dump-single-json", url]
+        cmd = [yt_dlp, "--no-playlist", "--dump-single-json", "--", url]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
         if result.returncode != 0 and _cookie_retry_enabled():
             # Opt-in retry with browser cookies (see _cookie_retry_enabled)
             cmd2 = [yt_dlp, "--cookies-from-browser", "chrome", "--no-playlist",
-                    "--dump-single-json", url]
+                    "--dump-single-json", "--", url]
             result = subprocess.run(cmd2, capture_output=True, text=True, timeout=120)
         if result.returncode != 0:
             raise RuntimeError(f"yt-dlp metadata extraction failed: {result.stderr[:500]}")
@@ -197,14 +260,14 @@ class VideoExtractor(BaseExtractor):
         output_path = folder / f"{stem}.mp4"
         cmd = [
             yt_dlp, "--no-playlist", "-f", "bv*+ba/b",
-            "--merge-output-format", "mp4", "-o", str(output_path), url,
+            "--merge-output-format", "mp4", "-o", str(output_path), "--", url,
         ]
         result = subprocess.run(cmd, capture_output=True, text=True, timeout=600)
         if result.returncode != 0 and _cookie_retry_enabled():
             # Opt-in retry with browser cookies (see _cookie_retry_enabled)
             cmd2 = [yt_dlp, "--cookies-from-browser", "chrome", "--no-playlist",
                     "-f", "bv*+ba/b", "--merge-output-format", "mp4",
-                    "-o", str(output_path), url]
+                    "-o", str(output_path), "--", url]
             result = subprocess.run(cmd2, capture_output=True, text=True, timeout=600)
         if result.returncode != 0:
             raise RuntimeError(f"yt-dlp download failed: {result.stderr[:500]}")
@@ -270,9 +333,12 @@ class VideoExtractor(BaseExtractor):
 # ── ASR helpers ────────────────────────────────────
 
 
-def _select_backend(backend: str) -> str | None:
+def _select_backend(backend: str, *, api_key: str | None = None) -> str | None:
+    if backend == "none":
+        return None
     if backend == "siliconflow":
-        if not os.environ.get("SILICONFLOW_API_KEY"):
+        configured_key = api_key if api_key is not None else os.environ.get("SILICONFLOW_API_KEY")
+        if not configured_key:
             raise RuntimeError("SILICONFLOW_API_KEY not set")
         return "siliconflow"
     if backend == "whisper":
@@ -280,8 +346,6 @@ def _select_backend(backend: str) -> str | None:
             raise RuntimeError("whisper CLI not found")
         return "whisper"
     if backend == "auto":
-        if os.environ.get("SILICONFLOW_API_KEY"):
-            return "siliconflow"
         if shutil.which("whisper"):
             return "whisper"
         return None
@@ -345,8 +409,9 @@ def _transcribe_whisper(audio_path: Path, output_dir: Path,
 
 
 def _transcribe_siliconflow(audio_path: Path, transcript_path: Path,
-                            json_path: Path, model: str) -> None:
-    api_key = os.environ.get("SILICONFLOW_API_KEY")
+                            json_path: Path, model: str,
+                            api_key: str | None = None) -> None:
+    api_key = api_key if api_key is not None else os.environ.get("SILICONFLOW_API_KEY")
     if not api_key:
         raise RuntimeError("SILICONFLOW_API_KEY not set")
 

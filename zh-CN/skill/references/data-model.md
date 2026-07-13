@@ -9,7 +9,7 @@
 必填字段：
 
 - `learner_id`：稳定的学习者标识。
-- `exam_type`：`CET4`、`CET6` 或 `POSTGRADUATE_ENGLISH`。
+- `exam_type`：`CET4`、`CET6`、`POSTGRADUATE_ENGLISH`、`TEM4` 或 `TEM8`。
 - `foundation_level`：`exam-profiles.md` 中支持的基础水平。
 - `target_band`：对该考试类型有效的目标区间。
 - `daily_time_budget_minutes`：正整数。
@@ -130,7 +130,7 @@ ledger 是一个 JSON 列表。每条记录应包含：
 
 - `source_provenance`：来源文件名、可选 URL、原始来源 SHA-256 和 UTC 采集时间
 - `revisions`：不可变的内容寻址快照（`version`、`sha256`、`strategy`）；练习记录引用修订哈希
-- `approval_evidence`：校验报告与评估报告的 SHA-256，以及 UTC 批准时间
+- `approval_evidence`：规范化策略内容的 `strategy_sha256`、校验报告与评估报告的 SHA-256，以及 UTC 批准时间；当前蒸馏内容与证据摘要不一致时提交会被拒绝
 - `lifecycle_status`：`draft`、`approved` 或 `deprecated`；仅 `approved` 策略可进入每日计划
 - `source_url`：视频链接、书籍 ISBN 或人物主页等原始来源
 - `ability_nodes`：策略针对的具体能力节点

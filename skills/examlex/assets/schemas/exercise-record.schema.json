@@ -8,6 +8,8 @@
     "module",
     "task_id",
     "duration_minutes",
+    "total_items",
+    "correct_items",
     "error_tags"
   ],
   "properties": {
@@ -25,11 +27,11 @@
     },
     "duration_minutes": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 1
     },
     "total_items": {
       "type": "integer",
-      "minimum": 0
+      "minimum": 1
     },
     "correct_items": {
       "type": "integer",

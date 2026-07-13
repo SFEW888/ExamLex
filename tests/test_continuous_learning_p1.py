@@ -2,16 +2,248 @@ import hashlib
 import io
 import tempfile
 import tarfile
+import threading
+import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import json
 
-from examlex.scripts import analyze_trends, backup_data, cli_commit, generate_daily_plan, ingest_strategy, record_practice
+from examlex.scripts import analyze_trends, backup_data, cli_commit, cli_validate, generate_daily_plan, ingest_strategy, record_practice
 from examlex.scripts.optimizers.ratchet import StrategyRatchet
 
 
 class ContinuousLearningP1Tests(unittest.TestCase):
+    def test_backup_rejects_output_inside_source_tree(self):
+        with self._temporary_dir() as temp:
+            source = Path(temp) / "learner-data"
+            source.mkdir()
+            (source / "profile.json").write_text("{}", encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "inside"):
+                backup_data.create_backup(source, source / "backup.tar.gz")
+
+    def test_repeated_backup_failure_preserves_previous_archive(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            (source / "profile.json").write_text("first", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            backup_data.create_backup(source, archive)
+            original_archive = archive.read_bytes()
+            original_sidecar = Path(f"{archive}.sha256").read_bytes()
+            (source / "profile.json").write_text("second", encoding="utf-8")
+
+            with patch("tarfile.TarFile.add", side_effect=OSError("simulated failure")):
+                with self.assertRaisesRegex(OSError, "simulated failure"):
+                    backup_data.create_backup(source, archive)
+
+            self.assertEqual(original_archive, archive.read_bytes())
+            self.assertEqual(original_sidecar, Path(f"{archive}.sha256").read_bytes())
+
+    def test_backup_hashing_never_uses_unbounded_path_read_bytes(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            (source / "profile.json").write_text("stream me", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+
+            with patch(
+                "pathlib.Path.read_bytes",
+                side_effect=AssertionError("unbounded read_bytes"),
+            ):
+                metadata = backup_data.create_backup(source, archive)
+                verified = backup_data.verify_backup(
+                    archive,
+                    expected_checksum=metadata["checksum_sha256"],
+                )
+
+            self.assertTrue(verified["verified"])
+
+    def test_backup_rejects_source_changes_before_atomic_publish(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            profile = source / "profile.json"
+            profile.write_text("before", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            real_add = tarfile.TarFile.add
+
+            def mutate_then_add(archive_object, name, *args, **kwargs):
+                profile.write_text("after", encoding="utf-8")
+                return real_add(archive_object, name, *args, **kwargs)
+
+            with patch.object(
+                tarfile.TarFile,
+                "add",
+                autospec=True,
+                side_effect=mutate_then_add,
+            ):
+                with self.assertRaisesRegex(ValueError, "changed during backup"):
+                    backup_data.create_backup(source, archive)
+
+            self.assertFalse(archive.exists())
+            self.assertFalse(Path(f"{archive}.sha256").exists())
+
+    def test_backup_verification_enforces_member_quotas(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            (source / "a.json").write_text("12345", encoding="utf-8")
+            (source / "b.json").write_text("67890", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            backup_data.create_backup(source, archive)
+
+            quota_cases = (
+                ("MAX_ARCHIVE_MEMBERS", 2, "member count"),
+                ("MAX_ARCHIVE_MEMBER_BYTES", 4, "member size"),
+                ("MAX_ARCHIVE_TOTAL_BYTES", 9, "total size"),
+                ("MAX_BACKUP_METADATA_BYTES", 10, "metadata size"),
+            )
+            for attribute, limit, message in quota_cases:
+                with self.subTest(attribute=attribute), patch.object(
+                    backup_data, attribute, limit, create=True
+                ):
+                    with self.assertRaisesRegex(ValueError, message):
+                        backup_data.verify_backup(archive)
+
+    def test_failed_forced_restore_keeps_destination_unchanged(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            (source / "a.json").write_text("new-a", encoding="utf-8")
+            (source / "b.json").write_text("new-b", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            metadata = backup_data.create_backup(source, archive)
+            destination = root / "restored"
+            destination.mkdir()
+            (destination / "a.json").write_text("old-a", encoding="utf-8")
+            (destination / "b.json").write_text("old-b", encoding="utf-8")
+            real_copy = backup_data.shutil.copyfileobj
+            calls = 0
+
+            def fail_second_copy(source_stream, output_stream, *args, **kwargs):
+                nonlocal calls
+                calls += 1
+                if calls == 2:
+                    raise OSError("simulated restore failure")
+                return real_copy(source_stream, output_stream, *args, **kwargs)
+
+            with patch.object(backup_data.shutil, "copyfileobj", fail_second_copy):
+                with self.assertRaisesRegex(OSError, "simulated restore failure"):
+                    backup_data.restore_backup(
+                        archive,
+                        destination,
+                        force=True,
+                        expected_checksum=metadata["checksum_sha256"],
+                    )
+
+            self.assertEqual("old-a", (destination / "a.json").read_text(encoding="utf-8"))
+            self.assertEqual("old-b", (destination / "b.json").read_text(encoding="utf-8"))
+
+    def test_strategy_library_schema_requires_content_bound_approval_evidence(self):
+        schema_path = (
+            Path(__file__).resolve().parents[1]
+            / "examlex/assets/schemas/strategy-library.schema.json"
+        )
+        schema = json.loads(schema_path.read_text(encoding="utf-8"))
+        evidence = schema["properties"]["strategies"]["items"]["properties"][
+            "approval_evidence"
+        ]
+
+        self.assertIn("strategy_sha256", evidence["required"])
+        self.assertEqual(
+            "^[a-f0-9]{64}$",
+            evidence["properties"]["strategy_sha256"]["pattern"],
+        )
+
+    def test_validation_report_binds_each_strategy_content(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            strategy = {
+                "strategy_id": "cet4-reading-method-001",
+                "title": "Method",
+                "content": "Use a concrete evidence-location method for every item.",
+                "steps": ["Read the question", "Locate evidence"],
+                "source_file": "method.md",
+                "exam_types": ["CET4"],
+                "modules": ["reading"],
+                "added_at": "2026-07-10",
+            }
+            (root / "distilled.json").write_text(
+                json.dumps({"strategies": [strategy]}), encoding="utf-8"
+            )
+
+            self.assertIn(cli_validate.main(["--artifacts-dir", str(root)]), (0, 1))
+
+            report = json.loads((root / "validation_report.json").read_text(encoding="utf-8"))
+            self.assertEqual(
+                hashlib.sha256(
+                    json.dumps(
+                        strategy,
+                        ensure_ascii=False,
+                        sort_keys=True,
+                        separators=(",", ":"),
+                    ).encode("utf-8")
+                ).hexdigest(),
+                report["results"][0]["strategy_sha256"],
+            )
+
+    def test_concurrent_ingest_keeps_both_strategies(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            library = root / "library.json"
+            library.write_text('{"strategies": []}\n', encoding="utf-8")
+            sources = []
+            for index in range(2):
+                source = root / f"method-{index}.md"
+                source.write_text(
+                    f"Method {index}\n\n1. Read question {index}\n2. Verify evidence {index}",
+                    encoding="utf-8",
+                )
+                sources.append(source)
+            start = threading.Barrier(3)
+            errors = []
+            original_load = ingest_strategy.common.load_data
+
+            def delayed_load(path):
+                data = original_load(path)
+                if Path(path) == library:
+                    time.sleep(0.05)
+                return data
+
+            def worker(source):
+                try:
+                    start.wait()
+                    ingest_strategy.ingest_strategy(
+                        file_path=source,
+                        library_path=library,
+                        exam_types=["CET4"],
+                        modules=["reading"],
+                    )
+                except Exception as exc:  # pragma: no cover - asserted below
+                    errors.append(exc)
+
+            with unittest.mock.patch.object(
+                ingest_strategy.common, "load_data", side_effect=delayed_load
+            ):
+                threads = [threading.Thread(target=worker, args=(source,)) for source in sources]
+                for thread in threads:
+                    thread.start()
+                start.wait()
+                for thread in threads:
+                    thread.join()
+
+            self.assertEqual([], errors)
+            saved = json.loads(library.read_text(encoding="utf-8"))
+            self.assertEqual(2, len(saved["strategies"]))
+
     def test_ingest_records_content_addressed_source_provenance(self):
         with self._temporary_dir() as temp:
             root = Path(temp)
@@ -131,22 +363,25 @@ class ContinuousLearningP1Tests(unittest.TestCase):
     def test_daily_plan_revision_flows_into_practice_cli(self):
         with self._temporary_dir() as temp:
             root = Path(temp)
-            snapshot = {"strategy_id": "cet4-reading-method-001"}
+            approved = {
+                "strategy_id": "cet4-reading-method-001",
+                "title": "Evidence location",
+                "exam_types": ["CET4"],
+                "modules": ["reading"],
+                "lifecycle_status": "approved",
+                "darwin_score": 80,
+            }
+            snapshot = dict(approved)
             revision_sha256 = hashlib.sha256(
                 json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
             ).hexdigest()
+            approved["revisions"] = [
+                {"version": 1, "sha256": revision_sha256, "strategy": snapshot}
+            ]
             plan = generate_daily_plan.generate_daily_plan(
                 {"learner_id": "learner-001", "exam_type": "CET4", "daily_time_budget_minutes": 20},
                 {"modules": {"reading": [{"node": "locating", "level": 1, "status": "priority"}]}},
-                strategies={"strategies": [{
-                    "strategy_id": "cet4-reading-method-001",
-                    "title": "Evidence location",
-                    "exam_types": ["CET4"],
-                    "modules": ["reading"],
-                    "lifecycle_status": "approved",
-                    "darwin_score": 80,
-                    "revisions": [{"version": 1, "sha256": revision_sha256, "strategy": snapshot}],
-                }, {
+                strategies={"strategies": [approved, {
                     "strategy_id": "cet4-reading-invalid-002",
                     "title": "Invalid snapshot",
                     "exam_types": ["CET4"],
@@ -180,18 +415,24 @@ class ContinuousLearningP1Tests(unittest.TestCase):
             root = Path(temp)
             library = root / "library.json"
             strategy_id = "cet4-reading-method-001"
-            (root / "distilled.json").write_text(json.dumps({"strategies": [{
+            strategy = {
                 "strategy_id": strategy_id, "title": "Method", "exam_types": ["CET4"],
                 "modules": ["reading"], "content": "Use a concrete evidence-location method for every item.",
                 "source_file": "method.md", "added_at": "2026-07-10",
-            }]}), encoding="utf-8")
+            }
+            digest = hashlib.sha256(json.dumps(
+                strategy, ensure_ascii=False, sort_keys=True, separators=(",", ":")
+            ).encode("utf-8")).hexdigest()
+            (root / "distilled.json").write_text(json.dumps({"strategies": [strategy]}), encoding="utf-8")
             (root / "validation_report.json").write_text(json.dumps({
                 "all_format_passed": True,
                 "results": [{"strategy_id": strategy_id, "format_passed": True,
-                             "structure_passed": True, "structure_score": 59}],
+                             "structure_passed": True, "structure_score": 59,
+                             "strategy_sha256": digest}],
             }), encoding="utf-8")
             (root / "evaluation.json").write_text(json.dumps({
-                "strategies": [{"strategy_id": strategy_id, "effect_total": 11}],
+                "strategies": [{"strategy_id": strategy_id, "effect_total": 11,
+                                "strategy_sha256": digest}],
             }), encoding="utf-8")
 
             self.assertEqual(cli_commit.main(["--artifacts-dir", str(root), "--library", str(library)]), 0)
@@ -199,6 +440,7 @@ class ContinuousLearningP1Tests(unittest.TestCase):
             evidence = approved["approval_evidence"]
             self.assertRegex(evidence["validation_sha256"], r"^[a-f0-9]{64}$")
             self.assertRegex(evidence["evaluation_sha256"], r"^[a-f0-9]{64}$")
+            self.assertEqual(digest, evidence["strategy_sha256"])
 
     @staticmethod
     def _temporary_dir():

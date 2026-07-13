@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
 import re
 from datetime import date
 from typing import Any
@@ -45,7 +43,18 @@ def generate_daily_plan(
         raise ValueError("daily_time_budget_minutes must be a positive integer")
 
     tasks: list[dict[str, Any]] = []
-    remaining = budget
+    selected_vocab: list[dict[str, Any]] = []
+    vocab_minutes = 0
+    if vocab_pool and budget >= MIN_TASK_MINUTES * 2:
+        selected_vocab = select_daily_vocab(
+            vocab_pool,
+            ability_profile,
+            budget,
+            count=max(5, min(20, budget // 2)),
+        )
+        if selected_vocab:
+            vocab_minutes = MIN_TASK_MINUTES
+    remaining = budget - vocab_minutes
 
     priority_error = _priority_error(error_summary)
     if priority_error and remaining >= MIN_TASK_MINUTES:
@@ -121,20 +130,14 @@ def generate_daily_plan(
             }
         )
 
-    # Attach vocabulary tasks from vocab pool
-    if vocab_pool and tasks and remaining >= MIN_TASK_MINUTES:
-        vocab_count = max(5, remaining // 2) if remaining > 0 else 10
-        selected_vocab = select_daily_vocab(vocab_pool, ability_profile, budget, count=vocab_count)
-        if selected_vocab:
-            vocab_minutes = min(MIN_TASK_MINUTES, remaining)
-            tasks.append({
-                "module": "vocabulary",
-                "focus": "word study",
-                "minutes": vocab_minutes,
-                "reason": "vocab pool selection",
-                "vocab_items": selected_vocab,
-            })
-            remaining -= vocab_minutes
+    if selected_vocab:
+        tasks.append({
+            "module": "vocabulary",
+            "focus": "word study",
+            "minutes": vocab_minutes,
+            "reason": "vocab pool selection",
+            "vocab_items": selected_vocab,
+        })
 
     # Attach matching strategies from strategy library
     exam_type = profile.get("exam_type", "")
@@ -199,8 +202,18 @@ def _latest_revision_sha256(strategy: Any) -> str | None:
         return None
     if not isinstance(snapshot, dict) or snapshot.get("strategy_id") != strategy.get("strategy_id"):
         return None
-    encoded = json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    if hashlib.sha256(encoded).hexdigest() != digest:
+    current_snapshot = {
+        key: value
+        for key, value in strategy.items()
+        if key not in {"score_history", "revisions"}
+    }
+    if current_snapshot != snapshot:
+        return None
+    try:
+        actual_digest = common.canonical_json_sha256(snapshot)
+    except (TypeError, ValueError):
+        return None
+    if actual_digest != digest:
         return None
     return digest
 

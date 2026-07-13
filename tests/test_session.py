@@ -5,6 +5,7 @@ import shutil
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from examlex.scripts.session import SessionManager, Session
 
@@ -76,6 +77,19 @@ class SessionManagerTests(unittest.TestCase):
         session.checkpoint("distill")
         session.checkpoint("distill")
         self.assertEqual(session.current_stage, "distill")
+
+    def test_checkpoint_replace_failure_preserves_state_and_memory(self):
+        mgr = SessionManager(self.sessions_root)
+        session = mgr.create(source_type="text")
+        state_path = session.artifacts_dir / "pipeline_state.json"
+        original = state_path.read_bytes()
+
+        with patch("pathlib.Path.replace", side_effect=OSError("replace failed")):
+            with self.assertRaisesRegex(OSError, "replace failed"):
+                session.checkpoint("distill")
+
+        self.assertEqual("init", session.current_stage)
+        self.assertEqual(original, state_path.read_bytes())
 
 
 if __name__ == "__main__":

@@ -55,6 +55,24 @@ class CommonPersistenceTests(unittest.TestCase):
 
         self.assertFalse(lock_path.exists())
 
+    def test_old_lock_owned_by_live_process_is_not_reclaimed(self):
+        target = self.root / "records.json"
+        lock_path = target.with_name(target.name + ".lock")
+        token = f"{os.getpid()}:still-live"
+        lock_path.write_text(token, encoding="utf-8")
+        old = time.time() - 120
+        os.utime(lock_path, (old, old))
+
+        with self.assertRaisesRegex(TimeoutError, "Timed out waiting for file lock"):
+            with exclusive_file_lock(
+                target,
+                timeout_seconds=0.02,
+                stale_after_seconds=0.001,
+            ):
+                self.fail("live process lock was reclaimed")
+
+        self.assertEqual(token, lock_path.read_text(encoding="utf-8"))
+
 
 if __name__ == "__main__":
     unittest.main()

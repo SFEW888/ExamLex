@@ -4,8 +4,8 @@
     "exam_type": "CET4",
     "module": "reading",
     "task_id": "",
-    "duration_minutes": 0,
-    "total_items": 0,
+    "duration_minutes": 1,
+    "total_items": 1,
     "correct_items": 0,
     "accuracy": 0,
     "error_tags": []

@@ -9,6 +9,7 @@ from __future__ import annotations
 import re
 import shutil
 import subprocess
+from html.parser import HTMLParser
 from pathlib import Path
 
 from .base import BaseExtractor, ExtractionResult
@@ -28,10 +29,58 @@ _CHAPTER_PATTERNS = [
 ]
 
 
+class _TextHTMLParser(HTMLParser):
+    """Extract visible text while preserving basic block structure."""
+
+    BLOCK_TAGS = {"address", "article", "aside", "blockquote", "div", "footer",
+                  "h1", "h2", "h3", "h4", "h5", "h6", "header", "li", "main",
+                  "nav", "p", "section", "table", "tr"}
+    SKIPPED_TAGS = {"script", "style"}
+
+    def __init__(self) -> None:
+        super().__init__(convert_charrefs=True)
+        self.parts: list[str] = []
+        self.skip_depth = 0
+
+    def handle_starttag(self, tag: str, attrs) -> None:
+        tag = tag.lower()
+        if tag in self.SKIPPED_TAGS:
+            self.skip_depth += 1
+        elif self.skip_depth == 0 and (tag in self.BLOCK_TAGS or tag == "br"):
+            self.parts.append("\n")
+
+    def handle_endtag(self, tag: str) -> None:
+        tag = tag.lower()
+        if tag in self.SKIPPED_TAGS:
+            self.skip_depth = max(0, self.skip_depth - 1)
+        elif self.skip_depth == 0 and tag in self.BLOCK_TAGS:
+            self.parts.append("\n")
+
+    def handle_data(self, data: str) -> None:
+        if self.skip_depth == 0:
+            self.parts.append(data)
+
+    def text(self) -> str:
+        value = "".join(self.parts)
+        value = re.sub(r"[ \t\f\v]+", " ", value)
+        value = re.sub(r" *\n *", "\n", value)
+        value = re.sub(r"\n{3,}", "\n\n", value)
+        return value.strip()
+
+
+def _html_to_text(html: str) -> str:
+    parser = _TextHTMLParser()
+    parser.feed(html)
+    parser.close()
+    return parser.text()
+
+
 class BookExtractor(BaseExtractor):
     SUPPORTED_INPUTS = [f"file:*{ext}" for ext in _BOOK_EXTENSIONS]
     REQUIRED_TOOLS: list[str] = []  # pdftotext and calibre are optional
     MAX_EPUB_ENTRIES = 2_000
+    MAX_EPUB_ENTRY_BYTES = 256 * 1024 * 1024
+    MAX_EPUB_TOTAL_BYTES = 512 * 1024 * 1024
     MAX_EPUB_HTML_BYTES = 10 * 1024 * 1024
     MAX_EPUB_TOTAL_HTML_BYTES = 50 * 1024 * 1024
     MAX_EPUB_COMPRESSION_RATIO = 100
@@ -115,16 +164,7 @@ class BookExtractor(BaseExtractor):
 
     def _extract_html(self, source: Path) -> str:
         html = source.read_text(encoding="utf-8", errors="replace")
-        # Simple tag stripping
-        text = re.sub(r"<script[^>]*>.*?</script>", "", html, flags=re.DOTALL | re.I)
-        text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.DOTALL | re.I)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"&nbsp;", " ", text)
-        text = re.sub(r"&amp;", "&", text)
-        text = re.sub(r"&lt;", "<", text)
-        text = re.sub(r"&gt;", ">", text)
-        text = re.sub(r"\n\s*\n", "\n\n", text)
-        return text.strip()
+        return _html_to_text(html)
 
     def _extract_pdf(self, source: Path) -> str:
         # Try pdftotext first (fast, good for text PDFs)
@@ -160,15 +200,10 @@ class BookExtractor(BaseExtractor):
             raise RuntimeError("docling is not installed. Run: pip install docling")
 
     def _extract_epub(self, source: Path) -> str:
-        # DRM check
         import zipfile
         try:
             with zipfile.ZipFile(source, "r") as zf:
-                if "META-INF/encryption.xml" in zf.namelist():
-                    raise ValueError(
-                        "This EPUB file has DRM protection and cannot be extracted. "
-                        "Please remove DRM first using a tool like calibre + DeDRM."
-                    )
+                self._validated_epub_html_infos(zf, source)
         except zipfile.BadZipFile:
             raise ValueError("File is not a valid EPUB/ZIP archive.")
 
@@ -196,50 +231,64 @@ class BookExtractor(BaseExtractor):
         # Fallback: extract HTML from EPUB zip and strip tags
         return self._extract_epub_simple(source)
 
+    def _validated_epub_html_infos(self, archive, source: Path):
+        if "META-INF/encryption.xml" in archive.namelist():
+            raise ValueError(
+                "This EPUB file has DRM protection and cannot be extracted. "
+                "Please remove DRM first using a tool like calibre + DeDRM."
+            )
+        infos = archive.infolist()
+        if len(infos) > self.MAX_EPUB_ENTRIES:
+            raise ValueError(
+                f"EPUB entry count exceeds {self.MAX_EPUB_ENTRIES}: {source.name}"
+            )
+        total_archive_bytes = 0
+        for info in infos:
+            if info.file_size < 0 or info.compress_size < 0:
+                raise ValueError(f"EPUB contains invalid ZIP metadata: {info.filename}")
+            if info.file_size > self.MAX_EPUB_ENTRY_BYTES:
+                raise ValueError(
+                    f"EPUB entry exceeds {self.MAX_EPUB_ENTRY_BYTES} bytes: {info.filename}"
+                )
+            total_archive_bytes += info.file_size
+            if total_archive_bytes > self.MAX_EPUB_TOTAL_BYTES:
+                raise ValueError(
+                    "EPUB total uncompressed size exceeds "
+                    f"{self.MAX_EPUB_TOTAL_BYTES} bytes: {source.name}"
+                )
+            ratio = float("inf") if info.compress_size == 0 and info.file_size else (
+                info.file_size / max(info.compress_size, 1)
+            )
+            if ratio > self.MAX_EPUB_COMPRESSION_RATIO:
+                raise ValueError(
+                    f"EPUB compression ratio exceeds {self.MAX_EPUB_COMPRESSION_RATIO}: {info.filename}"
+                )
+        html_infos = [
+            info
+            for info in infos
+            if info.filename.lower().endswith((".html", ".htm", ".xhtml"))
+        ]
+        total_html_bytes = 0
+        for info in html_infos:
+            if info.file_size > self.MAX_EPUB_HTML_BYTES:
+                raise ValueError(
+                    f"EPUB HTML entry exceeds {self.MAX_EPUB_HTML_BYTES} bytes: {info.filename}"
+                )
+            total_html_bytes += info.file_size
+            if total_html_bytes > self.MAX_EPUB_TOTAL_HTML_BYTES:
+                raise ValueError(
+                    f"EPUB total HTML exceeds {self.MAX_EPUB_TOTAL_HTML_BYTES} bytes: {source.name}"
+                )
+        return sorted(html_infos, key=lambda item: item.filename)
+
     def _extract_epub_simple(self, source: Path) -> str:
         import zipfile
         parts = []
         with zipfile.ZipFile(source, "r") as zf:
-            infos = zf.infolist()
-            if len(infos) > self.MAX_EPUB_ENTRIES:
-                raise ValueError(
-                    f"EPUB entry count exceeds {self.MAX_EPUB_ENTRIES}: {source.name}"
-                )
-            html_infos = [
-                info
-                for info in infos
-                if info.filename.lower().endswith((".html", ".htm", ".xhtml"))
-            ]
-            total_html_bytes = 0
+            html_infos = self._validated_epub_html_infos(zf, source)
             for info in html_infos:
-                if info.file_size < 0 or info.compress_size < 0:
-                    raise ValueError(f"EPUB contains invalid ZIP metadata: {info.filename}")
-                if info.file_size > self.MAX_EPUB_HTML_BYTES:
-                    raise ValueError(
-                        f"EPUB HTML entry exceeds {self.MAX_EPUB_HTML_BYTES} bytes: {info.filename}"
-                    )
-                total_html_bytes += info.file_size
-                if total_html_bytes > self.MAX_EPUB_TOTAL_HTML_BYTES:
-                    raise ValueError(
-                        f"EPUB total HTML exceeds {self.MAX_EPUB_TOTAL_HTML_BYTES} bytes: {source.name}"
-                    )
-                ratio = float("inf") if info.compress_size == 0 and info.file_size else (
-                    info.file_size / max(info.compress_size, 1)
-                )
-                if ratio > self.MAX_EPUB_COMPRESSION_RATIO:
-                    raise ValueError(
-                        f"EPUB compression ratio exceeds {self.MAX_EPUB_COMPRESSION_RATIO}: {info.filename}"
-                    )
-
-            for info in sorted(html_infos, key=lambda item: item.filename):
                 html = zf.read(info).decode("utf-8", errors="replace")
-                # Turn block-level tags into newlines before stripping the rest,
-                # so paragraph/heading structure survives.
-                text = re.sub(r"</?(?:p|div|br|h[1-6]|li|tr)\b[^>]*>", "\n", html, flags=re.I)
-                text = re.sub(r"<[^>]+>", " ", text)
-                text = re.sub(r"[ \t]*\n[ \t]*", "\n", text)
-                text = re.sub(r" {2,}", " ", text)
-                parts.append(text.strip())
+                parts.append(_html_to_text(html))
         return "\n\n".join(parts)
 
     def _extract_docx(self, source: Path) -> str:

@@ -5,6 +5,7 @@ import ast
 import hashlib
 import json
 import re
+import subprocess
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 from urllib.parse import unquote, urlsplit, urlunsplit
@@ -102,6 +103,7 @@ EXPECTED_GITHUB_WORKFLOWS = {
 EXPECTED_PROJECT_QUALITY_FILES = {
     ".editorconfig",
     ".env.example",
+    ".gitattributes",
 }
 EXPECTED_QUALITY_DOCS = {
     "docs/configuration.md",
@@ -149,6 +151,19 @@ FORBIDDEN_PUBLIC_PATH_MARKERS = {
     "D:\\Codex_project",
     "C:\\Users\\Lenovo",
 }
+LEARNER_ARTIFACT_NAMES = {
+    "ability-history.json",
+    "ability-profile.json",
+    "daily-plan.json",
+    "error-summary.json",
+    "learner-profile.json",
+    "practice-ledger.json",
+    "progress-report.html",
+    "strategy-library.json",
+    "writing-versions.json",
+}
+LEARNER_ARTIFACT_ALLOWED_PARTS = {"examples", "fixtures", "templates"}
+BACKUP_ARTIFACT_RE = re.compile(r"^backup-.+\.tar\.gz(?:\.sha256)?$")
 
 
 @dataclass
@@ -164,6 +179,42 @@ class ValidationResult:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def validate_tracked_learner_artifacts(
+    root: Path,
+    errors: list[str],
+    tracked_files: list[str] | None = None,
+) -> None:
+    """Reject tracked learner data while allowing maintained sample resources."""
+    root = Path(root).resolve()
+    if tracked_files is None:
+        if not (root / ".git").exists():
+            return
+        try:
+            completed = subprocess.run(
+                ["git", "-C", str(root), "ls-files", "-z"],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        except (OSError, subprocess.CalledProcessError) as exc:
+            errors.append(f"Could not inspect tracked learner artifacts: {exc}")
+            return
+        tracked_files = [path for path in completed.stdout.split("\0") if path]
+
+    for tracked in tracked_files:
+        relative = Path(tracked.replace("\\", "/"))
+        parts = set(relative.parts)
+        if parts.intersection(LEARNER_ARTIFACT_ALLOWED_PARTS):
+            continue
+        name = relative.name
+        is_private_directory = bool(relative.parts) and relative.parts[0] == "learner-data"
+        is_standard_name = name in LEARNER_ARTIFACT_NAMES
+        is_backup = BACKUP_ARTIFACT_RE.fullmatch(name) is not None
+        is_sidecar = name.endswith((".bak", ".lock", ".tmp"))
+        if is_private_directory or is_standard_name or is_backup or is_sidecar:
+            errors.append(f"tracked learner artifact is forbidden: {relative.as_posix()}")
 
 
 def _normalize_external_url(url: str) -> str:
@@ -665,6 +716,7 @@ def validate_project(root: str | Path) -> ValidationResult:
     validate_template_contracts(root_path, errors)
     validate_vocab_contracts(root_path, errors)
     validate_documentation(root_path, errors)
+    validate_tracked_learner_artifacts(root_path, errors)
     return result
 
 
