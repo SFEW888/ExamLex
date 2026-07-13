@@ -185,6 +185,9 @@ class VideoExtractorTests(unittest.TestCase):
     def test_supported_urls(self):
         self.assertTrue(self.extractor._supports("https://www.bilibili.com/video/BV1xx"))
         self.assertTrue(self.extractor._supports("https://www.youtube.com/watch?v=abc"))
+        self.assertTrue(self.extractor._supports("https://douyin.com/video/123"))
+        self.assertTrue(self.extractor._supports("https://www.douyin.com/video/123"))
+        self.assertTrue(self.extractor._supports("https://www.v.douyin.com/abc"))
         self.assertFalse(self.extractor._supports("https://example.com/video"))
 
 

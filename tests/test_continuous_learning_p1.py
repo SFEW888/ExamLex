@@ -63,6 +63,32 @@ class ContinuousLearningP1Tests(unittest.TestCase):
 
             self.assertTrue(verified["verified"])
 
+    def test_backup_rejects_source_changes_before_atomic_publish(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            profile = source / "profile.json"
+            profile.write_text("before", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            real_add = tarfile.TarFile.add
+
+            def mutate_then_add(archive_object, name, *args, **kwargs):
+                profile.write_text("after", encoding="utf-8")
+                return real_add(archive_object, name, *args, **kwargs)
+
+            with patch.object(
+                tarfile.TarFile,
+                "add",
+                autospec=True,
+                side_effect=mutate_then_add,
+            ):
+                with self.assertRaisesRegex(ValueError, "changed during backup"):
+                    backup_data.create_backup(source, archive)
+
+            self.assertFalse(archive.exists())
+            self.assertFalse(Path(f"{archive}.sha256").exists())
+
     def test_backup_verification_enforces_member_quotas(self):
         with self._temporary_dir() as temp:
             root = Path(temp)
@@ -337,22 +363,25 @@ class ContinuousLearningP1Tests(unittest.TestCase):
     def test_daily_plan_revision_flows_into_practice_cli(self):
         with self._temporary_dir() as temp:
             root = Path(temp)
-            snapshot = {"strategy_id": "cet4-reading-method-001"}
+            approved = {
+                "strategy_id": "cet4-reading-method-001",
+                "title": "Evidence location",
+                "exam_types": ["CET4"],
+                "modules": ["reading"],
+                "lifecycle_status": "approved",
+                "darwin_score": 80,
+            }
+            snapshot = dict(approved)
             revision_sha256 = hashlib.sha256(
                 json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
             ).hexdigest()
+            approved["revisions"] = [
+                {"version": 1, "sha256": revision_sha256, "strategy": snapshot}
+            ]
             plan = generate_daily_plan.generate_daily_plan(
                 {"learner_id": "learner-001", "exam_type": "CET4", "daily_time_budget_minutes": 20},
                 {"modules": {"reading": [{"node": "locating", "level": 1, "status": "priority"}]}},
-                strategies={"strategies": [{
-                    "strategy_id": "cet4-reading-method-001",
-                    "title": "Evidence location",
-                    "exam_types": ["CET4"],
-                    "modules": ["reading"],
-                    "lifecycle_status": "approved",
-                    "darwin_score": 80,
-                    "revisions": [{"version": 1, "sha256": revision_sha256, "strategy": snapshot}],
-                }, {
+                strategies={"strategies": [approved, {
                     "strategy_id": "cet4-reading-invalid-002",
                     "title": "Invalid snapshot",
                     "exam_types": ["CET4"],

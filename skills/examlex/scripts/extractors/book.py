@@ -79,6 +79,8 @@ class BookExtractor(BaseExtractor):
     SUPPORTED_INPUTS = [f"file:*{ext}" for ext in _BOOK_EXTENSIONS]
     REQUIRED_TOOLS: list[str] = []  # pdftotext and calibre are optional
     MAX_EPUB_ENTRIES = 2_000
+    MAX_EPUB_ENTRY_BYTES = 256 * 1024 * 1024
+    MAX_EPUB_TOTAL_BYTES = 512 * 1024 * 1024
     MAX_EPUB_HTML_BYTES = 10 * 1024 * 1024
     MAX_EPUB_TOTAL_HTML_BYTES = 50 * 1024 * 1024
     MAX_EPUB_COMPRESSION_RATIO = 100
@@ -240,6 +242,27 @@ class BookExtractor(BaseExtractor):
             raise ValueError(
                 f"EPUB entry count exceeds {self.MAX_EPUB_ENTRIES}: {source.name}"
             )
+        total_archive_bytes = 0
+        for info in infos:
+            if info.file_size < 0 or info.compress_size < 0:
+                raise ValueError(f"EPUB contains invalid ZIP metadata: {info.filename}")
+            if info.file_size > self.MAX_EPUB_ENTRY_BYTES:
+                raise ValueError(
+                    f"EPUB entry exceeds {self.MAX_EPUB_ENTRY_BYTES} bytes: {info.filename}"
+                )
+            total_archive_bytes += info.file_size
+            if total_archive_bytes > self.MAX_EPUB_TOTAL_BYTES:
+                raise ValueError(
+                    "EPUB total uncompressed size exceeds "
+                    f"{self.MAX_EPUB_TOTAL_BYTES} bytes: {source.name}"
+                )
+            ratio = float("inf") if info.compress_size == 0 and info.file_size else (
+                info.file_size / max(info.compress_size, 1)
+            )
+            if ratio > self.MAX_EPUB_COMPRESSION_RATIO:
+                raise ValueError(
+                    f"EPUB compression ratio exceeds {self.MAX_EPUB_COMPRESSION_RATIO}: {info.filename}"
+                )
         html_infos = [
             info
             for info in infos
@@ -247,8 +270,6 @@ class BookExtractor(BaseExtractor):
         ]
         total_html_bytes = 0
         for info in html_infos:
-            if info.file_size < 0 or info.compress_size < 0:
-                raise ValueError(f"EPUB contains invalid ZIP metadata: {info.filename}")
             if info.file_size > self.MAX_EPUB_HTML_BYTES:
                 raise ValueError(
                     f"EPUB HTML entry exceeds {self.MAX_EPUB_HTML_BYTES} bytes: {info.filename}"
@@ -257,13 +278,6 @@ class BookExtractor(BaseExtractor):
             if total_html_bytes > self.MAX_EPUB_TOTAL_HTML_BYTES:
                 raise ValueError(
                     f"EPUB total HTML exceeds {self.MAX_EPUB_TOTAL_HTML_BYTES} bytes: {source.name}"
-                )
-            ratio = float("inf") if info.compress_size == 0 and info.file_size else (
-                info.file_size / max(info.compress_size, 1)
-            )
-            if ratio > self.MAX_EPUB_COMPRESSION_RATIO:
-                raise ValueError(
-                    f"EPUB compression ratio exceeds {self.MAX_EPUB_COMPRESSION_RATIO}: {info.filename}"
                 )
         return sorted(html_infos, key=lambda item: item.filename)
 

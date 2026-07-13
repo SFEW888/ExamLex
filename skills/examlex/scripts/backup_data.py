@@ -71,6 +71,15 @@ def create_backup(data_dir: str | Path, output: str | Path, exclude: list[str] |
                 archive.add(path, arcname=path.relative_to(source).as_posix())
 
         metadata["checksum_sha256"] = _sha256_file(temporary)
+        verification = verify_backup(
+            temporary,
+            expected_checksum=metadata["checksum_sha256"],
+        )
+        if not verification["verified"]:
+            raise ValueError(
+                "source data changed during backup: "
+                + ", ".join(verification["mismatches"])
+            )
         os.replace(temporary, target)
         temporary = None
         _write_checksum_sidecar(target, metadata["checksum_sha256"])

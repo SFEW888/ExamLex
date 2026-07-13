@@ -1,8 +1,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
-import json
 import re
 from datetime import date
 from typing import Any
@@ -204,8 +202,18 @@ def _latest_revision_sha256(strategy: Any) -> str | None:
         return None
     if not isinstance(snapshot, dict) or snapshot.get("strategy_id") != strategy.get("strategy_id"):
         return None
-    encoded = json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    if hashlib.sha256(encoded).hexdigest() != digest:
+    current_snapshot = {
+        key: value
+        for key, value in strategy.items()
+        if key not in {"score_history", "revisions"}
+    }
+    if current_snapshot != snapshot:
+        return None
+    try:
+        actual_digest = common.canonical_json_sha256(snapshot)
+    except (TypeError, ValueError):
+        return None
+    if actual_digest != digest:
         return None
     return digest
 

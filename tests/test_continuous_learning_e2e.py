@@ -34,14 +34,17 @@ class ContinuousLearningEndToEndTests(unittest.TestCase):
                 "text", "book", "video", "podcast", "person", "course", "conversation",
             })
 
-            snapshot = {"strategy_id": draft["strategy_id"]}
+            approved_content = {
+                **draft,
+                "lifecycle_status": "approved",
+                "darwin_score": 80,
+            }
+            snapshot = dict(approved_content)
             revision_sha256 = hashlib.sha256(
                 json.dumps(snapshot, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
             ).hexdigest()
             approved = {
-                **draft,
-                "lifecycle_status": "approved",
-                "darwin_score": 80,
+                **approved_content,
                 "revisions": [{
                     "version": 1,
                     "sha256": revision_sha256,

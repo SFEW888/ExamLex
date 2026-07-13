@@ -65,6 +65,22 @@ class BookExtractorTests(unittest.TestCase):
 
         mock_run.assert_not_called()
 
+    def test_epub_preflights_non_html_payload_before_calibre(self):
+        source = self._write_epub(
+            "non-html-bomb.epub",
+            [("chapter.xhtml", "safe"), ("fonts/large.bin", "x" * 20)],
+        )
+        with patch.object(
+            BookExtractor, "MAX_EPUB_TOTAL_BYTES", 10, create=True
+        ), patch(
+            "examlex.scripts.extractors.book.shutil.which",
+            return_value="ebook-convert",
+        ), patch("examlex.scripts.extractors.book.subprocess.run") as mock_run:
+            with self.assertRaisesRegex(ValueError, "total uncompressed size"):
+                self.extractor._extract_epub(source)
+
+        mock_run.assert_not_called()
+
     def test_html_parser_ignores_markup_attributes_and_script_content(self):
         source = Path(self.tmp) / "structured.html"
         source.write_text(
