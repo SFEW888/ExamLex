@@ -53,7 +53,7 @@ Core tutoring and direct-text ingestion need no third-party Python package. The 
 | `book` (EPUB DRM) | [Calibre / ebook-convert](https://calibre-ebook.com/download) | `winget install calibre` | `brew install calibre` |
 | `video` (download/metadata) | [yt-dlp](https://github.com/yt-dlp/yt-dlp) | `pip install yt-dlp` | `pip3 install yt-dlp` |
 | `video` (merge/convert/audio) | [FFmpeg](https://ffmpeg.org/download.html) | `winget install ffmpeg` | `brew install ffmpeg` / `apt install ffmpeg` |
-| `video` (ASR) | [Whisper](https://github.com/openai/whisper) or `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
+| `video` (ASR) | Local [Whisper](https://github.com/openai/whisper), or explicitly selected SiliconFlow with `SILICONFLOW_API_KEY` | `pip install openai-whisper` | `pip3 install openai-whisper` |
 
 `ffmpeg` is the open-source media converter used in two places: `yt-dlp` may need it to merge separate video and audio streams, and ExamLex needs it to extract/convert audio before either local `whisper` or SiliconFlow ASR. A download-only path can sometimes work without `ffmpeg`, but the complete video-to-transcript pipeline cannot.
 
@@ -335,7 +335,7 @@ ExamLex does not automatically load `.env`. Export these values in your shell, o
 
 | Variable | Required | Default | Description |
 |----------|:--------:|---------|-------------|
-| `SILICONFLOW_API_KEY` | No | — | Cloud ASR key (SenseVoiceSmall, alternative to local whisper) |
+| `SILICONFLOW_API_KEY` | No | — | Cloud ASR key; cloud upload occurs only when `asr_backend="siliconflow"` is explicitly selected. |
 | `EXAMLEX_PYTHON` | No | `python` | Python interpreter for the local ExamLex wrappers |
 
 ---

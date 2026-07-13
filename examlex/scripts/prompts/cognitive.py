@@ -9,7 +9,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from .base import BasePromptGuide, triple_verify_guide
+from .base import BasePromptGuide, triple_verify_guide, untrusted_source_policy
 from ..common import DEFAULT_EXAM_TYPES
 
 
@@ -28,7 +28,7 @@ class CognitiveGuide(BasePromptGuide):
         if stage == "distill":
             return self._distill_instructions(artifacts_dir, person_name, exam_types)
         if stage == "evaluate":
-            return self._evaluate_instructions(artifacts_dir)
+            return self._evaluate_instructions(artifacts_dir, person_name)
         return f"Cognitive guide: stage '{stage}' not applicable."
 
     def _distill_instructions(self, artifacts_dir: str, person_name: str,
@@ -36,6 +36,8 @@ class CognitiveGuide(BasePromptGuide):
         return f"""# Cognitive Extraction Guide — {person_name}
 
 Distill {person_name}'s English teaching/learning methodology into strategies.
+
+{untrusted_source_policy(["research/*.md", "distilled.json"])}
 
 ## Phase 1 — Multi-source collection
 Research {person_name} across 6 dimensions:
@@ -70,8 +72,10 @@ Write results to {artifacts_dir}/distilled.json using the output schema.
 Each mental model and heuristic becomes a strategy entry.
 """
 
-    def _evaluate_instructions(self, artifacts_dir: str) -> str:
+    def _evaluate_instructions(self, artifacts_dir: str, person_name: str) -> str:
         return f"""# Cognitive Effect Evaluation
+
+{untrusted_source_policy(["evaluation.json"])}
 
 Read distilled strategies from {artifacts_dir}/distilled.json.
 

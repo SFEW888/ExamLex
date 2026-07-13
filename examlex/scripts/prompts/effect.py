@@ -7,7 +7,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from .base import BasePromptGuide
+from .base import BasePromptGuide, untrusted_source_policy
 
 
 class EffectGuide(BasePromptGuide):
@@ -18,6 +18,8 @@ class EffectGuide(BasePromptGuide):
         artifacts_dir = ctx.get("artifacts_dir") or "<artifacts_dir>"
 
         return f"""# Darwin Effect Scoring Guide
+
+{untrusted_source_policy(["evaluation.json"])}
 
 Score the distilled strategies on the 2 effect dimensions (35 points total).
 

@@ -40,7 +40,7 @@ ExamLex 不会自动加载 `.env`，也不会自动读取用户主目录下的 J
 
 | 字段 | 默认值 | 说明 |
 |------|--------|------|
-| `asr_backend` | `"auto"` | ASR 后端：`auto`、`siliconflow`、`whisper`、`none` |
+| `asr_backend` | `"auto"` | ASR 后端：`auto` 仅在本地 Whisper 可用时启用，不会自动选择云服务；`siliconflow` 必须显式选择；`none` 完全关闭 ASR。 |
 | `asr_model` | `"base"` | ASR 模型规格，例如 `base`、`small`、`medium`、`large` |
 | `asr_language` | `"auto"` | ASR 语言提示；`auto` 表示自动检测 |
 

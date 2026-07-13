@@ -13,7 +13,7 @@
 | --- | --- |
 | 视频下载和元数据 | `yt-dlp` |
 | 视频流合并、媒体转换和音频抽取 | `ffmpeg` |
-| 视频语音识别 | 本地 `whisper` 或 `SILICONFLOW_API_KEY`；两条路径都需要 `ffmpeg` 预处理音频 |
+| 视频语音识别 | 默认使用本地 `whisper`，也可显式选择 SiliconFlow 并配置 `SILICONFLOW_API_KEY`；两条路径都需要 `ffmpeg` 预处理音频 |
 | PDF 提取 | `pdftotext`（Poppler） |
 | 无 DRM 电子书转换后备 | `ebook-convert`（Calibre） |
 
