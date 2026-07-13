@@ -7,18 +7,27 @@ import hashlib
 import json
 import re
 import sys
+from dataclasses import asdict
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from .cleanup_sessions import apply_retention_policy
 from .common import canonical_json_sha256
 from .config import TutorConfig
 from .optimizers.ratchet import StrategyRatchet
-from .strategy_store import mutate_strategy_library
+from .session import Session
+from .strategy_store import (
+    find_possible_duplicate_strategies,
+    mutate_strategy_library,
+    warn_duplicate_candidates,
+    warn_if_strategy_library_large,
+)
 
 
 _STRATEGY_ID_RE = re.compile(r"^[a-z0-9]+-[a-z-]+-[a-z0-9-]+-\d{3}$")
 _SHA256_RE = re.compile(r"^[a-f0-9]{64}$")
+_DATE_DIR_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
 
 def _error(args: argparse.Namespace, message: str) -> int:
@@ -127,6 +136,64 @@ def _approval_scores(
     return scores
 
 
+def _complete_managed_session(
+    artifacts: Path,
+    cfg: TutorConfig,
+) -> tuple[dict[str, Any], list[str]]:
+    """Complete a standard managed session and apply automatic retention."""
+    state_path = artifacts / "pipeline_state.json"
+    if not state_path.exists():
+        return {"status": "not_managed"}, []
+    try:
+        state = json.loads(state_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as exc:
+        return {"status": "warning"}, [f"session retention skipped: {exc}"]
+    if not isinstance(state, dict):
+        return {"status": "warning"}, ["session retention skipped: invalid pipeline state"]
+
+    resolved_artifacts = artifacts.resolve()
+    stored_artifacts = state.get("artifacts_dir")
+    session_id = state.get("session_id")
+    if (
+        not isinstance(stored_artifacts, str)
+        or Path(stored_artifacts).resolve() != resolved_artifacts
+        or not isinstance(session_id, str)
+        or session_id != resolved_artifacts.name
+        or not _DATE_DIR_RE.fullmatch(resolved_artifacts.parent.name)
+    ):
+        return {"status": "warning"}, [
+            "session retention skipped: artifacts do not match the managed date/session layout"
+        ]
+
+    session = Session(
+        session_id=session_id,
+        artifacts_dir=resolved_artifacts,
+        source_type=str(state.get("source_type", "unknown")),
+        current_stage=str(state.get("stage", "unknown")),
+        sub_stage=state.get("sub_stage") if isinstance(state.get("sub_stage"), str) else None,
+    )
+    try:
+        session.checkpoint("committed")
+    except (OSError, TimeoutError) as exc:
+        return {"status": "warning"}, [f"session completion checkpoint failed: {exc}"]
+
+    if not cfg.auto_cleanup:
+        return {"status": "disabled", "session_id": session_id}, []
+    try:
+        result = apply_retention_policy(
+            resolved_artifacts.parent.parent,
+            retention_hours=cfg.session_retention_hours,
+            max_reproducible_artifact_bytes=cfg.max_reproducible_artifact_bytes,
+        )
+    except (OSError, TimeoutError, ValueError) as exc:
+        return {"status": "warning", "session_id": session_id}, [
+            f"automatic session retention failed: {exc}"
+        ]
+    status = "warning" if result.failures else "ok"
+    warnings = [f"automatic session retention: {message}" for message in result.failures]
+    return {"status": status, "session_id": session_id, **asdict(result)}, warnings
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Approve validated strategies and commit them to the strategy library."
@@ -138,21 +205,35 @@ def main(argv: list[str] | None = None) -> int:
 
     artifacts = Path(args.artifacts_dir)
     library_path = Path(args.library)
+    cfg = TutorConfig()
     try:
         distilled = _load_json(artifacts / "distilled.json", "distilled.json")
         strategies = distilled.get("strategies", [])
         if not isinstance(strategies, list):
             raise ValueError("distilled.json strategies must be a list")
         if not strategies:
-            output = {"status": "warning", "committed": 0, "message": "No strategies to commit (empty)."}
+            retention, warnings = _complete_managed_session(artifacts, cfg)
+            library_health = warn_if_strategy_library_large(
+                library_path,
+                warning_threshold_bytes=cfg.strategy_library_warning_bytes,
+            )
+            output = {
+                "status": "warning",
+                "committed": 0,
+                "message": "No strategies to commit (empty).",
+                "retention": retention,
+                "strategy_library": library_health,
+                "warnings": warnings,
+            }
             if args.json:
                 print(json.dumps(output, ensure_ascii=False, indent=2))
             else:
                 print("No strategies to commit.")
+                for warning in warnings:
+                    print(f"Warning: {warning}", file=sys.stderr)
             return 0
         if not all(isinstance(strategy, dict) for strategy in strategies):
             raise ValueError("distilled.json strategies must contain objects")
-        cfg = TutorConfig()
         validation_path = artifacts / "validation_report.json"
         evaluation_path = artifacts / "evaluation.json"
         scores = _approval_scores(
@@ -176,7 +257,13 @@ def main(argv: list[str] | None = None) -> int:
 
     committed = []
     skipped = []
+    duplicate_candidates: list[dict[str, Any]] = []
+
     def apply_approvals(library: dict[str, Any]) -> None:
+        previous_candidates = {
+            candidate["candidate_id"]
+            for candidate in find_possible_duplicate_strategies(library, limit=1000)
+        }
         existing = {
             item.get("strategy_id"): item
             for item in library["strategies"]
@@ -208,17 +295,35 @@ def main(argv: list[str] | None = None) -> int:
                 "structure_score": structure,
                 "effect_score": effect,
             })
+        duplicate_candidates.extend(
+            candidate
+            for candidate in find_possible_duplicate_strategies(library, limit=1000)
+            if candidate["candidate_id"] not in previous_candidates
+        )
 
     try:
         mutate_strategy_library(library_path, apply_approvals)
     except (OSError, TimeoutError, ValueError) as exc:
         return _error(args, str(exc))
+    warn_duplicate_candidates(
+        duplicate_candidates,
+        library_path=library_path,
+    )
+    library_health = warn_if_strategy_library_large(
+        library_path,
+        warning_threshold_bytes=cfg.strategy_library_warning_bytes,
+    )
+    retention, retention_warnings = _complete_managed_session(artifacts, cfg)
     output = {
         "status": "ok",
         "committed": len(committed),
         "skipped": len(skipped),
         "library_path": str(library_path),
         "details": committed,
+        "retention": retention,
+        "strategy_library": library_health,
+        "duplicate_candidates": duplicate_candidates,
+        "warnings": retention_warnings,
     }
     if args.json:
         print(json.dumps(output, ensure_ascii=False, indent=2))
@@ -231,4 +336,6 @@ def main(argv: list[str] | None = None) -> int:
             )
         for entry in skipped:
             print(f"  [-] {entry['strategy_id']}: {entry['reason']}")
+        for warning in retention_warnings:
+            print(f"Warning: {warning}", file=sys.stderr)
     return 0

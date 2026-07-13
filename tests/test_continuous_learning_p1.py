@@ -311,17 +311,19 @@ class ContinuousLearningP1Tests(unittest.TestCase):
                 modules=["reading"],
             )
             first_bytes = library.read_bytes()
-            second = ingest_strategy.ingest_strategy(
-                file_path=source,
-                library_path=library,
-                exam_types=["CET4"],
-                modules=["reading"],
-            )
+            with self.assertLogs("examlex.scripts.ingest_strategy", level="WARNING") as logs:
+                second = ingest_strategy.ingest_strategy(
+                    file_path=source,
+                    library_path=library,
+                    exam_types=["CET4"],
+                    modules=["reading"],
+                )
 
             saved = json.loads(library.read_text(encoding="utf-8"))
             self.assertEqual(first["strategy_id"], second["strategy_id"])
             self.assertEqual(1, len(saved["strategies"]))
             self.assertEqual(first_bytes, library.read_bytes())
+            self.assertIn("duplicate strategy source", " ".join(logs.output))
 
     def test_same_source_with_different_module_is_not_deduplicated(self):
         with self._temporary_dir() as temp:
@@ -339,16 +341,18 @@ class ContinuousLearningP1Tests(unittest.TestCase):
                 exam_types=["CET4"],
                 modules=["reading"],
             )
-            writing = ingest_strategy.ingest_strategy(
-                file_path=source,
-                library_path=library,
-                exam_types=["CET4"],
-                modules=["writing"],
-            )
+            with self.assertLogs("examlex.scripts.ingest_strategy", level="WARNING") as logs:
+                writing = ingest_strategy.ingest_strategy(
+                    file_path=source,
+                    library_path=library,
+                    exam_types=["CET4"],
+                    modules=["writing"],
+                )
 
             saved = json.loads(library.read_text(encoding="utf-8"))
             self.assertNotEqual(reading["strategy_id"], writing["strategy_id"])
             self.assertEqual(2, len(saved["strategies"]))
+            self.assertIn("possible duplicate strategy versions", " ".join(logs.output))
 
     def test_backup_verification_detects_tampered_member(self):
         with self._temporary_dir() as temp:

@@ -49,6 +49,18 @@ class PruneResult:
     failures: list[str]
 
 
+@dataclass
+class RetentionResult:
+    retention_hours: float
+    max_reproducible_artifact_bytes: int
+    bytes_before: int
+    bytes_after: int
+    bytes_reclaimed: int
+    selected_sessions: list[str]
+    pruned: list[str]
+    failures: list[str]
+
+
 def _is_within(path: Path, root: Path) -> bool:
     try:
         path.relative_to(root)
@@ -83,11 +95,24 @@ def find_stale_sessions(
     if older_than_hours <= 0:
         raise ValueError("older_than_hours must be positive")
 
+    return [
+        candidate
+        for candidate in _scan_sessions(sessions_root, now=now, stages=stages)
+        if candidate.age_hours > older_than_hours
+    ]
+
+
+def _scan_sessions(
+    sessions_root: Path,
+    *,
+    now: datetime | None = None,
+    stages: set[str] | None = None,
+) -> list[StaleSession]:
     root = Path(sessions_root).resolve()
     if not root.exists():
         return []
     current_time = (now or datetime.now(timezone.utc)).astimezone(timezone.utc)
-    candidates: list[StaleSession] = []
+    sessions: list[StaleSession] = []
 
     for state_file in sorted(root.rglob("pipeline_state.json")):
         session_dir = state_file.parent.resolve()
@@ -108,20 +133,17 @@ def find_stale_sessions(
         updated = _parse_updated_at(state.get("updated_at"))
         if updated is None:
             continue
-        age_hours = (current_time - updated).total_seconds() / 3600
-        if age_hours <= older_than_hours:
-            continue
-        candidates.append(
+        sessions.append(
             StaleSession(
                 session_id=str(state.get("session_id") or session_dir.name),
                 stage=stage,
                 updated_at=updated.isoformat(),
-                age_hours=age_hours,
+                age_hours=(current_time - updated).total_seconds() / 3600,
                 session_dir=session_dir,
             )
         )
 
-    return candidates
+    return sessions
 
 
 def _is_prunable_artifact(path: Path) -> bool:
@@ -134,13 +156,21 @@ def _is_prunable_artifact(path: Path) -> bool:
     )
 
 
-def _path_size(path: Path) -> int:
+def _path_size(path: Path, *, strict: bool = False) -> int:
     if path.is_symlink():
         return path.lstat().st_size
     if path.is_file():
         return path.stat().st_size
     total = 0
-    for root, directories, files in os.walk(path, followlinks=False):
+    def handle_walk_error(error: OSError) -> None:
+        if strict:
+            raise error
+
+    for root, directories, files in os.walk(
+        path,
+        followlinks=False,
+        onerror=handle_walk_error,
+    ):
         root_path = Path(root)
         for directory in directories:
             candidate = root_path / directory
@@ -151,8 +181,73 @@ def _path_size(path: Path) -> int:
             try:
                 total += candidate.lstat().st_size
             except OSError:
-                continue
+                if strict:
+                    raise
     return total
+
+
+def _session_reproducible_bytes(session_dir: Path) -> int:
+    total = 0
+    for artifact in session_dir.iterdir():
+        if _is_prunable_artifact(artifact):
+            total += _path_size(artifact, strict=True)
+    return total
+
+
+def reproducible_artifact_usage(sessions_root: Path) -> int:
+    """Return retained reproducible bytes for committed sessions only."""
+    return sum(
+        _session_reproducible_bytes(session.session_dir)
+        for session in _scan_sessions(sessions_root, stages=PRUNABLE_STAGES)
+    )
+
+
+def _retention_candidates(
+    sessions_root: Path,
+    *,
+    retention_hours: float,
+    max_reproducible_artifact_bytes: int,
+    now: datetime | None = None,
+) -> tuple[int, list[StaleSession]]:
+    if retention_hours <= 0:
+        raise ValueError("retention_hours must be positive")
+    if max_reproducible_artifact_bytes <= 0:
+        raise ValueError("max_reproducible_artifact_bytes must be positive")
+
+    sessions = sorted(
+        _scan_sessions(sessions_root, now=now, stages=PRUNABLE_STAGES),
+        key=lambda candidate: (candidate.updated_at, str(candidate.session_dir)),
+    )
+    sizes = {
+        session.session_dir: _session_reproducible_bytes(session.session_dir)
+        for session in sessions
+    }
+
+    bytes_before = sum(sizes.values())
+    selected: list[StaleSession] = []
+    selected_paths: set[Path] = set()
+    projected_bytes = bytes_before
+
+    for session in sessions:
+        size = sizes[session.session_dir]
+        if session.age_hours > retention_hours and size > 0:
+            selected.append(session)
+            selected_paths.add(session.session_dir)
+            projected_bytes -= size
+
+    for session in sessions:
+        if projected_bytes <= max_reproducible_artifact_bytes:
+            break
+        if session.session_dir in selected_paths:
+            continue
+        size = sizes[session.session_dir]
+        if size <= 0:
+            continue
+        selected.append(session)
+        selected_paths.add(session.session_dir)
+        projected_bytes -= size
+
+    return bytes_before, selected
 
 
 def prune_terminal_artifacts(
@@ -213,6 +308,40 @@ def prune_terminal_artifacts(
     return PruneResult(
         pruned=pruned,
         bytes_reclaimed=bytes_reclaimed,
+        failures=failures,
+    )
+
+
+def apply_retention_policy(
+    sessions_root: Path,
+    *,
+    retention_hours: float,
+    max_reproducible_artifact_bytes: int,
+    now: datetime | None = None,
+) -> RetentionResult:
+    """Prune expired artifacts, then enforce the committed-artifact hard limit."""
+    bytes_before, candidates = _retention_candidates(
+        sessions_root,
+        retention_hours=retention_hours,
+        max_reproducible_artifact_bytes=max_reproducible_artifact_bytes,
+        now=now,
+    )
+    prune_result = prune_terminal_artifacts(candidates, sessions_root)
+    bytes_after = reproducible_artifact_usage(sessions_root)
+    failures = list(prune_result.failures)
+    if bytes_after > max_reproducible_artifact_bytes:
+        failures.append(
+            "reproducible artifact usage remains above the hard limit: "
+            f"{bytes_after} > {max_reproducible_artifact_bytes} bytes"
+        )
+    return RetentionResult(
+        retention_hours=retention_hours,
+        max_reproducible_artifact_bytes=max_reproducible_artifact_bytes,
+        bytes_before=bytes_before,
+        bytes_after=bytes_after,
+        bytes_reclaimed=prune_result.bytes_reclaimed,
+        selected_sessions=[candidate.session_id for candidate in candidates],
+        pruned=prune_result.pruned,
         failures=failures,
     )
 

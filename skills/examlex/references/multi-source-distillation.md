@@ -80,6 +80,10 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 - Commit requires passing format and structure validation plus an evaluation result for every strategy.
 - Strategies below 70 are rejected and remain drafts; only approved strategies are eligible for learner plans.
 - Score < 70 → triggers hill-climb optimization (max 3 rounds)
+- A successful commit marks a standard managed session as `committed` and runs automatic retention.
+- Reproducible committed-session full text, audio, transcripts, and chapter extracts are retained for 168 hours and kept below a 4 GiB hard limit, oldest first. Audit artifacts remain.
+- At 100 MiB, the strategy library warns and lists possible duplicate strategies or revisions for user review. It never automatically deletes strategies or immutable revisions.
+- A newly written possible duplicate also produces a warning below the size threshold. Review candidates with `examlex strategies --library strategy-library.json --duplicates`.
 
 ## Darwin Scoring Rubric
 
@@ -117,3 +121,8 @@ Long-running distillations can be resumed:
 ```bash
 python run.py resume <session-id>
 ```
+
+Only reproducible artifacts from committed sessions count toward the 4 GiB hard
+limit. Active working files can temporarily exceed it during extraction. Pipeline
+state, distilled strategies, validation/evaluation reports, and audit files are
+never selected by automatic retention.

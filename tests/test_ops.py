@@ -87,6 +87,19 @@ class OpsCheckTests(unittest.TestCase):
         result = check_config(cfg)
         self.assertEqual(result.status, "fail")
 
+    def test_check_config_rejects_nonpositive_retention_thresholds(self):
+        cfg = TutorConfig(
+            session_retention_hours=0,
+            max_reproducible_artifact_bytes=0,
+            strategy_library_warning_bytes=0,
+        )
+        result = check_config(cfg)
+
+        self.assertEqual(result.status, "fail")
+        self.assertIn("session_retention_hours", result.remedy)
+        self.assertIn("max_reproducible_artifact_bytes", result.remedy)
+        self.assertIn("strategy_library_warning_bytes", result.remedy)
+
     def test_check_permissions(self):
         result = check_permissions(self.cfg)
         self.assertEqual(result.status, "pass")

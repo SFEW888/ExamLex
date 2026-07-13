@@ -56,6 +56,21 @@ class CliTests(unittest.TestCase):
             with self.subTest(path=path):
                 self.assertIn("--strategies strategy-library.json", path.read_text(encoding="utf-8"))
 
+    def test_bilingual_docs_describe_controlled_growth_and_review_only_duplicates(self):
+        english = (PROJECT_ROOT / "README.md").read_text(encoding="utf-8")
+        chinese = (PROJECT_ROOT / "zh-CN" / "README.md").read_text(encoding="utf-8")
+
+        self.assertIn(
+            "Local strategy data grows in a controlled way as effective new material is added",
+            english,
+        )
+        self.assertIn("本地策略数据会随有效新资料受控增长", chinese)
+        for text in (english, chinese):
+            self.assertIn("168", text)
+            self.assertIn("4 GiB", text)
+            self.assertIn("100 MiB", text)
+            self.assertIn("--duplicates", text)
+
     def test_documented_short_aliases_are_registered(self):
         for alias in ("vocab", "report", "validate", "commit"):
             with self.subTest(alias=alias):

@@ -85,6 +85,10 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 - 校验与评估中的 `strategy_sha256` 必须和当前蒸馏策略内容一致
 - 每条策略必须同时通过格式/结构校验并具备效果评估
 - 低于 70 分的策略保持草稿，不进入学习计划，并最多进行 3 轮爬坡优化
+- 成功提交后，标准受管会话标记为 `committed` 并自动执行保留策略
+- 已完成会话中的全文、音频、转录稿和章节提取物保留 168 小时，并受 4 GiB 硬上限约束；超过时从最旧产物开始清理，审计产物仍会保留
+- 策略库达到 100 MiB 时提醒用户并列出可能重复的策略或历史版本；不会自动删除策略或不可变历史版本
+- 即使尚未达到容量阈值，新写入内容出现可能重复时也会提醒。使用 `examlex strategies --library strategy-library.json --duplicates` 查看候选
 
 ## Darwin 评分体系
 
@@ -125,3 +129,6 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 ```powershell
 python run.py resume <session-id>
 ```
+
+4 GiB 硬上限只计算已完成会话的可再生成产物。提取期间的活动工作文件可能暂时超过该值；
+管线状态、蒸馏策略、验证/评估报告和审计文件永远不在自动保留策略的删除范围内。

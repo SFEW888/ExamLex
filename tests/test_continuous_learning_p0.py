@@ -9,6 +9,8 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 from examlex.scripts import cli_commit, cli_extract, generate_daily_plan, ingest_strategy
+from examlex.scripts.config import TutorConfig
+from examlex.scripts.session import SessionManager
 
 
 def _strategy_digest(strategy):
@@ -156,6 +158,122 @@ class ContinuousLearningP0Tests(unittest.TestCase):
             committed = json.loads(library.read_text(encoding="utf-8"))["strategies"][0]
             self.assertEqual(committed["lifecycle_status"], "approved")
             self.assertEqual(committed["darwin_score"], 70)
+
+    def test_commit_completes_managed_session_and_enforces_artifact_limit(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            sessions_root = root / "sessions"
+            session = SessionManager(sessions_root).create(source_type="text")
+            artifacts = session.artifacts_dir
+            library = root / "library.json"
+            full_text = artifacts / "full_text.txt"
+            full_text.write_bytes(b"reproducible source text")
+            self._write_distilled(artifacts)
+            strategy = json.loads(
+                (artifacts / "distilled.json").read_text(encoding="utf-8")
+            )["strategies"][0]
+            digest = _strategy_digest(strategy)
+            (artifacts / "validation_report.json").write_text(json.dumps({
+                "all_format_passed": True,
+                "results": [{
+                    "strategy_id": strategy["strategy_id"],
+                    "format_passed": True,
+                    "structure_passed": True,
+                    "structure_score": 59,
+                    "strategy_sha256": digest,
+                }],
+            }), encoding="utf-8")
+            (artifacts / "evaluation.json").write_text(json.dumps({
+                "strategies": [{
+                    "strategy_id": strategy["strategy_id"],
+                    "effect_total": 11,
+                    "strategy_sha256": digest,
+                }],
+            }), encoding="utf-8")
+            cfg = TutorConfig(
+                sessions_root=sessions_root,
+                session_retention_hours=168,
+                max_reproducible_artifact_bytes=1,
+                strategy_library_warning_bytes=1024 * 1024,
+            )
+            output = io.StringIO()
+
+            with patch.object(cli_commit, "TutorConfig", return_value=cfg):
+                with redirect_stdout(output):
+                    result = cli_commit.main([
+                        "--artifacts-dir", str(artifacts),
+                        "--library", str(library),
+                        "--json",
+                    ])
+
+            payload = json.loads(output.getvalue())
+            state = json.loads((artifacts / "pipeline_state.json").read_text(encoding="utf-8"))
+            self.assertEqual(0, result)
+            self.assertEqual("committed", state["stage"])
+            self.assertEqual("ok", payload["retention"]["status"])
+            self.assertEqual([session.session_id], payload["retention"]["selected_sessions"])
+            self.assertEqual(0, payload["retention"]["bytes_after"])
+            self.assertFalse(full_text.exists())
+            self.assertTrue((artifacts / "distilled.json").exists())
+            self.assertTrue((artifacts / "validation_report.json").exists())
+            self.assertTrue((artifacts / "evaluation.json").exists())
+
+    def test_commit_warns_when_new_revision_repeats_existing_content(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            library = root / "library.json"
+            self._write_distilled(root)
+            strategy = json.loads((root / "distilled.json").read_text(encoding="utf-8"))[
+                "strategies"
+            ][0]
+            digest = _strategy_digest(strategy)
+            (root / "validation_report.json").write_text(json.dumps({
+                "all_format_passed": True,
+                "results": [{
+                    "strategy_id": strategy["strategy_id"],
+                    "format_passed": True,
+                    "structure_passed": True,
+                    "structure_score": 59,
+                    "strategy_sha256": digest,
+                }],
+            }), encoding="utf-8")
+            evaluation_path = root / "evaluation.json"
+            evaluation_path.write_text(json.dumps({
+                "strategies": [{
+                    "strategy_id": strategy["strategy_id"],
+                    "effect_total": 11,
+                    "strategy_sha256": digest,
+                }],
+            }), encoding="utf-8")
+            self.assertEqual(0, cli_commit.main([
+                "--artifacts-dir", str(root), "--library", str(library),
+            ]))
+            evaluation_path.write_text(json.dumps({
+                "strategies": [{
+                    "strategy_id": strategy["strategy_id"],
+                    "effect_total": 12,
+                    "strategy_sha256": digest,
+                }],
+            }), encoding="utf-8")
+            output = io.StringIO()
+
+            with self.assertLogs("examlex.scripts.strategy_store", level="WARNING"):
+                with redirect_stdout(output):
+                    result = cli_commit.main([
+                        "--artifacts-dir", str(root),
+                        "--library", str(library),
+                        "--json",
+                    ])
+
+            payload = json.loads(output.getvalue())
+            saved = json.loads(library.read_text(encoding="utf-8"))["strategies"]
+            self.assertEqual(0, result)
+            self.assertEqual(1, len(saved))
+            self.assertEqual(2, len(saved[0]["revisions"]))
+            self.assertIn(
+                "same_content_across_revisions",
+                {candidate["reason"] for candidate in payload["duplicate_candidates"]},
+            )
 
     def test_commit_rejects_reports_for_previous_strategy_content(self):
         with self._temporary_dir() as temp:

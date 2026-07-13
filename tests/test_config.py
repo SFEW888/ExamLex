@@ -26,6 +26,9 @@ class TutorConfigTests(unittest.TestCase):
             self.assertEqual(cfg.darwin_max_rounds, 3)
             self.assertEqual(cfg.darwin_touch_top_delta, 2.0)
             self.assertTrue(cfg.auto_cleanup)
+            self.assertEqual(cfg.session_retention_hours, 168.0)
+            self.assertEqual(cfg.max_reproducible_artifact_bytes, 4 * 1024 ** 3)
+            self.assertEqual(cfg.strategy_library_warning_bytes, 100 * 1024 ** 2)
             self.assertIsInstance(cfg.sessions_root, Path)
             self.assertIn("ExamLex", str(cfg.sessions_root))
 

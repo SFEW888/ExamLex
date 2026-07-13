@@ -68,7 +68,7 @@
 | `check-deps` | 🔧 | 检查外部工具依赖（ffmpeg、yt-dlp 等） |
 | `ops-check` | 🔧 | 运行 13 项运维就绪检查 |
 | `resume` | 👤 | 读取已有蒸馏会话并返回续跑指引 |
-| `sessions-cleanup` | 🔧 | 预览或归档陈旧的非终态会话 |
+| `sessions-cleanup` | 🔧 | 检查或手动清理会话产物；成功提交还会自动执行保留策略 |
 | `validate-strategy` | 🔧 | 校验策略库文件 |
 | `validate_repo.py` | 🔧 | 仓库完整性校验（非 CLI 命令） |
 
@@ -219,12 +219,16 @@ examlex ingest "四级阅读技巧.md" --library strategy-library.json
 ### `examlex strategies` — 策略库
 
 ```bash
-examlex strategies --library <path> [--search <keyword>] [--json]
+examlex strategies --library <path> [--search <keyword>] [--duplicates] [--duplicate-limit 20] [--json]
 
 # 示例
-examlex strategies --search 阅读
-examlex strategies --library strategy-library.json
+examlex strategies --library strategy-library.json --search 阅读
+examlex strategies --library strategy-library.json --duplicates
 ```
+
+`--duplicates` 只列出供复核的候选组，依据包括相同摄入指纹、规范化正文、相同标题与
+适用范围，以及历史版本间的重复正文。该命令不删除数据；删除历史版本前必须先核对
+学习记录中的版本引用。
 
 ### `examlex backup` — 数据备份
 
@@ -397,6 +401,11 @@ examlex sessions-cleanup --older-than-hours 168 --prune-terminal-artifacts --app
 并拒绝覆盖已经存在的归档目标。`--prune-terminal-artifacts` 改为选择陈旧且已经
 提交成功的会话；只有再加 `--apply`，才会删除可重新生成的全文、音频、转录稿和章节
 提取物。管线状态、蒸馏策略、验证/评估报告及其他审计文件仍会保留。
+
+该命令继续用于检查和手动维护。除此之外，成功执行 `examlex commit` 会自动把标准受管
+会话标记为 `committed`，清理超过 168 小时的可再生成产物，并按从旧到新的顺序执行
+4 GiB 硬上限。活动会话文件不计入该上限。策略库达到 100 MiB 时只发出提醒并列出有限
+数量的重复候选，不会自动修改或删除策略及其不可变历史版本。
 
 ### `examlex check-deps` — 检查依赖
 
