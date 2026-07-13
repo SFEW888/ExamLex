@@ -246,6 +246,45 @@ class PublicDNSBoundaryTests(unittest.TestCase):
         with patch.object(source_collector.socket, "getaddrinfo", return_value=addresses):
             source_collector._require_public_dns("example.com")
 
+    def test_benchmark_fake_ip_requires_an_explicit_proxy(self):
+        source_collector._require_public_dns.cache_clear()
+        addresses = [(2, 1, 6, "", ("198.18.0.44", 443))]
+        with patch.object(source_collector.socket, "getaddrinfo", return_value=addresses):
+            with self.assertRaisesRegex(SourceURLValidationError, "public addresses"):
+                source_collector._require_public_dns("example.com")
+            source_collector._require_public_dns(
+                "example.com", allow_proxy_fake_ip=True
+            )
+
+    def test_proxy_exception_never_allows_loopback_target_answers(self):
+        source_collector._require_public_dns.cache_clear()
+        addresses = [(2, 1, 6, "", ("127.0.0.1", 443))]
+        with patch.object(source_collector.socket, "getaddrinfo", return_value=addresses):
+            with self.assertRaisesRegex(SourceURLValidationError, "public addresses"):
+                source_collector._require_public_dns(
+                    "example.com", allow_proxy_fake_ip=True
+                )
+
+    def test_proxy_detection_obeys_bypass_rules(self):
+        with (
+            patch.object(
+                source_collector,
+                "getproxies",
+                return_value={"https": "http://127.0.0.1:7890"},
+            ),
+            patch.object(source_collector, "proxy_bypass", return_value=False),
+        ):
+            self.assertTrue(source_collector._configured_https_proxy("example.com"))
+        with (
+            patch.object(
+                source_collector,
+                "getproxies",
+                return_value={"https": "http://127.0.0.1:7890"},
+            ),
+            patch.object(source_collector, "proxy_bypass", return_value=True),
+        ):
+            self.assertFalse(source_collector._configured_https_proxy("example.com"))
+
 
 if __name__ == "__main__":
     unittest.main()

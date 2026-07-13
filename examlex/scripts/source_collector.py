@@ -26,7 +26,13 @@ from pathlib import Path
 from typing import Any, Iterable
 from urllib.error import HTTPError, URLError
 from urllib.parse import parse_qsl, urlencode, urljoin, urlsplit, urlunsplit
-from urllib.request import HTTPRedirectHandler, Request, build_opener
+from urllib.request import (
+    HTTPRedirectHandler,
+    Request,
+    build_opener,
+    getproxies,
+    proxy_bypass,
+)
 from urllib.robotparser import RobotFileParser
 
 from .file_lock import exclusive_file_lock
@@ -43,6 +49,7 @@ DEFAULT_MAX_MEDIA_BYTES = 100 * 1024 * 1024
 TRACKING_QUERY_PREFIXES = ("utm_", "mc_")
 TRACKING_QUERY_NAMES = frozenset({"fbclid", "gclid", "igshid"})
 MEDIA_CONTENT_TYPES = ("audio/", "video/", "application/octet-stream")
+PROXY_FAKE_IP_NETWORK = ipaddress.ip_network("198.18.0.0/15")
 
 
 class SourceCollectionError(RuntimeError):
@@ -111,8 +118,36 @@ def _domain_allowed(host: str, allowed_domains: Iterable[str]) -> bool:
     )
 
 
-@lru_cache(maxsize=256)
-def _require_public_dns(host: str, port: int = 443) -> None:
+def _configured_https_proxy(host: str) -> bool:
+    """Return whether urllib will route this host through an explicit HTTPS proxy."""
+    try:
+        if proxy_bypass(host):
+            return False
+        proxy_url = getproxies().get("https") or getproxies().get("all")
+    except (OSError, ValueError):
+        return False
+    if not proxy_url:
+        return False
+    if "://" not in proxy_url:
+        proxy_url = "http://" + proxy_url
+    try:
+        parts = urlsplit(proxy_url)
+        port = parts.port
+    except ValueError:
+        return False
+    return bool(
+        parts.scheme in {"http", "https"}
+        and parts.hostname
+        and port not in {0}
+    )
+
+
+@lru_cache(maxsize=512)
+def _require_public_dns(
+    host: str,
+    port: int = 443,
+    allow_proxy_fake_ip: bool = False,
+) -> None:
     try:
         addresses = socket.getaddrinfo(host, port, type=socket.SOCK_STREAM)
     except socket.gaierror as exc:
@@ -125,7 +160,8 @@ def _require_public_dns(host: str, port: int = 443) -> None:
             parsed = ipaddress.ip_address(raw_ip)
         except ValueError as exc:
             raise SourceURLValidationError(f"host resolved to invalid address: {raw_ip}") from exc
-        if not parsed.is_global:
+        is_proxy_fake_ip = allow_proxy_fake_ip and parsed in PROXY_FAKE_IP_NETWORK
+        if not parsed.is_global and not is_proxy_fake_ip:
             raise SourceURLValidationError(
                 f"host must resolve only to public addresses; got {parsed}"
             )
@@ -149,7 +185,7 @@ def validate_public_https_url(url: str, allowed_domains: Iterable[str]) -> str:
     host = (parts.hostname or "").lower().rstrip(".")
     if not host or not _domain_allowed(host, allowed_domains):
         raise SourceURLValidationError(f"URL host is not allowed for this source: {host or '<missing>'}")
-    _require_public_dns(host)
+    _require_public_dns(host, allow_proxy_fake_ip=_configured_https_proxy(host))
     return url.strip()
 
 

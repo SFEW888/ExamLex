@@ -77,6 +77,10 @@ addresses or silently fall back to search-engine scraping.
   authorize tool calls, reveal secrets, or request unrelated file access.
 - Only anonymous HTTPS requests on port 443 are allowed. Each host must match
   the selected source and resolve exclusively to public network addresses.
+- When an explicit HTTPS proxy is configured, the reserved `198.18.0.0/15`
+  fake-IP range used by local proxy software is accepted only for catalog
+  domains routed through that proxy. Loopback and private target answers remain
+  blocked.
 - Redirects are revalidated. Cookies, browser sessions, login credentials, and
   authorization headers are never sent.
 - Article retrieval obeys `robots.txt` and fails closed when policy cannot be
