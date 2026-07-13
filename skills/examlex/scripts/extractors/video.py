@@ -19,7 +19,13 @@ import uuid
 from pathlib import Path
 from urllib.parse import urlparse
 from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
+from urllib.request import (
+    HTTPRedirectHandler,
+    Request,
+    build_opener,
+    getproxies,
+    proxy_bypass,
+)
 
 from .base import BaseExtractor, ExtractionResult
 from ..config import TutorConfig
@@ -47,6 +53,7 @@ _VIDEO_HOSTS = frozenset(
         "www.xhslink.com",
     }
 )
+_PROXY_FAKE_IP_NETWORK = ipaddress.ip_network("198.18.0.0/15")
 
 
 def _video_url_parts(url: str):
@@ -76,17 +83,42 @@ def _validate_video_url(url: str) -> str:
         raise ValueError(f"Could not resolve video host '{host}': {exc}") from exc
     if not addresses:
         raise ValueError(f"Could not resolve video host '{host}'.")
+    allow_proxy_fake_ip = _configured_https_proxy(host)
     for address in addresses:
         raw_ip = address[4][0].split("%", 1)[0]
         try:
             parsed_ip = ipaddress.ip_address(raw_ip)
         except ValueError as exc:
             raise ValueError(f"Video host resolved to an invalid address: {raw_ip}") from exc
-        if not parsed_ip.is_global:
+        is_proxy_fake_ip = allow_proxy_fake_ip and parsed_ip in _PROXY_FAKE_IP_NETWORK
+        if not parsed_ip.is_global and not is_proxy_fake_ip:
             raise ValueError(
                 f"Video host must resolve only to public addresses; got {parsed_ip}."
             )
     return url
+
+
+def _configured_https_proxy(host: str) -> bool:
+    """Return whether urllib will explicitly proxy HTTPS for this host."""
+    try:
+        if proxy_bypass(host):
+            return False
+        proxies = getproxies()
+        proxy_url = proxies.get("https") or proxies.get("all")
+    except (OSError, ValueError):
+        return False
+    if not proxy_url:
+        return False
+    if "://" not in proxy_url:
+        proxy_url = "http://" + proxy_url
+    try:
+        parts = urlparse(proxy_url)
+        port = parts.port
+    except (TypeError, ValueError):
+        return False
+    return parts.scheme.lower() in {"http", "https", "socks", "socks5"} and bool(
+        parts.hostname
+    ) and port is not None
 
 # ── SiliconFlow ASR ────────────────────────────────
 
@@ -95,6 +127,17 @@ _MAX_AUDIO_UPLOAD_BYTES = 200 * 1024 * 1024
 _MAX_ASR_RESPONSE_BYTES = 10 * 1024 * 1024
 _UPLOAD_CHUNK_SIZE = 1024 * 1024
 SILICONFLOW_MODEL = "FunAudioLLM/SenseVoiceSmall"
+
+
+class _RejectRedirectHandler(HTTPRedirectHandler):
+    """Reject redirects so bearer credentials never cross request origins."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ANN001
+        return None
+
+
+def _open_siliconflow(request: Request, timeout: float):
+    return build_opener(_RejectRedirectHandler()).open(request, timeout=timeout)
 
 
 def _cookie_retry_enabled() -> bool:
@@ -476,16 +519,14 @@ def _transcribe_siliconflow(audio_path: Path, transcript_path: Path,
         method="POST",
     )
     try:
-        with urlopen(request, timeout=600) as response:
+        with _open_siliconflow(request, timeout=600) as response:
             raw_response = response.read(_MAX_ASR_RESPONSE_BYTES + 1)
     except HTTPError as exc:
-        detail = exc.read(_MAX_ASR_RESPONSE_BYTES + 1).decode(
-            "utf-8",
-            errors="replace",
-        )
-        raise RuntimeError(f"SiliconFlow HTTP {exc.code}: {detail}") from exc
+        raise RuntimeError(
+            f"SiliconFlow request failed with HTTP status {exc.code}."
+        ) from exc
     except (URLError, OSError) as exc:
-        raise RuntimeError(f"SiliconFlow network error: {exc}") from exc
+        raise RuntimeError("SiliconFlow network request failed.") from exc
 
     if len(raw_response) > _MAX_ASR_RESPONSE_BYTES:
         raise RuntimeError("SiliconFlow response exceeded the 10 MB safety limit")

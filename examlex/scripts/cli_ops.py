@@ -30,11 +30,11 @@ def main(argv: list[str] | None = None) -> int:
             args.library,
             include_network=not args.offline,
         )
-    except Exception as exc:
+    except Exception:
         if args.json:
-            print(json.dumps({"error": str(exc)}, ensure_ascii=True))
+            print(json.dumps({"error": "Operational checks could not complete."}))
         else:
-            print(f"[FAIL] Check execution failed: {exc}", file=sys.stderr)
+            print("[FAIL] Operational checks could not complete.", file=sys.stderr)
         return 2
 
     if args.json:

@@ -16,6 +16,10 @@ Use `X.Y.Z`:
 
 ```powershell
 python scripts\validate_repo.py --root . --json
+python -m pip install ".[quality,security,release]"
+detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+python -m bandit -q -r skills/examlex/scripts scripts -ll
+python -m pip_audit .
 python -m unittest discover -s tests
 git diff --check
 ```

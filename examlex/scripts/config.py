@@ -3,9 +3,10 @@
 Configuration priority (highest to lowest):
   1. CLI arguments / constructor kwargs
   2. Environment variables (SILICONFLOW_API_KEY, etc.)
-  3. .env file in project root
-  4. ~/.examlex/config.json
-  5. Code defaults
+  3. Code defaults
+
+ExamLex deliberately does not auto-load ``.env`` files or user-home config
+files. Deployments that use them must load/export values before starting.
 
 Lazy dependency checking via DependencyReport.
 """
@@ -150,7 +151,8 @@ class TutorConfig:
 
     # ── API keys (read from env if not provided) ──
     siliconflow_api_key: str | None = field(
-        default_factory=lambda: os.environ.get("SILICONFLOW_API_KEY")
+        default_factory=lambda: os.environ.get("SILICONFLOW_API_KEY"),
+        repr=False,
     )
 
     # ── ASR defaults ──

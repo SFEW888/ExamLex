@@ -268,7 +268,7 @@
         {"exam": "postgraduate", "sections": ["cloze", "reading_a"], "evidence": "C"}
       ],
       "feeds": [
-        {"feed_id": "live-science-all", "url": "https://www.livescience.com/feeds/all", "media_type": "article"}
+        {"feed_id": "live-science-all", "url": "https://www.livescience.com/feeds.xml", "media_type": "article"}
       ]
     },
     {
@@ -386,17 +386,17 @@
       "source_id": "ted-talks",
       "canonical_name": "TED Talks",
       "aliases": ["TED Talks Daily"],
-      "domains": ["ted.com", "feeds.feedburner.com", "feeds.acast.com", "acast.com"],
-      "media_types": ["audio", "video"],
+      "domains": ["ted.com", "feeds.feedburner.com"],
+      "media_types": ["video"],
       "topics": ["education", "psychology", "technology", "science", "society"],
       "usage": [
         {"exam": "cet", "sections": ["listening"], "evidence": "B"},
         {"exam": "postgraduate", "sections": ["reading_b", "writing_reference"], "evidence": "C"}
       ],
       "feeds": [
-        {"feed_id": "ted-talks-video", "url": "https://feeds.feedburner.com/tedtalks_video", "media_type": "video"},
-        {"feed_id": "ted-talks-audio", "url": "https://feeds.feedburner.com/tedtalks_audio", "media_type": "audio"}
-      ]
+        {"feed_id": "ted-talks-video", "url": "https://feeds.feedburner.com/tedtalks_video", "media_type": "video"}
+      ],
+      "notes": "The official video feed is collectable. The official audio feed is intentionally excluded because its current multi-megabyte response exceeds the collector's bounded feed limit."
     },
     {
       "source_id": "business-insider",

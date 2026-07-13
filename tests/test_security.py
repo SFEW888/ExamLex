@@ -182,6 +182,15 @@ class ConfigurationSecurityTests(unittest.TestCase):
         d3 = cfg3.to_dict()
         self.assertIsInstance(d3, dict)
 
+    def test_api_key_is_redacted_from_dataclass_repr(self):
+        secret = "sk-" + "private-value-for-repr"
+        cfg = TutorConfig(siliconflow_api_key=secret)
+
+        rendered = repr(cfg)
+
+        self.assertNotIn(secret, rendered)
+        self.assertNotIn("siliconflow_api_key", rendered)
+
     def test_cookie_retry_is_opt_in(self):
         """Verify yt-dlp cookie retry requires explicit opt-in."""
         original = os.environ.get("EXAMLEX_YTDLP_COOKIES_FROM_BROWSER")

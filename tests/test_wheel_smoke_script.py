@@ -24,6 +24,20 @@ class WheelSmokeScriptTests(unittest.TestCase):
         self.assertEqual("utf-8", run.call_args.kwargs["encoding"])
         self.assertEqual("replace", run.call_args.kwargs["errors"])
 
+    def test_run_checked_does_not_echo_command_or_process_output_on_failure(self):
+        private_value = "private local path and credential"
+        completed = subprocess.CompletedProcess(
+            [], 1, stdout=private_value, stderr=private_value
+        )
+
+        with mock.patch.object(smoke_test_wheel.subprocess, "run", return_value=completed):
+            with self.assertRaises(RuntimeError) as raised:
+                smoke_test_wheel.run_checked(
+                    ["python", private_value], PROJECT_ROOT, {}
+                )
+
+        self.assertNotIn(private_value, str(raised.exception))
+
     def test_smoke_script_exposes_help(self):
         self.assertTrue(SMOKE_SCRIPT.is_file())
 
@@ -46,14 +60,14 @@ class WheelSmokeScriptTests(unittest.TestCase):
         self.assertIn('"source-collect", "--help"', source)
         self.assertIn('"source-fetch", "--help"', source)
         self.assertIn('"source-list", "--collectable", "--json"', source)
-        self.assertIn("root / 'assets' / 'schemas'", source)
-        self.assertIn("root / 'assets' / 'templates'", source)
-        self.assertIn("root / 'references'", source)
-        self.assertIn("root / 'references' / 'tutor-role-contracts.json'", source)
-        self.assertIn("root / 'references' / 'tutor-runtime.md'", source)
-        self.assertIn("root / 'references' / 'source-collection.md'", source)
-        self.assertIn("root / 'assets' / 'data' / 'source-catalog.json'", source)
+        self.assertIn("'assets/schemas': root / 'assets' / 'schemas'", source)
+        self.assertIn("'assets/templates': root / 'assets' / 'templates'", source)
+        self.assertIn("'references': root / 'references'", source)
+        self.assertIn("'tutor-role-contracts': root / 'references'", source)
+        self.assertIn("'tutor-runtime': root / 'references'", source)
+        self.assertIn("'source-collection': root / 'references'", source)
+        self.assertIn("'source-catalog': root / 'assets' / 'data'", source)
         self.assertIn("load_role_contracts", source)
         self.assertIn("prepare_tutor_turn", source)
         self.assertIn("load_source_catalog", source)
-        self.assertIn("root / 'SKILL.md'", source)
+        self.assertIn("'SKILL.md': root / 'SKILL.md'", source)

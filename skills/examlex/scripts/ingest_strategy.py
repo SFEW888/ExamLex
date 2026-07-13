@@ -172,7 +172,7 @@ def _strategy_id(
     exam = "pg" if exam_type == "POSTGRADUATE_ENGLISH" else exam_type.lower()
     # Incorporate leading content so two files sharing a base name get distinct ids.
     payload = filename + (content[:200] if content else "")
-    digest = hashlib.sha1(payload.encode("utf-8")).hexdigest()[:8]
+    digest = hashlib.sha256(payload.encode("utf-8")).hexdigest()[:8]
     prefix = f"{exam}-{module}-{digest}"
     known_ids = {value for value in (existing_ids or set()) if isinstance(value, str)}
     sequence = 1

@@ -16,7 +16,9 @@ import re
 import socket
 import tempfile
 import time
-import xml.etree.ElementTree as ET
+# The only parser call is guarded by a full-payload DTD/entity rejection and a
+# strict 2 MiB input limit in parse_feed().
+import xml.etree.ElementTree as ET  # nosec B405
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
@@ -585,11 +587,12 @@ def parse_feed(
     """Parse bounded RSS or Atom bytes into normalized, untrusted item metadata."""
     if len(payload) > MAX_FEED_BYTES:
         raise SourceCollectionError("feed exceeds the 2 MB safety limit")
-    lowered = payload[:4096].lower()
+    lowered = payload.lower()
     if b"<!doctype" in lowered or b"<!entity" in lowered:
         raise SourceCollectionError("feed XML must not contain DTD or entity declarations")
     try:
-        root = ET.fromstring(payload)
+        # The complete bounded payload was checked above, not only its prefix.
+        root = ET.fromstring(payload)  # nosec B314
     except ET.ParseError as exc:
         raise SourceCollectionError("feed is not valid RSS/Atom XML") from exc
 

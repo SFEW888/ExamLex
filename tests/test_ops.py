@@ -11,6 +11,7 @@ from examlex.scripts.ops import (
     check_environment,
     check_config,
     check_permissions,
+    check_network,
     check_dry_run,
     check_safety_limits,
     check_scheduler,
@@ -29,6 +30,22 @@ class OpsCheckTests(unittest.TestCase):
         self.assertIsInstance(report, OpsReport)
         self.assertGreater(len(report.checks), 0)
         self.assertIn("pass", report.summary)
+        self.assertEqual("<redacted>", report.hostname)
+
+    def test_ops_report_does_not_expose_local_machine_identity_or_paths(self):
+        with tempfile.TemporaryDirectory() as temp:
+            cfg = TutorConfig(sessions_root=Path(temp) / "private-sessions")
+            report = run_all_checks(cfg, include_network=False)
+
+        rendered = json.dumps(
+            {
+                "hostname": report.hostname,
+                "checks": [check.detail for check in report.checks],
+            }
+        )
+        self.assertNotIn(temp, rendered)
+        self.assertNotIn(str(Path.cwd()), rendered)
+        self.assertEqual("<redacted>", report.hostname)
 
     @mock.patch("examlex.scripts.ops.check_network")
     def test_offline_report_skips_live_network_checks(self, mock_network):
@@ -38,6 +55,23 @@ class OpsCheckTests(unittest.TestCase):
         self.assertEqual("skip", network.status)
         self.assertTrue(network.detail["offline"])
         mock_network.assert_not_called()
+
+    @mock.patch("examlex.scripts.ops.build_opener")
+    @mock.patch("examlex.scripts.ops.urlopen")
+    @mock.patch.dict("os.environ", {"SILICONFLOW_API_KEY": "sk-test-value"})
+    def test_network_check_does_not_echo_transport_errors(
+        self, mock_urlopen, mock_build_opener
+    ):
+        private_detail = "private proxy credentials"
+        mock_urlopen.side_effect = RuntimeError(private_detail)
+        mock_build_opener.return_value.open.side_effect = RuntimeError(private_detail)
+
+        result = check_network()
+
+        rendered = json.dumps(result.detail)
+        self.assertNotIn(private_detail, rendered)
+        self.assertEqual("unreachable", result.detail["bilibili"])
+        self.assertEqual("unreachable", result.detail["siliconflow_api"])
 
     def test_check_environment(self):
         result = check_environment(self.cfg)

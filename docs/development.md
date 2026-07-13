@@ -16,8 +16,11 @@ The project does not use a separate `src/` directory because the distributable a
 ```powershell
 python scripts\validate_repo.py --root . --json
 python -m unittest discover -s tests
-python -m pip install ".[quality]"
+python -m pip install ".[quality,security]"
 python -m ruff check .
+detect-secrets-hook --baseline .secrets.baseline $(git ls-files)
+python -m bandit -q -r skills/examlex/scripts scripts -ll
+python -m pip_audit .
 python -m coverage run -m unittest discover -s tests -q
 python -m coverage report
 git diff --check

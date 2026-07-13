@@ -125,6 +125,7 @@ EXPECTED_PROJECT_QUALITY_FILES = {
     ".editorconfig",
     ".env.example",
     ".gitattributes",
+    ".secrets.baseline",
 }
 EXPECTED_QUALITY_DOCS = {
     "docs/configuration.md",
@@ -168,10 +169,37 @@ FORBIDDEN_AGENT_CALL_MARKERS = {
     "$" + "scenario-dialog",
     "$" + "culture-guide",
 }
-FORBIDDEN_PUBLIC_PATH_MARKERS = {
-    "D:\\Codex_project",
-    "C:\\Users\\Lenovo",
+PUBLIC_SAFETY_PATTERNS = {
+    "Windows user-home path": re.compile(
+        r"(?i)(?<![A-Za-z0-9_])[A-Z]:[\\/]Users[\\/][^\\/\s\"']+"
+    ),
+    "POSIX user-home path": re.compile(
+        r"(?<![A-Za-z0-9_])/(?:home|Users)/[^/\s\"']+"
+    ),
+    "local Git worktree path": re.compile(
+        r"(?i)(?:[A-Z]:)?(?:[^\r\n\"']*[\\/])?\.worktrees[\\/][^\s\"']+"
+    ),
+    "credential-bearing proxy URL": re.compile(
+        r"(?i)\b(?:https?|socks5h?)://[^\s/:@]+:[^\s/@]+@[^\s/]+"
+    ),
+    "private key material": re.compile(
+        r"-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----"
+    ),
+    "GitHub access token": re.compile(
+        r"\b(?:github_pat_[A-Za-z0-9_]{20,}|gh[pousr]_[A-Za-z0-9]{20,})\b"
+    ),
+    "AWS access key": re.compile(r"\bAKIA[A-Z0-9]{16}\b"),
+    "API key": re.compile(r"\bsk-[A-Za-z0-9_-]{16,}\b"),
 }
+PUBLIC_SAFETY_PLACEHOLDER_MARKERS = (
+    "example",
+    "dummy",
+    "placeholder",
+    "replace",
+    "changeme",
+    "your-",
+    "test",
+)
 LEARNER_ARTIFACT_NAMES = {
     "ability-history.json",
     "ability-profile.json",
@@ -876,6 +904,50 @@ def validate_project(root: str | Path) -> ValidationResult:
     for filename in sorted(EXPECTED_PROJECT_QUALITY_FILES):
         if not (root_path / filename).is_file():
             errors.append(f"Missing project quality file: {filename}")
+    secret_baseline_path = root_path / ".secrets.baseline"
+    if secret_baseline_path.is_file():
+        try:
+            secret_baseline = json.loads(secret_baseline_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            errors.append("Secret baseline must be valid UTF-8 JSON.")
+        else:
+            secret_results = secret_baseline.get("results")
+            if not isinstance(secret_results, dict):
+                errors.append("Secret baseline results must be an object.")
+            else:
+                for baseline_filename, findings in secret_results.items():
+                    if not isinstance(baseline_filename, str) or "\\" in baseline_filename:
+                        errors.append("Secret baseline paths must use portable forward slashes.")
+                        continue
+                    if not isinstance(findings, list):
+                        errors.append(
+                            f"Secret baseline findings must be a list: {baseline_filename}"
+                        )
+                        continue
+                    for finding in findings:
+                        if not isinstance(finding, dict):
+                            errors.append(
+                                f"Secret baseline finding must be an object: {baseline_filename}"
+                            )
+                            continue
+                        if finding.get("filename") != baseline_filename:
+                            errors.append(
+                                f"Secret baseline filename mismatch: {baseline_filename}"
+                            )
+                        if not re.fullmatch(
+                            r"[0-9a-f]{40}", str(finding.get("hashed_secret", ""))
+                        ):
+                            errors.append(
+                                f"Secret baseline must contain SHA-1 hashes only: {baseline_filename}"
+                            )
+                        if finding.get("is_secret") is not False:
+                            errors.append(
+                                f"Secret baseline finding is not audited false-positive: {baseline_filename}"
+                            )
+                        if "secret" in finding:
+                            errors.append(
+                                f"Secret baseline must not contain raw values: {baseline_filename}"
+                            )
     for relative in sorted(EXPECTED_QUALITY_DOCS):
         if not (root_path / relative).is_file():
             errors.append(f"Missing quality documentation: {relative}")
@@ -960,10 +1032,18 @@ def validate_project(root: str | Path) -> ValidationResult:
         for marker in sorted(FORBIDDEN_AGENT_CALL_MARKERS):
             if marker in text:
                 errors.append(f"Found forbidden dollar-style Skill call in {path.relative_to(root_path).as_posix()}: {marker}")
-        if path.suffix.lower() in {".md", ".yml", ".yaml", ".toml", ".json"}:
-            for marker in sorted(FORBIDDEN_PUBLIC_PATH_MARKERS):
-                if marker in text:
-                    errors.append(f"Found local machine path in public documentation must not include local machine path: {path.relative_to(root_path).as_posix()}")
+        for rule_name, pattern in PUBLIC_SAFETY_PATTERNS.items():
+            for match in pattern.finditer(text):
+                if any(
+                    marker in match.group(0).lower()
+                    for marker in PUBLIC_SAFETY_PLACEHOLDER_MARKERS
+                ):
+                    continue
+                line_number = text.count("\n", 0, match.start()) + 1
+                errors.append(
+                    "Public-safety scan found "
+                    f"{rule_name} in {relative_path.as_posix()}:{line_number}."
+                )
 
     prompt_mode = read_pyproject_prompt_mode(root_path / "pyproject.toml")
     if prompt_mode != "public-safe":
@@ -1012,6 +1092,7 @@ def main(argv: list[str] | None = None) -> int:
     result = validate_project(args.root)
     if args.json:
         data = asdict(result)
+        data["root"] = "."
         data["ok"] = result.ok
         print(json.dumps(data, ensure_ascii=False, indent=2))
     else:

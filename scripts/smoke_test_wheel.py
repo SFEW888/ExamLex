@@ -18,10 +18,10 @@ def resolve_wheel(value: Path) -> Path:
     if path.is_dir():
         wheels = sorted(path.glob("examlex-*.whl"))
         if len(wheels) != 1:
-            raise ValueError(f"Expected exactly one ExamLex wheel in {path}, found {len(wheels)}")
+            raise ValueError(f"Expected exactly one ExamLex wheel, found {len(wheels)}")
         return wheels[0]
     if not path.is_file() or path.suffix != ".whl":
-        raise ValueError(f"Wheel not found: {path}")
+        raise ValueError("Wheel not found")
     return path
 
 
@@ -36,10 +36,7 @@ def run_checked(command: list[str], cwd: Path, env: dict[str, str]) -> subproces
         errors="replace",
     )
     if result.returncode != 0:
-        raise RuntimeError(
-            f"Command failed ({result.returncode}): {' '.join(command)}\n"
-            f"stdout:\n{result.stdout}\nstderr:\n{result.stderr}"
-        )
+        raise RuntimeError(f"Isolated smoke command failed with exit code {result.returncode}")
     return result
 
 
@@ -112,18 +109,21 @@ def smoke_test(wheel: Path) -> dict[str, object]:
                     "from examlex.scripts.tutor_runtime import prepare_tutor_turn; "
                     "from examlex.scripts.source_catalog import load_source_catalog; "
                     "root = Path(examlex.__file__).resolve().parent; "
-                    "required = [root / 'SKILL.md', root / 'assets' / 'schemas', "
-                    "root / 'assets' / 'templates', root / 'references', _DEFAULT_REF, "
-                    "root / 'references' / 'tutor-role-contracts.json', "
-                    "root / 'references' / 'tutor-runtime.md', "
-                    "root / 'references' / 'source-collection.md', "
-                    "root / 'assets' / 'data' / 'source-catalog.json']; "
-                    "missing = [str(path) for path in required if not path.exists()]; "
+                    "required = {'SKILL.md': root / 'SKILL.md', "
+                    "'assets/schemas': root / 'assets' / 'schemas', "
+                    "'assets/templates': root / 'assets' / 'templates', "
+                    "'references': root / 'references', "
+                    "'vocab-reference': _DEFAULT_REF, "
+                    "'tutor-role-contracts': root / 'references' / 'tutor-role-contracts.json', "
+                    "'tutor-runtime': root / 'references' / 'tutor-runtime.md', "
+                    "'source-collection': root / 'references' / 'source-collection.md', "
+                    "'source-catalog': root / 'assets' / 'data' / 'source-catalog.json'}; "
+                    "missing = [name for name, path in required.items() if not path.exists()]; "
                     "assert not missing, missing; assert len(load_role_contracts()) == 8; "
                     "assert len(load_source_catalog()['sources']) >= 50; "
                     "assert prepare_tutor_turn('Correct my grammar', "
                     "role_id='grammar-corrector').clarification_questions; "
-                    "print(json.dumps([str(path) for path in required]))"
+                    "print(json.dumps(sorted(required)))"
                 ),
             ],
             runtime_dir,
@@ -149,7 +149,7 @@ def smoke_test(wheel: Path) -> dict[str, object]:
             raise RuntimeError("Vocabulary smoke output did not contain three quiz words")
 
         return {
-            "wheel": str(wheel),
+            "wheel": wheel.name,
             "console_help": True,
             "resume_help": True,
             "prompt_check_help": True,
