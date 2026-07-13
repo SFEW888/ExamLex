@@ -1028,12 +1028,12 @@ class ValidateProjectTests(unittest.TestCase):
             self.assertTrue(any("Public-safety scan found" in error for error in result.errors))
 
     def test_public_safety_scan_detects_tokens_without_echoing_them(self):
-        secret = "github" + "_pat_" + "A" * 32
+        fixture_value = "github" + "_pat_" + "A" * 32
         with copy_project() as temp:
             root = Path(temp) / "repo"
             readme = root / "README.md"
             readme.write_text(
-                readme.read_text(encoding="utf-8") + f"\n{secret}\n",
+                readme.read_text(encoding="utf-8") + f"\n{fixture_value}\n",
                 encoding="utf-8",
             )
 
@@ -1041,15 +1041,15 @@ class ValidateProjectTests(unittest.TestCase):
 
         matching = [error for error in result.errors if "GitHub access token" in error]
         self.assertTrue(matching)
-        self.assertTrue(all(secret not in error for error in matching))
+        self.assertTrue(all(fixture_value not in error for error in matching))
 
     def test_public_safety_scan_detects_credentialed_proxy_without_echoing_it(self):
-        secret = "https" + "://alice:private-value@proxy.invalid:8443"
+        fixture_value = "https" + "://alice:private-value@proxy.invalid:8443"
         with copy_project() as temp:
             root = Path(temp) / "repo"
             env_example = root / ".env.example"
             env_example.write_text(
-                env_example.read_text(encoding="utf-8") + f"\nHTTPS_PROXY={secret}\n",
+                env_example.read_text(encoding="utf-8") + f"\nHTTPS_PROXY={fixture_value}\n",
                 encoding="utf-8",
             )
 
@@ -1057,7 +1057,7 @@ class ValidateProjectTests(unittest.TestCase):
 
         matching = [error for error in result.errors if "credential-bearing proxy URL" in error]
         self.assertTrue(matching)
-        self.assertTrue(all(secret not in error for error in matching))
+        self.assertTrue(all(fixture_value not in error for error in matching))
 
 
 if __name__ == "__main__":
