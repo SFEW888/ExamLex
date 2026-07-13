@@ -6,6 +6,7 @@ import threading
 import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import json
 
@@ -14,6 +15,112 @@ from examlex.scripts.optimizers.ratchet import StrategyRatchet
 
 
 class ContinuousLearningP1Tests(unittest.TestCase):
+    def test_backup_rejects_output_inside_source_tree(self):
+        with self._temporary_dir() as temp:
+            source = Path(temp) / "learner-data"
+            source.mkdir()
+            (source / "profile.json").write_text("{}", encoding="utf-8")
+
+            with self.assertRaisesRegex(ValueError, "inside"):
+                backup_data.create_backup(source, source / "backup.tar.gz")
+
+    def test_repeated_backup_failure_preserves_previous_archive(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            (source / "profile.json").write_text("first", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            backup_data.create_backup(source, archive)
+            original_archive = archive.read_bytes()
+            original_sidecar = Path(f"{archive}.sha256").read_bytes()
+            (source / "profile.json").write_text("second", encoding="utf-8")
+
+            with patch("tarfile.TarFile.add", side_effect=OSError("simulated failure")):
+                with self.assertRaisesRegex(OSError, "simulated failure"):
+                    backup_data.create_backup(source, archive)
+
+            self.assertEqual(original_archive, archive.read_bytes())
+            self.assertEqual(original_sidecar, Path(f"{archive}.sha256").read_bytes())
+
+    def test_backup_hashing_never_uses_unbounded_path_read_bytes(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            (source / "profile.json").write_text("stream me", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+
+            with patch(
+                "pathlib.Path.read_bytes",
+                side_effect=AssertionError("unbounded read_bytes"),
+            ):
+                metadata = backup_data.create_backup(source, archive)
+                verified = backup_data.verify_backup(
+                    archive,
+                    expected_checksum=metadata["checksum_sha256"],
+                )
+
+            self.assertTrue(verified["verified"])
+
+    def test_backup_verification_enforces_member_quotas(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            (source / "a.json").write_text("12345", encoding="utf-8")
+            (source / "b.json").write_text("67890", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            backup_data.create_backup(source, archive)
+
+            quota_cases = (
+                ("MAX_ARCHIVE_MEMBERS", 2, "member count"),
+                ("MAX_ARCHIVE_MEMBER_BYTES", 4, "member size"),
+                ("MAX_ARCHIVE_TOTAL_BYTES", 9, "total size"),
+                ("MAX_BACKUP_METADATA_BYTES", 10, "metadata size"),
+            )
+            for attribute, limit, message in quota_cases:
+                with self.subTest(attribute=attribute), patch.object(
+                    backup_data, attribute, limit, create=True
+                ):
+                    with self.assertRaisesRegex(ValueError, message):
+                        backup_data.verify_backup(archive)
+
+    def test_failed_forced_restore_keeps_destination_unchanged(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            (source / "a.json").write_text("new-a", encoding="utf-8")
+            (source / "b.json").write_text("new-b", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            metadata = backup_data.create_backup(source, archive)
+            destination = root / "restored"
+            destination.mkdir()
+            (destination / "a.json").write_text("old-a", encoding="utf-8")
+            (destination / "b.json").write_text("old-b", encoding="utf-8")
+            real_copy = backup_data.shutil.copyfileobj
+            calls = 0
+
+            def fail_second_copy(source_stream, output_stream, *args, **kwargs):
+                nonlocal calls
+                calls += 1
+                if calls == 2:
+                    raise OSError("simulated restore failure")
+                return real_copy(source_stream, output_stream, *args, **kwargs)
+
+            with patch.object(backup_data.shutil, "copyfileobj", fail_second_copy):
+                with self.assertRaisesRegex(OSError, "simulated restore failure"):
+                    backup_data.restore_backup(
+                        archive,
+                        destination,
+                        force=True,
+                        expected_checksum=metadata["checksum_sha256"],
+                    )
+
+            self.assertEqual("old-a", (destination / "a.json").read_text(encoding="utf-8"))
+            self.assertEqual("old-b", (destination / "b.json").read_text(encoding="utf-8"))
+
     def test_strategy_library_schema_requires_content_bound_approval_evidence(self):
         schema_path = (
             Path(__file__).resolve().parents[1]

@@ -14,7 +14,15 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
+from .common import atomic_save_data
 from .config import TutorConfig
+from .file_lock import exclusive_file_lock
+
+
+def session_lock_target(artifacts_dir: Path) -> Path:
+    """Return a lock target outside the movable session directory."""
+    session_dir = Path(artifacts_dir)
+    return session_dir.parent / f".{session_dir.name}.session"
 
 
 class Session:
@@ -36,8 +44,6 @@ class Session:
 
     def checkpoint(self, stage: str, *, sub_stage: str | None = None) -> None:
         """Record progress to pipeline_state.json."""
-        self.current_stage = stage
-        self.sub_stage = sub_stage
         state = {
             "session_id": self.session_id,
             "source_type": self.source_type,
@@ -47,15 +53,15 @@ class Session:
             "updated_at": datetime.now(timezone.utc).isoformat(),
         }
         state_path = self.artifacts_dir / "pipeline_state.json"
-        if not self.artifacts_dir.exists():
-            raise FileNotFoundError(
-                f"Artifacts directory missing: {self.artifacts_dir}. "
-                "It may have been deleted or moved; create a new session."
-            )
-        state_path.write_text(
-            json.dumps(state, ensure_ascii=False, indent=2) + "\n",
-            encoding="utf-8",
-        )
+        with exclusive_file_lock(session_lock_target(self.artifacts_dir)):
+            if not self.artifacts_dir.exists():
+                raise FileNotFoundError(
+                    f"Artifacts directory missing: {self.artifacts_dir}. "
+                    "It may have been deleted or moved; create a new session."
+                )
+            atomic_save_data(state_path, state)
+        self.current_stage = stage
+        self.sub_stage = sub_stage
 
     def resume_info(self) -> dict:
         """Return structured guidance for the Agent on how to resume."""

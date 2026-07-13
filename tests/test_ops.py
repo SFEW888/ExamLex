@@ -1,7 +1,9 @@
 """Tests for operational readiness checks."""
 import io
 import json
+import tempfile
 import unittest
+from pathlib import Path
 from unittest import mock
 
 from examlex.scripts.ops import (
@@ -9,6 +11,7 @@ from examlex.scripts.ops import (
     check_environment,
     check_config,
     check_permissions,
+    check_dry_run,
     check_safety_limits,
     check_scheduler,
     OpsReport,
@@ -53,6 +56,17 @@ class OpsCheckTests(unittest.TestCase):
         cfg = TutorConfig(max_video_duration_seconds=100000, darwin_max_rounds=20)
         result = check_safety_limits(cfg)
         self.assertEqual(result.status, "warn")
+
+    def test_dry_run_keeps_real_strategy_library_byte_stable(self):
+        with tempfile.TemporaryDirectory() as temp:
+            library = Path(temp) / "strategy-library.json"
+            original = b'{  "strategies" : [ ] }\r\n'
+            library.write_bytes(original)
+
+            result = check_dry_run(self.cfg, str(library))
+
+            self.assertEqual("pass", result.status, result.remedy)
+            self.assertEqual(original, library.read_bytes())
 
     @mock.patch("examlex.scripts.ops.platform.system", return_value="Windows")
     def test_check_scheduler_windows_has_actionable_recommendation(self, _mock_system):

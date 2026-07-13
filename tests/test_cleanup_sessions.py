@@ -10,6 +10,8 @@ from datetime import datetime, timezone
 from io import StringIO
 from pathlib import Path
 
+from examlex.scripts.session import Session
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 TEMP_ROOT = PROJECT_ROOT / ".task8-test-tmp"
@@ -131,6 +133,26 @@ class CleanupSessionsTests(unittest.TestCase):
         self.assertEqual([], result.archived)
         self.assertEqual(1, len(result.failures))
         self.assertIn("already exists", result.failures[0])
+
+    def test_archive_revalidates_after_a_checkpoint_changes_candidate(self):
+        module = self.require_module()
+        source = self.write_session(
+            "became-active", stage="extract", updated_at="2026-07-01T00:00:00+00:00"
+        )
+        candidates = module.find_stale_sessions(
+            self.sessions_root, older_than_hours=24, now=self.now
+        )
+        session = Session("became-active", source, "video", current_stage="extract")
+        session.checkpoint("distill")
+
+        result = module.archive_stale_sessions(
+            candidates, self.sessions_root, self.archive_root
+        )
+
+        self.assertTrue(source.exists())
+        self.assertEqual([], result.archived)
+        self.assertEqual(1, len(result.failures))
+        self.assertIn("changed", result.failures[0])
 
     def test_cli_defaults_to_dry_run_for_explicit_root(self):
         module = self.require_module()

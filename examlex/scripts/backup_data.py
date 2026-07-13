@@ -5,28 +5,41 @@ import fnmatch
 import hashlib
 import io
 import json
+import os
 import shutil
 import sys
 import tarfile
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
 
 DEFAULT_EXCLUDES = [".env*", "*private*"]
+HASH_CHUNK_BYTES = 1024 * 1024
+MAX_ARCHIVE_MEMBERS = 10_000
+MAX_ARCHIVE_MEMBER_BYTES = 512 * 1024 * 1024
+MAX_ARCHIVE_TOTAL_BYTES = 2 * 1024 * 1024 * 1024
+MAX_BACKUP_METADATA_BYTES = 1024 * 1024
 
 
 def create_backup(data_dir: str | Path, output: str | Path, exclude: list[str] | None = None) -> dict[str, Any]:
     source = Path(data_dir).resolve()
     if not source.is_dir():
         raise ValueError("--data-dir must be an existing directory")
+    target = Path(output).expanduser().resolve(strict=False)
+    if target.is_relative_to(source):
+        raise ValueError("backup output must not be inside the source data directory")
     patterns = exclude or DEFAULT_EXCLUDES
-    files = [path for path in source.rglob("*") if path.is_file() and not _excluded(path, source, patterns)]
-    target = Path(output)
+    files = sorted(
+        path
+        for path in source.rglob("*")
+        if path.is_file() and not _excluded(path, source, patterns)
+    )
     target.parent.mkdir(parents=True, exist_ok=True)
 
     file_hashes = {
-        path.relative_to(source).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        path.relative_to(source).as_posix(): _sha256_file(path)
         for path in files
     }
     metadata: dict[str, Any] = {
@@ -40,16 +53,30 @@ def create_backup(data_dir: str | Path, output: str | Path, exclude: list[str] |
         "file_hashes": file_hashes,
     }
 
-    with tarfile.open(target, "w:gz") as archive:
-        encoded = json.dumps(metadata, ensure_ascii=False, indent=2).encode("utf-8")
-        info = tarfile.TarInfo("backup-metadata.json")
-        info.size = len(encoded)
-        archive.addfile(info, io.BytesIO(encoded))
-        for path in files:
-            archive.add(path, arcname=path.relative_to(source).as_posix())
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            dir=target.parent,
+            prefix=target.name + ".",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+        with tarfile.open(temporary, "w:gz") as archive:
+            encoded = json.dumps(metadata, ensure_ascii=False, indent=2).encode("utf-8")
+            info = tarfile.TarInfo("backup-metadata.json")
+            info.size = len(encoded)
+            archive.addfile(info, io.BytesIO(encoded))
+            for path in files:
+                archive.add(path, arcname=path.relative_to(source).as_posix())
 
-    metadata["checksum_sha256"] = hashlib.sha256(target.read_bytes()).hexdigest()
-    _checksum_path(target).write_text(metadata["checksum_sha256"] + "\n", encoding="ascii")
+        metadata["checksum_sha256"] = _sha256_file(temporary)
+        os.replace(temporary, target)
+        temporary = None
+        _write_checksum_sidecar(target, metadata["checksum_sha256"])
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
     return metadata
 
 
@@ -57,14 +84,15 @@ def verify_backup(input_path: str | Path, *, expected_checksum: str | None = Non
     """Verify archive membership, member digests, and an external archive digest."""
     path = Path(input_path)
     with tarfile.open(path, "r:gz") as archive:
+        members = _validated_archive_members(archive)
         metadata = _metadata(archive)
         expected = metadata.get("file_hashes")
         if not isinstance(expected, dict):
             return {"verified": False, "legacy": True, "checked_files": 0, "mismatches": []}
         mismatches: list[str] = []
-        if sum(member.name == "backup-metadata.json" for member in archive.getmembers()) != 1:
+        if sum(member.name == "backup-metadata.json" for member in members) != 1:
             mismatches.append("backup-metadata.json")
-        content_members = [member for member in archive.getmembers() if member.name != "backup-metadata.json"]
+        content_members = [member for member in members if member.name != "backup-metadata.json"]
         actual_names: list[str] = []
         for member in content_members:
             if not member.isfile() or member.name in actual_names:
@@ -82,12 +110,12 @@ def verify_backup(input_path: str | Path, *, expected_checksum: str | None = Non
                 continue
             member = archive.getmember(name)
             stream = archive.extractfile(member)
-            if stream is None or hashlib.sha256(stream.read()).hexdigest() != digest:
+            if stream is None or _sha256_stream(stream) != digest:
                 mismatches.append(name)
         for name in actual_names:
             if name not in expected_names:
                 mismatches.append(name)
-        actual_checksum = hashlib.sha256(path.read_bytes()).hexdigest()
+        actual_checksum = _sha256_file(path)
         supplied_checksum = expected_checksum or _read_checksum_sidecar(path)
         if not supplied_checksum or not _is_sha256(supplied_checksum) or supplied_checksum != actual_checksum:
             mismatches.append("archive checksum")
@@ -103,8 +131,9 @@ def verify_backup(input_path: str | Path, *, expected_checksum: str | None = Non
 
 def list_backup(input_path: str | Path) -> dict[str, Any]:
     with tarfile.open(input_path, "r:gz") as archive:
+        members = _validated_archive_members(archive)
         metadata = _metadata(archive)
-        metadata["archive_members"] = [member.name for member in archive.getmembers()]
+        metadata["archive_members"] = [member.name for member in members]
         return metadata
 
 
@@ -117,6 +146,8 @@ def restore_backup(
     expected_checksum: str | None = None,
 ) -> dict[str, Any]:
     destination = Path(data_dir).resolve()
+    if destination.exists() and not destination.is_dir():
+        raise ValueError("--data-dir must be a directory")
     restored: list[str] = []
     skipped: list[str] = []
     verification = verify_backup(input_path, expected_checksum=expected_checksum)
@@ -125,12 +156,11 @@ def restore_backup(
     if not verification["legacy"] and not expected_checksum:
         raise ValueError("expected checksum is required to restore a verified backup")
     with tarfile.open(input_path, "r:gz") as archive:
+        members = _validated_archive_members(archive)
         _metadata(archive)
-        for member in archive.getmembers():
+        for member in members:
             if member.name == "backup-metadata.json":
                 continue
-            if not member.isfile():
-                raise ValueError(f"unsafe archive member: {member.name}")
             target = (destination / member.name).resolve()
             if not target.is_relative_to(destination):
                 raise ValueError(f"unsafe archive path: {member.name}")
@@ -138,13 +168,65 @@ def restore_backup(
                 skipped.append(member.name)
                 continue
             restored.append(member.name)
-            if not dry_run:
+        if dry_run:
+            return {
+                "restored": restored,
+                "skipped": skipped,
+                "dry_run": True,
+                "verification": verification,
+            }
+
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        staging = Path(
+            tempfile.mkdtemp(
+                dir=destination.parent,
+                prefix=f".{destination.name}.restore-",
+            )
+        )
+        rollback: Path | None = None
+        try:
+            if destination.exists():
+                shutil.copytree(destination, staging, dirs_exist_ok=True)
+            by_name = {member.name: member for member in members}
+            for name in restored:
+                member = by_name[name]
                 stream = archive.extractfile(member)
                 if stream is None:
                     raise ValueError(f"archive member cannot be read: {member.name}")
+                target = (staging / member.name).resolve()
+                if not target.is_relative_to(staging):
+                    raise ValueError(f"unsafe archive path: {member.name}")
                 target.parent.mkdir(parents=True, exist_ok=True)
                 with target.open("wb") as output:
-                    shutil.copyfileobj(stream, output)
+                    shutil.copyfileobj(stream, output, length=HASH_CHUNK_BYTES)
+
+            if destination.exists():
+                rollback = Path(
+                    tempfile.mkdtemp(
+                        dir=destination.parent,
+                        prefix=f".{destination.name}.rollback-",
+                    )
+                )
+                rollback.rmdir()
+                os.replace(destination, rollback)
+            try:
+                os.replace(staging, destination)
+            except OSError:
+                if rollback is not None and rollback.exists() and not destination.exists():
+                    os.replace(rollback, destination)
+                    rollback = None
+                raise
+            if rollback is not None:
+                shutil.rmtree(rollback)
+                rollback = None
+        finally:
+            if staging.exists():
+                shutil.rmtree(staging, ignore_errors=True)
+            if rollback is not None and rollback.exists():
+                if not destination.exists():
+                    os.replace(rollback, destination)
+                else:
+                    shutil.rmtree(rollback, ignore_errors=True)
     return {"restored": restored, "skipped": skipped, "dry_run": dry_run, "verification": verification}
 
 
@@ -155,6 +237,29 @@ def _excluded(path: Path, root: Path, patterns: list[str]) -> bool:
 
 def _checksum_path(path: Path) -> Path:
     return Path(f"{path}.sha256")
+
+
+def _write_checksum_sidecar(path: Path, checksum: str) -> None:
+    sidecar = _checksum_path(path)
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="ascii",
+            dir=sidecar.parent,
+            prefix=sidecar.name + ".",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            stream.write(checksum + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, sidecar)
+        temporary = None
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
 
 
 def _read_checksum_sidecar(path: Path) -> str | None:
@@ -168,6 +273,56 @@ def _is_sha256(value: str) -> bool:
     return len(value) == 64 and all(character in "0123456789abcdef" for character in value)
 
 
+def _sha256_stream(stream) -> str:
+    digest = hashlib.sha256()
+    while True:
+        chunk = stream.read(HASH_CHUNK_BYTES)
+        if not chunk:
+            return digest.hexdigest()
+        digest.update(chunk)
+
+
+def _sha256_file(path: Path) -> str:
+    with path.open("rb") as stream:
+        return _sha256_stream(stream)
+
+
+def _validated_archive_members(archive: tarfile.TarFile) -> list[tarfile.TarInfo]:
+    members: list[tarfile.TarInfo] = []
+    total_size = 0
+    for member in archive:
+        members.append(member)
+        if len(members) > MAX_ARCHIVE_MEMBERS:
+            raise ValueError(
+                f"backup member count exceeds limit {MAX_ARCHIVE_MEMBERS}"
+            )
+        if not member.isfile():
+            raise ValueError(f"unsafe archive member: {member.name}")
+        if member.size < 0:
+            raise ValueError(f"unsafe archive member size: {member.name}")
+        if "\\" in member.name:
+            raise ValueError(f"unsafe archive path: {member.name}")
+        member_path = Path(member.name)
+        if member_path.is_absolute() or ".." in member_path.parts:
+            raise ValueError(f"unsafe archive path: {member.name}")
+        if member.name == "backup-metadata.json":
+            if member.size > MAX_BACKUP_METADATA_BYTES:
+                raise ValueError(
+                    f"backup metadata size exceeds limit {MAX_BACKUP_METADATA_BYTES}"
+                )
+            continue
+        if member.size > MAX_ARCHIVE_MEMBER_BYTES:
+            raise ValueError(
+                f"backup member size exceeds limit {MAX_ARCHIVE_MEMBER_BYTES}: {member.name}"
+            )
+        total_size += member.size
+        if total_size > MAX_ARCHIVE_TOTAL_BYTES:
+            raise ValueError(
+                f"backup total size exceeds limit {MAX_ARCHIVE_TOTAL_BYTES}"
+            )
+    return members
+
+
 def _metadata(archive: tarfile.TarFile) -> dict[str, Any]:
     try:
         member = archive.getmember("backup-metadata.json")
@@ -176,7 +331,17 @@ def _metadata(archive: tarfile.TarFile) -> dict[str, Any]:
     extracted = archive.extractfile(member)
     if extracted is None:
         raise ValueError("backup metadata cannot be read")
-    data = json.loads(extracted.read().decode("utf-8"))
+    payload = bytearray()
+    while len(payload) <= MAX_BACKUP_METADATA_BYTES:
+        chunk = extracted.read(min(HASH_CHUNK_BYTES, MAX_BACKUP_METADATA_BYTES + 1 - len(payload)))
+        if not chunk:
+            break
+        payload.extend(chunk)
+    if len(payload) > MAX_BACKUP_METADATA_BYTES:
+        raise ValueError(
+            f"backup metadata size exceeds limit {MAX_BACKUP_METADATA_BYTES}"
+        )
+    data = json.loads(bytes(payload).decode("utf-8"))
     if not isinstance(data, dict):
         raise ValueError("backup metadata must be an object")
     return data
