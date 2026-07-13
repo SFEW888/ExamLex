@@ -50,7 +50,7 @@
 | `examlex prompt-check --private-dir <dir> [opts]` | `prompt-check` | U | Validate an external private prompt set without exposing its text. |
 | `examlex tutor-prepare --request <text> [opts]` | `tutor-prepare` | A | Route a request and return at most two safe clarification questions. |
 | `examlex resume <session-id> [opts]` | `resume` | U | Show guidance for resuming an existing distillation session. |
-| `examlex sessions-cleanup [opts]` | `sessions-cleanup` | M | Preview or archive stale sessions. |
+| `examlex sessions-cleanup [opts]` | `sessions-cleanup` | M | Inspect or manually clean session artifacts; successful commits also run automatic retention. |
 | `examlex check-deps [opts]` | `check-deps` | M | Check optional external tools. |
 | `examlex ops-check [opts]` | `ops-check` | M | Run operational readiness checks. |
 | `examlex validate-strategy <file>` | `validate-strategy` | M | Validate a strategy-library file. |
@@ -213,11 +213,15 @@ separate strategy when its exam or module scope differs.
 ### `examlex strategies` — list strategies
 
 ```bash
-examlex strategies --library <file> [--query <text>] [--module <module>] [--json]
-examlex strategies --library strategy-library.json --module reading
+examlex strategies --library <file> [--search <text>] [--duplicates] [--duplicate-limit 20] [--json]
+examlex strategies --library strategy-library.json --search reading
+examlex strategies --library strategy-library.json --duplicates
 ```
 
-Equivalent full command: `list-strategies`.
+Equivalent full command: `list-strategies`. `--duplicates` returns review-only
+candidate groups based on identical ingestion fingerprints, normalized content,
+matching title/scope, or repeated content across revisions. It never deletes data;
+revision candidates must be checked for learner-record references before removal.
 
 ### `examlex validate` — validate distilled artifacts
 
@@ -306,6 +310,13 @@ non-terminal sessions without overwriting an existing archive target.
 with `--apply`, removes reproducible `full_text`, audio, transcript, and chapter
 artifacts. Pipeline state, distilled strategies, validation/evaluation reports,
 and other audit files remain in place.
+
+This command remains available for inspection and manual maintenance. Separately,
+a successful `examlex commit` automatically marks a standard managed session as
+`committed`, prunes reproducible artifacts older than 168 hours, and enforces a
+4 GiB hard limit across retained committed-session artifacts, oldest first. Active
+session files are excluded. A strategy library at or above 100 MiB emits a warning
+and a bounded duplicate-candidate list but is never automatically modified or pruned.
 
 ### `examlex check-deps` and `examlex ops-check`
 

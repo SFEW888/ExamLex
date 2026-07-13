@@ -132,6 +132,12 @@ def check_config(cfg: TutorConfig) -> CheckResult:
     # Check content limits
     if cfg.max_video_duration_seconds <= 0:
         issues.append("max_video_duration_seconds must be positive")
+    if cfg.session_retention_hours <= 0:
+        issues.append("session_retention_hours must be positive")
+    if cfg.max_reproducible_artifact_bytes <= 0:
+        issues.append("max_reproducible_artifact_bytes must be positive")
+    if cfg.strategy_library_warning_bytes <= 0:
+        issues.append("strategy_library_warning_bytes must be positive")
 
     status = "fail" if issues else "pass"
     return CheckResult("config", status,
@@ -622,6 +628,9 @@ def check_safety_limits(cfg: TutorConfig) -> CheckResult:
         "darwin_max_rounds": (3, ""),                             # optimization rounds
         "darwin_touch_top_delta": (2.0, ""),                      # stop threshold
         "min_text_length_chars": (500, ""),                       # transcript minimum
+        "session_retention_hours": (168.0, "7 days"),
+        "max_reproducible_artifact_bytes": (4 * 1024 ** 3, "4 GiB hard limit"),
+        "strategy_library_warning_bytes": (100 * 1024 ** 2, "100 MiB warning"),
     }
 
     for attr, (default_val, desc) in defaults.items():

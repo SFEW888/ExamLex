@@ -235,3 +235,67 @@ class CleanupSessionsTests(unittest.TestCase):
         self.assertEqual("prune-terminal-artifacts", payload["operation"])
         self.assertEqual(1, payload["candidate_count"])
         self.assertTrue(full_text.exists())
+
+    def test_retention_policy_prunes_expired_then_oldest_until_under_limit(self):
+        module = self.require_module()
+        expired = self.write_session(
+            "expired",
+            stage="committed",
+            updated_at="2026-07-01T00:00:00+00:00",
+        )
+        oldest = self.write_session(
+            "oldest",
+            stage="committed",
+            updated_at="2026-07-09T00:00:00+00:00",
+            date="2026-07-09",
+        )
+        newest = self.write_session(
+            "newest",
+            stage="committed",
+            updated_at="2026-07-09T12:00:00+00:00",
+            date="2026-07-09",
+        )
+        (expired / "full_text.txt").write_bytes(b"old!")
+        (oldest / "audio.mp3").write_bytes(b"1234567")
+        (newest / "transcript.txt").write_bytes(b"7654321")
+
+        result = module.apply_retention_policy(
+            self.sessions_root,
+            retention_hours=168,
+            max_reproducible_artifact_bytes=7,
+            now=self.now,
+        )
+
+        self.assertEqual([], result.failures)
+        self.assertEqual(18, result.bytes_before)
+        self.assertEqual(7, result.bytes_after)
+        self.assertEqual(["expired", "oldest"], result.selected_sessions)
+        self.assertFalse((expired / "full_text.txt").exists())
+        self.assertFalse((oldest / "audio.mp3").exists())
+        self.assertTrue((newest / "transcript.txt").exists())
+        for session in (expired, oldest, newest):
+            self.assertTrue((session / "pipeline_state.json").exists())
+            self.assertTrue((session / "artifact.txt").exists())
+
+    def test_retention_policy_keeps_recent_artifacts_below_limit(self):
+        module = self.require_module()
+        session = self.write_session(
+            "recent",
+            stage="committed",
+            updated_at="2026-07-09T12:00:00+00:00",
+            date="2026-07-09",
+        )
+        transcript = session / "transcript.txt"
+        transcript.write_bytes(b"small")
+
+        result = module.apply_retention_policy(
+            self.sessions_root,
+            retention_hours=168,
+            max_reproducible_artifact_bytes=10,
+            now=self.now,
+        )
+
+        self.assertEqual([], result.selected_sessions)
+        self.assertEqual(5, result.bytes_before)
+        self.assertEqual(5, result.bytes_after)
+        self.assertTrue(transcript.exists())

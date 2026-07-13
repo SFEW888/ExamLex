@@ -450,7 +450,7 @@ Agent Layer (Claude Code / Codex / Cursor)
 
 ### Does Continuous Learning Increase Project Size?
 
-No. All five distillation paths are implemented by local project code. Heavy extraction tools are optional and loaded only when their matching workflow needs them; `text` and `person` distillation use only the Python standard library.
+Local strategy data grows in a controlled way as effective new material is added. Exact repeated ingestion is reused, committed-session reproducible artifacts follow the automatic 168-hour/4-GiB retention policy, and a 100-MiB strategy library triggers review-only warnings instead of automatic deletion.
 
 ### Repository Layout
 
@@ -564,7 +564,9 @@ Each strategy retains enough provenance to be audited:
 - Across profiles: one strategy library can serve multiple learner profiles.
 - For every strategy: retain `source_type`, `distillation_method`, and source provenance.
 - Repeating the same source with the same ingestion scope reuses the existing strategy; changing the exam or module scope can intentionally create a separate entry.
-- After a committed session is no longer needed for inspection, preview `examlex sessions-cleanup --older-than-hours 168 --prune-terminal-artifacts`, then add `--apply` to remove only reproducible large artifacts while retaining audit records.
+- A successful `examlex commit` marks a managed session complete and automatically removes reproducible full text, audio, transcripts, and chapter extracts after 168 hours. It also enforces a 4 GiB hard limit for those retained committed-session artifacts, pruning oldest first while preserving pipeline state, distilled strategies, reports, and audit files.
+- At 100 MiB, the strategy library emits a warning and lists a bounded set of possible duplicate strategies or revisions for user review. It never automatically deletes important strategies or immutable revisions.
+- Manual inspection remains available through `examlex sessions-cleanup` and `examlex strategies --library strategy-library.json --duplicates`.
 
 See [the multi-source distillation reference](skills/examlex/references/multi-source-distillation.md) for gates, audit fields, and failure handling.
 
@@ -649,7 +651,7 @@ No. The strategy library is a local JSON file. Extraction and analysis happen on
 Your own exam strategies — yes. Strategies extracted from copyrighted books — do not publish them publicly. Same rules as handwritten study notes: your notes are yours, but don't republish someone else's book content.
 
 **"Does continuous learning increase the project size?"**
-No. All five distillation paths use built-in project code. Heavy extraction tools are optional and loaded only for the workflows that require them.
+Local strategy data grows in a controlled way as effective new material is added. Repeated ingestion with the same scope reuses the existing strategy; completed-session source text, audio, transcripts, and chapter extracts are automatically retained for 168 hours and kept below a 4 GiB hard limit. A strategy library at or above 100 MiB warns the user and lists possible duplicates for review, but ExamLex never automatically deletes strategies or immutable revisions.
 
 ---
 

@@ -76,7 +76,15 @@ The "Darwin" scoring system controls adaptive pass thresholds for learning round
 | Field | Default | Description |
 |-------|---------|-------------|
 | `sessions_root` | Platform-specific default | Root directory for session artifacts. On Windows: `%LOCALAPPDATA%/ExamLex/sessions`. On macOS: `~/Library/Application Support/ExamLex/sessions`. On Linux: `$XDG_DATA_HOME/ExamLex/sessions` |
-| `auto_cleanup` | `True` | Whether to automatically clean up old session artifacts |
+| `auto_cleanup` | `True` | Run the retention policy after a managed session is successfully committed |
+| `session_retention_hours` | `168.0` | Retain reproducible committed-session artifacts for seven days before automatic pruning |
+| `max_reproducible_artifact_bytes` | `4294967296` (4 GiB) | Hard limit for retained committed-session full text, audio, transcripts, and chapter extracts; oldest artifacts are pruned first |
+| `strategy_library_warning_bytes` | `104857600` (100 MiB) | Warn and list possible duplicates for user review; never automatically delete strategies or immutable revisions |
+
+The 4 GiB limit applies only to reproducible artifacts from committed sessions.
+Active-session working files may temporarily exceed it while extraction is in progress.
+Pipeline state, distilled strategies, validation/evaluation reports, and audit files
+are excluded from automatic deletion.
 
 ### Source Corpus
 

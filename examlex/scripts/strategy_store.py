@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import hashlib
 import json
+import logging
 import os
 import tempfile
 from collections.abc import Callable
@@ -16,6 +18,7 @@ except ImportError:  # pragma: no cover - supports direct script execution.
 
 
 T = TypeVar("T")
+_LOGGER = logging.getLogger(__name__)
 
 
 def load_strategy_library(path: str | Path) -> dict[str, Any]:
@@ -32,6 +35,227 @@ def load_strategy_library(path: str | Path) -> dict[str, Any]:
     if not isinstance(library, dict) or not isinstance(library.get("strategies"), list):
         raise ValueError("strategy library must contain a strategies list")
     return library
+
+
+def _normalized_text(value: object) -> str:
+    if not isinstance(value, str):
+        return ""
+    return " ".join(value.casefold().split())
+
+
+def _sorted_strings(value: object) -> tuple[str, ...]:
+    if not isinstance(value, list):
+        return ()
+    return tuple(sorted(item for item in value if isinstance(item, str)))
+
+
+def _current_item(strategy: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "strategy_id": str(strategy.get("strategy_id", "unknown")),
+        "title": str(strategy.get("title", "")),
+        "version": "current",
+    }
+
+
+def _candidate(
+    reason: str,
+    items: list[dict[str, Any]],
+    *,
+    requires_reference_check: bool = False,
+) -> dict[str, Any]:
+    serialized = json.dumps(
+        [reason, [(item.get("strategy_id"), item.get("version")) for item in items]],
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+    ).encode("utf-8")
+    visible_items = items[:5]
+    return {
+        "candidate_id": hashlib.sha256(serialized).hexdigest()[:12],
+        "reason": reason,
+        "items": visible_items,
+        "omitted_items": max(0, len(items) - len(visible_items)),
+        "requires_reference_check": requires_reference_check,
+    }
+
+
+def find_possible_duplicate_strategies(
+    library: dict[str, Any],
+    *,
+    limit: int = 5,
+) -> list[dict[str, Any]]:
+    """Return bounded, review-only duplicate candidates without modifying the library."""
+    if limit <= 0:
+        return []
+    raw_entries = library.get("strategies", [])
+    if not isinstance(raw_entries, list):
+        raise ValueError("strategy library must contain a strategies list")
+    entries = [entry for entry in raw_entries if isinstance(entry, dict)]
+    candidates: list[dict[str, Any]] = []
+    covered_current_groups: set[frozenset[str]] = set()
+
+    def add_current_groups(reason: str, grouped: dict[object, list[dict[str, Any]]]) -> None:
+        for group in grouped.values():
+            if len(group) < 2:
+                continue
+            identifiers = frozenset(str(item.get("strategy_id", "unknown")) for item in group)
+            if identifiers in covered_current_groups:
+                continue
+            covered_current_groups.add(identifiers)
+            candidates.append(_candidate(reason, [_current_item(item) for item in group]))
+
+    by_fingerprint: dict[object, list[dict[str, Any]]] = {}
+    by_source_scope: dict[object, list[dict[str, Any]]] = {}
+    by_content: dict[object, list[dict[str, Any]]] = {}
+    by_title_scope: dict[object, list[dict[str, Any]]] = {}
+    for entry in entries:
+        provenance = entry.get("source_provenance")
+        fingerprint = provenance.get("ingest_fingerprint") if isinstance(provenance, dict) else None
+        if isinstance(fingerprint, str) and fingerprint:
+            by_fingerprint.setdefault(fingerprint, []).append(entry)
+        source_sha256 = provenance.get("sha256") if isinstance(provenance, dict) else None
+        if isinstance(source_sha256, str) and source_sha256:
+            source_scope = (
+                source_sha256,
+                _sorted_strings(entry.get("exam_types")),
+                _sorted_strings(entry.get("modules")),
+                entry.get("source_type"),
+                entry.get("distillation_method"),
+            )
+            by_source_scope.setdefault(source_scope, []).append(entry)
+        content = _normalized_text(entry.get("content"))
+        if content:
+            by_content.setdefault(content, []).append(entry)
+        title = _normalized_text(entry.get("title"))
+        if title:
+            scope = (
+                title,
+                _sorted_strings(entry.get("exam_types")),
+                _sorted_strings(entry.get("modules")),
+            )
+            by_title_scope.setdefault(scope, []).append(entry)
+
+    add_current_groups("same_ingest_fingerprint", by_fingerprint)
+    add_current_groups("same_source_hash_and_scope", by_source_scope)
+    add_current_groups("same_normalized_content", by_content)
+    add_current_groups("same_title_and_scope", by_title_scope)
+
+    for entry in entries:
+        revisions = entry.get("revisions", [])
+        if not isinstance(revisions, list):
+            continue
+        by_revision_content: dict[str, list[dict[str, Any]]] = {}
+        for revision in revisions:
+            if not isinstance(revision, dict):
+                continue
+            snapshot = revision.get("strategy")
+            if not isinstance(snapshot, dict):
+                continue
+            content_key = _normalized_text(snapshot.get("content"))
+            if not content_key and isinstance(revision.get("sha256"), str):
+                content_key = f"sha256:{revision['sha256']}"
+            if not content_key:
+                continue
+            by_revision_content.setdefault(content_key, []).append(
+                {
+                    "strategy_id": str(entry.get("strategy_id", "unknown")),
+                    "title": str(snapshot.get("title", entry.get("title", ""))),
+                    "version": revision.get("version", "unknown"),
+                    "revision_sha256": revision.get("sha256"),
+                }
+            )
+        for group in by_revision_content.values():
+            if len(group) >= 2:
+                candidates.append(
+                    _candidate(
+                        "same_content_across_revisions",
+                        group,
+                        requires_reference_check=True,
+                    )
+                )
+
+    return candidates[:limit]
+
+
+def format_duplicate_candidates(candidates: list[dict[str, Any]]) -> str:
+    rendered: list[str] = []
+    for candidate in candidates:
+        labels = []
+        for item in candidate.get("items", []):
+            version = item.get("version")
+            suffix = "" if version == "current" else f"@v{version}"
+            labels.append(f"{item.get('strategy_id', 'unknown')}{suffix}")
+        rendered.append(f"{candidate.get('reason')}: {', '.join(labels)}")
+    return "; ".join(rendered)
+
+
+def strategy_library_health(
+    path: str | Path,
+    *,
+    warning_threshold_bytes: int,
+    duplicate_limit: int = 5,
+) -> dict[str, Any]:
+    if warning_threshold_bytes <= 0:
+        raise ValueError("warning_threshold_bytes must be positive")
+    library_path = Path(path)
+    size_bytes = library_path.stat().st_size if library_path.exists() else 0
+    threshold_reached = size_bytes >= warning_threshold_bytes
+    library = load_strategy_library(library_path)
+    candidates = (
+        find_possible_duplicate_strategies(library, limit=duplicate_limit)
+        if threshold_reached
+        else []
+    )
+    return {
+        "path": str(library_path),
+        "size_bytes": size_bytes,
+        "warning_threshold_bytes": warning_threshold_bytes,
+        "threshold_reached": threshold_reached,
+        "duplicate_candidates": candidates,
+        "automatic_deletion": False,
+    }
+
+
+def warn_if_strategy_library_large(
+    path: str | Path,
+    *,
+    warning_threshold_bytes: int,
+    duplicate_limit: int = 5,
+    logger: logging.Logger | None = None,
+) -> dict[str, Any]:
+    report = strategy_library_health(
+        path,
+        warning_threshold_bytes=warning_threshold_bytes,
+        duplicate_limit=duplicate_limit,
+    )
+    if report["threshold_reached"]:
+        message = (
+            "strategy library warning threshold reached: "
+            f"{report['size_bytes']} >= {report['warning_threshold_bytes']} bytes; "
+            "no strategies or revisions were deleted"
+        )
+        if report["duplicate_candidates"]:
+            message += ". Possible duplicates for user review: " + format_duplicate_candidates(
+                report["duplicate_candidates"]
+            )
+        message += f". Review with: examlex strategies --library {report['path']} --duplicates"
+        (logger or _LOGGER).warning(message)
+    return report
+
+
+def warn_duplicate_candidates(
+    candidates: list[dict[str, Any]],
+    *,
+    library_path: str | Path,
+    logger: logging.Logger | None = None,
+) -> None:
+    if not candidates:
+        return
+    (logger or _LOGGER).warning(
+        "possible duplicate strategy versions detected while writing %s; nothing was deleted: %s",
+        library_path,
+        format_duplicate_candidates(candidates),
+    )
 
 
 def mutate_strategy_library(

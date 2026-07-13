@@ -19,6 +19,11 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 
 
+DEFAULT_SESSION_RETENTION_HOURS = 168.0
+DEFAULT_MAX_REPRODUCIBLE_ARTIFACT_BYTES = 4 * 1024 * 1024 * 1024
+DEFAULT_STRATEGY_LIBRARY_WARNING_BYTES = 100 * 1024 * 1024
+
+
 # ──────────────────────────────────────────────
 # Dependency Report
 # ──────────────────────────────────────────────
@@ -168,6 +173,9 @@ class TutorConfig:
     # ── Session management ──
     sessions_root: Path = field(default_factory=_default_sessions_root)
     auto_cleanup: bool = True
+    session_retention_hours: float = DEFAULT_SESSION_RETENTION_HOURS
+    max_reproducible_artifact_bytes: int = DEFAULT_MAX_REPRODUCIBLE_ARTIFACT_BYTES
+    strategy_library_warning_bytes: int = DEFAULT_STRATEGY_LIBRARY_WARNING_BYTES
 
     # ── Content limits ──
     max_video_duration_seconds: int = 14400   # 4h hard limit

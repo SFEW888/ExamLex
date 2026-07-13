@@ -110,6 +110,7 @@ Each distillation follows a 5-stage pipeline orchestrated by the Agent:
 3. **Validate**: `python run.py validate --artifacts-dir <path>` — runs format checks + Darwin 6-dimension structure scoring (59 pts).
 4. **Evaluate**: Agent runs test prompts to score effectiveness (35 pts) → `evaluation.json`.
 5. **Commit**: `python run.py commit --artifacts-dir <path> --library strategy-library.json` — ratchet check + atomic write.
+   Successful managed-session commits run the 168-hour/4-GiB reproducible-artifact retention policy. Strategy libraries at 100 MiB only warn and list possible duplicates; never delete strategies or revisions automatically.
 
 Total Darwin score < 70 triggers automatic hill-climb optimization (max 3 rounds).
 

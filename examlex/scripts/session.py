@@ -114,7 +114,7 @@ class SessionManager:
     """Creates and resumes distillation sessions."""
 
     def __init__(self, sessions_root: Path) -> None:
-        self.sessions_root = Path(sessions_root)
+        self.sessions_root = Path(sessions_root).resolve()
 
     def create(self, source_type: str) -> Session:
         """Start a new session with a unique ID and fresh artifacts directory."""

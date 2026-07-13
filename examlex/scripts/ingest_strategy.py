@@ -13,12 +13,24 @@ from typing import Any
 
 try:
     from . import common
+    from .config import DEFAULT_STRATEGY_LIBRARY_WARNING_BYTES, TutorConfig
     from .file_lock import exclusive_file_lock
-    from .strategy_store import atomic_save_strategy_library
+    from .strategy_store import (
+        atomic_save_strategy_library,
+        find_possible_duplicate_strategies,
+        warn_duplicate_candidates,
+        warn_if_strategy_library_large,
+    )
 except ImportError:  # pragma: no cover - supports direct script execution.
     import common  # type: ignore[no-redef]
+    from config import DEFAULT_STRATEGY_LIBRARY_WARNING_BYTES, TutorConfig  # type: ignore[no-redef]
     from file_lock import exclusive_file_lock  # type: ignore[no-redef]
-    from strategy_store import atomic_save_strategy_library  # type: ignore[no-redef]
+    from strategy_store import (  # type: ignore[no-redef]
+        atomic_save_strategy_library,
+        find_possible_duplicate_strategies,
+        warn_duplicate_candidates,
+        warn_if_strategy_library_large,
+    )
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -46,6 +58,7 @@ def ingest_strategy(
     ria_structure: dict[str, Any] | None = None,
     mental_model: dict[str, Any] | None = None,
     heuristic: dict[str, Any] | None = None,
+    warning_threshold_bytes: int = DEFAULT_STRATEGY_LIBRARY_WARNING_BYTES,
 ) -> dict[str, Any]:
     source = Path(file_path)
     if not source.is_file():
@@ -61,6 +74,8 @@ def ingest_strategy(
         raise ValueError(f"invalid source_type '{source_type}'. Valid: {sorted(common.SOURCE_TYPES)}")
     if distillation_method not in common.DISTILLATION_METHODS:
         raise ValueError(f"invalid distillation_method '{distillation_method}'. Valid: {sorted(common.DISTILLATION_METHODS)}")
+    if warning_threshold_bytes <= 0:
+        raise ValueError("warning_threshold_bytes must be positive")
 
     path = Path(library_path)
     if path.exists():
@@ -91,9 +106,14 @@ def ingest_strategy(
         distillation_method=distillation_method,
     )
     if duplicate is not None:
-        _LOGGER.info(
-            "strategy source already ingested with the same scope: %s",
+        _LOGGER.warning(
+            "duplicate strategy source was not written; existing strategy reused: %s",
             duplicate.get("strategy_id", source.name),
+        )
+        warn_if_strategy_library_large(
+            path,
+            warning_threshold_bytes=warning_threshold_bytes,
+            logger=_LOGGER,
         )
         return duplicate
     existing_ids = {
@@ -174,8 +194,26 @@ def ingest_strategy(
         strategies[existing] = strategy
     else:
         strategies.append(strategy)
+    duplicate_candidates = [
+        candidate
+        for candidate in find_possible_duplicate_strategies(library, limit=20)
+        if any(
+            item.get("strategy_id") == strategy["strategy_id"]
+            for item in candidate.get("items", [])
+        )
+    ]
     path.parent.mkdir(parents=True, exist_ok=True)
     _atomic_save(path, library)
+    warn_duplicate_candidates(
+        duplicate_candidates,
+        library_path=path,
+        logger=_LOGGER,
+    )
+    warn_if_strategy_library_large(
+        path,
+        warning_threshold_bytes=warning_threshold_bytes,
+        logger=_LOGGER,
+    )
     return strategy
 
 
@@ -447,6 +485,7 @@ def main(argv: list[str] | None = None) -> int:
     model = _parse_json_arg(args.model_json)
     heuristic = _parse_json_arg(args.heuristic_json)
 
+    cfg = TutorConfig()
     strategy = ingest_strategy(
         file_path=args.file,
         library_path=args.library,
@@ -458,6 +497,7 @@ def main(argv: list[str] | None = None) -> int:
         ria_structure=ria,
         mental_model=model,
         heuristic=heuristic,
+        warning_threshold_bytes=cfg.strategy_library_warning_bytes,
     )
     if args.json:
         _print_json(strategy)
