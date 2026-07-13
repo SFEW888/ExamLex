@@ -313,6 +313,61 @@ corpus outside the repository. Evidence levels, robots/paywall boundaries, and
 simulation provenance are documented in
 [Exam Source Collection](skills/examlex/references/source-collection.md).
 
+### Understanding Source Evidence Levels
+
+The `S`, `A`, `B`, `C`, and `R` labels describe the role and strength of a
+specific piece of source evidence. They are not quality grades for an entire
+paper, question set, publisher, or media outlet. ExamLex therefore does not use
+expressions such as "A-level mock paper" or "S-level paper."
+
+| Level | What the label establishes | What it does not establish |
+|------:|----------------------------|----------------------------|
+| `S` | An official material type, exam scope, structure, or rule. For example, an official specification may establish the sections and timing of an exam. | It does not mean that an outlet is officially designated, or that a mock paper is official. |
+| `A` | A trace between one identifiable past-exam passage and one identifiable original article, supported by the exam/session, section, original title or URL, and text-comparison evidence. The exam passage may be shortened or adapted; it need not be word-for-word identical. | It does not make every article from the same outlet A-level, and it does not turn a newly generated mock passage into a past-exam source. |
+| `B` | An institutional, school, education-provider, or trace-project source pool that is relevant but still lacks article-level comparison evidence. | A media name or general source claim alone cannot prove that a specific past-exam passage came from a specific article. |
+| `C` | A candidate or training source whose topic, genre, language, or difficulty is suitable for practice. | Similarity in topic or difficulty is not proof of past-exam use. |
+| `R` | A reference corpus for translation, terminology, cultural background, or writing. | A textbook, terminology database, or reference corpus is not an official fixed question bank or a direct past-exam source. |
+
+`A` is deliberately narrow and article-specific. To assign it, a trace record
+must identify the particular exam or paper, the section or passage, the
+original title or URL, and the evidence showing how the texts correspond. A
+general claim such as "CET reading often uses articles from this outlet" remains
+`B` or `C` until that comparison exists. Verifying only an article's title,
+date, URL, or factual content also does not upgrade it to `A`; those checks can
+support attribution or fact verification, but they do not prove a past-exam
+textual relationship.
+
+Official status and source traceability are separate dimensions. An official
+past paper can be identified as official material under an `S`-type scope, while
+the origin of one of its passages may still be unknown. Conversely, an `A`
+trace can identify the article behind a past-exam passage, but it does not make
+the publisher an officially designated exam source.
+
+For an original mock paper, the normal and transparent evidence composition is:
+
+> `S`-level structure or scope guidance + `B`/`C` source selection or topic
+> references + `R` translation/writing references + newly written passages and
+> questions.
+
+Such a mock paper may contain no `A` traces at all. That is expected, because a
+new simulation has not appeared in an official past exam. Its quality should be
+judged by structural alignment, difficulty control, answer uniqueness,
+distractor quality, copyright-safe transformation, and complete provenance,
+not by the number of `A` labels.
+
+When documenting a simulated task, state the transformation explicitly:
+
+- **Original:** the passage and questions were newly written.
+- **Topic reference:** a `B` or `C` item informed the topic, genre, or difficulty.
+- **Fact verification:** a named article and URL were used to check limited facts, without claiming that the mock passage is a past-exam adaptation.
+- **Adaptation:** selected source information was substantially rewritten into a new, copyright-safe passage, with attribution and the transformation recorded.
+- **Reference use:** an `R` corpus informed terminology, translation, cultural background, or writing; it was not treated as an official question bank.
+
+Every generated paper should also say clearly that it is a simulation rather
+than an official past paper. Candidate or training media must never be presented
+as a direct past-exam source, and missing titles, dates, or URLs must remain
+marked as unverified instead of being guessed.
+
 ### CLI Wrappers
 
 The project provides `bin/examlex` (bash) and `bin/examlex.ps1` (PowerShell) wrappers:
@@ -508,6 +563,8 @@ Each strategy retains enough provenance to be audited:
 - At any stage: new knowledge can be added without discarding learner history.
 - Across profiles: one strategy library can serve multiple learner profiles.
 - For every strategy: retain `source_type`, `distillation_method`, and source provenance.
+- Repeating the same source with the same ingestion scope reuses the existing strategy; changing the exam or module scope can intentionally create a separate entry.
+- After a committed session is no longer needed for inspection, preview `examlex sessions-cleanup --older-than-hours 168 --prune-terminal-artifacts`, then add `--apply` to remove only reproducible large artifacts while retaining audit records.
 
 See [the multi-source distillation reference](skills/examlex/references/multi-source-distillation.md) for gates, audit fields, and failure handling.
 

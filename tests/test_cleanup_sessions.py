@@ -171,3 +171,67 @@ class CleanupSessionsTests(unittest.TestCase):
         self.assertTrue(source.exists())
         self.assertFalse(payload["applied"])
         self.assertEqual(1, payload["candidate_count"])
+
+    def test_prune_terminal_artifacts_removes_only_reproducible_files(self):
+        module = self.require_module()
+        source = self.write_session(
+            "committed", stage="committed", updated_at="2026-07-01T00:00:00+00:00"
+        )
+        removable = {
+            "full_text.txt": b"full source text",
+            "audio.mp3": b"audio bytes",
+            "transcript.txt": b"transcript",
+            "transcript.whisper.json": b"{}",
+        }
+        for name, payload in removable.items():
+            (source / name).write_bytes(payload)
+        chapters = source / "chapters"
+        chapters.mkdir()
+        (chapters / "chapter-1.txt").write_bytes(b"chapter")
+        (source / "distilled.json").write_text('{"strategies": []}', encoding="utf-8")
+
+        candidates = module.find_stale_sessions(
+            self.sessions_root,
+            older_than_hours=24,
+            now=self.now,
+            stages=module.PRUNABLE_STAGES,
+        )
+        result = module.prune_terminal_artifacts(candidates, self.sessions_root)
+
+        self.assertEqual([], result.failures)
+        self.assertGreaterEqual(result.bytes_reclaimed, sum(map(len, removable.values())))
+        for name in removable:
+            self.assertFalse((source / name).exists())
+        self.assertFalse(chapters.exists())
+        self.assertTrue((source / "pipeline_state.json").exists())
+        self.assertTrue((source / "distilled.json").exists())
+        self.assertTrue((source / "artifact.txt").exists())
+
+    def test_prune_terminal_artifacts_cli_is_dry_run_by_default(self):
+        module = self.require_module()
+        source = self.write_session(
+            "committed-dry-run",
+            stage="committed",
+            updated_at="2020-01-01T00:00:00+00:00",
+        )
+        full_text = source / "full_text.txt"
+        full_text.write_text("large extracted text", encoding="utf-8")
+        output = StringIO()
+
+        with redirect_stdout(output):
+            exit_code = module.main(
+                [
+                    "--sessions-root",
+                    str(self.sessions_root),
+                    "--older-than-hours",
+                    "24",
+                    "--prune-terminal-artifacts",
+                ]
+            )
+
+        payload = json.loads(output.getvalue())
+        self.assertEqual(0, exit_code)
+        self.assertFalse(payload["applied"])
+        self.assertEqual("prune-terminal-artifacts", payload["operation"])
+        self.assertEqual(1, payload["candidate_count"])
+        self.assertTrue(full_text.exists())
