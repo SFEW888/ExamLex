@@ -13,9 +13,9 @@ Use this Skill to operate the portable English exam tutoring workspace for CET-4
 - Full-local mode: use the user's local private prompt assets if they exist outside this public-safe release. Do not rewrite the original eight tutor prompts while operating in this mode.
 - When unsure, default to public-safe mode and ask before using any private local prompt source.
 
-发布、打包或将 Skill 同步到本机之外前，阅读 [references/prompt-modes.md](references/prompt-modes.md)。选择助教角色时，阅读 [references/assistant-roster.md](references/assistant-roster.md)。使用 [公开助教角色契约](../../skills/examlex/references/tutor-role-contracts.json) 作为角色选择和运行时行为叠加层的机器可读依据。
+发布、打包或将 Skill 同步到本机之外前，阅读 [references/prompt-modes.md](references/prompt-modes.md)。选择助教角色时，阅读 [references/assistant-roster.md](references/assistant-roster.md)。按照 [references/tutor-runtime.md](references/tutor-runtime.md) 执行快速需求收集、有限澄清和私有提供器调用。使用 [公开助教角色契约](../../skills/examlex/references/tutor-role-contracts.json) 作为角色选择和运行时行为叠加层的机器可读依据。
 
-启用 full-local 前，在仓库外的私有目录中为每个角色保存一个 UTF-8 Markdown 文件，并运行 `python run.py prompt-check --private-dir <path>`。该检查只报告元数据；绝不能打印、复制或提交私有提示词正文。
+启用 full-local 前，在仓库外的私有目录中为每个角色保存一个 UTF-8 Markdown 文件，并运行 `python run.py prompt-check --private-dir <path> --save`。该检查只报告元数据；绝不能打印、复制或提交私有提示词正文。
 
 ## User-Facing Invocation
 
@@ -31,6 +31,13 @@ Do not ask the user to run Python commands unless they explicitly ask for develo
 ## Operating Workflow
 
 After this Skill is invoked, parse the user's natural-language request, choose the relevant tutor role, and use scripts from the Skill directory only when deterministic state changes or validation are needed.
+
+进入较长的证据工作流前，先执行快速助教运行时：
+
+- 复用第一条消息已有的信息，并路由到最多三个角色。
+- 在同一轮最多询问两个会实质影响结果的问题；记录 `asked_fields`，不得重复追问，用户不回答时说明假设并继续。
+- full-local 已配置且宿主有受信的进程内提供器时，由宿主调用 `run_tutor_turn()`；不得通过工具结果、终端、文件或日志暴露组合提示词。
+- 没有受信提供器时继续使用公开角色契约，不得声称已应用私有提示词。
 
 0. Estimate vocabulary (optional first step):
    `python run.py vocab --interactive --output vocab-estimate.json`
@@ -158,6 +165,7 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 - [references/error-taxonomy.md](references/error-taxonomy.md): module/dimension tree and valid error tags.
 - [references/exam-profiles.md](references/exam-profiles.md): supported exam types, foundation levels, target bands.
 - [references/prompt-modes.md](references/prompt-modes.md): public-safe versus full-local publishing rules.
+- [references/tutor-runtime.md](references/tutor-runtime.md)：快速需求收集、快捷角色映射和进程内私有提供器边界。
 - [references/workflow.md](references/workflow.md): diagnosis-to-next-plan loop.
 - [references/data-model.md](references/data-model.md): learner profile, ability profile, practice ledger, writing versions, summaries, strategy library.
 - [references/multi-source-distillation.md](references/multi-source-distillation.md): complete distillation methodology reference (structural / RIA++ / cognitive extraction).

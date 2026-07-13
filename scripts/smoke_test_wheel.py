@@ -72,12 +72,17 @@ def smoke_test(wheel: Path) -> dict[str, object]:
         prompt_check_help_result = run_checked(
             [str(examlex_command), "prompt-check", "--help"], runtime_dir, env
         )
+        tutor_prepare_help_result = run_checked(
+            [str(examlex_command), "tutor-prepare", "--help"], runtime_dir, env
+        )
         if "usage: examlex" not in help_result.stdout:
             raise RuntimeError("Installed examlex command did not expose its main help")
         if "usage: examlex resume" not in resume_help_result.stdout:
             raise RuntimeError("Installed examlex command did not expose resume help")
         if "--private-dir" not in prompt_check_help_result.stdout:
             raise RuntimeError("Installed examlex command did not expose prompt-check help")
+        if "--request" not in tutor_prepare_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose tutor-prepare help")
         resource_result = run_checked(
             [
                 str(python),
@@ -86,12 +91,16 @@ def smoke_test(wheel: Path) -> dict[str, object]:
                     "import json; from pathlib import Path; import examlex; "
                     "from examlex.scripts.estimate_vocabulary import _DEFAULT_REF; "
                     "from examlex.scripts.tutor_prompts import load_role_contracts; "
+                    "from examlex.scripts.tutor_runtime import prepare_tutor_turn; "
                     "root = Path(examlex.__file__).resolve().parent; "
                     "required = [root / 'SKILL.md', root / 'assets' / 'schemas', "
                     "root / 'assets' / 'templates', root / 'references', _DEFAULT_REF, "
-                    "root / 'references' / 'tutor-role-contracts.json']; "
+                    "root / 'references' / 'tutor-role-contracts.json', "
+                    "root / 'references' / 'tutor-runtime.md']; "
                     "missing = [str(path) for path in required if not path.exists()]; "
                     "assert not missing, missing; assert len(load_role_contracts()) == 8; "
+                    "assert prepare_tutor_turn('Correct my grammar', "
+                    "role_id='grammar-corrector').clarification_questions; "
                     "print(json.dumps([str(path) for path in required]))"
                 ),
             ],
@@ -122,6 +131,7 @@ def smoke_test(wheel: Path) -> dict[str, object]:
             "console_help": True,
             "resume_help": True,
             "prompt_check_help": True,
+            "tutor_prepare_help": True,
             "resources": json.loads(resource_result.stdout),
             "quiz_word_count": len(vocab_payload["quiz_words"]),
         }

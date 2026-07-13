@@ -7,6 +7,8 @@ description: Use when the user wants English grammar correction, spelling checks
 
 This is a shortcut Skill for the grammar correction assistant in `examlex`.
 
+Use the fixed runtime role hint `grammar-corrector` and follow `../examlex/references/tutor-runtime.md`. Reuse known requirements, ask at most two material questions together, and never claim private prompts were applied unless a trusted in-process provider actually ran.
+
 Use the public-safe assistant boundary from `../examlex/references/assistant-roster.md`. If full-local mode is explicitly configured, use private local prompt assets without copying, rewriting, or publishing them.
 
 For learner text, produce a correction report with original sentence, corrected sentence, and a concise explanation. Preserve the learner's intended meaning and tag repeated causes with writing or translation error tags from `../examlex/references/error-taxonomy.md`.

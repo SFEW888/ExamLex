@@ -7,6 +7,8 @@ description: Use when the user needs English exam diagnosis, staged study planni
 
 This is a shortcut Skill for the learning planning assistant in `examlex`.
 
+Use the fixed runtime role hint `study-planner` and follow `../examlex/references/tutor-runtime.md`. Reuse known requirements, ask at most two material questions together, and never claim private prompts were applied unless a trusted in-process provider actually ran.
+
 Use the public-safe assistant boundary from `../examlex/references/assistant-roster.md`. If the full local prompt mode is explicitly configured, use the user's private local prompt asset without copying, rewriting, or publishing that prompt text.
 
 Default workflow:

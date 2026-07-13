@@ -45,6 +45,7 @@
 | `examlex report [opts]` | `visualize` | U | Generate an HTML progress report. |
 | `examlex vocab [opts]` | `vocab-estimate` | U | Estimate vocabulary size by sampling. |
 | `examlex prompt-check --private-dir <dir> [opts]` | `prompt-check` | U | Validate an external private prompt set without exposing its text. |
+| `examlex tutor-prepare --request <text> [opts]` | `tutor-prepare` | A | Route a request and return at most two safe clarification questions. |
 | `examlex resume <session-id> [opts]` | `resume` | U | Show guidance for resuming an existing distillation session. |
 | `examlex sessions-cleanup [opts]` | `sessions-cleanup` | M | Preview or archive stale sessions. |
 | `examlex check-deps [opts]` | `check-deps` | M | Check optional external tools. |
@@ -211,10 +212,19 @@ Equivalent full command: `vocab-estimate`. Reference word data is included in th
 
 ```powershell
 examlex prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" [--json]
-python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --save --json
 ```
 
-The directory must contain exactly one UTF-8 `<role-id>.md` file for each of the eight public role contracts. The command validates filenames and file safety and reports byte sizes and SHA-256 hashes only. It never prints prompt bodies. Keep the directory outside the repository and never commit it.
+The directory must contain exactly one UTF-8 `<role-id>.md` file for each of the eight public role contracts. The command validates filenames and file safety and reports byte sizes and SHA-256 hashes only. It never prints prompt bodies or the directory path. `--save` stores the external directory in local user configuration. Keep it outside the repository and never commit it.
+
+### `examlex tutor-prepare` — route and clarify a tutor request
+
+```powershell
+examlex tutor-prepare --request "Correct: I has finished it yesterday." [--role auto] [--asked-field <name>] [--json]
+python run.py tutor-prepare --request "Plan my CET-6 study" --json
+```
+
+This public-safe preflight does not load private prompts or call a model. It selects one to three roles and returns at most two material clarification questions. Repeat `--asked-field` for fields already asked so a later turn does not repeat them. Actual private execution is an in-process library call through `run_tutor_turn()` and an injected trusted provider.
 
 ### `examlex resume` — resume a distillation session
 
@@ -254,7 +264,8 @@ ingest-strategy      list-strategies     ops-check
 prompt-check         record-practice     restore
 resume
 score-writing        sessions-cleanup    summarize-errors
-tag-error            update-ability      validate-profile
+tag-error            tutor-prepare       update-ability
+validate-profile
 validate-strategies  validate-strategy   visualize
 vocab-estimate       writing-version
 ```

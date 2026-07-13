@@ -9,10 +9,12 @@ The public repository runs without secrets. Configuration is optional and mainly
 Settings are resolved from highest to lowest priority:
 
 1. Constructor kwargs / CLI arguments (highest priority)
-2. `SILICONFLOW_API_KEY` for the cloud ASR key
+2. Environment variables such as `SILICONFLOW_API_KEY`
 3. Code defaults (lowest priority)
 
-ExamLex does not automatically load `.env` or a user-home JSON configuration file.
+ExamLex does not automatically load `.env`. The private tutor runtime separately supports a narrowly scoped user-home JSON file containing only its external prompt directory.
+
+The private prompt directory has its own order: an explicit `run_tutor_turn()` or CLI argument, `EXAMLEX_PRIVATE_PROMPT_DIR`, then `~/.examlex/prompt-config.json`.
 
 ## The `TutorConfig` Dataclass
 
@@ -89,7 +91,19 @@ Export variables in the current shell. `.env.example` is documentation only unle
 
 ```bash
 export SILICONFLOW_API_KEY="sk-..."
+export EXAMLEX_PRIVATE_PROMPT_DIR="/path/outside/the/ExamLex/repository"
 ```
+
+### Private tutor runtime
+
+Validate and persist the external directory without printing its path or prompt contents:
+
+```powershell
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --save
+python run.py tutor-prepare --request "Polish this formal email: ..." --json
+```
+
+The saved file contains only `schema_version` and the external directory path. It is local state, not part of `TutorConfig`, and must not be committed. The `tutor-prepare` command is a public-safe preflight; only a trusted in-process provider passed to `run_tutor_turn()` can execute private prompts.
 
 ## Dependency Checking
 

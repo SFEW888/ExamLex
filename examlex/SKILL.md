@@ -13,9 +13,9 @@ Use this Skill to operate the portable English exam tutoring workspace for CET-4
 - Full-local mode: use the user's local private prompt assets if they exist outside this public-safe release. Do not rewrite the original eight tutor prompts while operating in this mode.
 - When unsure, default to public-safe mode and ask before using any private local prompt source.
 
-Read [references/prompt-modes.md](references/prompt-modes.md) before publishing, packaging, or syncing the Skill outside the local machine. Read [references/assistant-roster.md](references/assistant-roster.md) when selecting tutor roles. Use [references/tutor-role-contracts.json](references/tutor-role-contracts.json) as the public, machine-readable contract for role selection and the runtime behavior overlay.
+Read [references/prompt-modes.md](references/prompt-modes.md) before publishing, packaging, or syncing the Skill outside the local machine. Read [references/assistant-roster.md](references/assistant-roster.md) when selecting tutor roles. Follow [references/tutor-runtime.md](references/tutor-runtime.md) for fast intake, bounded clarification, and private-provider execution. Use [references/tutor-role-contracts.json](references/tutor-role-contracts.json) as the public, machine-readable contract for role selection and the runtime behavior overlay.
 
-Before full-local use, keep one UTF-8 Markdown file per role in a private directory outside the repository and run `python run.py prompt-check --private-dir <path>`. This check reports metadata only; never print, copy, or commit the private prompt bodies.
+Before full-local use, keep one UTF-8 Markdown file per role in a private directory outside the repository and run `python run.py prompt-check --private-dir <path> --save`. This check reports metadata only; never print, copy, or commit the private prompt bodies.
 
 ## User-Facing Invocation
 
@@ -31,6 +31,13 @@ Do not ask the user to run Python commands unless they explicitly ask for develo
 ## Operating Workflow
 
 After this Skill is invoked, parse the user's natural-language request, choose the relevant tutor role, and use scripts from the Skill directory only when deterministic state changes or validation are needed.
+
+Before the longer evidence workflow, apply the fast tutor runtime:
+
+- Reuse facts already present in the first message and route to at most three roles.
+- Ask at most two material clarification questions together. Track `asked_fields`, never repeat them, and proceed with stated assumptions if the learner declines.
+- If a trusted in-process provider is available and full-local is configured, the host calls `run_tutor_turn()`; never expose the composed prompt through a tool result, terminal, file, or log.
+- If no trusted provider exists, continue with the public role contract and do not claim that private prompts were applied.
 
 0. Estimate vocabulary (optional first step):
    `python run.py vocab --interactive --output vocab-estimate.json`
@@ -159,6 +166,7 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 - [references/error-taxonomy.md](references/error-taxonomy.md): module/dimension tree and valid error tags.
 - [references/exam-profiles.md](references/exam-profiles.md): supported exam types, foundation levels, target bands.
 - [references/prompt-modes.md](references/prompt-modes.md): public-safe versus full-local publishing rules.
+- [references/tutor-runtime.md](references/tutor-runtime.md): fast intake, fixed shortcut routing, and the in-process private-provider boundary.
 - [references/workflow.md](references/workflow.md): diagnosis-to-next-plan loop.
 - [references/data-model.md](references/data-model.md): learner profile, ability profile, practice ledger, writing versions, summaries, strategy library.
 - [references/multi-source-distillation.md](references/multi-source-distillation.md): complete distillation methodology reference (structural / RIA++ / cognitive extraction).
