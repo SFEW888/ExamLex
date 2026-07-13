@@ -355,6 +355,9 @@ ExamLex does not automatically load `.env`. Export these values in your shell, o
 |----------|:--------:|---------|-------------|
 | `SILICONFLOW_API_KEY` | No | — | Cloud ASR key; cloud upload occurs only when `asr_backend="siliconflow"` is explicitly selected. |
 | `EXAMLEX_PYTHON` | No | `python` | Python interpreter for the local ExamLex wrappers |
+| `EXAMLEX_YTDLP_COOKIES_FROM_BROWSER` | No | `0` | Set to `1` only if you explicitly consent to retry supported video downloads with Chrome browser cookies. Cookies are never read by default. |
+
+> **Privacy:** prefer the default anonymous downloader. Browser cookies can grant account access and are sent by `yt-dlp` to the selected supported video site when this opt-in retry is enabled. Use a separate browser profile where possible, never publish cookie files, and disable the flag after the retry. Cloud ASR uploads the extracted audio only when `asr_backend="siliconflow"` is explicitly selected.
 
 ---
 

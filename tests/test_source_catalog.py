@@ -54,7 +54,8 @@ class SourceCatalogTests(unittest.TestCase):
             for feed in source.get("feeds", [])
         }
         self.assertIn("bbc-news", feed_ids)
-        self.assertIn("ted-talks-audio", feed_ids)
+        self.assertIn("ted-talks-video", feed_ids)
+        self.assertNotIn("ted-talks-audio", feed_ids)
         self.assertIn("science-news", feed_ids)
         self.assertNotIn("scientific-american", {source["source_id"] for source in collectable})
 

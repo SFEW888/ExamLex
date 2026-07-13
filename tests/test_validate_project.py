@@ -789,6 +789,45 @@ class ValidateProjectTests(unittest.TestCase):
 
         self.assertTrue(any("Missing project quality file: .env.example" in error for error in result.errors))
 
+    def test_detects_missing_secret_baseline(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            (root / ".secrets.baseline").unlink(missing_ok=True)
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(
+            any("Missing project quality file: .secrets.baseline" in error for error in result.errors)
+        )
+
+    def test_detects_nonportable_secret_baseline(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            baseline_path = root / ".secrets.baseline"
+            baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+            filename = next(iter(baseline["results"]))
+            findings = baseline["results"].pop(filename)
+            findings[0]["filename"] = filename.replace("/", "\\")
+            baseline["results"][filename.replace("/", "\\")] = findings
+            baseline_path.write_text(json.dumps(baseline), encoding="utf-8")
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(any("portable forward slashes" in error for error in result.errors))
+
+    def test_detects_unaudited_secret_baseline_finding(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            baseline_path = root / ".secrets.baseline"
+            baseline = json.loads(baseline_path.read_text(encoding="utf-8"))
+            filename = next(iter(baseline["results"]))
+            baseline["results"][filename][0]["is_secret"] = True
+            baseline_path.write_text(json.dumps(baseline), encoding="utf-8")
+
+            result = validate_repo.validate_project(root)
+
+        self.assertTrue(any("not audited false-positive" in error for error in result.errors))
+
     def test_detects_missing_public_install_entrypoint(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
@@ -958,11 +997,67 @@ class ValidateProjectTests(unittest.TestCase):
         with copy_project() as temp:
             root = Path(temp) / "repo"
             readme = root / "README.md"
-            readme.write_text(readme.read_text(encoding="utf-8") + "\nD:\\Codex_project\\英语\\examlex\n", encoding="utf-8")
+            local_path = "D:" + "\\workspace\\." + "worktrees\\examlex"
+            readme.write_text(
+                readme.read_text(encoding="utf-8") + f"\n{local_path}\n",
+                encoding="utf-8",
+            )
 
             result = validate_repo.validate_project(root)
 
-        self.assertTrue(any("public documentation must not include local machine path" in error for error in result.errors))
+        self.assertTrue(
+            any("Public-safety scan found local Git worktree path" in error for error in result.errors)
+        )
+
+    def test_public_safety_scan_detects_user_home_paths_cross_platform(self):
+        examples = (
+            "C:" + "\\Users\\alice\\workspace\\project",
+            "/" + "home/alice/workspace/project",
+        )
+        for local_path in examples:
+            with self.subTest(local_path=local_path), copy_project() as temp:
+                root = Path(temp) / "repo"
+                readme = root / "README.md"
+                readme.write_text(
+                    readme.read_text(encoding="utf-8") + f"\n{local_path}\n",
+                    encoding="utf-8",
+                )
+
+                result = validate_repo.validate_project(root)
+
+            self.assertTrue(any("Public-safety scan found" in error for error in result.errors))
+
+    def test_public_safety_scan_detects_tokens_without_echoing_them(self):
+        secret = "github" + "_pat_" + "A" * 32
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            readme = root / "README.md"
+            readme.write_text(
+                readme.read_text(encoding="utf-8") + f"\n{secret}\n",
+                encoding="utf-8",
+            )
+
+            result = validate_repo.validate_project(root)
+
+        matching = [error for error in result.errors if "GitHub access token" in error]
+        self.assertTrue(matching)
+        self.assertTrue(all(secret not in error for error in matching))
+
+    def test_public_safety_scan_detects_credentialed_proxy_without_echoing_it(self):
+        secret = "https" + "://alice:private-value@proxy.invalid:8443"
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            env_example = root / ".env.example"
+            env_example.write_text(
+                env_example.read_text(encoding="utf-8") + f"\nHTTPS_PROXY={secret}\n",
+                encoding="utf-8",
+            )
+
+            result = validate_repo.validate_project(root)
+
+        matching = [error for error in result.errors if "credential-bearing proxy URL" in error]
+        self.assertTrue(matching)
+        self.assertTrue(all(secret not in error for error in matching))
 
 
 if __name__ == "__main__":

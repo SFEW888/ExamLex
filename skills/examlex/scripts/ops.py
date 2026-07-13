@@ -9,7 +9,6 @@ import json
 import os
 import platform
 import shutil
-import socket
 import sys
 import tempfile
 import time
@@ -17,9 +16,23 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError
+from urllib.request import HTTPRedirectHandler, Request, build_opener, urlopen
 
 from .config import TutorConfig
 from .common import load_data
+
+
+class _RejectCredentialRedirectHandler(HTTPRedirectHandler):
+    """Reject redirects for probes that carry an authorization header."""
+
+    def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ANN001
+        return None
+
+
+def _safe_failure(label: str, exc: BaseException) -> str:
+    """Describe a local failure without exposing paths, hosts, or credentials."""
+    return f"{label} ({type(exc).__name__})"
 
 
 # ═══════════════════════════════════════════
@@ -59,7 +72,6 @@ def check_environment(cfg: TutorConfig) -> CheckResult:
     detail = {
         "python_version": sys.version,
         "platform": platform.platform(),
-        "hostname": socket.gethostname(),
     }
     warnings = []
 
@@ -103,8 +115,8 @@ def check_config(cfg: TutorConfig) -> CheckResult:
         test_file.write_text("ok")
         test_file.unlink()
         detail["sessions_root_writable"] = True
-    except (OSError, PermissionError) as e:
-        issues.append(f"sessions_root not writable: {e}")
+    except (OSError, PermissionError) as exc:
+        issues.append(_safe_failure("sessions_root is not writable", exc))
         detail["sessions_root_writable"] = False
 
     # Validate Darwin thresholds
@@ -121,7 +133,6 @@ def check_config(cfg: TutorConfig) -> CheckResult:
     if cfg.max_video_duration_seconds <= 0:
         issues.append("max_video_duration_seconds must be positive")
 
-    detail["config"] = cfg.to_dict()
     status = "fail" if issues else "pass"
     return CheckResult("config", status,
                        "Configuration valid" if not issues else f"{len(issues)} config issues",
@@ -148,21 +159,21 @@ def check_permissions(cfg: TutorConfig) -> CheckResult:
             path.mkdir(parents=True, exist_ok=True)
             read_ok = os.access(str(path), os.R_OK)
             write_ok = os.access(str(path), os.W_OK)
-            detail[name] = {"path": str(path), "readable": read_ok, "writable": write_ok}
+            detail[name] = {"readable": read_ok, "writable": write_ok}
             if not write_ok:
-                issues.append(f"{name} ({path}) is not writable")
-        except (OSError, PermissionError) as e:
-            detail[name] = {"path": str(path), "error": str(e)}
-            issues.append(f"{name}: {e}")
+                issues.append(f"{name} is not writable")
+        except (OSError, PermissionError) as exc:
+            detail[name] = {"error": type(exc).__name__}
+            issues.append(_safe_failure(name, exc))
 
     # Check temp directory
     try:
         with tempfile.NamedTemporaryFile(delete=True) as f:
             f.write(b"test")
         detail["temp_dir"] = "writable"
-    except OSError as e:
-        detail["temp_dir"] = str(e)
-        issues.append(f"temp directory not writable: {e}")
+    except OSError as exc:
+        detail["temp_dir"] = type(exc).__name__
+        issues.append(_safe_failure("temp directory is not writable", exc))
 
     status = "fail" if issues else "pass"
     return CheckResult("permissions", status,
@@ -188,8 +199,8 @@ def check_ports() -> CheckResult:
         detail["disk_total_gb"] = round(stat.total / (1024 ** 3), 1)
         if free_gb < 1.0:
             issues.append(f"Low disk space: {free_gb:.1f} GB free")
-    except OSError as e:
-        detail["disk_check"] = str(e)
+    except OSError as exc:
+        detail["disk_check"] = type(exc).__name__
 
     # Memory check
     try:
@@ -224,9 +235,9 @@ def check_prerun(cfg: TutorConfig) -> CheckResult:
         from .optimizers.ratchet import StrategyRatchet
         _ = FormatChecker, StrategyRatchet
         detail["core_imports"] = "ok"
-    except ImportError as e:
-        issues.append(f"Core import failed: {e}")
-        detail["core_imports"] = str(e)
+    except ImportError as exc:
+        issues.append(_safe_failure("Core import failed", exc))
+        detail["core_imports"] = type(exc).__name__
 
     # at least one extractor is operational
     try:
@@ -236,8 +247,8 @@ def check_prerun(cfg: TutorConfig) -> CheckResult:
             detail["text_extractor_deps_missing"] = deps
         else:
             detail["text_extractor"] = "ready"
-    except Exception as e:
-        issues.append(f"TextExtractor init failed: {e}")
+    except Exception as exc:
+        issues.append(_safe_failure("TextExtractor init failed", exc))
 
     # sessions_root is usable
     try:
@@ -247,8 +258,8 @@ def check_prerun(cfg: TutorConfig) -> CheckResult:
         import shutil as _shutil
         _shutil.rmtree(str(cfg.sessions_root / "_pretest_"), ignore_errors=True)
         detail["session_init"] = "ok"
-    except OSError as e:
-        issues.append(f"Session init failed: {e}")
+    except OSError as exc:
+        issues.append(_safe_failure("Session init failed", exc))
 
     status = "fail" if issues else "pass"
     return CheckResult("prerun", status,
@@ -323,8 +334,13 @@ def check_dry_run(cfg: TutorConfig, library_path: str | None = None) -> CheckRes
         import shutil as _shutil
         _shutil.rmtree(str(tmpdir), ignore_errors=True)
 
-    except (ImportError, OSError, json.JSONDecodeError, RuntimeError, ValueError) as e:
-        errors.append(f"Dry run failed at {detail.get('last_step', 'start')}: {e}")
+    except (ImportError, OSError, json.JSONDecodeError, RuntimeError, ValueError) as exc:
+        errors.append(
+            _safe_failure(
+                f"Dry run failed at {detail.get('last_step', 'start')}",
+                exc,
+            )
+        )
 
     status = "fail" if errors else "pass"
     return CheckResult("dry_run", status,
@@ -388,8 +404,8 @@ def check_resources() -> CheckResult:
         }
         if stat.free < 500 * 1024 * 1024:
             issues.append(f"Critical: only {detail['disk']['free_gb']} GB free")
-    except OSError as e:
-        detail["disk"] = {"error": str(e)}
+    except OSError as exc:
+        detail["disk"] = {"error": type(exc).__name__}
 
     # Memory (optional)
     try:
@@ -416,7 +432,7 @@ def check_resources() -> CheckResult:
 
 def check_logs(cfg: TutorConfig) -> CheckResult:
     """Check log directory and recent session logs."""
-    detail = {"sessions_root": str(cfg.sessions_root)}
+    detail = {"sessions_root": "configured"}
     issues = []
 
     if cfg.sessions_root.exists():
@@ -503,8 +519,8 @@ def check_business_results(library_path: str | None = None) -> CheckResult:
             detail["strategy_exam_distribution"] = _count_by_exam(strategies)
             detail["strategy_module_distribution"] = _count_by_module(strategies)
 
-        except (json.JSONDecodeError, OSError) as e:
-            issues.append(f"Library read failed: {e}")
+        except (json.JSONDecodeError, OSError) as exc:
+            issues.append(_safe_failure("Library read failed", exc))
     else:
         detail["total_strategies"] = 0
         detail["note"] = "No strategy library found; run examlex commit to create one"
@@ -545,35 +561,41 @@ def check_network() -> CheckResult:
 
     # Check basic internet connectivity
     try:
-        import urllib.request
         start = time.time()
-        urllib.request.urlopen("https://www.bilibili.com", timeout=5)
+        # Fixed HTTPS probe; no user-controlled URL reaches urlopen.
+        with urlopen("https://www.bilibili.com", timeout=5):  # nosec B310
+            pass
         detail["bilibili_latency_ms"] = round((time.time() - start) * 1000)
         detail["internet"] = "reachable"
-    except Exception as e:
-        detail["bilibili"] = f"unreachable: {e}"
+    except Exception:
+        detail["bilibili"] = "unreachable"
 
     try:
-        import urllib.request
         start = time.time()
-        urllib.request.urlopen("https://www.youtube.com", timeout=5)
+        # Fixed HTTPS probe; no user-controlled URL reaches urlopen.
+        with urlopen("https://www.youtube.com", timeout=5):  # nosec B310
+            pass
         detail["youtube_latency_ms"] = round((time.time() - start) * 1000)
-    except Exception as e:
-        detail["youtube"] = f"unreachable: {e}"
+    except Exception:
+        detail["youtube"] = "unreachable"
 
     # Check SiliconFlow API (if key is set)
     api_key = os.environ.get("SILICONFLOW_API_KEY")
     if api_key:
         try:
-            import urllib.request
-            req = urllib.request.Request(
+            req = Request(
                 "https://api.siliconflow.cn/v1/models",
                 headers={"Authorization": f"Bearer {api_key}"},
             )
-            urllib.request.urlopen(req, timeout=5)
+            opener = build_opener(_RejectCredentialRedirectHandler())
+            with opener.open(req, timeout=5):
+                pass
             detail["siliconflow_api"] = "reachable"
-        except Exception as e:
-            detail["siliconflow_api"] = f"unreachable: {e}"
+        except HTTPError as exc:
+            detail["siliconflow_api"] = f"unreachable (HTTP {exc.code})"
+            issues.append("SiliconFlow API key is set but API is unreachable")
+        except Exception:
+            detail["siliconflow_api"] = "unreachable"
             issues.append("SiliconFlow API key is set but API is unreachable")
     else:
         detail["siliconflow_api"] = "no API key set (video ASR uses local whisper)"
@@ -695,7 +717,7 @@ def run_all_checks(
 
     return OpsReport(
         timestamp=datetime.now(timezone.utc).isoformat(),
-        hostname=socket.gethostname(),
+        hostname="<redacted>",
         platform=platform.platform(),
         python_version=sys.version.split()[0],
         checks=checks,

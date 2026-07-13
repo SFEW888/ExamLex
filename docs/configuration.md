@@ -14,6 +14,11 @@ Settings are resolved from highest to lowest priority:
 
 ExamLex does not automatically load `.env`. The private tutor runtime separately supports a narrowly scoped user-home JSON file containing only its external prompt directory.
 
+`examlex ops-check` produces a shareable, privacy-safe report by default: hostnames,
+absolute local paths, credentials, provider response bodies, and raw exception text
+are omitted. Treat learner artifacts and any manually added diagnostic output as
+private data nonetheless.
+
 The private prompt directory has its own order: an explicit `run_tutor_turn()` or CLI argument, `EXAMLEX_PRIVATE_PROMPT_DIR`, then `~/.examlex/prompt-config.json`.
 
 ## The `TutorConfig` Dataclass
@@ -37,6 +42,16 @@ Paths to external CLI tools. When set to `None` (the default), the tool is locat
 | Field | Default | Description |
 |-------|---------|-------------|
 | `siliconflow_api_key` | `SILICONFLOW_API_KEY` env var, or `None` | API key for SiliconFlow ASR service. Read from environment if not explicitly provided. |
+
+`TutorConfig` never includes the API key in its representation, and `to_dict()`
+redacts it. The cloud ASR request rejects redirects and does not include provider
+response bodies in raised errors. Audio is uploaded only after explicitly selecting
+`asr_backend="siliconflow"`.
+
+Video downloads are anonymous by default. Setting
+`EXAMLEX_YTDLP_COOKIES_FROM_BROWSER=1` opts into a retry with Chrome browser cookies
+for supported video sites. Because those cookies may grant account access, prefer a
+separate browser profile, do not publish cookie files, and unset the flag after use.
 
 ### ASR (Automatic Speech Recognition) Defaults
 
@@ -91,7 +106,7 @@ from examlex.scripts.config import TutorConfig
 
 config = TutorConfig(
     ffmpeg_path="C:/tools/ffmpeg/bin/ffmpeg.exe",
-    siliconflow_api_key="sk-...",
+    siliconflow_api_key="YOUR_SILICONFLOW_API_KEY",
     asr_backend="siliconflow",
 )
 ```
@@ -101,7 +116,7 @@ config = TutorConfig(
 Export variables in the current shell. `.env.example` is documentation only unless your environment tooling loads it.
 
 ```bash
-export SILICONFLOW_API_KEY="sk-..."
+export SILICONFLOW_API_KEY="YOUR_SILICONFLOW_API_KEY"
 export EXAMLEX_PRIVATE_PROMPT_DIR="/path/outside/the/ExamLex/repository"
 ```
 

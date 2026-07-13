@@ -1,9 +1,11 @@
 """Tests for video extractor — heavily mocked external tools."""
 import json
+from io import BytesIO
 import tempfile
 import unittest
 from pathlib import Path
 from unittest import mock
+from urllib.error import HTTPError
 
 from examlex.scripts.extractors.video import (
     VideoExtractor,
@@ -12,6 +14,7 @@ from examlex.scripts.extractors.video import (
     _resolve_model,
     _build_ffmpeg_command,
     _MultipartBody,
+    _RejectRedirectHandler,
     _multipart_filename,
     _transcribe_siliconflow,
 )
@@ -75,6 +78,22 @@ class VideoExtractorTests(unittest.TestCase):
         return_value=PUBLIC_DNS,
     )
     def test_video_url_accepts_exact_host_with_public_dns(self, _mock_dns):
+        self.assertEqual(
+            "https://www.youtube.com/watch?v=abc",
+            _validate_video_url("https://www.youtube.com/watch?v=abc"),
+        )
+
+    @mock.patch(
+        "examlex.scripts.extractors.video.socket.getaddrinfo",
+        return_value=[(2, 1, 6, "", ("198.18.0.7", 443))],
+    )
+    @mock.patch(
+        "examlex.scripts.extractors.video._configured_https_proxy",
+        return_value=True,
+    )
+    def test_video_url_accepts_proxy_fake_ip_only_with_explicit_proxy(
+        self, _mock_proxy, _mock_dns
+    ):
         self.assertEqual(
             "https://www.youtube.com/watch?v=abc",
             _validate_video_url("https://www.youtube.com/watch?v=abc"),
@@ -210,7 +229,7 @@ class ASRHelperTests(unittest.TestCase):
             response.__enter__.return_value = response
 
             with mock.patch(
-                "examlex.scripts.extractors.video.urlopen",
+                "examlex.scripts.extractors.video._open_siliconflow",
                 return_value=response,
             ) as open_url, mock.patch(
                 "examlex.scripts.extractors.video._UPLOAD_CHUNK_SIZE",
@@ -260,7 +279,7 @@ class ASRHelperTests(unittest.TestCase):
                 "examlex.scripts.extractors.video._MAX_AUDIO_UPLOAD_BYTES",
                 4,
             ), mock.patch(
-                "examlex.scripts.extractors.video.urlopen",
+                "examlex.scripts.extractors.video._open_siliconflow",
             ) as open_url:
                 with self.assertRaisesRegex(RuntimeError, "too large"):
                     _transcribe_siliconflow(
@@ -271,6 +290,46 @@ class ASRHelperTests(unittest.TestCase):
                         api_key="test-key",
                     )
             open_url.assert_not_called()
+
+    def test_siliconflow_http_error_does_not_expose_provider_body_or_key(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            audio = root / "sample.mp3"
+            audio.write_bytes(b"audio")
+            secret_key = "sk-" + "private-provider-key"
+            provider_detail = "private transcript and diagnostic"
+            error = HTTPError(
+                "https://api.siliconflow.cn/v1/audio/transcriptions",
+                400,
+                "Bad Request",
+                {},
+                BytesIO(provider_detail.encode("utf-8")),
+            )
+
+            with mock.patch(
+                "examlex.scripts.extractors.video._open_siliconflow",
+                side_effect=error,
+            ):
+                with self.assertRaises(RuntimeError) as raised:
+                    _transcribe_siliconflow(
+                        audio,
+                        root / "transcript.txt",
+                        root / "transcript.json",
+                        "model",
+                        api_key=secret_key,
+                    )
+
+            rendered = str(raised.exception)
+            self.assertIn("HTTP status 400", rendered)
+            self.assertNotIn(secret_key, rendered)
+            self.assertNotIn(provider_detail, rendered)
+
+    def test_siliconflow_redirects_are_rejected(self):
+        handler = _RejectRedirectHandler()
+        redirected = handler.redirect_request(
+            mock.MagicMock(), None, 307, "Temporary Redirect", {}, "https://evil.invalid"
+        )
+        self.assertIsNone(redirected)
 
     def test_auto_backend_never_selects_cloud_asr(self):
         with mock.patch.dict("os.environ", {"SILICONFLOW_API_KEY": "sk-test"}):

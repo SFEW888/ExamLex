@@ -96,6 +96,15 @@ class SourceCollectorTests(unittest.TestCase):
         with self.assertRaisesRegex(SourceCollectionError, "DTD"):
             parse_feed(payload, source=SOURCE, feed=SOURCE["feeds"][0])
 
+    def test_feed_rejects_dtd_after_large_prefix(self):
+        payload = (
+            b'<?xml version="1.0"?>'
+            + b" " * 5000
+            + b'<!DOCTYPE x [<!ENTITY e "boom">]><rss />'
+        )
+        with self.assertRaisesRegex(SourceCollectionError, "DTD"):
+            parse_feed(payload, source=SOURCE, feed=SOURCE["feeds"][0])
+
     def test_external_enclosure_is_not_indexed_as_downloadable_media(self):
         payload = RSS.replace(b"media.example.com", b"untrusted.invalid")
         items = parse_feed(payload, source=SOURCE, feed=SOURCE["feeds"][0])

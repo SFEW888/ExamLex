@@ -696,8 +696,11 @@ examlex backup ./local/data
 |------|:--:|--------|------|
 | `SILICONFLOW_API_KEY` | 否 | — | SiliconFlow 云端语音识别密钥；仅显式设置 `asr_backend="siliconflow"` 时上传音频。 |
 | `EXAMLEX_PYTHON` | 否 | `python` | 本地 ExamLex 封装脚本使用的 Python 解释器 |
+| `EXAMLEX_YTDLP_COOKIES_FROM_BROWSER` | 否 | `0` | 仅在你明确同意使用 Chrome 浏览器 Cookie 重试受支持的视频下载时设为 `1`；默认绝不读取 Cookie。 |
 
 > ⚠️ **安全提醒**：不要提交 `.env`、学习者身份信息、私有提示词正文、Token、密码或本地数据库凭据到公开仓库。
+>
+> **隐私说明**：优先使用默认的匿名下载。启用 Cookie 重试后，`yt-dlp` 会把 Cookie 发送给你选择的受支持视频站点；Cookie 可能包含账号访问权限。建议使用独立浏览器配置，并在重试后关闭该开关，绝不公开 Cookie 文件。只有显式选择 `asr_backend="siliconflow"` 时才会把提取的音频上传到云端语音识别服务。
 
 ---
 
