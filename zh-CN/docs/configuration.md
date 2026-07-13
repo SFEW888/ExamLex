@@ -9,10 +9,12 @@
 配置按以下优先级从高到低解析：
 
 1. 构造函数参数 / CLI 参数（最高）
-2. 云端 ASR 密钥环境变量 `SILICONFLOW_API_KEY`
+2. `SILICONFLOW_API_KEY` 等环境变量
 3. 代码默认值（最低）
 
-ExamLex 不会自动加载 `.env`，也不会自动读取用户主目录下的 JSON 配置文件。
+ExamLex 不会自动加载 `.env`。私有助教运行时另行支持一个范围严格受限的用户主目录 JSON 文件，其中只保存外部提示词目录。
+
+私有提示词目录使用独立优先级：显式 `run_tutor_turn()` 或 CLI 参数、`EXAMLEX_PRIVATE_PROMPT_DIR`、`~/.examlex/prompt-config.json`。
 
 ## `TutorConfig` 数据类
 
@@ -89,7 +91,19 @@ config = TutorConfig(
 
 ```powershell
 $env:SILICONFLOW_API_KEY = "sk-..."
+$env:EXAMLEX_PRIVATE_PROMPT_DIR = "D:\path\outside\the\ExamLex\repository"
 ```
+
+### 私有助教运行时
+
+校验并保存外部目录，且不在输出中显示路径或提示词正文：
+
+```powershell
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --save
+python run.py tutor-prepare --request "润色这封正式邮件：..." --json
+```
+
+保存文件只含 `schema_version` 和外部目录路径。它是本地状态，不属于 `TutorConfig`，绝不能提交。`tutor-prepare` 只是公开安全的预检；只有传给 `run_tutor_turn()` 的受信进程内提供器才能执行私有提示词。
 
 ## 依赖检查
 

@@ -68,6 +68,7 @@ EXPECTED_REFERENCES = {
     "error-taxonomy.md",
     "exam-profiles.md",
     "prompt-modes.md",
+    "tutor-runtime.md",
     "workflow.md",
 }
 TUTOR_ROLE_CONTRACT_FILENAME = "tutor-role-contracts.json"

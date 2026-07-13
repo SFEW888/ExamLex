@@ -7,6 +7,7 @@ import json
 import sys
 
 from .tutor_prompts import PromptAssetError, audit_private_prompt_directory
+from .tutor_runtime import save_private_prompt_directory
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -14,11 +15,18 @@ def main(argv: list[str] | None = None) -> int:
         description="Validate eight external private tutor prompts without printing their content."
     )
     parser.add_argument("--private-dir", required=True, help="Directory containing eight role-id.md files")
+    parser.add_argument(
+        "--save",
+        action="store_true",
+        help="Save the validated external directory for future in-process tutor calls",
+    )
     parser.add_argument("--json", action="store_true", help="Print safe metadata as JSON")
     args = parser.parse_args(argv)
 
     try:
         report = audit_private_prompt_directory(args.private_dir)
+        if args.save:
+            save_private_prompt_directory(args.private_dir)
     except (PromptAssetError, OSError) as exc:
         if args.json:
             print(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=True))
@@ -27,10 +35,18 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     if args.json:
-        print(json.dumps({"ok": True, **report}, ensure_ascii=True, indent=2))
+        print(
+            json.dumps(
+                {"ok": True, "configured": args.save, **report},
+                ensure_ascii=True,
+                indent=2,
+            )
+        )
         return 0
 
     print(f"Validated {report['role_count']} private tutor prompts.")
+    if args.save:
+        print("Saved the private tutor prompt configuration.")
     for role in report["roles"]:
         print(
             f"  [OK] {role['role_id']}: {role['size_bytes']} bytes, "

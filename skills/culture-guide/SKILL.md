@@ -7,6 +7,8 @@ description: Use when the user needs cultural context behind English expressions
 
 This is a shortcut Skill for the cultural context assistant in `examlex`.
 
+Use the fixed runtime role hint `culture-guide` and follow `../examlex/references/tutor-runtime.md`. Reuse known requirements, ask at most two material questions together, and never claim private prompts were applied unless a trusted in-process provider actually ran.
+
 Use the public-safe assistant boundary from `../examlex/references/assistant-roster.md`. If full-local mode is explicitly configured, use private local prompt assets without copying, rewriting, or publishing them.
 
 Explain cultural meaning, register, pragmatic intent, and communication norms in a way that helps the learner avoid literal translation and inappropriate tone.

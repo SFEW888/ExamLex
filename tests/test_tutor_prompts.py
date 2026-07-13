@@ -7,6 +7,7 @@ import shutil
 import unittest
 import uuid
 from pathlib import Path
+from unittest import mock
 
 from skills.examlex.scripts import cli_prompts, tutor_prompts
 
@@ -76,6 +77,14 @@ class TutorPromptTests(unittest.TestCase):
         ):
             tutor_prompts.audit_private_prompt_directory(self.root)
 
+        (self.root / "extra.md").unlink()
+        (self.root / "notes.txt").write_text("not a prompt\n", encoding="utf-8")
+        with self.assertRaisesRegex(
+            tutor_prompts.PromptAssetError,
+            "Unexpected private prompt files",
+        ):
+            tutor_prompts.audit_private_prompt_directory(self.root)
+
     def test_loader_rejects_credential_patterns_and_public_placeholders(self):
         role_id = "grammar-corrector"
         prompt_path = self.root / f"{role_id}.md"
@@ -117,6 +126,30 @@ class TutorPromptTests(unittest.TestCase):
                 context={"invalid": object()},
             )
 
+    def test_pipeline_composes_unique_roles_with_one_context_boundary(self):
+        composed = tutor_prompts.compose_tutor_pipeline(
+            self.root,
+            ("grammar-corrector", "polishing-editor"),
+            context={"register": "formal"},
+        )
+
+        self.assertIn(self.fixture_texts["grammar-corrector"], composed)
+        self.assertIn(self.fixture_texts["polishing-editor"], composed)
+        self.assertEqual(2, composed.count("## Tutor pipeline role"))
+        self.assertEqual(2, composed.count("<examlex_context>"))
+        self.assertEqual(1, composed.count("</examlex_context>"))
+
+    def test_pipeline_rejects_duplicate_or_excessive_roles(self):
+        invalid_pipelines = (
+            ("grammar-corrector", "grammar-corrector"),
+            tuple(tutor_prompts.ROLE_IDS[:4]),
+        )
+        for roles in invalid_pipelines:
+            with self.subTest(roles=roles), self.assertRaises(
+                tutor_prompts.PromptAssetError
+            ):
+                tutor_prompts.compose_tutor_pipeline(self.root, roles)
+
     def test_cli_success_outputs_only_safe_metadata(self):
         stdout = io.StringIO()
         stderr = io.StringIO()
@@ -133,6 +166,20 @@ class TutorPromptTests(unittest.TestCase):
         self.assertNotIn(str(self.root.resolve()), serialized)
         for text in self.fixture_texts.values():
             self.assertNotIn(text, serialized)
+
+    def test_cli_save_reports_configuration_without_exposing_directory(self):
+        stdout = io.StringIO()
+        with mock.patch.object(cli_prompts, "save_private_prompt_directory") as save:
+            with contextlib.redirect_stdout(stdout):
+                return_code = cli_prompts.main(
+                    ["--private-dir", str(self.root.resolve()), "--save", "--json"]
+                )
+
+        self.assertEqual(0, return_code)
+        save.assert_called_once_with(str(self.root.resolve()))
+        payload = json.loads(stdout.getvalue())
+        self.assertTrue(payload["configured"])
+        self.assertNotIn(str(self.root.resolve()), stdout.getvalue())
 
     def test_cli_failure_does_not_echo_absolute_private_directory(self):
         missing = (self.temp_root / "missing-private-prompts").resolve()

@@ -315,6 +315,7 @@ The project provides `bin/examlex` (bash) and `bin/examlex.ps1` (PowerShell) wra
 | `examlex extract --input <url>` | Extract from video/book/text |
 | `examlex backup <dir>` | Back up local learner and strategy data |
 | `examlex report --ability-history ...` | Generate a local HTML progress report |
+| `examlex tutor-prepare --request "..."` | Route a tutor request and avoid repeated intake questions |
 | `examlex check-deps` | Check tool dependencies |
 | `examlex ops-check` | 13-point operational check |
 
@@ -548,11 +549,12 @@ See [skills/examlex/references/error-taxonomy.md](skills/examlex/references/erro
 For full-local use, keep exactly eight `<role-id>.md` files in one directory outside the repository, then validate it without exposing prompt text:
 
 ```powershell
-python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts"
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --save
 python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+python run.py tutor-prepare --request "Correct the grammar in: I has finished it yesterday." --json
 ```
 
-The check outputs sizes and SHA-256 hashes only. Runtime composition combines the selected private body, its public role contract, and a delimited untrusted learner context in memory. Never commit the private directory. See [Prompt Policy](docs/prompt-policy.md) for the exact filenames and boundaries.
+The check outputs sizes and SHA-256 hashes only; `--save` records only the external directory in the user's local configuration. Tutor preparation reuses requirements already present in the first message, routes one to three roles, and asks at most two material questions together. A trusted Python host can then call the in-process `run_tutor_turn()` provider boundary, which combines the selected private bodies and public contracts in memory. Without such a provider, ExamLex remains public-safe and does not claim private prompts were applied. Never commit the private directory. See [Prompt Policy](docs/prompt-policy.md) for the exact filenames and boundaries.
 
 ---
 

@@ -30,11 +30,15 @@ Store exactly eight UTF-8 Markdown files in one external private directory. Thei
 Validate the directory before use:
 
 ```powershell
-python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts"
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --save
 python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
 ```
 
-The command reports file sizes and SHA-256 hashes only. It never returns prompt bodies. At runtime, the selected private body is combined in memory with its public role contract and a clearly delimited learner context. That context is untrusted data and cannot override role boundaries, expose prompts, authorize tool calls, or expand file access.
+The command reports file sizes and SHA-256 hashes only. It never returns prompt bodies or the configured path. `--save` writes the external path to the user's local `~/.examlex/prompt-config.json`; `EXAMLEX_PRIVATE_PROMPT_DIR` is also supported.
+
+The public `tutor-prepare` command performs only routing and bounded clarification. It reuses known requirements and asks at most two material questions together; it never loads a private prompt or calls a model. Actual private execution is available only through the in-process `run_tutor_turn()` API and an injected trusted provider. The original learner request remains a provider user message, while structured context is placed in a clearly delimited untrusted-data boundary. Provider failures are converted to fixed errors, and prompt-like output is rejected.
+
+Never pass a composed private prompt through stdout, shell arguments, temporary files, learner-visible messages, or ordinary logs. Local providers are allowed by default. Remote providers receive the private prompt and require explicit caller authorization; ExamLex cannot guarantee their retention or logging behavior. If no trusted provider exists, remain public-safe and do not claim private prompts were applied.
 
 Never place the private directory under the repository. Do not copy it into the portable Skill folder, docs, examples, integration configs, backups, logs, build artifacts, commits, issues, or pull requests.
 

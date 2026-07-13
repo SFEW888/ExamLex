@@ -42,9 +42,12 @@ class WheelSmokeScriptTests(unittest.TestCase):
 
         self.assertIn('"resume", "--help"', source)
         self.assertIn('"prompt-check", "--help"', source)
+        self.assertIn('"tutor-prepare", "--help"', source)
         self.assertIn("root / 'assets' / 'schemas'", source)
         self.assertIn("root / 'assets' / 'templates'", source)
         self.assertIn("root / 'references'", source)
         self.assertIn("root / 'references' / 'tutor-role-contracts.json'", source)
+        self.assertIn("root / 'references' / 'tutor-runtime.md'", source)
         self.assertIn("load_role_contracts", source)
+        self.assertIn("prepare_tutor_turn", source)
         self.assertIn("root / 'SKILL.md'", source)

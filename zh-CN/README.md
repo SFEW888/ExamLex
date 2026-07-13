@@ -669,6 +669,7 @@ examlex backup ./local/data
 | 摄入策略 | `examlex ingest <file>` | 「记住这份技巧文件」 |
 | 数据备份 | `examlex backup <dir>` | 「备份我的学习数据」 |
 | 进度报告 | `examlex report --ability-history ...` | 「生成一份学习报告」 |
+| 助教预检 | `examlex tutor-prepare --request "..."` | 「识别需求，最多一次问两个关键问题」 |
 
 > 完整命令签名见 [CLI 参考文档](cli-reference.md)。封装脚本位于 `bin/examlex`（bash）和 `bin/examlex.ps1`（PowerShell）。
 
@@ -699,11 +700,12 @@ examlex backup ./local/data
 使用 full-local 模式时，在仓库外的一个目录中严格保存八个 `<role-id>.md` 文件，然后在不暴露正文的前提下校验：
 
 ```powershell
-python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts"
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --save
 python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+python run.py tutor-prepare --request "纠正语法：I has finished it yesterday." --json
 ```
 
-检查只输出文件大小与 SHA-256 哈希。运行时会在内存中组合选定的私有正文、公开角色契约和明确分隔的不可信学习者上下文。绝不能提交私有目录；严格文件名与边界详见 [提示词策略](docs/prompt-policy.md)。
+检查只输出文件大小与 SHA-256 哈希；`--save` 只把外部目录保存到用户本机配置。助教预检会复用第一条消息已有的需求，路由一至三个角色，并在同一轮最多询问两个关键问题。受信 Python 宿主随后可调用进程内 `run_tutor_turn()` 提供器边界，在内存中组合选定私有正文与公开契约；没有该提供器时保持 public-safe，且不能声称已应用私有提示词。绝不能提交私有目录；严格文件名与边界详见 [提示词策略](docs/prompt-policy.md)。
 
 ---
 

@@ -56,6 +56,7 @@
 |----------|----------|:--:|------|
 | `examlex vocab [opts]` | `vocab-estimate` | 👤 | 抽样估算词汇量 |
 | `examlex prompt-check --private-dir <dir> [opts]` | `prompt-check` | 👤 | 校验仓库外的八助教私有提示词集，不输出正文 |
+| `examlex tutor-prepare --request <text> [opts]` | `tutor-prepare` | 🤖 | 路由请求并返回最多两个安全澄清问题 |
 
 ### 🔧 维护者
 
@@ -271,10 +272,19 @@ examlex vocab --interactive --output vocab-result.json
 
 ```powershell
 examlex prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" [--json]
-python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --save --json
 ```
 
-目录中必须且只能包含八份 UTF-8 `<role-id>.md` 文件，分别对应八个公开角色契约。命令会校验文件名与文件安全性，只报告字节大小和 SHA-256 哈希，绝不打印提示词正文。私有目录必须放在仓库之外，且不得提交。
+目录中必须且只能包含八份 UTF-8 `<role-id>.md` 文件，分别对应八个公开角色契约。命令会校验文件名与文件安全性，只报告字节大小和 SHA-256 哈希，绝不打印提示词正文或目录路径。`--save` 会把外部目录写入本机用户配置。私有目录必须放在仓库之外，且不得提交。
+
+### `examlex tutor-prepare` — 路由并澄清助教请求
+
+```powershell
+examlex tutor-prepare --request "纠正：I has finished it yesterday." [--role auto] [--asked-field <name>] [--json]
+python run.py tutor-prepare --request "制定六级学习计划" --json
+```
+
+该公开安全预检不加载私有提示词，也不调用模型。它会选择一至三个角色，并返回最多两个关键澄清问题。后续轮次可重复传入 `--asked-field` 标记已经问过的字段，从而避免重复追问。真正的私有执行是通过 `run_tutor_turn()` 与注入的受信提供器完成的进程内库调用。
 
 ### `examlex extract` — 提取原始素材
 
