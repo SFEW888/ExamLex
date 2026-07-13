@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 import shutil
 import re
 import subprocess
@@ -46,6 +47,94 @@ def copy_project():
 
 
 class ValidateProjectTests(unittest.TestCase):
+    def test_private_prompt_directories_are_ignored_and_cannot_be_tracked(self):
+        private_paths = (
+            ".examlex-private/study-planner.md",
+            "private-prompts/grammar-corrector.md",
+        )
+        for relative in private_paths:
+            with self.subTest(relative=relative):
+                completed = subprocess.run(
+                    ["git", "check-ignore", "--no-index", "--quiet", "--", relative],
+                    cwd=PROJECT_ROOT,
+                )
+                self.assertEqual(0, completed.returncode)
+
+        errors: list[str] = []
+        validate_repo.validate_tracked_private_prompt_assets(
+            PROJECT_ROOT,
+            errors,
+            tracked_files=["README.md", *private_paths],
+        )
+        self.assertEqual(2, len(errors), errors)
+        self.assertTrue(all("private prompt asset" in error for error in errors))
+
+    def test_tutor_role_contract_has_exact_public_safe_roles(self):
+        errors: list[str] = []
+        validate_repo.validate_tutor_role_contracts(PROJECT_ROOT, errors)
+        self.assertEqual([], errors)
+
+        contract_path = (
+            PROJECT_ROOT
+            / "skills"
+            / "examlex"
+            / "references"
+            / validate_repo.TUTOR_ROLE_CONTRACT_FILENAME
+        )
+        document = json.loads(contract_path.read_text(encoding="utf-8"))
+        self.assertEqual("public-safe", document["mode"])
+        placeholders = {
+            role["role_id"]: role["placeholder"] for role in document["roles"]
+        }
+        self.assertEqual(validate_repo.EXPECTED_TUTOR_ROLE_PLACEHOLDERS, placeholders)
+
+    def test_tutor_role_contract_rejects_missing_role(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            contract_path = (
+                root
+                / "skills"
+                / "examlex"
+                / "references"
+                / validate_repo.TUTOR_ROLE_CONTRACT_FILENAME
+            )
+            document = json.loads(contract_path.read_text(encoding="utf-8"))
+            document["roles"].pop()
+            contract_path.write_text(
+                json.dumps(document, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            errors: list[str] = []
+            validate_repo.validate_tutor_role_contracts(root, errors)
+
+        self.assertTrue(any("exactly eight roles" in error for error in errors))
+        self.assertTrue(any("missing roles" in error for error in errors))
+
+    def test_tutor_role_contract_rejects_mode_placeholder_and_empty_field(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            contract_path = (
+                root
+                / "skills"
+                / "examlex"
+                / "references"
+                / validate_repo.TUTOR_ROLE_CONTRACT_FILENAME
+            )
+            document = json.loads(contract_path.read_text(encoding="utf-8"))
+            document["mode"] = "full-local"
+            document["roles"][0]["placeholder"] = "incorrect"
+            document["roles"][0]["workflow"] = []
+            contract_path.write_text(
+                json.dumps(document, ensure_ascii=False, indent=2) + "\n",
+                encoding="utf-8",
+            )
+            errors: list[str] = []
+            validate_repo.validate_tutor_role_contracts(root, errors)
+
+        self.assertTrue(any("mode must remain public-safe" in error for error in errors))
+        self.assertTrue(any("placeholder mismatch" in error for error in errors))
+        self.assertTrue(any("non-empty workflow" in error for error in errors))
+
     def test_standard_learner_artifacts_are_ignored_and_cannot_be_tracked(self):
         artifact_paths = (
             "learner-profile.json",

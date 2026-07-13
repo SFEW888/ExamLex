@@ -141,7 +141,7 @@ At any stage, `examlex ingest` or the extract → validate → commit pipeline c
 
 ### Tutor Roles
 
-Eight built-in tutor assistants covering all English prep scenarios. Public repository publishes role boundaries and placeholders; private prompt bodies stay on the user's machine.
+Eight built-in tutor assistants covering all English prep scenarios. Public repository publishes role boundaries, placeholders, and the machine-readable [tutor role contracts](skills/examlex/references/tutor-role-contracts.json); private prompt bodies stay on the user's machine.
 
 | Tutor | Shortcut Skill | Core Responsibility |
 |------|:---------:|---------------------|
@@ -544,6 +544,15 @@ See [skills/examlex/references/error-taxonomy.md](skills/examlex/references/erro
 | `full-local` | User's private machine | May route to private prompt assets outside the repository |
 
 > **Important**: Original eight tutor prompt bodies are not published, rewritten, or reconstructed into any public file. Placeholders like `[PRIVATE_PROMPT_PLACEHOLDER: grammar-corrector]` are interface markers only.
+
+For full-local use, keep exactly eight `<role-id>.md` files in one directory outside the repository, then validate it without exposing prompt text:
+
+```powershell
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts"
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+```
+
+The check outputs sizes and SHA-256 hashes only. Runtime composition combines the selected private body, its public role contract, and a delimited untrusted learner context in memory. Never commit the private directory. See [Prompt Policy](docs/prompt-policy.md) for the exact filenames and boundaries.
 
 ---
 

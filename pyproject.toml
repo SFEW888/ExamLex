@@ -31,7 +31,7 @@ examlex = "examlex.cli:main"
 include = ["examlex*"]
 
 [tool.setuptools.package-data]
-examlex = ["SKILL.md", "assets/**/*", "references/*.md"]
+examlex = ["SKILL.md", "assets/**/*", "references/*.md", "references/*.json"]
 
 [tool.unittest]
 start-directory = "tests"

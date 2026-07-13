@@ -70,6 +70,24 @@ EXPECTED_REFERENCES = {
     "prompt-modes.md",
     "workflow.md",
 }
+TUTOR_ROLE_CONTRACT_FILENAME = "tutor-role-contracts.json"
+EXPECTED_TUTOR_ROLE_PLACEHOLDERS = {
+    "study-planner": "[PRIVATE_PROMPT_PLACEHOLDER: study-planner]",
+    "vocabulary-expander": "[PRIVATE_PROMPT_PLACEHOLDER: vocabulary-expander]",
+    "reading-navigator": "[PRIVATE_PROMPT_PLACEHOLDER: reading-navigator]",
+    "structure-planner": "[PRIVATE_PROMPT_PLACEHOLDER: structure-planner]",
+    "grammar-corrector": "[PRIVATE_PROMPT_PLACEHOLDER: grammar-corrector]",
+    "polishing-editor": "[PRIVATE_PROMPT_PLACEHOLDER: polishing-editor]",
+    "situational-dialogue": "[PRIVATE_PROMPT_PLACEHOLDER: situational-dialogue]",
+    "culture-guide": "[PRIVATE_PROMPT_PLACEHOLDER: culture-guide]",
+}
+TUTOR_ROLE_REQUIRED_LIST_FIELDS = {
+    "capabilities",
+    "workflow",
+    "output_contract",
+    "boundaries",
+}
+PRIVATE_PROMPT_DIRECTORY_NAMES = {".examlex-private", "private-prompts"}
 EXPECTED_AUTOMATION_SCRIPTS = {
     "analyze_trends.py",
     "backup_data.py",
@@ -216,6 +234,108 @@ def validate_tracked_learner_artifacts(
         is_sidecar = name.endswith((".bak", ".lock", ".tmp"))
         if is_private_directory or is_standard_name or is_backup or is_sidecar:
             errors.append(f"tracked learner artifact is forbidden: {relative.as_posix()}")
+
+
+def validate_tracked_private_prompt_assets(
+    root: Path,
+    errors: list[str],
+    tracked_files: list[str] | None = None,
+) -> None:
+    """Reject tracked external private prompt directories."""
+    root = Path(root).resolve()
+    if tracked_files is None:
+        if not (root / ".git").exists():
+            return
+        try:
+            completed = subprocess.run(
+                ["git", "-C", str(root), "ls-files", "-z"],
+                check=True,
+                capture_output=True,
+                text=True,
+            )
+        except (OSError, subprocess.CalledProcessError) as exc:
+            errors.append(f"Could not inspect tracked private prompt assets: {exc}")
+            return
+        tracked_files = [path for path in completed.stdout.split("\0") if path]
+
+    for tracked in tracked_files:
+        relative = Path(tracked.replace("\\", "/"))
+        if relative.parts and relative.parts[0] in PRIVATE_PROMPT_DIRECTORY_NAMES:
+            errors.append(
+                f"tracked private prompt asset is forbidden: {relative.as_posix()}"
+            )
+
+
+def validate_tutor_role_contracts(root: Path, errors: list[str]) -> None:
+    """Validate the canonical public-safe contract for exactly eight tutor roles."""
+    contract_path = (
+        Path(root)
+        / "skills"
+        / SKILL_NAME
+        / "references"
+        / TUTOR_ROLE_CONTRACT_FILENAME
+    )
+    if not contract_path.is_file():
+        errors.append(
+            "Missing required reference: "
+            f"references/{TUTOR_ROLE_CONTRACT_FILENAME}"
+        )
+        return
+    try:
+        document = json.loads(contract_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        errors.append(f"Tutor role contract is not valid UTF-8 JSON: {exc}")
+        return
+    if not isinstance(document, dict):
+        errors.append("Tutor role contract root must be an object.")
+        return
+    if document.get("schema_version") != "1.0":
+        errors.append("Tutor role contract schema_version must be 1.0.")
+    if document.get("mode") != "public-safe":
+        errors.append("Tutor role contract mode must remain public-safe.")
+
+    roles = document.get("roles")
+    if not isinstance(roles, list):
+        errors.append("Tutor role contract roles must be an array.")
+        return
+    if len(roles) != len(EXPECTED_TUTOR_ROLE_PLACEHOLDERS):
+        errors.append("Tutor role contract must contain exactly eight roles.")
+
+    seen: set[str] = set()
+    for role in roles:
+        if not isinstance(role, dict):
+            errors.append("Each tutor role contract must be an object.")
+            continue
+        role_id = role.get("role_id")
+        if not isinstance(role_id, str) or role_id not in EXPECTED_TUTOR_ROLE_PLACEHOLDERS:
+            errors.append(f"Tutor role contract has unknown role_id: {role_id}")
+            continue
+        if role_id in seen:
+            errors.append(f"Tutor role contract has duplicate role_id: {role_id}")
+            continue
+        seen.add(role_id)
+        if role.get("placeholder") != EXPECTED_TUTOR_ROLE_PLACEHOLDERS[role_id]:
+            errors.append(f"Tutor role contract placeholder mismatch: {role_id}")
+        for field_name in ("display_name", "mission"):
+            value = role.get(field_name)
+            if not isinstance(value, str) or not value.strip():
+                errors.append(
+                    f"Tutor role contract {role_id} requires non-empty {field_name}."
+                )
+        for field_name in sorted(TUTOR_ROLE_REQUIRED_LIST_FIELDS):
+            value = role.get(field_name)
+            if (
+                not isinstance(value, list)
+                or not value
+                or any(not isinstance(item, str) or not item.strip() for item in value)
+            ):
+                errors.append(
+                    f"Tutor role contract {role_id} requires non-empty {field_name}."
+                )
+
+    missing = sorted(EXPECTED_TUTOR_ROLE_PLACEHOLDERS.keys() - seen)
+    if missing:
+        errors.append("Tutor role contract is missing roles: " + ", ".join(missing))
 
 
 def _normalize_external_url(url: str) -> str:
@@ -694,6 +814,7 @@ def validate_project(root: str | Path) -> ValidationResult:
     for filename in sorted(EXPECTED_REFERENCES):
         if not (references_dir / filename).is_file():
             errors.append(f"Missing required reference: references/{filename}")
+    validate_tutor_role_contracts(root_path, errors)
 
     skill_file = skill_dir / "SKILL.md"
     if skill_file.exists():
@@ -777,6 +898,7 @@ def validate_project(root: str | Path) -> ValidationResult:
         text_cache=text_cache,
     )
     validate_tracked_learner_artifacts(root_path, errors)
+    validate_tracked_private_prompt_assets(root_path, errors)
     return result
 
 

@@ -69,10 +69,15 @@ def smoke_test(wheel: Path) -> dict[str, object]:
         resume_help_result = run_checked(
             [str(examlex_command), "resume", "--help"], runtime_dir, env
         )
+        prompt_check_help_result = run_checked(
+            [str(examlex_command), "prompt-check", "--help"], runtime_dir, env
+        )
         if "usage: examlex" not in help_result.stdout:
             raise RuntimeError("Installed examlex command did not expose its main help")
         if "usage: examlex resume" not in resume_help_result.stdout:
             raise RuntimeError("Installed examlex command did not expose resume help")
+        if "--private-dir" not in prompt_check_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose prompt-check help")
         resource_result = run_checked(
             [
                 str(python),
@@ -80,11 +85,14 @@ def smoke_test(wheel: Path) -> dict[str, object]:
                 (
                     "import json; from pathlib import Path; import examlex; "
                     "from examlex.scripts.estimate_vocabulary import _DEFAULT_REF; "
+                    "from examlex.scripts.tutor_prompts import load_role_contracts; "
                     "root = Path(examlex.__file__).resolve().parent; "
                     "required = [root / 'SKILL.md', root / 'assets' / 'schemas', "
-                    "root / 'assets' / 'templates', root / 'references', _DEFAULT_REF]; "
+                    "root / 'assets' / 'templates', root / 'references', _DEFAULT_REF, "
+                    "root / 'references' / 'tutor-role-contracts.json']; "
                     "missing = [str(path) for path in required if not path.exists()]; "
-                    "assert not missing, missing; print(json.dumps([str(path) for path in required]))"
+                    "assert not missing, missing; assert len(load_role_contracts()) == 8; "
+                    "print(json.dumps([str(path) for path in required]))"
                 ),
             ],
             runtime_dir,
@@ -113,6 +121,7 @@ def smoke_test(wheel: Path) -> dict[str, object]:
             "wheel": str(wheel),
             "console_help": True,
             "resume_help": True,
+            "prompt_check_help": True,
             "resources": json.loads(resource_result.stdout),
             "quiz_word_count": len(vocab_payload["quiz_words"]),
         }

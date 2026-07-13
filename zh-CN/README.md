@@ -197,7 +197,7 @@ python -m examlex daily-plan --profile learner-profile.json --ability ability-pr
 
 ### 八个助教角色
 
-内置八个专业助教，覆盖英语备考全场景。公开仓库发布角色边界与占位符，私有提示词正文仅存于用户本地。
+内置八个专业助教，覆盖英语备考全场景。公开仓库发布角色边界、占位符和机器可读的 [助教角色契约](../skills/examlex/references/tutor-role-contracts.json)；私有提示词正文仅存于用户本地。
 
 | 助教 | 快捷 Skill | 核心职责 | 职责边界 |
 |------|:---------:|----------|----------|
@@ -695,6 +695,15 @@ examlex backup ./local/data
 | 🔒 **full-local** | 用户本机私有环境 | 可路由到仓库外的私有提示词资产 |
 
 > **重要约束**：原始八个助教提示词正文不发布、不重写、不重构进任何公开文件。公开文档中的占位符（如 `[PRIVATE_PROMPT_PLACEHOLDER: grammar-corrector]`）仅为接口标记。详见 [提示词策略](docs/prompt-policy.md)。
+
+使用 full-local 模式时，在仓库外的一个目录中严格保存八个 `<role-id>.md` 文件，然后在不暴露正文的前提下校验：
+
+```powershell
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts"
+python run.py prompt-check --private-dir "D:\path\to\ExamLex-Private-Prompts" --json
+```
+
+检查只输出文件大小与 SHA-256 哈希。运行时会在内存中组合选定的私有正文、公开角色契约和明确分隔的不可信学习者上下文。绝不能提交私有目录；严格文件名与边界详见 [提示词策略](docs/prompt-policy.md)。
 
 ---
 
