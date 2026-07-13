@@ -12,6 +12,13 @@ license = "MIT"
 authors = [{ name = "ExamLex Contributors" }]
 dependencies = []
 
+[project.optional-dependencies]
+quality = [
+    "coverage==7.15.0",
+    "ruff==0.15.20",
+]
+release = ["build==1.5.0"]
+
 [project.urls]
 Homepage = "https://github.com/SFEW888/ExamLex"
 Repository = "https://github.com/SFEW888/ExamLex"
@@ -29,6 +36,19 @@ examlex = ["SKILL.md", "assets/**/*", "references/*.md"]
 [tool.unittest]
 start-directory = "tests"
 
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+extend-exclude = ["examlex"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*.py" = ["E402"]
+"tests/**/*.py" = ["E402"]
+
 [tool.examlex]
 skill-path = "skills/examlex"
 prompt-mode = "public-safe"
+
+[tool.examlex.mirror]
+source = "skills/examlex"
+generated = "examlex"

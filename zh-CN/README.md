@@ -261,6 +261,7 @@ examlex extract --input <url|file|name> --type <auto|video|book|text|person>
 examlex validate --artifacts-dir <path>
 examlex commit --artifacts-dir <path> --library strategy-library.json
 examlex ops-check
+examlex ops-check --offline    # 不发起真实网络请求的确定性检查
 ```
 
 ---
@@ -445,7 +446,7 @@ Agent 对话层 (Claude Code / Codex / Cursor)
 
 ### 设计原则
 
-- **双轨分离**：`skills/examlex/`（Agent 可读的 Skill 包）与 `examlex/`（Python 可导入的镜像）保持字段兼容，脚本输出可互相校验。
+- **生成式双轨分离**：`skills/examlex/` 是唯一人工维护、可移植的 Agent Skill 源码；`examlex/` 是供测试、打包和 CLI 使用的自动生成 Python 镜像，CI 会拒绝缺失、被改动或多余的镜像文件。
 - **确定性优先**：脚本刻意避免概率式规划或评分逻辑，所有自动化输出可审计、可复现。
 - **公开安全**：GitHub 仓库仅发布角色边界、模板、Schema、脚本接口和占位符；原始八个助教提示词正文不进入公开仓库。
 

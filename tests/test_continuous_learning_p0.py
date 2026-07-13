@@ -1,7 +1,6 @@
 import io
 import hashlib
 import json
-import re
 import tempfile
 import unittest
 from contextlib import redirect_stdout

@@ -36,7 +36,7 @@ class ContinuousLearningP1Tests(unittest.TestCase):
             original_sidecar = Path(f"{archive}.sha256").read_bytes()
             (source / "profile.json").write_text("second", encoding="utf-8")
 
-            with patch("tarfile.TarFile.add", side_effect=OSError("simulated failure")):
+            with patch("tarfile.TarFile.addfile", side_effect=OSError("simulated failure")):
                 with self.assertRaisesRegex(OSError, "simulated failure"):
                     backup_data.create_backup(source, archive)
 
@@ -63,6 +63,33 @@ class ContinuousLearningP1Tests(unittest.TestCase):
 
             self.assertTrue(verified["verified"])
 
+    def test_backup_hashes_source_during_archive_write_without_prehash_pass(self):
+        with self._temporary_dir() as temp:
+            root = Path(temp)
+            source = root / "learner-data"
+            source.mkdir()
+            profile = source / "profile.json"
+            profile.write_text("single source pass", encoding="utf-8")
+            archive = root / "backup.tar.gz"
+            real_sha256_file = backup_data._sha256_file
+
+            def reject_source_prehash(path):
+                if Path(path).resolve() == profile.resolve():
+                    raise AssertionError("source file was hashed in a separate pass")
+                return real_sha256_file(path)
+
+            with patch.object(
+                backup_data,
+                "_sha256_file",
+                side_effect=reject_source_prehash,
+            ):
+                metadata = backup_data.create_backup(source, archive)
+
+            self.assertEqual(
+                hashlib.sha256(b"single source pass").hexdigest(),
+                metadata["file_hashes"]["profile.json"],
+            )
+
     def test_backup_rejects_source_changes_before_atomic_publish(self):
         with self._temporary_dir() as temp:
             root = Path(temp)
@@ -71,17 +98,19 @@ class ContinuousLearningP1Tests(unittest.TestCase):
             profile = source / "profile.json"
             profile.write_text("before", encoding="utf-8")
             archive = root / "backup.tar.gz"
-            real_add = tarfile.TarFile.add
+            real_addfile = tarfile.TarFile.addfile
 
-            def mutate_then_add(archive_object, name, *args, **kwargs):
-                profile.write_text("after", encoding="utf-8")
-                return real_add(archive_object, name, *args, **kwargs)
+            def mutate_after_add(archive_object, tarinfo, fileobj=None):
+                result = real_addfile(archive_object, tarinfo, fileobj)
+                if tarinfo.name == "profile.json":
+                    profile.write_text("after", encoding="utf-8")
+                return result
 
             with patch.object(
                 tarfile.TarFile,
-                "add",
+                "addfile",
                 autospec=True,
-                side_effect=mutate_then_add,
+                side_effect=mutate_after_add,
             ):
                 with self.assertRaisesRegex(ValueError, "changed during backup"):
                     backup_data.create_backup(source, archive)

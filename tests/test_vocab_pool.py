@@ -11,7 +11,7 @@ SKILL_SCRIPTS = REPO_ROOT / "skills" / "examlex" / "scripts"
 sys.path.insert(0, str(SKILL_SCRIPTS))
 
 import vocab_generator
-from vocab_generator import generate_all, generate_level, validate_entry, load_schema
+from vocab_generator import generate_level, validate_entry, load_schema
 
 
 class TestVocabPool(unittest.TestCase):
@@ -125,9 +125,6 @@ class TestVocabPool(unittest.TestCase):
             {"word": "abstract", "frequency_rank": 50, "meaning_cn": "抽象的",
              "synonyms": ["theoretical"], "collocations": []},
         ]
-        ability = {"modules": {
-            "vocabulary": [{"node": "词义识别", "status": "needs_work"}],
-        }}
         # "give up" matches "词义识别" dimension — actually, the match is based on
         # word/pos/synonyms/collocations containing the dimension text.
         # Let's test with a dimension that literally matches a word

@@ -6,9 +6,9 @@ The Agent reads these instructions and executes them during the DISTILL stage.
 
 from __future__ import annotations
 
-from typing import Any
 
 from .base import BasePromptGuide, triple_verify_guide, untrusted_source_policy
+from ..common import ABILITY_TREE, DEFAULT_EXAM_TYPES
 
 
 class RIAGuide(BasePromptGuide):
@@ -17,7 +17,6 @@ class RIAGuide(BasePromptGuide):
     def stage_instructions(self, stage: str, context: dict | None = None) -> str:
         ctx = context or {}
         artifacts_dir = ctx.get("artifacts_dir", "<artifacts_dir>")
-        from ..common import DEFAULT_EXAM_TYPES, ABILITY_TREE
         exam_types = ctx.get("exam_types", DEFAULT_EXAM_TYPES)
         modules = ctx.get("modules", sorted(ABILITY_TREE.keys()))
 

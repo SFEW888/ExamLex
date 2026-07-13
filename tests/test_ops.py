@@ -25,10 +25,19 @@ class OpsCheckTests(unittest.TestCase):
         self.cfg = TutorConfig()
 
     def test_run_all_returns_report(self):
-        report = run_all_checks(self.cfg)
+        report = run_all_checks(self.cfg, include_network=False)
         self.assertIsInstance(report, OpsReport)
         self.assertGreater(len(report.checks), 0)
         self.assertIn("pass", report.summary)
+
+    @mock.patch("examlex.scripts.ops.check_network")
+    def test_offline_report_skips_live_network_checks(self, mock_network):
+        report = run_all_checks(self.cfg, include_network=False)
+
+        network = next(check for check in report.checks if check.name == "network")
+        self.assertEqual("skip", network.status)
+        self.assertTrue(network.detail["offline"])
+        mock_network.assert_not_called()
 
     def test_check_environment(self):
         result = check_environment(self.cfg)
@@ -108,7 +117,7 @@ class OpsCheckTests(unittest.TestCase):
 
     def test_cli_ops_runs(self):
         from examlex.scripts.cli_ops import main
-        ret = main(["--json"])
+        ret = main(["--json", "--offline"])
         self.assertIn(ret, (0, 1))  # 0=all pass, 1=some warn/fail
 
 
@@ -122,7 +131,7 @@ class OpsJSONOutputTests(unittest.TestCase):
         old_stdout = sys.stdout
         sys.stdout = io.StringIO()
         try:
-            main(["--json"])
+            main(["--json", "--offline"])
             output = sys.stdout.getvalue()
         finally:
             sys.stdout = old_stdout

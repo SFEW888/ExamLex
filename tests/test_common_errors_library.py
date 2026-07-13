@@ -58,7 +58,7 @@ class TestCommonErrors(unittest.TestCase):
                 if freq not in {"very_high", "high", "medium", "low"}:
                     errors.append(f"{fpath.name}[{i}]: invalid frequency '{freq}'")
 
-        self.assertEqual(errors, [], f"Schema validation errors:\n" + "\n".join(errors))
+        self.assertEqual(errors, [], "Schema validation errors:\n" + "\n".join(errors))
 
     def test_tags_exist_in_error_taxonomy(self):
         """All pattern tags are in ERROR_TAG_TO_ABILITY."""
@@ -69,7 +69,7 @@ class TestCommonErrors(unittest.TestCase):
                 tag = p.get("tag", "")
                 if tag not in common.ERROR_TAG_TO_ABILITY:
                     unknown.append(f"{fpath.name}: {tag}")
-        self.assertEqual(unknown, [], f"Unknown tags:\n" + "\n".join(unknown))
+        self.assertEqual(unknown, [], "Unknown tags:\n" + "\n".join(unknown))
 
     def test_exam_types_valid(self):
         """All exam_types values are in common.EXAM_TYPES."""
@@ -80,7 +80,7 @@ class TestCommonErrors(unittest.TestCase):
                 for et in p.get("exam_types", []):
                     if et not in common.EXAM_TYPES:
                         invalid.append(f"{fpath.name}[{i}]: exam_type '{et}'")
-        self.assertEqual(invalid, [], f"Invalid exam types:\n" + "\n".join(invalid))
+        self.assertEqual(invalid, [], "Invalid exam types:\n" + "\n".join(invalid))
 
     def test_examples_have_correct_incorrect(self):
         """All typical_examples entries have correct and incorrect fields."""
@@ -93,7 +93,7 @@ class TestCommonErrors(unittest.TestCase):
                         bad.append(f"{fpath.name}[{i}].examples[{j}]: missing correct/incorrect")
                     if not ex.get("incorrect") or not ex.get("correct"):
                         bad.append(f"{fpath.name}[{i}].examples[{j}]: empty correct/incorrect")
-        self.assertEqual(bad, [], f"Example issues:\n" + "\n".join(bad))
+        self.assertEqual(bad, [], "Example issues:\n" + "\n".join(bad))
 
     def test_related_tags_exist(self):
         """All related_tags reference valid error tags."""
@@ -104,7 +104,7 @@ class TestCommonErrors(unittest.TestCase):
                 for rt in p.get("related_tags", []):
                     if rt not in common.ERROR_TAG_TO_ABILITY:
                         unknown.append(f"{fpath.name}[{i}]: related_tag '{rt}'")
-        self.assertEqual(unknown, [], f"Unknown related tags:\n" + "\n".join(unknown))
+        self.assertEqual(unknown, [], "Unknown related tags:\n" + "\n".join(unknown))
 
     def test_non_empty_collection(self):
         """Each error file contains at least 1 pattern."""

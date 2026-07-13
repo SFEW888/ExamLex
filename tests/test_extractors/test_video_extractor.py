@@ -11,6 +11,9 @@ from examlex.scripts.extractors.video import (
     _select_backend,
     _resolve_model,
     _build_ffmpeg_command,
+    _MultipartBody,
+    _multipart_filename,
+    _transcribe_siliconflow,
 )
 from examlex.scripts.config import TutorConfig
 
@@ -192,6 +195,83 @@ class VideoExtractorTests(unittest.TestCase):
 
 
 class ASRHelperTests(unittest.TestCase):
+    def test_siliconflow_upload_streams_audio_in_bounded_chunks(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            audio = root / "sample.mp3"
+            transcript = root / "transcript.txt"
+            payload = root / "transcript.json"
+            audio.write_bytes(b"abcdefghij")
+            response = mock.MagicMock(
+                status=200,
+                reason="OK",
+            )
+            response.read.return_value = b'{"text": "streamed transcript"}'
+            response.__enter__.return_value = response
+
+            with mock.patch(
+                "examlex.scripts.extractors.video.urlopen",
+                return_value=response,
+            ) as open_url, mock.patch(
+                "examlex.scripts.extractors.video._UPLOAD_CHUNK_SIZE",
+                4,
+            ), mock.patch(
+                "pathlib.Path.read_bytes",
+                side_effect=AssertionError("unbounded read_bytes"),
+            ):
+                _transcribe_siliconflow(
+                    audio,
+                    transcript,
+                    payload,
+                    "FunAudioLLM/SenseVoiceSmall",
+                    api_key="test-key",
+                )
+                request = open_url.call_args.args[0]
+                self.assertIsInstance(request.data, _MultipartBody)
+                sent = list(request.data)
+                self.assertEqual(sent, list(request.data))
+            self.assertIn(b"abcd", sent)
+            self.assertIn(b"efgh", sent)
+            self.assertIn(b"ij", sent)
+            self.assertNotIn(b"abcdefghij", sent)
+            self.assertEqual("streamed transcript\n", transcript.read_text(encoding="utf-8"))
+            self.assertEqual(
+                "streamed transcript",
+                json.loads(payload.read_text(encoding="utf-8"))["text"],
+            )
+            self.assertIn('filename="sample.mp3"', sent[0].decode("utf-8"))
+            self.assertEqual(
+                str(sum(len(part) for part in sent)),
+                dict(request.header_items())["Content-length"],
+            )
+
+    def test_siliconflow_sanitizes_multipart_filename(self):
+        self.assertEqual(
+            "sample___name.mp3",
+            _multipart_filename('sample"\r\nname.mp3'),
+        )
+
+    def test_siliconflow_rejects_oversized_audio_before_connecting(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            audio = root / "large.mp3"
+            audio.write_bytes(b"12345")
+            with mock.patch(
+                "examlex.scripts.extractors.video._MAX_AUDIO_UPLOAD_BYTES",
+                4,
+            ), mock.patch(
+                "examlex.scripts.extractors.video.urlopen",
+            ) as open_url:
+                with self.assertRaisesRegex(RuntimeError, "too large"):
+                    _transcribe_siliconflow(
+                        audio,
+                        root / "transcript.txt",
+                        root / "transcript.json",
+                        "model",
+                        api_key="test-key",
+                    )
+            open_url.assert_not_called()
+
     def test_auto_backend_never_selects_cloud_asr(self):
         with mock.patch.dict("os.environ", {"SILICONFLOW_API_KEY": "sk-test"}):
             with mock.patch("shutil.which", return_value=None):

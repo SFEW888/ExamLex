@@ -197,7 +197,8 @@ New pipeline commands for advanced distillation:
 examlex extract --input <url|file|name> [--type auto|video|book|text|person]
 examlex validate --artifacts-dir <path>
 examlex commit --artifacts-dir <path> --library strategy-library.json
-examlex ops-check    # 13-point operational readiness check
+examlex ops-check              # 13-point operational readiness check
+examlex ops-check --offline    # deterministic check without live network requests
 ```
 
 Five distillation methods: `direct` (text), `book` (PDF/EPUB/DOCX), `video` (B站/YouTube + ASR), `person` (cognitive extraction), `manual` (conversation notes). Each strategy is automatically scored on a 9-dimension Darwin rubric (100 points). Strategies below 70 enter hill-climb optimization (max 3 rounds).
@@ -411,7 +412,7 @@ No. All five distillation paths are implemented by local project code. Heavy ext
 
 ### Design Principles
 
-- **Two-track separation:** `skills/examlex/` is the portable Agent-readable Skill package, while `examlex/` is the importable Python mirror used by tests and the CLI. Their script fields and behavior stay synchronized.
+- **Generated two-track separation:** `skills/examlex/` is the only hand-edited, portable Agent-readable Skill source. `examlex/` is its generated Python mirror for tests, packaging, and the CLI; CI rejects missing, changed, or extra mirror files.
 - **Determinism first:** planning, validation, attribution, and scoring scripts favor auditable and reproducible rules over probabilistic hidden state.
 - **Public safety:** the repository publishes role boundaries, templates, schemas, script interfaces, and placeholders only. The original eight tutor prompt bodies never enter public history.
 

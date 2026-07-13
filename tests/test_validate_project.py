@@ -581,6 +581,19 @@ class ValidateProjectTests(unittest.TestCase):
 
         self.assertTrue(any("mirror mismatch" in error for error in result.errors))
 
+    def test_detects_extra_generated_python_file(self):
+        with copy_project() as temp:
+            root = Path(temp) / "repo"
+            extra = root / "examlex" / "scripts" / "manual-only.py"
+            extra.write_text("VALUE = 1\n", encoding="utf-8")
+
+            result = validate_repo.validate_project(root)
+
+        self.assertIn(
+            "extra generated Python file: scripts/manual-only.py",
+            result.errors,
+        )
+
     def test_detects_resource_mirror_mismatch(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
@@ -750,6 +763,10 @@ class ValidateProjectTests(unittest.TestCase):
             ci,
         )
         self.assertIn("fail-fast: false", ci)
+        self.assertIn("python -m coverage report", ci)
+        self.assertIn("python -m ruff check .", ci)
+        self.assertIn("needs: [quality, test]", ci)
+        self.assertEqual(1, ci.count("python -m build"))
 
     def test_detects_missing_readme_quality_section(self):
         with copy_project() as temp:

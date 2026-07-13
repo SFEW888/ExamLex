@@ -36,3 +36,12 @@ class WheelSmokeScriptTests(unittest.TestCase):
 
         self.assertEqual(0, result.returncode, result.stderr)
         self.assertIn("wheel", result.stdout.lower())
+
+    def test_smoke_script_checks_resume_and_packaged_resources(self):
+        source = SMOKE_SCRIPT.read_text(encoding="utf-8")
+
+        self.assertIn('"resume", "--help"', source)
+        self.assertIn("root / 'assets' / 'schemas'", source)
+        self.assertIn("root / 'assets' / 'templates'", source)
+        self.assertIn("root / 'references'", source)
+        self.assertIn("root / 'SKILL.md'", source)

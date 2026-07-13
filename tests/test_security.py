@@ -8,7 +8,6 @@ from pathlib import Path
 from examlex.scripts.common import load_data, save_data
 from examlex.scripts.optimizers.ratchet import StrategyRatchet
 from examlex.scripts.session import SessionManager
-from examlex.scripts.extractors.url_resolver import resolve_input, InputType
 from examlex.scripts.extractors.text import TextExtractor
 import io
 import os

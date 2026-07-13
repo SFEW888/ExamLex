@@ -91,6 +91,9 @@ def _validate_video_url(url: str) -> str:
 # ── SiliconFlow ASR ────────────────────────────────
 
 SILICONFLOW_URL = "https://api.siliconflow.cn/v1/audio/transcriptions"
+_MAX_AUDIO_UPLOAD_BYTES = 200 * 1024 * 1024
+_MAX_ASR_RESPONSE_BYTES = 10 * 1024 * 1024
+_UPLOAD_CHUNK_SIZE = 1024 * 1024
 SILICONFLOW_MODEL = "FunAudioLLM/SenseVoiceSmall"
 
 
@@ -408,49 +411,89 @@ def _transcribe_whisper(audio_path: Path, output_dir: Path,
         json_path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+def _multipart_filename(name: str) -> str:
+    return (
+        name.replace("\\", "_")
+        .replace('"', "_")
+        .replace("\r", "_")
+        .replace("\n", "_")
+    )
+
+
+class _MultipartBody:
+    """Re-iterable multipart body that opens the audio file for each request."""
+
+    def __init__(self, preamble: bytes, audio_path: Path, closing: bytes):
+        self.preamble = preamble
+        self.audio_path = audio_path
+        self.closing = closing
+
+    def __iter__(self):
+        yield self.preamble
+        with self.audio_path.open("rb") as audio_stream:
+            while chunk := audio_stream.read(_UPLOAD_CHUNK_SIZE):
+                yield chunk
+        yield self.closing
+
+
 def _transcribe_siliconflow(audio_path: Path, transcript_path: Path,
                             json_path: Path, model: str,
                             api_key: str | None = None) -> None:
     api_key = api_key if api_key is not None else os.environ.get("SILICONFLOW_API_KEY")
     if not api_key:
         raise RuntimeError("SILICONFLOW_API_KEY not set")
+    if "\r" in model or "\n" in model:
+        raise RuntimeError("Invalid SiliconFlow model name")
 
     file_size = audio_path.stat().st_size
-    max_size = 200 * 1024 * 1024  # 200 MB safety limit
-    if file_size > max_size:
+    if file_size > _MAX_AUDIO_UPLOAD_BYTES:
         raise RuntimeError(
-            f"Audio file too large ({file_size} bytes, >{max_size})"
+            f"Audio file too large ({file_size} bytes, >{_MAX_AUDIO_UPLOAD_BYTES})"
         )
 
     boundary = f"----examlex-{uuid.uuid4().hex}"
-    body_parts = [
-        f"--{boundary}\r\n".encode(),
+    filename = _multipart_filename(audio_path.name)
+    preamble = b"".join([
+        f"--{boundary}\r\n".encode("ascii"),
         b'Content-Disposition: form-data; name="model"\r\n\r\n',
-        model.encode(), b"\r\n",
-        f"--{boundary}\r\n".encode(),
-        f'Content-Disposition: form-data; name="file"; filename="{audio_path.name}"\r\n'.encode(),
+        model.encode("utf-8"), b"\r\n",
+        f"--{boundary}\r\n".encode("ascii"),
+        f'Content-Disposition: form-data; name="file"; filename="{filename}"\r\n'.encode("utf-8"),
         b"Content-Type: audio/mpeg\r\n\r\n",
-        audio_path.read_bytes(), b"\r\n",
-        f"--{boundary}--\r\n".encode(),
-    ]
-    body = b"".join(body_parts)
-
-    req = Request(
-        SILICONFLOW_URL, data=body,
+    ])
+    closing = f"\r\n--{boundary}--\r\n".encode("ascii")
+    content_length = len(preamble) + file_size + len(closing)
+    body = _MultipartBody(preamble, audio_path, closing)
+    request = Request(
+        SILICONFLOW_URL,
+        data=body,
         headers={
             "Authorization": f"Bearer {api_key}",
             "Content-Type": f"multipart/form-data; boundary={boundary}",
+            "Content-Length": str(content_length),
+            "Accept": "application/json",
         },
         method="POST",
     )
     try:
-        with urlopen(req, timeout=600) as resp:
-            data = json.loads(resp.read().decode("utf-8", errors="replace"))
+        with urlopen(request, timeout=600) as response:
+            raw_response = response.read(_MAX_ASR_RESPONSE_BYTES + 1)
     except HTTPError as exc:
-        detail = exc.read().decode("utf-8", errors="replace")
+        detail = exc.read(_MAX_ASR_RESPONSE_BYTES + 1).decode(
+            "utf-8",
+            errors="replace",
+        )
         raise RuntimeError(f"SiliconFlow HTTP {exc.code}: {detail}") from exc
-    except URLError as exc:
+    except (URLError, OSError) as exc:
         raise RuntimeError(f"SiliconFlow network error: {exc}") from exc
+
+    if len(raw_response) > _MAX_ASR_RESPONSE_BYTES:
+        raise RuntimeError("SiliconFlow response exceeded the 10 MB safety limit")
+    detail = raw_response.decode("utf-8", errors="replace")
+    try:
+        data = json.loads(detail)
+    except json.JSONDecodeError as exc:
+        raise RuntimeError("SiliconFlow returned invalid JSON") from exc
 
     text = (data.get("text") or "").strip()
     if not text:

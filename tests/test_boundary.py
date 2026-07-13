@@ -1,9 +1,6 @@
 """Boundary and edge-case tests."""
 
-import json
-import tempfile
 import unittest
-from pathlib import Path
 
 from examlex.scripts.validators.format_checker import FormatChecker
 from examlex.scripts.validators.darwin_structure import DarwinStructureScorer

@@ -66,13 +66,25 @@ def smoke_test(wheel: Path) -> dict[str, object]:
             env,
         )
         help_result = run_checked([str(examlex_command), "--help"], runtime_dir, env)
+        resume_help_result = run_checked(
+            [str(examlex_command), "resume", "--help"], runtime_dir, env
+        )
+        if "usage: examlex" not in help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose its main help")
+        if "usage: examlex resume" not in resume_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose resume help")
         resource_result = run_checked(
             [
                 str(python),
                 "-c",
                 (
+                    "import json; from pathlib import Path; import examlex; "
                     "from examlex.scripts.estimate_vocabulary import _DEFAULT_REF; "
-                    "assert _DEFAULT_REF.is_file(), _DEFAULT_REF; print(_DEFAULT_REF)"
+                    "root = Path(examlex.__file__).resolve().parent; "
+                    "required = [root / 'SKILL.md', root / 'assets' / 'schemas', "
+                    "root / 'assets' / 'templates', root / 'references', _DEFAULT_REF]; "
+                    "missing = [str(path) for path in required if not path.exists()]; "
+                    "assert not missing, missing; print(json.dumps([str(path) for path in required]))"
                 ),
             ],
             runtime_dir,
@@ -99,8 +111,9 @@ def smoke_test(wheel: Path) -> dict[str, object]:
 
         return {
             "wheel": str(wheel),
-            "console_help": "usage: examlex" in help_result.stdout,
-            "resource": resource_result.stdout.strip(),
+            "console_help": True,
+            "resume_help": True,
+            "resources": json.loads(resource_result.stdout),
             "quiz_word_count": len(vocab_payload["quiz_words"]),
         }
 

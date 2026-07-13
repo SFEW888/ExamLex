@@ -5,7 +5,6 @@ omit =
     tests/*
     */__init__.py
     examlex/scripts/vocab_data.py
-    examlex/cli.py
 
 [report]
 exclude_lines =
@@ -16,6 +15,7 @@ exclude_lines =
     raise SystemExit
 show_missing = true
 precision = 2
+fail_under = 55
 
 [html]
 directory = htmlcov

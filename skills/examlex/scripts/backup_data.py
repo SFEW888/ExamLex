@@ -12,7 +12,7 @@ import tarfile
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, BinaryIO
 
 
 DEFAULT_EXCLUDES = [".env*", "*private*"]
@@ -38,20 +38,25 @@ def create_backup(data_dir: str | Path, output: str | Path, exclude: list[str] |
     )
     target.parent.mkdir(parents=True, exist_ok=True)
 
-    file_hashes = {
-        path.relative_to(source).as_posix(): _sha256_file(path)
-        for path in files
+    if len(files) + 1 > MAX_ARCHIVE_MEMBERS:
+        raise ValueError(f"backup member count exceeds limit {MAX_ARCHIVE_MEMBERS}")
+    source_fingerprints = {path: _file_fingerprint(path) for path in files}
+    source_sizes = {
+        path: fingerprint[0]
+        for path, fingerprint in source_fingerprints.items()
     }
-    metadata: dict[str, Any] = {
-        "backup_version": "1.2",
-        "created_at": datetime.now(timezone.utc).isoformat(),
-        "total_files": len(files),
-        "total_size_bytes": sum(path.stat().st_size for path in files),
-        "exclude_patterns": patterns,
-        "source_data_dir": str(data_dir),
-        "contents": [path.relative_to(source).as_posix() for path in files],
-        "file_hashes": file_hashes,
-    }
+    oversized = next(
+        (path for path, size in source_sizes.items() if size > MAX_ARCHIVE_MEMBER_BYTES),
+        None,
+    )
+    if oversized is not None:
+        raise ValueError(
+            f"backup member size exceeds limit {MAX_ARCHIVE_MEMBER_BYTES}: "
+            f"{oversized.relative_to(source).as_posix()}"
+        )
+    total_size = sum(source_sizes.values())
+    if total_size > MAX_ARCHIVE_TOTAL_BYTES:
+        raise ValueError(f"backup total size exceeds limit {MAX_ARCHIVE_TOTAL_BYTES}")
 
     temporary: Path | None = None
     try:
@@ -63,12 +68,34 @@ def create_backup(data_dir: str | Path, output: str | Path, exclude: list[str] |
         ) as stream:
             temporary = Path(stream.name)
         with tarfile.open(temporary, "w:gz") as archive:
+            file_hashes: dict[str, str] = {}
+            for path in files:
+                relative = path.relative_to(source).as_posix()
+                file_hashes[relative] = _archive_file(
+                    archive,
+                    path,
+                    relative,
+                    source_fingerprints[path],
+                )
+
+            metadata: dict[str, Any] = {
+                "backup_version": "1.2",
+                "created_at": datetime.now(timezone.utc).isoformat(),
+                "total_files": len(files),
+                "total_size_bytes": total_size,
+                "exclude_patterns": patterns,
+                "source_data_dir": str(data_dir),
+                "contents": [path.relative_to(source).as_posix() for path in files],
+                "file_hashes": file_hashes,
+            }
             encoded = json.dumps(metadata, ensure_ascii=False, indent=2).encode("utf-8")
+            if len(encoded) > MAX_BACKUP_METADATA_BYTES:
+                raise ValueError(
+                    f"backup metadata size exceeds limit {MAX_BACKUP_METADATA_BYTES}"
+                )
             info = tarfile.TarInfo("backup-metadata.json")
             info.size = len(encoded)
             archive.addfile(info, io.BytesIO(encoded))
-            for path in files:
-                archive.add(path, arcname=path.relative_to(source).as_posix())
 
         metadata["checksum_sha256"] = _sha256_file(temporary)
         verification = verify_backup(
@@ -294,6 +321,53 @@ def _sha256_stream(stream) -> str:
 def _sha256_file(path: Path) -> str:
     with path.open("rb") as stream:
         return _sha256_stream(stream)
+
+
+class _HashingReader:
+    """Hash a source file while tarfile consumes it in bounded chunks."""
+
+    def __init__(self, stream: BinaryIO):
+        self._stream = stream
+        self._digest = hashlib.sha256()
+        self.bytes_read = 0
+
+    def read(self, size: int = -1) -> bytes:
+        chunk = self._stream.read(size)
+        self._digest.update(chunk)
+        self.bytes_read += len(chunk)
+        return chunk
+
+    def hexdigest(self) -> str:
+        return self._digest.hexdigest()
+
+
+def _file_fingerprint(path: Path) -> tuple[int, int, int]:
+    stat = path.stat()
+    return stat.st_size, stat.st_mtime_ns, stat.st_ctime_ns
+
+
+def _archive_file(
+    archive: tarfile.TarFile,
+    path: Path,
+    arcname: str,
+    expected_fingerprint: tuple[int, int, int],
+) -> str:
+    """Archive one regular file while hashing and checking snapshot stability."""
+    if path.is_symlink():
+        raise ValueError(f"unsafe backup source: {arcname}")
+    before = _file_fingerprint(path)
+    if before != expected_fingerprint:
+        raise ValueError(f"source data changed during backup: {arcname}")
+    info = archive.gettarinfo(str(path), arcname=arcname)
+    if not info.isfile():
+        raise ValueError(f"unsafe backup source: {arcname}")
+    with path.open("rb") as source_stream:
+        hashing_stream = _HashingReader(source_stream)
+        archive.addfile(info, hashing_stream)
+    after = _file_fingerprint(path)
+    if before != after or hashing_stream.bytes_read != info.size:
+        raise ValueError(f"source data changed during backup: {arcname}")
+    return hashing_stream.hexdigest()
 
 
 def _validated_archive_members(archive: tarfile.TarFile) -> list[tarfile.TarInfo]:

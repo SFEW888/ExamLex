@@ -146,7 +146,6 @@ def generate_daily_plan(
         if isinstance(strategy_list, list):
             for task in tasks:
                 module = task.get("module", "")
-                focus = task.get("focus", "")
                 matches = []
                 for strategy in strategy_list:
                     revision_sha256 = _latest_revision_sha256(strategy)

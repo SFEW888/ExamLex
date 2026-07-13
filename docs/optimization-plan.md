@@ -14,13 +14,17 @@ This document records implemented optimization work and the remaining release pr
 - Generated HTML progress visualization.
 - Sample essays, writing references, and packaged runtime resources.
 - Safe stale-session archival and operational readiness checks.
+- Offline operational checks for deterministic tests and diagnostics.
+- Streaming SiliconFlow multipart uploads, single-pass source hashing for backups, and linear chapter-offset detection.
+- Pruned single-pass repository file indexing, Ruff, branch coverage, and non-duplicated CI builds.
+- A generated Python mirror with `skills/examlex/` as the only hand-edited source.
 
 ## Next Priorities
 
-1. Deepen TEM-4 and TEM-8 workflow examples and regression coverage.
-2. Complete the offline English and Simplified-Chinese documentation contract.
-3. Prepare the first public release checklist and version decision.
-4. Add optional coverage reporting without making it a runtime dependency.
+1. Raise coverage incrementally in currently low-coverage CLI, visualization, and vocabulary modules.
+2. Deepen TEM-4 and TEM-8 workflow examples and regression coverage.
+3. Benchmark large local backups and cloud-audio uploads on representative machines.
+4. Prepare the first public release checklist and version decision.
 5. Expand local-only example workflows for different learner foundations.
 
 ## Rule

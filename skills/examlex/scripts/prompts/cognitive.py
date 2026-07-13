@@ -7,7 +7,6 @@ The Agent reads these instructions and executes them during the DISTILL stage.
 from __future__ import annotations
 
 import re
-from typing import Any
 
 from .base import BasePromptGuide, triple_verify_guide, untrusted_source_policy
 from ..common import DEFAULT_EXAM_TYPES

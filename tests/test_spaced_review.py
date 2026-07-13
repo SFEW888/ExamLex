@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import datetime
-import json
 import sys
 import unittest
 from pathlib import Path
@@ -10,7 +9,6 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SKILL_SCRIPTS = REPO_ROOT / "skills" / "examlex" / "scripts"
 sys.path.insert(0, str(SKILL_SCRIPTS))
 
-import common
 from summarize_errors import summarize_errors, compute_review_urgency
 from record_practice import record_practice
 from generate_daily_plan import generate_daily_plan

@@ -222,6 +222,7 @@ def check_prerun(cfg: TutorConfig) -> CheckResult:
         from .extractors.text import TextExtractor
         from .validators.format_checker import FormatChecker
         from .optimizers.ratchet import StrategyRatchet
+        _ = FormatChecker, StrategyRatchet
         detail["core_imports"] = "ok"
     except ImportError as e:
         issues.append(f"Core import failed: {e}")
@@ -632,8 +633,12 @@ def check_safety_limits(cfg: TutorConfig) -> CheckResult:
 # ═══════════════════════════════════════════
 
 
-def run_all_checks(cfg: TutorConfig | None = None,
-                   library_path: str | None = None) -> OpsReport:
+def run_all_checks(
+    cfg: TutorConfig | None = None,
+    library_path: str | None = None,
+    *,
+    include_network: bool = True,
+) -> OpsReport:
     """Execute all 13 operational readiness checks."""
     if cfg is None:
         cfg = TutorConfig()
@@ -665,7 +670,18 @@ def run_all_checks(cfg: TutorConfig | None = None,
     checks.append(check_business_results(library_path))
 
     # 12: Network
-    checks.append(check_network())
+    if include_network:
+        checks.append(check_network())
+    else:
+        checks.append(
+            CheckResult(
+                "network",
+                "skip",
+                "Network checks skipped by request",
+                {"offline": True},
+                "Run without --offline when live connectivity diagnostics are needed.",
+            )
+        )
 
     # 13: Safety limits
     checks.append(check_safety_limits(cfg))

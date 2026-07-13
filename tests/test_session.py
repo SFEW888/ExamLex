@@ -1,13 +1,12 @@
 """Tests for session and artifact management."""
 import json
-import os
 import shutil
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from examlex.scripts.session import SessionManager, Session
+from examlex.scripts.session import SessionManager
 
 
 class SessionManagerTests(unittest.TestCase):
