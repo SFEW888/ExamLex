@@ -39,11 +39,32 @@ Use the generated tasks as the baseline. Adapt wording for the learner, but keep
 
 ## 3. Practice
 
-Run or assign tasks across vocabulary, listening, reading, translation, and writing. Record results in the practice ledger with `total_items` and `correct_items`.
+Run or assign tasks across vocabulary, listening, reading, translation, writing,
+cloze, language knowledge, proofreading, and dictation as required by the target
+exam. Record results in the practice ledger with `total_items` and
+`correct_items`.
 
 Use `tag_error.py` for deterministic first-pass tags when the learner provides error text. Add manual tags from `references/error-taxonomy.md` when the observed issue is clear.
 
-## 4. Error Attribution
+## 4. Explanation and Review
+
+For every mock paper, answer review, and error explanation, apply
+[answer-explanation-standard.md](answer-explanation-standard.md). The default is
+the complete `detailed` profile for every learner. Give each objective item its
+own answer; question and all-option translations; exact evidence anchor, scope,
+and translation; reasoning; paraphrase or language point; all-option distractor
+analysis; error tag when applicable; and retry action. Complete reading and
+listening reviews include full support-language translations and core vocabulary.
+
+For writing, classify the genre, audience, purpose, and topic; provide at least
+three usable angles, a paragraph plan, an original model and aligned translation,
+topic language, reusable slot-based templates, common errors, and rubric-based
+training guidance. For translation, include sentence-intent analysis, a clause
+map, keyword deliberation, construction steps, an aligned reference answer, and
+acceptable alternatives. Apply the CET Section A/B/C and Postgraduate English
+playbooks in the standard. Repair ambiguous items before recording results.
+
+## 5. Error Attribution
 
 Append practice records with `record_practice.py`, then summarize repeated errors:
 
@@ -53,7 +74,7 @@ python run.py summarize-errors --ledger practice-ledger.json --output error-summ
 
 Treat the summary as evidence for the next plan, not as a final judgment of the learner.
 
-## 5. Ability Update
+## 6. Ability Update
 
 Update the ability profile from the ledger:
 
@@ -67,12 +88,12 @@ Analyze trends when a ledger or ability history has enough points:
 python run.py analyze-trends --ledger practice-ledger.json --history ability-history.json --output trend-analysis.json
 ```
 
-## 6. Writing Loop
+## 7. Writing Loop
 
 For writing tasks, create versioned drafts with `manage_writing_versions.py`. Score drafts with `score_writing_rubric.py` when the user needs a deterministic rubric estimate.
 
 Always state that this score is a rubric estimate, not official scoring. Use version metadata to compare revisions rather than overwriting previous drafts.
 
-## 7. Next Plan
+## 8. Next Plan
 
 Feed the updated ability profile and error summary back into `generate_daily_plan.py`. Prioritize repeated high-impact errors and low-status ability nodes while respecting the learner's daily time budget.

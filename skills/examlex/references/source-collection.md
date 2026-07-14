@@ -12,7 +12,7 @@ providers, and trace projects without preserving unsupported percentage claims.
 | `A` | Article-level trace with an original title or URL and a text-level match. |
 | `B` | Institutional or school trace/pool that still needs article-level verification. |
 | `C` | Candidate or training source with matching genre and difficulty. |
-| `R` | Translation, terminology, or writing reference corpus; not a direct exam source. |
+| `R` | Translation, terminology, writing, or teaching-method reference corpus; not a direct exam source. |
 
 Named outlets in the bundled catalog start at `B` or `C`. An entry may be
 upgraded to `A` only after a separate trace record identifies the exam, section,
@@ -104,6 +104,9 @@ simulation stage should:
 5. Record which source item and transformation produced every simulated task.
 6. Validate answer uniqueness, distractor quality, and copyright-safe output
    before adding the task to a practice set.
+7. Generate item-by-item explanations with
+   [answer-explanation-standard.md](answer-explanation-standard.md), then verify
+   answer, evidence, distractor analysis, and explanation consistency.
 
 The source catalog never claims a fixed outlet percentage or an official media
 ranking. Those claims require a documented sample definition and article-level
