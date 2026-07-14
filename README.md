@@ -313,6 +313,14 @@ corpus outside the repository. Evidence levels, robots/paywall boundaries, and
 simulation provenance are documented in
 [Exam Source Collection](skills/examlex/references/source-collection.md).
 
+Mock papers and answer reviews use the `detailed` explanation profile by default
+for every learner. It requires question and all-option translations, checkable
+evidence and scope, full reading/listening support translations, every-distractor
+analysis, named CET4/CET6/Postgraduate/TEM4/TEM8 playbooks, writing idea banks with model
+translations and reusable slot-based templates, and translation keyword
+deliberation. The complete contract and copyright boundary are defined in the
+[Comprehensive Answer Explanation Standard](skills/examlex/references/answer-explanation-standard.md).
+
 ### Understanding Source Evidence Levels
 
 The `S`, `A`, `B`, `C`, and `R` labels describe the role and strength of a
@@ -326,7 +334,7 @@ expressions such as "A-level mock paper" or "S-level paper."
 | `A` | A trace between one identifiable past-exam passage and one identifiable original article, supported by the exam/session, section, original title or URL, and text-comparison evidence. The exam passage may be shortened or adapted; it need not be word-for-word identical. | It does not make every article from the same outlet A-level, and it does not turn a newly generated mock passage into a past-exam source. |
 | `B` | An institutional, school, education-provider, or trace-project source pool that is relevant but still lacks article-level comparison evidence. | A media name or general source claim alone cannot prove that a specific past-exam passage came from a specific article. |
 | `C` | A candidate or training source whose topic, genre, language, or difficulty is suitable for practice. | Similarity in topic or difficulty is not proof of past-exam use. |
-| `R` | A reference corpus for translation, terminology, cultural background, or writing. | A textbook, terminology database, or reference corpus is not an official fixed question bank or a direct past-exam source. |
+| `R` | A reference corpus for translation, terminology, cultural background, writing, or teaching methods. | A textbook, terminology database, practice book, or reference corpus is not an official fixed question bank or a direct past-exam source. |
 
 `A` is deliberately narrow and article-specific. To assign it, a trace record
 must identify the particular exam or paper, the section or passage, the
@@ -346,7 +354,7 @@ the publisher an officially designated exam source.
 For an original mock paper, the normal and transparent evidence composition is:
 
 > `S`-level structure or scope guidance + `B`/`C` source selection or topic
-> references + `R` translation/writing references + newly written passages and
+> references + `R` translation/writing/teaching-method references + newly written passages and
 > questions.
 
 Such a mock paper may contain no `A` traces at all. That is expected, because a
@@ -361,7 +369,7 @@ When documenting a simulated task, state the transformation explicitly:
 - **Topic reference:** a `B` or `C` item informed the topic, genre, or difficulty.
 - **Fact verification:** a named article and URL were used to check limited facts, without claiming that the mock passage is a past-exam adaptation.
 - **Adaptation:** selected source information was substantially rewritten into a new, copyright-safe passage, with attribution and the transformation recorded.
-- **Reference use:** an `R` corpus informed terminology, translation, cultural background, or writing; it was not treated as an official question bank.
+- **Reference use:** an `R` corpus informed terminology, translation, cultural background, writing, or teaching method; it was not treated as an official question bank or direct question source.
 
 Every generated paper should also say clearly that it is a simulation rather
 than an official past paper. Candidate or training media must never be presented

@@ -571,6 +571,44 @@ class ValidateProjectTests(unittest.TestCase):
                 "approved",
             ),
             (
+                PROJECT_ROOT
+                / "skills"
+                / "examlex"
+                / "references"
+                / "answer-explanation-standard.md",
+                PROJECT_ROOT
+                / "zh-CN"
+                / "skill"
+                / "references"
+                / "answer-explanation-standard.md",
+            ): (
+                "CET4-specific-playbook",
+                "CET6-specific-playbook",
+                "postgraduate-playbook-contract",
+                "TEM4-specific-playbook",
+                "TEM8-specific-playbook",
+                "answer_key",
+                "question_translation",
+                "option_translation",
+                "evidence_anchor",
+                "evidence_scope",
+                "evidence_translation",
+                "distractor_analysis",
+                "error_tag",
+                "learner_retry",
+                "reference_translation",
+                "idea_bank",
+                "topic_vocabulary",
+                "reusable_templates",
+                "sentence_intent_analysis",
+                "clause_map",
+                "keyword_deliberation",
+                "translation_build",
+                "Section A",
+                "Section B",
+                "Section C",
+            ),
+            (
                 PROJECT_ROOT / "docs" / "usage.md",
                 PROJECT_ROOT / "zh-CN" / "docs" / "usage.md",
             ): ("--plan-task-index", "writing-version", "summarize-errors", "backup"),
