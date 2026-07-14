@@ -143,6 +143,28 @@ short excerpts or location references where full reproduction is not permitted.
   reversed logic, unsupported detail, wrong subject, changed time, narrowed or
   expanded scope, extreme wording, or plausible-but-unmentioned content.
 
+### CET-4-specific playbook `CET4-specific-playbook`
+
+A complete `CET4` detailed answer book must contain writing, listening, Reading
+Section A/B/C, and Chinese-to-English translation packages whenever those
+sections appear in the active exam profile. Apply every shared translation,
+evidence, distractor, writing, and translation-construction field above. Calibrate
+vocabulary, sentence complexity, inference depth, script speed, length, and
+timing to the active `CET4` profile; simpler language never permits a shorter
+explanation. End with the source/evidence-role statement and an explicit notice
+that the simulation is not an official paper.
+
+### CET-6-specific playbook `CET6-specific-playbook`
+
+A complete `CET6` detailed answer book must contain writing, listening, Reading
+Section A/B/C, and Chinese-to-English translation packages whenever those
+sections appear in the active exam profile. Apply every shared translation,
+evidence, distractor, writing, and translation-construction field above. Calibrate
+for the active `CET6` profile's denser paraphrase, more abstract argument,
+longer-sentence logic, speaker qualification, and inference burden without
+inventing complexity unsupported by the paper. End with the source/evidence-role
+statement and an explicit notice that the simulation is not an official paper.
+
 ### CET word-bank gap filling: Reading Section A
 
 For `CET4` and `CET6` Section A, the detailed answer must include:
@@ -172,7 +194,7 @@ vocabulary. For every item translate the stem and all four options; give the
 paragraph/sentence location, evidence scope, evidence translation, reasoning,
 paraphrase map, and separate elimination of A, B, C, and D as applicable.
 
-### Postgraduate English reading and Use of English
+### Postgraduate English-specific playbook `POSTGRADUATE_ENGLISH-specific-playbook`
 
 For `POSTGRADUATE_ENGLISH`:
 
@@ -188,6 +210,84 @@ For `POSTGRADUATE_ENGLISH`:
 - Reading/Translation Part C must split each underlined sentence into clauses,
   resolve reference and logic, deliberate key words, build a literal skeleton,
   and produce a natural aligned translation.
+
+### TEM-4-specific playbook `TEM4-specific-playbook`
+
+For `TEM4`, apply the shared detailed contract and add the following section
+requirements. Follow the active exam profile for timing, word count, and section
+presence; do not invent a section that is absent from the target paper.
+
+- `TEM4 dictation`: after the timed attempt, give the complete script and full
+  translation, divide it into numbered sense groups, and mark punctuation,
+  capitalization, function words, morphology, linking, weak forms, and spelling
+  traps. For every missed span, distinguish hearing, segmentation, grammar,
+  spelling, memory, and punctuation errors, then give an exact replay-and-write
+  task.
+- `TEM4 listening`: provide the full transcript and translation for each
+  conversation or passage; translate every question and all options; identify
+  speaker role, attitude, turn, transition, number, cause, and inference; give
+  the exact evidence line and eliminate every distractor.
+- `TEM4 language knowledge`: translate the stem and all options, name the tested
+  grammar, usage, collocation, or lexical distinction, parse the trigger
+  structure, explain each option, state any register or exception boundary, and
+  give a minimal-pair transfer example.
+- `TEM4 cloze`: provide an option table with meanings and parts of speech, the
+  completed passage, full translation, core vocabulary, and per-blank grammar,
+  collocation, semantic, reference, and discourse analysis. Compare every
+  plausible candidate rather than explaining only the correct word.
+- `TEM4 reading`: provide the full passage translation and core vocabulary;
+  translate each question and all options; give location, evidence scope and
+  translation, paraphrase or inference chain, decisive long-sentence parsing,
+  and separate distractor rejection.
+- `TEM4 writing`: apply the full writing contract, including genre and prompt
+  analysis, at least three angles, paragraph plan, original model and aligned
+  translation, common and advanced topic vocabulary, reusable slot-based
+  templates, rubric estimate, and revision task.
+
+### TEM-8-specific playbook `TEM8-specific-playbook`
+
+For `TEM8`, apply the shared detailed contract and add the following section
+requirements. Follow the active exam profile for timing, word count, and section
+presence; if a profile marks a section as optional, explain it only when it is
+actually included.
+
+- `TEM8 mini-lecture`: provide the complete lecture script and translation,
+  reconstruct its outline and signposting, translate every note-completion or
+  question prompt, locate each answer line, explain the required grammatical
+  form and paraphrase, and distinguish content-hearing errors from note-taking,
+  spelling, and form errors.
+- `TEM8 interview listening`: provide the complete interview transcript and
+  translation; translate every question and all options; track speaker,
+  attitude, agreement or qualification, cross-turn inference, and evidence
+  scope; eliminate every distractor against the transcript.
+- `TEM8 reading`: provide the full passage translation and core vocabulary;
+  translate stems and all choices; identify paragraph/sentence location,
+  evidence scope, evidence translation, author stance, discourse structure,
+  long-sentence logic, and every distractor's failure. Constructed responses
+  must also show content points and acceptable alternatives.
+- `TEM8 language knowledge`, when present, follows the all-option translation,
+  rule-trigger, structural parsing, option contrast, register-boundary, and
+  transfer-example contract used for advanced language knowledge.
+- `TEM8 bidirectional translation`: for both English-to-Chinese and
+  Chinese-to-English tasks, give sentence-intent analysis, a clause map,
+  reference and logic resolution, keyword deliberation, literal skeleton,
+  restructuring choices, polished aligned translation, acceptable alternatives,
+  scoring points, and common-error repairs. English-to-Chinese explanations must
+  prioritize accurate long-sentence logic and natural Chinese; Chinese-to-English
+  explanations must prioritize precise collocation, register, cohesion, and
+  idiomatic restructuring.
+- `TEM8 proofreading`: provide the corrected complete passage and full
+  translation, then a line-by-line table containing the original span,
+  correction, error category, governing rule, contextual reason, and acceptable
+  alternative if any. Cover articles, number, agreement, tense, non-finite
+  forms, reference, conjunctions, prepositions, collocation, redundancy, and
+  discourse logic as applicable; never explain only the replacement word.
+- `TEM8 writing`: apply the full writing contract at the target profile's
+  advanced level. When the task is source-based, separate source summary from
+  the learner's position, analyze the supplied viewpoints or data, develop at
+  least three defensible angles, and provide an original model with aligned
+  translation, advanced topic language, reusable slot-based templates, rubric
+  estimate, and revision task. Do not invent facts or source claims.
 
 ### Cloze `cloze`
 
@@ -321,6 +421,13 @@ Before delivery, verify all of the following:
   paraphrase mapping, and nearby-paragraph rejection;
 - CET Section C and Postgraduate Reading Part A contain stem/all-option
   translations, evidence location and scope, and separate distractor rejection;
+- CET-4 and CET-6 complete answers each apply their named exam-specific playbook,
+  active-profile calibration, full section packages, and non-official notice;
+- TEM-4 answers contain the dedicated dictation, listening, language-knowledge,
+  cloze, reading, and writing packages required by the active profile;
+- TEM-8 answers contain the dedicated mini-lecture/interview, reading,
+  bidirectional-translation, proofreading, and writing packages required by the
+  active profile;
 - every writing task contains genre/audience/purpose analysis, three or more
   usable angles, a plan, original model and model translation, common and
   advanced topic vocabulary, and reusable slot-based templates;

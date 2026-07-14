@@ -61,8 +61,9 @@ three usable angles, a paragraph plan, an original model and aligned translation
 topic language, reusable slot-based templates, common errors, and rubric-based
 training guidance. For translation, include sentence-intent analysis, a clause
 map, keyword deliberation, construction steps, an aligned reference answer, and
-acceptable alternatives. Apply the CET Section A/B/C and Postgraduate English
-playbooks in the standard. Repair ambiguous items before recording results.
+acceptable alternatives. Apply the named CET4, CET6, Postgraduate English,
+TEM4, and TEM8 playbooks in the standard. Repair ambiguous items before
+recording results.
 
 ## 5. Error Attribution
 

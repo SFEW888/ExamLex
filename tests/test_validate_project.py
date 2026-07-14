@@ -582,11 +582,11 @@ class ValidateProjectTests(unittest.TestCase):
                 / "references"
                 / "answer-explanation-standard.md",
             ): (
-                "CET4",
-                "CET6",
-                "POSTGRADUATE_ENGLISH",
-                "TEM4",
-                "TEM8",
+                "CET4-specific-playbook",
+                "CET6-specific-playbook",
+                "POSTGRADUATE_ENGLISH-specific-playbook",
+                "TEM4-specific-playbook",
+                "TEM8-specific-playbook",
                 "answer_key",
                 "question_translation",
                 "option_translation",

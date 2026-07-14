@@ -131,18 +131,69 @@ class AnswerExplanationStandardTests(unittest.TestCase):
                 with self.subTest(marker=marker):
                     self.assertIn(f"`{marker}`" if "_" in marker else marker, text)
 
-    def test_cet_and_postgraduate_section_playbooks_are_explicit(self):
+    def test_cet4_and_cet6_playbooks_are_explicit(self):
         required = (
+            "CET4-specific-playbook",
+            "CET6-specific-playbook",
             "Section A",
             "Section B",
             "Section C",
-            "Reading Part A",
-            "Reading Part B",
-            "Writing Part A",
-            "Part B",
             "grammar_analysis",
             "semantic_judgment",
+            "question_translation",
+            "option_translation",
+            "evidence_scope",
+        )
+
+        for text in reference_texts():
+            for marker in required:
+                with self.subTest(marker=marker):
+                    self.assertIn(marker, text)
+
+    def test_postgraduate_playbook_is_explicit(self):
+        required = (
+            "POSTGRADUATE_ENGLISH-specific-playbook",
+            "Use of English",
+            "Reading Part A",
+            "Reading Part B",
+            "Reading/Translation Part C",
+            "Writing Part A",
+            "Part B",
             "core_vocabulary",
+            "keyword_deliberation",
+        )
+
+        for text in reference_texts():
+            for marker in required:
+                with self.subTest(marker=marker):
+                    self.assertIn(marker, text)
+
+    def test_tem4_playbook_is_explicit(self):
+        required = (
+            "TEM4-specific-playbook",
+            "TEM4 dictation",
+            "TEM4 listening",
+            "TEM4 language knowledge",
+            "TEM4 cloze",
+            "TEM4 reading",
+            "TEM4 writing",
+        )
+
+        for text in reference_texts():
+            for marker in required:
+                with self.subTest(marker=marker):
+                    self.assertIn(marker, text)
+
+    def test_tem8_playbook_is_explicit(self):
+        required = (
+            "TEM8-specific-playbook",
+            "TEM8 mini-lecture",
+            "TEM8 interview listening",
+            "TEM8 reading",
+            "TEM8 language knowledge",
+            "TEM8 bidirectional translation",
+            "TEM8 proofreading",
+            "TEM8 writing",
         )
 
         for text in reference_texts():

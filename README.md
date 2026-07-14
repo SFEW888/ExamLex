@@ -316,7 +316,7 @@ simulation provenance are documented in
 Mock papers and answer reviews use the `detailed` explanation profile by default
 for every learner. It requires question and all-option translations, checkable
 evidence and scope, full reading/listening support translations, every-distractor
-analysis, CET/Postgraduate section playbooks, writing idea banks with model
+analysis, named CET4/CET6/Postgraduate/TEM4/TEM8 playbooks, writing idea banks with model
 translations and reusable slot-based templates, and translation keyword
 deliberation. The complete contract and copyright boundary are defined in the
 [Comprehensive Answer Explanation Standard](skills/examlex/references/answer-explanation-standard.md).

@@ -116,9 +116,9 @@ three usable angles; give a plan, an original model and aligned translation,
 common and advanced topic language, and reusable templates with labeled
 replaceable slots. Translation must include sentence-intent analysis, a clause
 map, keyword deliberation, construction steps, an aligned reference answer, and
-alternatives. Apply the CET Section A/B/C and Postgraduate English playbooks in
-the standard, then validate answer uniqueness and answer/evidence/translation/
-explanation consistency before delivery.
+alternatives. Apply the named CET4, CET6, Postgraduate English, TEM4, and TEM8
+playbooks in the standard, then validate answer uniqueness and answer/evidence/
+translation/explanation consistency before delivery.
 
 ## Multi-Source Continuous Learning
 
