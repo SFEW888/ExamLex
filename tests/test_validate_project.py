@@ -584,7 +584,7 @@ class ValidateProjectTests(unittest.TestCase):
             ): (
                 "CET4-specific-playbook",
                 "CET6-specific-playbook",
-                "POSTGRADUATE_ENGLISH-specific-playbook",
+                "postgraduate-playbook-contract",
                 "TEM4-specific-playbook",
                 "TEM8-specific-playbook",
                 "answer_key",

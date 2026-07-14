@@ -152,7 +152,7 @@ class AnswerExplanationStandardTests(unittest.TestCase):
 
     def test_postgraduate_playbook_is_explicit(self):
         required = (
-            "POSTGRADUATE_ENGLISH-specific-playbook",
+            "postgraduate-playbook-contract",
             "Use of English",
             "Reading Part A",
             "Reading Part B",

@@ -126,7 +126,7 @@ ExamLex 生成模拟卷、讲解练习、复盘错题或提供带教学说明的
 
 `CET4` 与 `CET6` Section C 必须提供全文翻译和核心词汇。每题翻译题干及 A、B、C、D 全部选项；给出段落/句子定位、证据范围、证据翻译、推理、同义替换，并分别排除所有错误选项。
 
-### 考研英语专项规则 `POSTGRADUATE_ENGLISH-specific-playbook`
+### 考研英语专项规则 `postgraduate-playbook-contract`
 
 对 `POSTGRADUATE_ENGLISH`：
 

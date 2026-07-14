@@ -194,7 +194,7 @@ vocabulary. For every item translate the stem and all four options; give the
 paragraph/sentence location, evidence scope, evidence translation, reasoning,
 paraphrase map, and separate elimination of A, B, C, and D as applicable.
 
-### Postgraduate English-specific playbook `POSTGRADUATE_ENGLISH-specific-playbook`
+### Postgraduate English-specific playbook `postgraduate-playbook-contract`
 
 For `POSTGRADUATE_ENGLISH`:
 
