@@ -56,6 +56,11 @@ and translation; reasoning; paraphrase or language point; all-option distractor
 analysis; error tag when applicable; and retry action. Complete reading and
 listening reviews include full support-language translations and core vocabulary.
 
+Render the review through `image-mapped-answerbook-contract`: answer check first,
+then passage-first bilingual material, then complete local item blocks. Never
+separate question/option translations from the same item's evidence and
+distractor analysis, and never substitute a gist for a full translation.
+
 For writing, classify the genre, audience, purpose, and topic; provide at least
 three usable angles, a paragraph plan, an original model and aligned translation,
 topic language, reusable slot-based templates, common errors, and rubric-based

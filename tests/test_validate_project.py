@@ -604,9 +604,46 @@ class ValidateProjectTests(unittest.TestCase):
                 "clause_map",
                 "keyword_deliberation",
                 "translation_build",
+                "image-mapped-answerbook-contract",
+                "answer-check-block",
+                "passage-first-contract",
+                "item-locality-contract",
+                "no-summary-substitution",
+                "bilingual-item-block",
+                "full-script-and-translation",
+                "option-classification",
+                "full-text-translation",
+                "statement-translation-and-location",
+                "multiple-choice-reading-analysis",
+                "translation-breakdown",
+                "source-and-evidence-note",
                 "Section A",
                 "Section B",
                 "Section C",
+            ),
+            (
+                PROJECT_ROOT
+                / "skills"
+                / "examlex"
+                / "references"
+                / "answerbook-rendering-template.md",
+                PROJECT_ROOT
+                / "zh-CN"
+                / "skill"
+                / "references"
+                / "answerbook-rendering-template.md",
+            ): (
+                "answer-check",
+                "writing-analysis",
+                "model-and-translation",
+                "full-script-and-translation",
+                "bilingual-item-block",
+                "option-classification",
+                "full-text-translation",
+                "statement-translation-and-location",
+                "multiple-choice-reading-analysis",
+                "translation-breakdown",
+                "source-and-evidence-note",
             ),
             (
                 PROJECT_ROOT / "docs" / "usage.md",

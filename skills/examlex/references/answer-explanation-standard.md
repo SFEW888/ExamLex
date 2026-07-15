@@ -6,6 +6,9 @@ set, reviews errors, or supplies an answer key with teaching notes. It applies t
 module: `vocabulary`, `listening`, `reading`, `translation`, `writing`, `cloze`,
 `language-knowledge`, `proofreading`, and `dictation`.
 
+Use [answerbook-rendering-template.md](answerbook-rendering-template.md) as the
+learner-facing Markdown skeleton after applying this semantic contract.
+
 ## Purpose and evidence boundary
 
 An explanation must teach the learner how to understand the task, reach the
@@ -39,6 +42,87 @@ For `基础偏弱`, keep the same complete contract and add more scaffolding:
 - show the relation between the question, evidence, and answer explicitly;
 - distinguish literal meaning from contextual meaning;
 - finish with one short retry or transfer task.
+
+## Image-mapped full-detail rendering contract `image-mapped-answerbook-contract`
+
+Operator-supplied answer-page images define the **minimum teaching sequence and
+locality**, not reusable copyrighted content. Mirror their functional structure
+with original wording and copyright-safe material. A generated answer book may
+be more explicit, but it may not be shorter, less local, or less checkable than
+this contract.
+
+The following rules are non-negotiable for every supported exam:
+
+1. `answer-check-block`: begin with a compact grouped answer key and any section
+   rule that materially affects checking, such as whether a paragraph may be
+   selected more than once.
+2. `passage-first-contract`: within each writing, listening, reading, cloze,
+   language-knowledge, translation, proofreading, or dictation unit, show the
+   complete teaching material before its item explanations. For original
+   listening and reading, give the complete source text and a sentence- or
+   paragraph-aligned support-language translation, then focused vocabulary.
+3. `item-locality-contract`: keep every item's bilingual stem, original options,
+   option translations, answer, location, evidence, evidence translation,
+   reasoning, paraphrase, and separate distractor eliminations in the **same
+   item block**. A remote translation table followed many pages later by a short
+   answer analysis does not satisfy the contract.
+4. `no-summary-substitution`: “full translation” means that every source sentence
+   and logical relation is represented. A topic summary, “translation gist,” or
+   selected-sentence translation cannot replace the full translation. One
+   shared vocabulary list cannot replace a focused list for each passage.
+5. `printable-bilingual-layout`: use stable Markdown headings, numbered
+   paragraphs or transcript lines, short tables, bold labels, and visible
+   section boundaries. Pair source text with its support-language translation
+   sentence by sentence or paragraph by paragraph when that improves checking.
+   Decorative rules are optional; the information hierarchy is mandatory.
+
+### Mandatory `bilingual-item-block`
+
+Render each objective item locally in the following order. Natural translated
+labels are allowed, but no content layer may be omitted:
+
+1. question number, original stem, and `question_translation` on the same block;
+2. A/B/C/D (or the actual option set), each with original wording and its own
+   `option_translation`; never compress four translations into one vague gloss;
+3. `answer_key`, `tested_skill`, and the exact `evidence_anchor`;
+4. `evidence_scope`, the short decisive evidence, and `evidence_translation`;
+5. at least three explicit `reasoning_steps`: read the task, match the evidence
+   or rule, and confirm the conclusion;
+6. `paraphrase_map`, decisive grammar/long-sentence analysis, and `key_language`;
+7. `distractor_analysis` with one labeled entry for **each** wrong option; “the
+   other options are not mentioned” is not an acceptable group explanation;
+8. `error_tag` and a precise `learner_retry` range or action.
+
+### Mandatory page-function sequence
+
+The printable answer book must mirror these page functions, using the active
+exam profile and omitting only sections that genuinely do not exist:
+
+- `answer-check` → grouped key plus checking note;
+- `writing-analysis` → prompt/genre analysis, at least three directions,
+  paragraph plan, `model-and-translation`, `topic-vocabulary`, and
+  `writing-template` with visibly replaceable slots and a cross-topic example;
+- `full-script-and-translation` → one complete numbered listening script and
+  aligned translation per recording, followed immediately by its
+  `bilingual-item-block` explanations;
+- `option-classification` → for word-bank or cloze tasks, classify letter, word,
+  part of speech, form, meaning, and collocation before showing the completed
+  text, `full-text-translation`, `core-vocabulary`, `grammar-analysis`, and
+  `semantic-judgment` for every blank;
+- `statement-translation-and-location` → for paragraph matching, show the full
+  translated article first, then each translated statement, exact location,
+  evidence/paraphrase chain, and nearby-paragraph rejection;
+- `multiple-choice-reading-analysis` → full passage translation and vocabulary,
+  followed immediately by local bilingual item blocks and A/B/C/D elimination;
+- `translation-breakdown` → sentence-intent analysis, clause map, at least two
+  meaningful keyword alternatives where choice exists, literal skeleton,
+  restructuring, polished sentence, and a source/reference side-by-side table;
+- `source-and-evidence-note` → article-level provenance, evidence role, actual
+  use, copyright-safe status, and an explicit non-official-paper statement.
+
+The sequence above is the minimum. Extra pronunciation, grammar, background,
+scoring, or transfer guidance is welcome when accurate. It must not displace or
+fragment the required local explanation blocks.
 
 ## Core output contract
 
@@ -154,6 +238,13 @@ timing to the active `CET4` profile; simpler language never permits a shorter
 explanation. End with the source/evidence-role statement and an explicit notice
 that the simulation is not an official paper.
 
+Render every CET-4 section through `image-mapped-answerbook-contract`: writing
+must use the model/translation/vocabulary/template page functions; each
+recording must keep its script, full translation, and local question blocks
+together; Reading A/B/C must use their classification, full-translation,
+location, and separate-elimination layouts; translation must use the complete
+breakdown and side-by-side source/reference layout.
+
 ### CET-6-specific playbook `CET6-specific-playbook`
 
 A complete `CET6` detailed answer book must contain writing, listening, Reading
@@ -164,6 +255,11 @@ for the active `CET6` profile's denser paraphrase, more abstract argument,
 longer-sentence logic, speaker qualification, and inference burden without
 inventing complexity unsupported by the paper. End with the source/evidence-role
 statement and an explicit notice that the simulation is not an official paper.
+
+Render every CET-6 section through `image-mapped-answerbook-contract` with the
+same local page functions as CET-4. Increased difficulty must appear in denser
+paraphrase maps, qualification, inference, and long-sentence analysis, never by
+removing bilingual options, full translations, or per-option rejection.
 
 ### CET word-bank gap filling: Reading Section A
 
@@ -210,12 +306,19 @@ For `POSTGRADUATE_ENGLISH`:
 - Reading/Translation Part C must split each underlined sentence into clauses,
   resolve reference and logic, deliberate key words, build a literal skeleton,
   and produce a natural aligned translation.
+- Render Use of English, Reading Parts A/B/C, and Writing Parts A/B through
+  `image-mapped-answerbook-contract`. Keep every choice and its translation next
+  to the corresponding item analysis; do not use a detached option glossary as
+  a substitute for the local bilingual item block.
 
 ### TEM-4-specific playbook `TEM4-specific-playbook`
 
 For `TEM4`, apply the shared detailed contract and add the following section
 requirements. Follow the active exam profile for timing, word count, and section
 presence; do not invent a section that is absent from the target paper.
+
+Every included TEM-4 section also follows `image-mapped-answerbook-contract`,
+including passage-first translation and item-local explanations.
 
 - `TEM4 dictation`: after the timed attempt, give the complete script and full
   translation, divide it into numbered sense groups, and mark punctuation,
@@ -250,6 +353,10 @@ For `TEM8`, apply the shared detailed contract and add the following section
 requirements. Follow the active exam profile for timing, word count, and section
 presence; if a profile marks a section as optional, explain it only when it is
 actually included.
+
+Every included TEM-8 section also follows `image-mapped-answerbook-contract`,
+with advanced analysis added on top of—not in place of—the local bilingual item
+block.
 
 - `TEM8 mini-lecture`: provide the complete lecture script and translation,
   reconstruct its outline and signposting, translate every note-completion or
@@ -403,6 +510,9 @@ For a complete mock paper, present material in this order:
 
 Keep the answer key, explanation, transcript, passage, and source item numbering
 aligned. Do not merge questions into one generic paragraph to shorten the paper.
+Do not separate an item's translations from its evidence and distractor analysis
+into a distant appendix. The `bilingual-item-block` must remain local even when
+the book also includes a compact answer key or vocabulary index.
 
 ## Quality gate
 
@@ -413,6 +523,9 @@ Before delivery, verify all of the following:
 - every objective item includes `question_translation`, translation of every
   option, truthful `evidence_anchor`, `evidence_scope`, `evidence_translation`,
   reasoning, paraphrase mapping, and every-wrong-option analysis;
+- `image-mapped-answerbook-contract`, `passage-first-contract`,
+  `item-locality-contract`, and `no-summary-substitution` are satisfied; every
+  objective item is rendered as one local `bilingual-item-block`;
 - every reading passage or listening script in a complete detailed answer book
   has a full support-language translation and core vocabulary where required;
 - CET Section A contains option classification, completed text, full

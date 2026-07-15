@@ -321,6 +321,13 @@ translations and reusable slot-based templates, and translation keyword
 deliberation. The complete contract and copyright boundary are defined in the
 [Comprehensive Answer Explanation Standard](skills/examlex/references/answer-explanation-standard.md).
 
+The standard also enforces an `image-mapped-answerbook-contract`: the printable
+answer follows the answer-check/writing/listening/reading/translation page
+sequence, every source sentence is represented in a full translation, and each
+question keeps its bilingual options, evidence, reasoning, and separate
+distractor rejection together. Supplied answer-page images remain `R`-level
+layout references only; their protected questions and prose are not copied.
+
 ### Understanding Source Evidence Levels
 
 The `S`, `A`, `B`, `C`, and `R` labels describe the role and strength of a
