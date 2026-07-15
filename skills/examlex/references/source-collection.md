@@ -12,7 +12,7 @@ providers, and trace projects without preserving unsupported percentage claims.
 | `A` | Article-level trace with an original title or URL and a text-level match. |
 | `B` | Institutional or school trace/pool that still needs article-level verification. |
 | `C` | Candidate or training source with matching genre and difficulty. |
-| `R` | Translation, terminology, writing, or teaching-method reference corpus; not a direct exam source. |
+| `R` | Translation, terminology, cultural-background, or writing reference corpus; not a direct exam source. |
 
 Named outlets in the bundled catalog start at `B` or `C`. An entry may be
 upgraded to `A` only after a separate trace record identifies the exam, section,

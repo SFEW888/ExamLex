@@ -340,7 +340,7 @@ class AnswerExplanationStandardTests(unittest.TestCase):
                 with self.subTest(marker=marker):
                     self.assertIn(marker, text)
 
-    def test_teaching_references_cannot_be_promoted_to_exam_sources(self):
+    def test_answerbook_format_is_not_an_evidence_source(self):
         english, chinese = reference_texts()
         english_sources = (
             PROJECT_ROOT
@@ -357,14 +357,18 @@ class AnswerExplanationStandardTests(unittest.TestCase):
             / "source-collection.md"
         ).read_text(encoding="utf-8")
 
-        self.assertIn("`R`-level teaching-method references", english)
-        self.assertIn("`R` 级教学方法参考", chinese)
-        self.assertIn("teaching-method reference corpus", english_sources)
-        self.assertIn("教学方法参考语料", chinese_sources)
-        self.assertIn("official", english.lower())
-        self.assertIn("copy", english.lower())
-        self.assertIn("官方", chinese)
-        self.assertIn("复制", chinese)
+        self.assertIn("project-authored quality requirement", english)
+        self.assertRegex(english, r"not an\s+evidence source")
+        self.assertIn("项目自有的质量要求", chinese)
+        self.assertIn("不是证据来源", chinese)
+        self.assertIn(
+            "| `R` | Translation, terminology, cultural-background, or writing reference corpus; not a direct exam source. |",
+            english_sources,
+        )
+        self.assertIn(
+            "| `R` | 翻译、术语、中国文化背景或写作参考语料，不是直接真题原文。 |",
+            chinese_sources,
+        )
 
     def test_packaged_english_reference_is_synced(self):
         self.assertEqual(
