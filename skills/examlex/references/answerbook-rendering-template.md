@@ -2,8 +2,8 @@
 
 Use this printable Markdown skeleton after applying
 [`answer-explanation-standard.md`](answer-explanation-standard.md). Replace every
-placeholder with original, evidence-checked content. Do not leave empty headings
-in the final answer book, and do not copy operator-supplied practice-book prose.
+placeholder with original, evidence-checked, copyright-safe content. Do not
+leave empty headings in the final answer book.
 
 ## Answer Check `answer-check`
 

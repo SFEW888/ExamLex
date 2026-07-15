@@ -15,12 +15,12 @@ An explanation must teach the learner how to understand the task, reach the
 answer, reject alternatives, and verify the result. A bare key, a one-sentence
 conclusion, or one generic paragraph for several questions is incomplete.
 
-Commercial practice-book answer pages or operator-supplied annotated examples
-may inform presentation structure only. Treat them as `R`-level teaching-method references,
-not as official papers, official answer banks, fixed question banks,
-or direct sources for new questions. Do not copy their questions, passages,
-scripts, model answers, translations, or explanation prose into generated
-material. Their layout does not raise the evidence level of any source.
+This detailed-answer contract is a project-authored quality requirement. Its
+fields, page sequence, and locality rules are normative ExamLex behavior, not an
+evidence source, and therefore receive no `S`/`A`/`B`/`C`/`R` grade. Evidence
+grades classify source material used for exam structure, factual content,
+language, translation, terminology, cultural background, or writing support;
+they do not classify the answer-book format.
 
 ## Default depth and learner language
 
@@ -45,11 +45,10 @@ For `基础偏弱`, keep the same complete contract and add more scaffolding:
 
 ## Image-mapped full-detail rendering contract `image-mapped-answerbook-contract`
 
-Operator-supplied answer-page images define the **minimum teaching sequence and
-locality**, not reusable copyrighted content. Mirror their functional structure
-with original wording and copyright-safe material. A generated answer book may
-be more explicit, but it may not be shorter, less local, or less checkable than
-this contract.
+This project-authored contract defines the **minimum teaching sequence and
+locality**. Apply it with original wording and copyright-safe material. A
+generated answer book may be more explicit, but it may not be shorter, less
+local, or less checkable than this contract.
 
 The following rules are non-negotiable for every supported exam:
 
