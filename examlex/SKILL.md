@@ -105,6 +105,13 @@ Use the `detailed` explanation profile by default for every learner, regardless
 of foundation level or target band. Only produce a concise key when the user
 explicitly asks for one.
 
+Render every detailed output through `image-mapped-answerbook-contract`.
+Preserve the answer-page sequence and keep each question's bilingual stem and
+options, answer, evidence, reasoning, and separately labeled distractors in one
+local item block. A detached translation appendix, a gist in place of a full
+translation, or a grouped “other options” explanation is a failed output and
+must be repaired before delivery.
+
 Every objective item needs its own answer; question and all-option translations;
 an exact evidence anchor, evidence scope, and evidence translation; a reasoning
 path; paraphrase or language analysis; all-option distractor analysis; error
@@ -220,6 +227,7 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 - [references/tutor-runtime.md](references/tutor-runtime.md): fast intake, fixed shortcut routing, and the in-process private-provider boundary.
 - [references/source-collection.md](references/source-collection.md): merged CET/postgraduate source catalog, evidence levels, safe feed collection, and simulation provenance.
 - [references/answer-explanation-standard.md](references/answer-explanation-standard.md): detailed-by-default, cross-exam explanation contract and quality gate.
+- [references/answerbook-rendering-template.md](references/answerbook-rendering-template.md): printable image-mapped Markdown skeleton with local bilingual item blocks.
 - [references/workflow.md](references/workflow.md): diagnosis-to-next-plan loop.
 - [references/data-model.md](references/data-model.md): learner profile, ability profile, practice ledger, writing versions, summaries, strategy library.
 - [references/multi-source-distillation.md](references/multi-source-distillation.md): complete distillation methodology reference (structural / RIA++ / cognitive extraction).

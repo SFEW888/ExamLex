@@ -23,6 +23,26 @@ CHINESE_REFERENCE = (
     / "references"
     / "answer-explanation-standard.md"
 )
+ENGLISH_RENDERING_TEMPLATE = (
+    PROJECT_ROOT
+    / "skills"
+    / "examlex"
+    / "references"
+    / "answerbook-rendering-template.md"
+)
+PACKAGED_RENDERING_TEMPLATE = (
+    PROJECT_ROOT
+    / "examlex"
+    / "references"
+    / "answerbook-rendering-template.md"
+)
+CHINESE_RENDERING_TEMPLATE = (
+    PROJECT_ROOT
+    / "zh-CN"
+    / "skill"
+    / "references"
+    / "answerbook-rendering-template.md"
+)
 
 
 def reference_texts():
@@ -131,6 +151,125 @@ class AnswerExplanationStandardTests(unittest.TestCase):
                 with self.subTest(marker=marker):
                     self.assertIn(f"`{marker}`" if "_" in marker else marker, text)
 
+    def test_image_mapped_answerbook_contract_is_mandatory(self):
+        required = (
+            "image-mapped-answerbook-contract",
+            "answer-check-block",
+            "passage-first-contract",
+            "item-locality-contract",
+            "no-summary-substitution",
+            "printable-bilingual-layout",
+            "bilingual-item-block",
+        )
+
+        for text in reference_texts():
+            for marker in required:
+                with self.subTest(marker=marker):
+                    self.assertIn(f"`{marker}`", text)
+
+    def test_image_mapped_page_functions_cannot_regress(self):
+        page_functions = (
+            "answer-check",
+            "writing-analysis",
+            "model-and-translation",
+            "topic-vocabulary",
+            "writing-template",
+            "full-script-and-translation",
+            "option-classification",
+            "full-text-translation",
+            "core-vocabulary",
+            "grammar-analysis",
+            "semantic-judgment",
+            "statement-translation-and-location",
+            "multiple-choice-reading-analysis",
+            "translation-breakdown",
+            "source-and-evidence-note",
+        )
+
+        for text in reference_texts():
+            for marker in page_functions:
+                with self.subTest(marker=marker):
+                    self.assertIn(f"`{marker}`", text)
+
+    def test_rendering_templates_exist_and_cover_every_page_function(self):
+        templates = (
+            ENGLISH_RENDERING_TEMPLATE.read_text(encoding="utf-8"),
+            CHINESE_RENDERING_TEMPLATE.read_text(encoding="utf-8"),
+        )
+        required = (
+            "answer-check",
+            "writing-analysis",
+            "model-and-translation",
+            "topic-vocabulary",
+            "writing-template",
+            "full-script-and-translation",
+            "bilingual-item-block",
+            "option-classification",
+            "full-text-translation",
+            "core-vocabulary",
+            "grammar-analysis",
+            "semantic-judgment",
+            "statement-translation-and-location",
+            "multiple-choice-reading-analysis",
+            "translation-breakdown",
+            "source-and-evidence-note",
+        )
+
+        for text in templates:
+            for marker in required:
+                with self.subTest(marker=marker):
+                    self.assertIn(f"`{marker}`", text)
+
+    def test_standard_and_skill_route_to_rendering_template(self):
+        paths = (
+            ENGLISH_REFERENCE,
+            CHINESE_REFERENCE,
+            PROJECT_ROOT / "skills" / "examlex" / "SKILL.md",
+            PROJECT_ROOT / "zh-CN" / "skill" / "SKILL.md",
+        )
+        for path in paths:
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                self.assertIn(
+                    "answerbook-rendering-template.md",
+                    path.read_text(encoding="utf-8"),
+                )
+
+    def test_item_explanation_must_be_local_and_not_a_summary(self):
+        english, chinese = reference_texts()
+
+        self.assertRegex(english, r"same\s+item block")
+        self.assertIn("at least three explicit `reasoning_steps`", english)
+        self.assertIn("every source sentence", english)
+        self.assertIn("同一个题号块", chinese)
+        self.assertIn("至少三步 `reasoning_steps`", chinese)
+        self.assertIn("覆盖原文每一句", chinese)
+        self.assertIn("不得只写“其余选项均未提及”", chinese)
+
+    def test_skill_and_workflow_expose_the_rendering_contract(self):
+        paths = (
+            PROJECT_ROOT / "README.md",
+            PROJECT_ROOT / "zh-CN" / "README.md",
+            PROJECT_ROOT / "skills" / "examlex" / "SKILL.md",
+            PROJECT_ROOT / "zh-CN" / "skill" / "SKILL.md",
+            PROJECT_ROOT / "skills" / "examlex" / "references" / "workflow.md",
+            PROJECT_ROOT / "zh-CN" / "skill" / "references" / "workflow.md",
+        )
+
+        for path in paths:
+            with self.subTest(path=path.relative_to(PROJECT_ROOT)):
+                self.assertIn(
+                    "image-mapped-answerbook-contract",
+                    path.read_text(encoding="utf-8"),
+                )
+
+    def test_every_exam_playbook_inherits_the_rendering_contract(self):
+        for text in reference_texts():
+            with self.subTest(language="chinese" if "图片映射式" in text else "english"):
+                self.assertGreaterEqual(
+                    text.count("image-mapped-answerbook-contract"),
+                    6,
+                )
+
     def test_cet4_and_cet6_playbooks_are_explicit(self):
         required = (
             "CET4-specific-playbook",
@@ -231,6 +370,10 @@ class AnswerExplanationStandardTests(unittest.TestCase):
         self.assertEqual(
             ENGLISH_REFERENCE.read_text(encoding="utf-8"),
             PACKAGED_ENGLISH_REFERENCE.read_text(encoding="utf-8"),
+        )
+        self.assertEqual(
+            ENGLISH_RENDERING_TEMPLATE.read_text(encoding="utf-8"),
+            PACKAGED_RENDERING_TEMPLATE.read_text(encoding="utf-8"),
         )
 
 
