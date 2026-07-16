@@ -49,7 +49,7 @@ class RecordPracticeTests(unittest.TestCase):
 
     def test_packaged_practice_template_is_an_appendable_ledger(self):
         template = json.loads(
-            (PROJECT_ROOT / "examlex/assets/templates/exercise-record.json").read_text(
+            (PROJECT_ROOT / "skills/examlex/assets/templates/exercise-record.json").read_text(
                 encoding="utf-8"
             )
         )
@@ -61,7 +61,7 @@ class RecordPracticeTests(unittest.TestCase):
         schema = json.loads(
             (
                 PROJECT_ROOT
-                / "examlex/assets/schemas/exercise-record.schema.json"
+                / "skills/examlex/assets/schemas/exercise-record.schema.json"
             ).read_text(encoding="utf-8")
         )
         self.assertTrue(

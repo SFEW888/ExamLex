@@ -133,7 +133,7 @@ ExamLex turns preparation into a repeatable evidence loop:
 9. Feed the new evidence into the next plan
 ```
 
-At any stage, `examlex ingest` or the extract → validate → commit pipeline can add new methods to `strategy-library.json`. The next planning and tutoring session can then use those methods without replacing the learner's historical evidence.
+At any stage, `examlex ingest` or the extract → validate → commit pipeline can add new methods to a JSON or SQLite strategy library. The next planning and tutoring session can then use those methods without replacing the learner's historical evidence.
 
 ---
 
@@ -308,6 +308,13 @@ examlex commit --artifacts-dir <path> --library strategy-library.json
 examlex backup ./local/data
 ```
 
+The vocabulary index exposes truthful, count-bearing pools rather than rounded
+placeholder names: CET-4 has 3,331 verified learning entries, CET-6 has 3,650,
+and Postgraduate English has 1,014. TEM-4 and TEM-8 currently use 100-entry
+curated starter pools. A request to memorize words defaults to the detailed
+per-word block (phonetics, senses, memory route, bilingual context, word family,
+and active recall); a compact list is produced only when explicitly requested.
+
 Source collection is RSS/Atom-first, metadata-only by default, and stores its
 corpus outside the repository. Evidence levels, robots/paywall boundaries, and
 simulation provenance are documented in
@@ -447,7 +454,7 @@ Agent Layer (Claude Code / Codex / Cursor)
                         │
                         ▼
 ┌─────────────────────────────────────────────────────────┐
-│  Script Layer (examlex/)            │
+│  Script Layer (skills/examlex/scripts/)                 │
 │  extractors/  validators/  optimizers/  prompts/         │
 │  validate · daily-plan · record · tag-error · summarize  │
 │  update-ability · analyze-trends · writing-version       │
@@ -465,7 +472,7 @@ Agent Layer (Claude Code / Codex / Cursor)
 
 ### Does Continuous Learning Increase Project Size?
 
-Local strategy data grows in a controlled way as effective new material is added. Exact repeated ingestion is reused, committed-session reproducible artifacts follow the automatic 168-hour/4-GiB retention policy, and a 100-MiB strategy library triggers review-only warnings instead of automatic deletion.
+Local strategy data grows in a controlled way as effective new material is added. Exact repeated ingestion is reused; a per-user background monitor can enforce the 168-hour/4-GiB policy for reproducible artifacts every 30 minutes; and a 100-MiB strategy library triggers a durable warning, duplicate candidates, and an optional Windows notification instead of automatic deletion.
 
 ### Repository Layout
 
@@ -488,7 +495,7 @@ Local strategy data grows in a controlled way as effective new material is added
 │       ├── ops.py                   #   13-point operational check
 │       └── ...                      #   11 exam-prep scripts
 │
-├── examlex/    # Importable Python mirror (tests + CLI)
+├── examlex/                         # Thin historical import/CLI bridge
 ├── skills/*/                        # 8 shortcut Skills
 ├── integrations/                    # Platform adapters
 ├── docs/                            # English docs
@@ -502,7 +509,7 @@ Local strategy data grows in a controlled way as effective new material is added
 
 ### Design Principles
 
-- **Generated two-track separation:** `skills/examlex/` is the only hand-edited, portable Agent-readable Skill source. `examlex/` is its generated Python mirror for tests, packaging, and the CLI; CI rejects missing, changed, or extra mirror files.
+- **Single canonical package:** `skills/examlex/` owns all implementation and resources. `examlex/` is a tiny compatibility bridge for the historical import and CLI path; CI rejects duplicated scripts or resources there.
 - **Determinism first:** planning, validation, attribution, and scoring scripts favor auditable and reproducible rules over probabilistic hidden state.
 - **Public safety:** the repository publishes role boundaries, templates, schemas, script interfaces, and placeholders only. The original eight tutor prompt bodies never enter public history.
 
@@ -520,7 +527,7 @@ ExamLex stores learner state in JSON-compatible structures. YAML and Markdown te
 | **Error summary** | Counts by tag, module, dimension, urgency, and speed evidence | Produced by `summarize_errors.py` |
 | **Writing versions** | Versioned V1/V2/V3 drafts, revision notes, and parent links | `writing-version-record.yaml` |
 | **Writing score** | Deterministic, explicitly non-official rubric estimate with dimension scores | Produced by `score_writing_rubric.py` |
-| **Strategy library** | Structured exam strategies, methods, templates, provenance, and audit evidence | `strategy-library.json`, written by `ingest_strategy.py` or `examlex commit` |
+| **Strategy library** | Structured exam strategies, methods, templates, provenance, and audit evidence | JSON interchange or transactional SQLite, written by `ingest_strategy.py` or `examlex commit` |
 
 ---
 
@@ -580,6 +587,7 @@ Each strategy retains enough provenance to be audited:
 - For every strategy: retain `source_type`, `distillation_method`, and source provenance.
 - Repeating the same source with the same ingestion scope reuses the existing strategy; changing the exam or module scope can intentionally create a separate entry.
 - A successful `examlex commit` marks a managed session complete and automatically removes reproducible full text, audio, transcripts, and chapter extracts after 168 hours. It also enforces a 4 GiB hard limit for those retained committed-session artifacts, pruning oldest first while preserving pipeline state, distilled strategies, reports, and audit files.
+- `powershell -ExecutionPolicy Bypass -File scripts/install_capacity_monitor.ps1` registers the same policy as a per-user task that runs every 30 minutes, so cleanup does not depend on a later commit command.
 - At 100 MiB, the strategy library emits a warning and lists a bounded set of possible duplicate strategies or revisions for user review. It never automatically deletes important strategies or immutable revisions.
 - Manual inspection remains available through `examlex sessions-cleanup` and `examlex strategies --library strategy-library.json --duplicates`.
 
@@ -660,13 +668,13 @@ No. All script outputs are deterministic calculations or rubric estimates based 
 No. In most cases you speak natural language in your Agent chat. The Agent reads the workflow from SKILL.md and calls scripts as needed. CLI and `examlex` wrappers are mainly for debugging, scripting, and standalone use.
 
 **"Will strategy library data be uploaded to the cloud?"**
-No. The strategy library is a local JSON file. Extraction and analysis happen on your machine. If your Agent model runs in the cloud, the text you send follows that provider's standard data terms.
+No. The strategy library stays in a local JSON file or SQLite database; JSON import/export is available for interchange. Extraction and analysis happen on your machine. If your Agent model runs in the cloud, the text you send follows that provider's standard data terms.
 
 **"Can I share my strategy library?"**
 Your own exam strategies — yes. Strategies extracted from copyrighted books — do not publish them publicly. Same rules as handwritten study notes: your notes are yours, but don't republish someone else's book content.
 
 **"Does continuous learning increase the project size?"**
-Local strategy data grows in a controlled way as effective new material is added. Repeated ingestion with the same scope reuses the existing strategy; completed-session source text, audio, transcripts, and chapter extracts are automatically retained for 168 hours and kept below a 4 GiB hard limit. A strategy library at or above 100 MiB warns the user and lists possible duplicates for review, but ExamLex never automatically deletes strategies or immutable revisions.
+Local strategy data grows in a controlled way as effective new material is added. Repeated ingestion with the same scope reuses the existing strategy. Completed-session source text, audio, transcripts, and chapter extracts are retained for 168 hours and kept below a 4 GiB hard limit by successful commits or the optional 30-minute background task. A strategy library at or above 100 MiB writes a durable warning, lists possible duplicates for review, and can display a Windows notification, but ExamLex never automatically deletes strategies or immutable revisions.
 
 ---
 

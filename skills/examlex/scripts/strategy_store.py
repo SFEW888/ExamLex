@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import tempfile
+from difflib import SequenceMatcher
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any, TypeVar
@@ -12,9 +13,11 @@ from typing import Any, TypeVar
 try:
     from . import common
     from .file_lock import exclusive_file_lock
+    from . import strategy_sqlite
 except ImportError:  # pragma: no cover - supports direct script execution.
     import common  # type: ignore[no-redef]
     from file_lock import exclusive_file_lock  # type: ignore[no-redef]
+    import strategy_sqlite  # type: ignore[no-redef]
 
 
 T = TypeVar("T")
@@ -23,6 +26,8 @@ _LOGGER = logging.getLogger(__name__)
 
 def load_strategy_library(path: str | Path) -> dict[str, Any]:
     library_path = Path(path)
+    if _is_sqlite_path(library_path):
+        return strategy_sqlite.load_library(library_path)
     if library_path.exists():
         try:
             library = common.load_data(library_path)
@@ -62,6 +67,7 @@ def _candidate(
     items: list[dict[str, Any]],
     *,
     requires_reference_check: bool = False,
+    similarity: float | None = None,
 ) -> dict[str, Any]:
     serialized = json.dumps(
         [reason, [(item.get("strategy_id"), item.get("version")) for item in items]],
@@ -70,19 +76,23 @@ def _candidate(
         separators=(",", ":"),
     ).encode("utf-8")
     visible_items = items[:5]
-    return {
+    result = {
         "candidate_id": hashlib.sha256(serialized).hexdigest()[:12],
         "reason": reason,
         "items": visible_items,
         "omitted_items": max(0, len(items) - len(visible_items)),
         "requires_reference_check": requires_reference_check,
     }
+    if similarity is not None:
+        result["similarity"] = round(similarity, 3)
+    return result
 
 
 def find_possible_duplicate_strategies(
     library: dict[str, Any],
     *,
     limit: int = 5,
+    similarity_threshold: float = 0.88,
 ) -> list[dict[str, Any]]:
     """Return bounded, review-only duplicate candidates without modifying the library."""
     if limit <= 0:
@@ -139,6 +149,55 @@ def find_possible_duplicate_strategies(
     add_current_groups("same_source_hash_and_scope", by_source_scope)
     add_current_groups("same_normalized_content", by_content)
     add_current_groups("same_title_and_scope", by_title_scope)
+
+    # Review-only approximate matching. Scope blocking and token overlap avoid
+    # comparing every unrelated strategy in a growing library.
+    comparisons = 0
+    for left_index, left in enumerate(entries):
+        left_content = _normalized_text(left.get("content"))
+        if not left_content:
+            continue
+        left_scope = (
+            _sorted_strings(left.get("exam_types")),
+            _sorted_strings(left.get("modules")),
+        )
+        left_tokens = set(left_content.split())
+        for right in entries[left_index + 1:]:
+            right_scope = (
+                _sorted_strings(right.get("exam_types")),
+                _sorted_strings(right.get("modules")),
+            )
+            if left_scope != right_scope:
+                continue
+            right_content = _normalized_text(right.get("content"))
+            if not right_content or right_content == left_content:
+                continue
+            right_tokens = set(right_content.split())
+            union = left_tokens | right_tokens
+            if not union or len(left_tokens & right_tokens) / len(union) < 0.55:
+                continue
+            comparisons += 1
+            if comparisons > 20_000:
+                break
+            similarity = SequenceMatcher(None, left_content, right_content, autojunk=False).ratio()
+            if similarity < similarity_threshold:
+                continue
+            identifiers = frozenset(
+                (str(left.get("strategy_id", "unknown")), str(right.get("strategy_id", "unknown")))
+            )
+            if identifiers in covered_current_groups:
+                continue
+            covered_current_groups.add(identifiers)
+            candidates.append(
+                _candidate(
+                    "near_duplicate_content",
+                    [_current_item(left), _current_item(right)],
+                    similarity=similarity,
+                    requires_reference_check=True,
+                )
+            )
+        if comparisons > 20_000:
+            break
 
     for entry in entries:
         revisions = entry.get("revisions", [])
@@ -198,7 +257,7 @@ def strategy_library_health(
     if warning_threshold_bytes <= 0:
         raise ValueError("warning_threshold_bytes must be positive")
     library_path = Path(path)
-    size_bytes = library_path.stat().st_size if library_path.exists() else 0
+    size_bytes = _storage_size(library_path)
     threshold_reached = size_bytes >= warning_threshold_bytes
     library = load_strategy_library(library_path)
     candidates = (
@@ -213,6 +272,7 @@ def strategy_library_health(
         "threshold_reached": threshold_reached,
         "duplicate_candidates": candidates,
         "automatic_deletion": False,
+        "storage_backend": "sqlite" if _is_sqlite_path(library_path) else "json",
     }
 
 
@@ -264,6 +324,11 @@ def mutate_strategy_library(
 ) -> T:
     """Serialize a complete strategy-library read/modify/write transaction."""
     library_path = Path(path)
+    if _is_sqlite_path(library_path):
+        # Serialize the read/callback/write unit to prevent a lost update while
+        # SQLite provides the atomic database transaction for the write.
+        with exclusive_file_lock(library_path):
+            return strategy_sqlite.mutate_library(library_path, mutator)
     with exclusive_file_lock(library_path):
         library = load_strategy_library(library_path)
         result = mutator(library)
@@ -275,6 +340,8 @@ def atomic_save_strategy_library(library: dict[str, Any], path: str | Path) -> P
     if not isinstance(library, dict) or not isinstance(library.get("strategies"), list):
         raise ValueError("strategy library must contain a strategies list")
     library_path = Path(path)
+    if _is_sqlite_path(library_path):
+        return strategy_sqlite.save_library(library, library_path)
     library_path.parent.mkdir(parents=True, exist_ok=True)
     if library_path.exists():
         backup = library_path.with_suffix(library_path.suffix + ".bak")
@@ -304,3 +371,19 @@ def _atomic_write_bytes(path: Path, payload: bytes) -> None:
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)
+
+
+def _is_sqlite_path(path: Path) -> bool:
+    return path.suffix.casefold() in {".db", ".sqlite", ".sqlite3"}
+
+
+def _storage_size(path: Path) -> int:
+    if not path.exists():
+        return 0
+    size = path.stat().st_size
+    if _is_sqlite_path(path):
+        for suffix in ("-wal", "-shm"):
+            sidecar = Path(str(path) + suffix)
+            if sidecar.exists():
+                size += sidecar.stat().st_size
+    return size

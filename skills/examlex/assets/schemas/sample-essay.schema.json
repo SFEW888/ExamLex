@@ -6,7 +6,7 @@
   "required": ["sample_id", "exam_type", "module", "topic", "band", "essay_text", "rubric_scores"],
   "properties": {
     "sample_id": { "type": "string", "pattern": "^(CET4|CET6|PG)-writing-\\d{3}-\\d{3}$" },
-    "exam_type": { "enum": ["CET4", "CET6", "POSTGRADUATE_ENGLISH"] },
+    "exam_type": { "enum": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"] },
     "module": { "const": "writing" },
     "topic": { "type": "string", "minLength": 1 },
     "band": { "type": "string" },

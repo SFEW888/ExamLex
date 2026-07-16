@@ -2,7 +2,7 @@
   "exam_type": "CET6",
   "bands": {
     "band-425": {
-      "samples": 3,
+      "samples": 1,
       "description": "425-499分段范文 — 六级及格水平",
       "common_issues": ["论证深度不足", "高级词汇使用不当", "段落衔接生硬"]
     }

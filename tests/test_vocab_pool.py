@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import sys
 import unittest
 from pathlib import Path
@@ -35,8 +36,11 @@ class TestVocabPool(unittest.TestCase):
         """index.json covers all 5 exam levels."""
         index_path = self.vocab_dir / "index.json"
         index = json.loads(index_path.read_text(encoding="utf-8"))
-        expected_keys = {"cet4-core", "cet6-core", "postgraduate-core",
-                         "tem4-core", "tem8-core"}
+        expected_keys = {
+            "cet4-starter", "cet6-starter", "postgraduate-starter",
+            "tem4-starter", "tem8-starter", "cet4-core-extended",
+            "cet6-core-extended", "postgraduate-core-extended",
+        }
         self.assertEqual(set(index.keys()), expected_keys)
 
     def test_canonical_filename_count_matches_entries(self):
@@ -46,19 +50,24 @@ class TestVocabPool(unittest.TestCase):
             entries = json.loads(path.read_text(encoding="utf-8"))
             self.assertEqual(advertised, len(entries), path.name)
             self.assertEqual(info["count"], len(entries), path.name)
-            self.assertEqual(info["scope"], "curated_starter")
+            self.assertIn(info["scope"], {"curated_starter", "verified_extended"})
 
-    def test_legacy_pools_match_canonical_data(self):
+    def test_pools_have_verifiable_hashes_without_misleading_aliases(self):
         for info in self.index.values():
-            canonical = json.loads(
-                (self.vocab_dir / info["path"]).read_text(encoding="utf-8")
+            path = self.vocab_dir / info["path"]
+            verification = info["verification"]
+            self.assertEqual(
+                hashlib.sha256(path.read_bytes()).hexdigest(),
+                verification["content_sha256"],
             )
-            self.assertTrue(info["legacy_paths"])
-            for legacy_path in info["legacy_paths"]:
-                legacy = json.loads(
-                    (self.vocab_dir / legacy_path).read_text(encoding="utf-8")
-                )
-                self.assertEqual(canonical, legacy, legacy_path)
+            self.assertNotIn("legacy_paths", info)
+            self.assertNotIn("source", info)
+        for filename in (
+            "cet4-core-2000.json", "cet6-core-1500.json",
+            "postgraduate-core-1000.json", "tem4-core-2000.json",
+            "tem8-core-2000.json",
+        ):
+            self.assertFalse((self.vocab_dir / filename).exists(), filename)
 
     def test_canonical_pools_do_not_repeat_words(self):
         for info in self.index.values():
@@ -68,11 +77,12 @@ class TestVocabPool(unittest.TestCase):
             words = [entry["word"].casefold() for entry in entries]
             self.assertEqual(len(words), len(set(words)), info["path"])
 
-    def test_generator_metadata_uses_truthful_names_and_legacy_paths(self):
+    def test_generator_metadata_uses_truthful_starter_names(self):
         for level, config in vocab_generator.LEVEL_CONFIG.items():
             advertised = int(Path(config["filename"]).stem.rsplit("-", 1)[1])
             self.assertEqual(advertised, len(generate_level(level)))
-            self.assertTrue(config["legacy_paths"])
+            self.assertTrue(config["index_key"].endswith("-starter"))
+            self.assertNotIn("legacy_paths", config)
 
     def test_all_entries_valid(self):
         """All vocabulary entries pass schema validation."""
@@ -93,7 +103,7 @@ class TestVocabPool(unittest.TestCase):
         path = self.vocab_dir / "cet4-core-200.json"
         data = json.loads(path.read_text(encoding="utf-8"))
         ranks = [e["frequency_rank"] for e in data]
-        self.assertEqual(ranks, sorted(ranks), "cet4-core-2000 should be sorted by frequency_rank")
+        self.assertEqual(ranks, sorted(ranks), "cet4 starter should be sorted by frequency_rank")
 
     def test_cet6_sorted_by_frequency(self):
         """cet6-core-149.json entries are sorted by frequency_rank ascending."""
@@ -136,15 +146,15 @@ class TestVocabPool(unittest.TestCase):
         words = [r["word"] for r in result]
         self.assertIn("ability", words[:2])
 
-    def test_cet6_no_overlap_with_cet4(self):
-        """cet6-core-1500 and cet4-core-2000 have no duplicate words."""
-        cet4_path = self.vocab_dir / "cet4-core-2000.json"
-        cet6_path = self.vocab_dir / "cet6-core-1500.json"
-        cet4_words = {e["word"].lower() for e in json.loads(cet4_path.read_text(encoding="utf-8"))}
-        cet6_words = {e["word"].lower() for e in json.loads(cet6_path.read_text(encoding="utf-8"))}
-        overlap = cet4_words & cet6_words
-        self.assertEqual(len(overlap), 0,
-                         f"CET-6 words overlap with CET-4: {overlap}")
+    def test_extended_pool_counts_are_actual_and_not_round_placeholders(self):
+        for key in (
+            "cet4-core-extended", "cet6-core-extended",
+            "postgraduate-core-extended",
+        ):
+            info = self.index[key]
+            advertised = int(Path(info["path"]).stem.rsplit("-", 1)[1])
+            self.assertEqual(advertised, info["count"])
+            self.assertNotIn(advertised, {1000, 1500, 2000})
 
     def test_vocab_pool_in_daily_plan(self):
         """Daily plan with --vocab-pool includes vocabulary tasks."""

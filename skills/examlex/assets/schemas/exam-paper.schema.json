@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "exam-paper.schema.json",
+  "title": "ExamLex simulation paper",
+  "type": "object",
+  "required": ["schema_version", "artifact_type", "paper_id", "exam_type", "title", "official_status", "sections", "source_notes"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifact_type": {"const": "exam_paper"},
+    "paper_id": {"type": "string", "minLength": 1},
+    "exam_type": {"enum": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"]},
+    "title": {"type": "string", "minLength": 1},
+    "official_status": {"const": "simulation_not_official"},
+    "sections": {"type": "array", "minItems": 1},
+    "source_notes": {"type": "array", "minItems": 1}
+  }
+}

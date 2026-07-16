@@ -43,14 +43,28 @@ Before the longer evidence workflow, apply the fast tutor runtime:
    `python run.py vocab --interactive --output vocab-estimate.json`
    Or batch mode: `python run.py vocab --wordlist answers.json --output result.json`
 
+   When the learner asks to memorize, recite, review, or learn specific words,
+   use the detailed vocabulary-block contract by default. Each word must have a
+   sequence number, headword, phonetics, part-of-speech senses, a meaningful
+   word-formation or memory explanation, an original bilingual contextual
+   example, derived or related words, and an active-recall task. Render a
+   machine-validated block with `python run.py word --input <word.json>`.
+   Do not downgrade this to a word/meaning list unless the learner explicitly
+   asks for a compact list.
+
+   Select vocabulary through `assets/data/vocabulary/index.json`. Prefer the
+   verified extended pool for CET4 (3,331 entries), CET6 (3,650), and
+   POSTGRADUATE_ENGLISH (1,014); TEM4 and TEM8 currently use their 100-entry
+   curated starter pools. Never infer a larger count from a filename or label.
+
 1. Validate intake:
    `python run.py check learner-profile.json`
    Supports CET4, CET6, POSTGRADUATE_ENGLISH, TEM4, TEM8.
 
 2. Generate the daily plan:
    `python run.py plan learner-profile.json --ability ability-profile.json --errors error-summary.json --output daily-plan.json`
-   Optionally pass `--strategies strategy-library.json` to attach relevant user-ingested exam methods to planned modules.
-   Optionally pass `--vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-2000.json` for vocabulary assignments.
+   Optionally pass `--strategies strategy-library.json` or `--strategies strategy-library.db` to attach relevant user-ingested exam methods to planned modules.
+   Optionally pass `--vocab-pool skills/examlex/assets/data/vocabulary/cet4-core-200.json` for vocabulary assignments.
    The plan automatically includes spaced-repetition review tasks for error tags with high review urgency.
 
 3. Record practice and tag errors (supports timed practice):
@@ -127,9 +141,17 @@ alternatives. Apply the named CET4, CET6, Postgraduate English, TEM4, and TEM8
 playbooks in the standard, then validate answer uniqueness and answer/evidence/
 translation/explanation consistency before delivery.
 
+For JSON-backed generation, run `python run.py validate-exam-artifact --kind
+paper --file <paper.json>` and then `python run.py validate-exam-artifact --kind
+answerbook --file <answerbook.json> --paper <paper.json>`. A failed contract is
+not deliverable. These checks cover all five supported exams and enforce the
+non-official simulation label, section counts, complete option translations,
+evidence scope, multi-step reasoning, separate distractor rejection, and the
+section-specific detailed packages.
+
 ## Multi-Source Continuous Learning
 
-Extract exam strategies from any source — text files, books, videos, people, conversations — and write them into `strategy-library.json`. All five distillation paths are built-in (`direct`, `book`, `video`, `person`, `manual`): no external skills needed. See [references/multi-source-distillation.md](references/multi-source-distillation.md) for the complete methodology reference.
+Extract exam strategies from any source — text files, books, videos, people, conversations — and write them into a JSON or SQLite strategy library. Files ending in `.db`, `.sqlite`, or `.sqlite3` use the transactional indexed backend; JSON remains the portable interchange format. All five distillation paths are built-in (`direct`, `book`, `video`, `person`, `manual`): no external skills needed. See [references/multi-source-distillation.md](references/multi-source-distillation.md) for the complete methodology reference.
 
 ### Pipeline Overview
 
@@ -141,7 +163,12 @@ Each distillation follows a 5-stage pipeline orchestrated by the Agent:
    Also run `python run.py validate-strategy` to validate the strategy library JSON file itself after manual edits.
 4. **Evaluate**: Agent runs test prompts to score effectiveness (35 pts) → `evaluation.json`.
 5. **Commit**: `python run.py commit --artifacts-dir <path> --library strategy-library.json` — ratchet check + atomic write.
-   Successful managed-session commits run the 168-hour/4-GiB reproducible-artifact retention policy. Strategy libraries at 100 MiB only warn and list possible duplicates; never delete strategies or revisions automatically.
+   Successful managed-session commits run the 168-hour/4-GiB reproducible-artifact retention policy. `capacity-monitor` applies the same policy independently; on Windows, `scripts/install_capacity_monitor.ps1` registers it every 30 minutes. Strategy libraries at 100 MiB only write warnings and list possible duplicates; never delete strategies or revisions automatically.
+
+Use `python run.py strategy-db import-json --input <library.json> --database
+<library.db>` to migrate a growing library, and `strategy-db export-json` for a
+portable snapshot. Near-duplicate text matches are warnings for user review,
+never deletion instructions.
 
 Total Darwin score < 70 triggers automatic hill-climb optimization (max 3 rounds).
 
@@ -242,8 +269,10 @@ python run.py commit --artifacts-dir <path> --library strategy-library.json
 - `assets/data/vocab-test-words.json`: Yes/No sampling word list with 6 frequency bands and non-word traps for vocabulary estimation.
 - `assets/data/common-errors/`: common error patterns for Chinese learners (writing/translation/listening/reading/vocabulary).
 - `assets/data/sample-essays/`: model essays with rubric scores and annotations for scoring anchor reference.
-- `assets/schemas/`: JSON Schema files for vocab-entry, vocab-estimate-result, error-pattern, strategy-library, and sample-essay.
+- `assets/schemas/`: JSON Schema files for learner and strategy data, exam papers, detailed answerbooks, and memorization vocabulary blocks.
 - [references/darwin-rubric.md](references/darwin-rubric.md): Darwin 6-dimension strategy quality scoring rubric (59 pts).
 - `scripts/vocab_generator.py`: generate vocabulary pool JSON files from embedded word database.
 - `scripts/estimate_vocabulary.py`: Yes/No sampling vocabulary size estimation engine.
+- `scripts/vocabulary_block.py`: validate and render the default detailed memorization block.
+- `scripts/validate_exam_artifact.py`: enforce five-exam paper and answerbook contracts.
 - `scripts/visualize.py`: generate standalone HTML progress reports with inline SVG charts.

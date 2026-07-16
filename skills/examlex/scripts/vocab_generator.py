@@ -12,6 +12,7 @@ Usage:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -63,10 +64,30 @@ def validate_entry(entry: dict, schema: dict) -> list[str]:
     return errors
 
 
-def write_json(data: list[dict], path: Path) -> None:
+def write_json(data, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     text = json.dumps(data, ensure_ascii=False, indent=2) + "\n"
     path.write_text(text, encoding="utf-8")
+
+
+def _content_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def _starter_metadata(config: dict, path: Path, count: int) -> dict:
+    return {
+        "path": path.name,
+        "count": count,
+        "scope": "curated_starter",
+        "exam_types": config["exam_types"],
+        "description": config["description"],
+        "verification": {
+            "origin_class": "project_curated_vocabulary",
+            "method": "maintained_embedded_dataset",
+            "verified_on": "2026-07-16",
+            "content_sha256": _content_sha256(path),
+        },
+    }
 
 
 # ── Embedded word database ────────────────────────────────────────────────
@@ -357,49 +378,39 @@ def _merge_words(embedded: list, imported: list) -> list:
 
 LEVEL_CONFIG = {
     "CET4": {
-        "index_key": "cet4-core",
+        "index_key": "cet4-starter",
         "filename": "cet4-core-200.json",
-        "legacy_paths": ["cet4-core-2000.json"],
         "words": _merge_words(_WORDS_CET4, CET4_WORDS),
         "exam_types": ["CET4"],
-        "description": "四级高频核心词汇，按真题出现频率降序排列",
-        "source": "基于 CET-4 历年真题词频统计（public domain 数据源）",
+        "description": "四级精选起步词表",
     },
     "CET6": {
-        "index_key": "cet6-core",
+        "index_key": "cet6-starter",
         "filename": "cet6-core-149.json",
-        "legacy_paths": ["cet6-core-1500.json"],
         "words": _merge_words(_WORDS_CET6, CET6_WORDS),
         "exam_types": ["CET6"],
-        "description": "六级增量高频词汇，假设用户已掌握四级词表",
-        "source": "基于 CET-6 历年真题词频统计",
+        "description": "六级精选起步词表",
     },
     "POSTGRADUATE": {
-        "index_key": "postgraduate-core",
+        "index_key": "postgraduate-starter",
         "filename": "postgraduate-core-100.json",
-        "legacy_paths": ["postgraduate-core-1000.json"],
         "words": _merge_words(_WORDS_POSTGRAD, POSTGRAD_WORDS),
         "exam_types": ["POSTGRADUATE_ENGLISH"],
-        "description": "考研英语增量高频词汇",
-        "source": "基于考研英语(一/二)历年真题词频统计",
+        "description": "考研英语精选起步词表",
     },
     "TEM4": {
-        "index_key": "tem4-core",
+        "index_key": "tem4-starter",
         "filename": "tem4-core-100.json",
-        "legacy_paths": ["tem4-core-2000.json"],
         "words": _merge_words(_WORDS_TEM4, TEM4_WORDS),
         "exam_types": ["TEM4"],
-        "description": "英语专业四级高频词汇",
-        "source": "基于 TEM-4 历年真题词频统计",
+        "description": "英语专业四级精选起步词表",
     },
     "TEM8": {
-        "index_key": "tem8-core",
+        "index_key": "tem8-starter",
         "filename": "tem8-core-100.json",
-        "legacy_paths": ["tem8-core-2000.json"],
         "words": _merge_words(_WORDS_TEM8, TEM8_WORDS),
         "exam_types": ["TEM8"],
-        "description": "英语专业八级高频进阶词汇",
-        "source": "基于 TEM-8 历年真题词频统计",
+        "description": "英语专业八级精选起步词表",
     },
 }
 
@@ -425,15 +436,28 @@ def generate_level(level: str) -> list[dict]:
     """Generate vocabulary entries for a given exam level."""
     config = LEVEL_CONFIG[level]
     entries = [_make_entry(wt, level) for wt in config["words"]]
-    # Sort by frequency_rank
+    # Merge helpers can remove a duplicated word while preserving the original
+    # source ranks.  Re-number the final pool so rank remains an unambiguous,
+    # continuous ordering within the generated file.
     entries.sort(key=lambda e: e["frequency_rank"])
+    for rank, entry in enumerate(entries, start=1):
+        entry["frequency_rank"] = rank
     return entries
 
 
 def generate_all():
-    """Generate all vocabulary JSON files."""
+    """Regenerate the embedded starter pools without overwriting verified pools."""
     schema = load_schema()
-    index = {}
+    index_path = VOCAB_DIR / "index.json"
+    try:
+        current_index = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        current_index = {}
+    index = {
+        key: value
+        for key, value in current_index.items()
+        if isinstance(value, dict) and value.get("scope") == "verified_extended"
+    }
     total_entries = 0
 
     for level, config in LEVEL_CONFIG.items():
@@ -454,24 +478,13 @@ def generate_all():
         # Write file
         path = VOCAB_DIR / config["filename"]
         write_json(entries, path)
-        for legacy_path in config["legacy_paths"]:
-            write_json(entries, VOCAB_DIR / legacy_path)
         print(f"  [{level}] {path.name} — {len(entries)} entries")
 
         # Build index entry
-        index[config["index_key"]] = {
-            "path": config["filename"],
-            "count": len(entries),
-            "scope": "curated_starter",
-            "legacy_paths": config["legacy_paths"],
-            "exam_types": config["exam_types"],
-            "description": config["description"],
-            "source": config["source"],
-        }
+        index[config["index_key"]] = _starter_metadata(config, path, len(entries))
 
     # Write index
-    index_path = VOCAB_DIR / "index.json"
-    write_json(index, index_path)
+    write_json(dict(sorted(index.items())), index_path)
     print(f"  [INDEX] index.json — {len(index)} files, {total_entries} total entries")
     return index_path
 
@@ -482,7 +495,16 @@ def _rebuild_index() -> Path:
     Keeps the index consistent after generating a single level, using the actual
     on-disk entry counts for every level file that exists.
     """
-    index = {}
+    index_path = VOCAB_DIR / "index.json"
+    try:
+        existing = json.loads(index_path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        existing = {}
+    index = {
+        key: value
+        for key, value in existing.items()
+        if isinstance(value, dict) and value.get("scope") == "verified_extended"
+    }
     for level, config in LEVEL_CONFIG.items():
         path = VOCAB_DIR / config["filename"]
         if not path.exists():
@@ -491,17 +513,8 @@ def _rebuild_index() -> Path:
             data = json.loads(path.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             continue
-        index[config["index_key"]] = {
-            "path": config["filename"],
-            "count": len(data),
-            "scope": "curated_starter",
-            "legacy_paths": config["legacy_paths"],
-            "exam_types": config["exam_types"],
-            "description": config["description"],
-            "source": config["source"],
-        }
-    index_path = VOCAB_DIR / "index.json"
-    write_json(index, index_path)
+        index[config["index_key"]] = _starter_metadata(config, path, len(data))
+    write_json(dict(sorted(index.items())), index_path)
     return index_path
 
 
@@ -534,9 +547,6 @@ def validate_existing():
     index_path = VOCAB_DIR / "index.json"
     if index_path.exists():
         index = json.loads(index_path.read_text(encoding="utf-8"))
-        for key, info in index.items():
-            if key not in [c["index_key"] for c in LEVEL_CONFIG.values()]:
-                print(f"  [INDEX] Extra entry in index: {key}")
         print(f"  [INDEX] index.json — {len(index)} entries")
     else:
         print("  [INDEX] MISSING: index.json")
@@ -568,8 +578,6 @@ def main():
             config = LEVEL_CONFIG[level]
             path = VOCAB_DIR / config["filename"]
             write_json(entries, path)
-            for legacy_path in config["legacy_paths"]:
-                write_json(entries, VOCAB_DIR / legacy_path)
             print(f"  Written {len(entries)} entries to {path.name}")
             # Keep index.json in sync after writing a single level.
             _rebuild_index()

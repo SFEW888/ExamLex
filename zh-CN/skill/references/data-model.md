@@ -112,7 +112,9 @@ ledger 是一个 JSON 列表。每条记录应包含：
 
 ## 策略库
 
-由 `scripts/ingest_strategy.py` 或 `examlex commit` 生成，默认文件为 `strategy-library.json`。
+由 `scripts/ingest_strategy.py` 或 `examlex commit` 生成。相同逻辑模型既可保存为
+`strategy-library.json`，也可事务性保存为 `strategy-library.db`；使用
+`examlex strategy-db` 在 SQLite 与 JSON 交换格式之间导入或导出。
 
 每条策略的必填字段：
 
@@ -140,4 +142,4 @@ ledger 是一个 JSON 列表。每条记录应包含：
 - `mental_model`：认知提取结果，包括名称、摘要、证据、应用与限制
 - `heuristic`：启发式结果，包括名称、规则、场景与示例
 
-策略库是全局数据：一个文件可服务多个学习者档案。通过 `generate_daily_plan.py --strategies` 把获批策略关联到计划任务。完整摄入流程见 [多源蒸馏方法论](multi-source-distillation.md)。
+策略库是全局数据：一个存储可服务多个学习者档案。通过 `generate_daily_plan.py --strategies` 把获批策略关联到计划任务。重复匹配只作为人工复核候选；当前策略和不可变历史版本都不会被自动删除。完整摄入流程见 [多源蒸馏方法论](multi-source-distillation.md)。

@@ -32,7 +32,7 @@ Before finishing prompt-adjacent work, search for any known private prompt text.
 When adding or changing tags:
 
 - update `skills/examlex/references/error-taxonomy.md`,
-- update script mappings in both portable and importable script mirrors,
+- update the canonical implementation and, only when entry points change, its thin compatibility bridge,
 - add or adjust focused tests,
 - keep `total_items` and `correct_items` as the practice count fields.
 

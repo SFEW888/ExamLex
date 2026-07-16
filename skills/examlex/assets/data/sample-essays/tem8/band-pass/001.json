@@ -1,0 +1,23 @@
+{
+  "sample_id": "TEM8-writing-pass-001",
+  "exam_type": "TEM8",
+  "module": "writing",
+  "topic": "Efficiency and Human Judgment",
+  "band": "pass",
+  "prompt": "Write an essay evaluating whether the pursuit of efficiency always improves decision-making.",
+  "essay_text": "Efficiency is frequently presented as an unquestionable good. Institutions measure shorter waiting times, faster production and more rapid access to information, then treat these gains as evidence of better decisions. Speed can certainly remove waste, but it does not by itself determine whether a decision is fair, accurate or wise.\n\nThe value of efficiency is clearest in routine processes. A well-designed digital form can reduce repetitive paperwork, and a transparent scheduling system can help people use limited resources more effectively. In such cases, the goal is stable and the relevant information is relatively easy to define. Faster execution allows workers to spend more time on tasks that require interpretation or care.\n\nProblems arise, however, when a measurable proxy replaces the real purpose of an activity. A hospital may shorten consultations and appear more productive while patients leave without understanding their treatment. A school may maximize test preparation while narrowing students' curiosity. These examples do not prove that efficiency is harmful; they show that the chosen measure can hide costs borne by people who are not represented in the data.\n\nGood decision-making therefore requires a hierarchy of aims. Decision makers should first define the public or human value to be protected, then select efficiency measures that serve that value. They should also create opportunities for appeal and review, especially when a fast automated process affects rights or access.\n\nEfficiency is best understood as an instrument rather than a final standard. Used within clear ethical and practical boundaries, it can free attention for judgment. Allowed to define success on its own, it may merely help an institution reach the wrong destination sooner.",
+  "word_count": 272,
+  "rubric_scores": {
+    "task_completion": 8,
+    "structure_logic": 8,
+    "language_accuracy": 7,
+    "expression_richness": 8,
+    "total": 31,
+    "max": 40
+  },
+  "annotations": [
+    {"highlight": "a measurable proxy replaces the real purpose", "comment": "Identifies the mechanism behind the counterargument instead of listing disadvantages.", "dimension": "task_completion"},
+    {"highlight": "an instrument rather than a final standard", "comment": "Returns to the thesis with a precise conceptual distinction.", "dimension": "structure_logic"}
+  ],
+  "origin": "project-authored"
+}

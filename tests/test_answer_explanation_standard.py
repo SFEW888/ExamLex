@@ -370,15 +370,11 @@ class AnswerExplanationStandardTests(unittest.TestCase):
             chinese_sources,
         )
 
-    def test_packaged_english_reference_is_synced(self):
-        self.assertEqual(
-            ENGLISH_REFERENCE.read_text(encoding="utf-8"),
-            PACKAGED_ENGLISH_REFERENCE.read_text(encoding="utf-8"),
-        )
-        self.assertEqual(
-            ENGLISH_RENDERING_TEMPLATE.read_text(encoding="utf-8"),
-            PACKAGED_RENDERING_TEMPLATE.read_text(encoding="utf-8"),
-        )
+    def test_canonical_references_are_not_duplicated_in_compatibility_package(self):
+        self.assertTrue(ENGLISH_REFERENCE.is_file())
+        self.assertTrue(ENGLISH_RENDERING_TEMPLATE.is_file())
+        self.assertFalse(PACKAGED_ENGLISH_REFERENCE.exists())
+        self.assertFalse(PACKAGED_RENDERING_TEMPLATE.exists())
 
 
 if __name__ == "__main__":

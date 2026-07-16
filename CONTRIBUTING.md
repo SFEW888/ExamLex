@@ -26,8 +26,8 @@ examlex --help
 
 - Keep `skills/examlex/` portable: `SKILL.md`, `scripts/`, `references/`, and `assets/` only.
 - Keep private prompt bodies out of public files. Use placeholders such as `[PRIVATE_PROMPT_PLACEHOLDER: grammar-corrector]`.
-- Treat `skills/examlex/` as the only hand-edited Skill source. Do not edit generated mirror files under `examlex/` directly.
-- Regenerate the importable mirror with `python skills\examlex\scripts\sync_mirror.py --sync`, then verify it with `python skills\examlex\scripts\sync_mirror.py --check`.
+- Treat `skills/examlex/` as the only implementation and resource source. The historical `examlex/` package contains only thin compatibility entry points.
+- Repair the thin compatibility package with `python skills\examlex\scripts\sync_mirror.py`, then verify it with `python skills\examlex\scripts\sync_mirror.py --check`.
 - Use `total_items` and `correct_items` for practice records.
 - Add or update tests when changing scripts, validators, schemas, templates, or scoring behavior.
 - Do not add dependencies unless there is a clear project-level need.

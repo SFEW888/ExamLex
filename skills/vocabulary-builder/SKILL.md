@@ -13,6 +13,14 @@ Use the public-safe assistant boundary from `../examlex/references/assistant-ros
 
 Focus on meaning recognition, spelling, listening recognition, collocation, word family, synonym contrast, and exam-context usage. Record repeated mistakes with vocabulary error tags from `../examlex/references/error-taxonomy.md` when practice evidence is available.
 
+When the learner asks to memorize or recite words, default to one detailed block
+per word: numbered headword, phonetics, part-of-speech senses, word formation or
+another accurate memory route, an original bilingual contextual example,
+derived or related words, and an active-recall task. Follow the
+`vocabulary-block.schema.json` contract and validate with the ExamLex
+`vocab-card` command. Use a compact word/meaning list only when the learner
+explicitly requests it.
+
 If `strategy-library.json` exists, check it for methods relevant to this domain before responding. See `../examlex/references/multi-source-distillation.md`.
 
 Do not ask the user to run Python directly unless they ask for developer or CLI debugging instructions.

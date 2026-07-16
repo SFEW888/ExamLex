@@ -134,6 +134,11 @@ def _default_sessions_root() -> Path:
     ) / "ExamLex" / "sessions"
 
 
+def _default_strategy_library_path() -> Path:
+    """Default durable strategy database next to the managed session root."""
+    return _default_sessions_root().parent / "strategy-library.db"
+
+
 # ──────────────────────────────────────────────
 # TutorConfig
 # ──────────────────────────────────────────────
@@ -175,6 +180,7 @@ class TutorConfig:
     auto_cleanup: bool = True
     session_retention_hours: float = DEFAULT_SESSION_RETENTION_HOURS
     max_reproducible_artifact_bytes: int = DEFAULT_MAX_REPRODUCIBLE_ARTIFACT_BYTES
+    strategy_library_path: Path = field(default_factory=_default_strategy_library_path)
     strategy_library_warning_bytes: int = DEFAULT_STRATEGY_LIBRARY_WARNING_BYTES
 
     # ── Content limits ──
@@ -185,6 +191,7 @@ class TutorConfig:
     def to_dict(self) -> dict:
         d = asdict(self)
         d["sessions_root"] = str(d["sessions_root"])
+        d["strategy_library_path"] = str(d["strategy_library_path"])
         # Redact sensitive values so the dict is safe to log or serialize.
         if d.get("siliconflow_api_key") is not None:
             d["siliconflow_api_key"] = "<redacted>"
@@ -195,6 +202,8 @@ class TutorConfig:
     def from_dict(cls, data: dict) -> TutorConfig:
         if "sessions_root" in data and data["sessions_root"] is not None:
             data["sessions_root"] = Path(data["sessions_root"])
+        if "strategy_library_path" in data and data["strategy_library_path"] is not None:
+            data["strategy_library_path"] = Path(data["strategy_library_path"])
         return cls(**{k: v for k, v in data.items() if k in cls.__dataclass_fields__})
 
     # Map a tool name to the config attribute holding its explicit path.

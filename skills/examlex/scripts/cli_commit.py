@@ -199,7 +199,7 @@ def main(argv: list[str] | None = None) -> int:
         description="Approve validated strategies and commit them to the strategy library."
     )
     parser.add_argument("--artifacts-dir", required=True, help="Session artifacts directory")
-    parser.add_argument("--library", required=True, help="Path to strategy-library.json")
+    parser.add_argument("--library", required=True, help="Path to a JSON or SQLite strategy library")
     parser.add_argument("--json", action="store_true", help="JSON output")
     args = parser.parse_args(argv)
 

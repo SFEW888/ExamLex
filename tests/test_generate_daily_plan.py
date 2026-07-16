@@ -1,9 +1,10 @@
 import hashlib
 import unittest
 import json
+import tempfile
 from pathlib import Path
 
-from examlex.scripts import generate_daily_plan
+from examlex.scripts import generate_daily_plan, strategy_store
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -59,20 +60,20 @@ class GenerateDailyPlanTests(unittest.TestCase):
 
     def test_official_ninety_minute_profile_reserves_vocabulary_work(self):
         profile = json.loads(
-            (PROJECT_ROOT / "examlex/assets/templates/learner-profile.json").read_text(
+            (PROJECT_ROOT / "skills/examlex/assets/templates/learner-profile.json").read_text(
                 encoding="utf-8"
             )
         )
         profile["learner_id"] = "learner-001"
         ability = json.loads(
-            (PROJECT_ROOT / "examlex/assets/templates/ability-profile.yaml").read_text(
+            (PROJECT_ROOT / "skills/examlex/assets/templates/ability-profile.yaml").read_text(
                 encoding="utf-8"
             )
         )
         vocab_pool = json.loads(
             (
                 PROJECT_ROOT
-                / "examlex/assets/data/vocabulary/cet4-core-200.json"
+                / "skills/examlex/assets/data/vocabulary/cet4-core-200.json"
             ).read_text(encoding="utf-8")
         )
 
@@ -89,7 +90,7 @@ class GenerateDailyPlanTests(unittest.TestCase):
 
     def test_packaged_ability_template_produces_real_candidates(self):
         ability = json.loads(
-            (PROJECT_ROOT / "examlex/assets/templates/ability-profile.yaml").read_text(
+            (PROJECT_ROOT / "skills/examlex/assets/templates/ability-profile.yaml").read_text(
                 encoding="utf-8"
             )
         )
@@ -159,6 +160,42 @@ class GenerateDailyPlanTests(unittest.TestCase):
             for path in (profile_path, ability_path, output_path):
                 if path.exists():
                     path.unlink()
+
+    def test_cli_accepts_sqlite_strategy_library(self):
+        artifacts = PROJECT_ROOT / "test-artifacts"
+        artifacts.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=artifacts) as temp:
+            root = Path(temp)
+            profile_path = root / "profile.json"
+            ability_path = root / "ability.json"
+            output_path = root / "plan.json"
+            database = root / "strategy-library.db"
+            profile_path.write_text(
+                '{"learner_id":"learner-001","exam_type":"CET4","daily_time_budget_minutes":20}',
+                encoding="utf-8",
+            )
+            ability_path.write_text(
+                '{"modules":{"reading":[{"node":"locating","level":1,"status":"priority"}]}}',
+                encoding="utf-8",
+            )
+            strategy_store.atomic_save_strategy_library({"strategies": []}, database)
+
+            self.assertEqual(
+                0,
+                generate_daily_plan.main(
+                    [
+                        "--profile",
+                        str(profile_path),
+                        "--ability",
+                        str(ability_path),
+                        "--strategies",
+                        str(database),
+                        "--output",
+                        str(output_path),
+                    ]
+                ),
+            )
+            self.assertTrue(output_path.is_file())
 
 
 if __name__ == "__main__":

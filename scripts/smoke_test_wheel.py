@@ -78,6 +78,18 @@ def smoke_test(wheel: Path) -> dict[str, object]:
         source_fetch_help_result = run_checked(
             [str(examlex_command), "source-fetch", "--help"], runtime_dir, env
         )
+        strategy_database_help_result = run_checked(
+            [str(examlex_command), "strategy-db", "--help"], runtime_dir, env
+        )
+        capacity_monitor_help_result = run_checked(
+            [str(examlex_command), "capacity-monitor", "--help"], runtime_dir, env
+        )
+        exam_artifact_help_result = run_checked(
+            [str(examlex_command), "validate-exam-artifact", "--help"], runtime_dir, env
+        )
+        vocabulary_block_help_result = run_checked(
+            [str(examlex_command), "vocab-card", "--help"], runtime_dir, env
+        )
         source_list_result = run_checked(
             [str(examlex_command), "source-list", "--collectable", "--json"],
             runtime_dir,
@@ -95,30 +107,79 @@ def smoke_test(wheel: Path) -> dict[str, object]:
             raise RuntimeError("Installed examlex command did not expose source-collect help")
         if "--kind" not in source_fetch_help_result.stdout:
             raise RuntimeError("Installed examlex command did not expose source-fetch help")
+        if "import-json" not in strategy_database_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose strategy-db help")
+        if "--strategy-library" not in capacity_monitor_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose capacity-monitor help")
+        if "--kind" not in exam_artifact_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose validate-exam-artifact help")
+        if "--input" not in vocabulary_block_help_result.stdout:
+            raise RuntimeError("Installed examlex command did not expose vocab-card help")
         source_list_payload = json.loads(source_list_result.stdout)
         if source_list_payload.get("count", 0) < 5:
             raise RuntimeError("Installed source catalog did not expose collectable sources")
+        strategy_input = runtime_dir / "strategy-library.json"
+        strategy_database = runtime_dir / "strategy-library.db"
+        strategy_export = runtime_dir / "strategy-library-export.json"
+        strategy_input.write_text('{"strategies": []}\n', encoding="utf-8")
+        strategy_import_result = run_checked(
+            [
+                str(examlex_command),
+                "strategy-db",
+                "import-json",
+                "--input",
+                str(strategy_input),
+                "--database",
+                str(strategy_database),
+                "--json",
+            ],
+            runtime_dir,
+            env,
+        )
+        strategy_export_result = run_checked(
+            [
+                str(examlex_command),
+                "strategy-db",
+                "export-json",
+                "--database",
+                str(strategy_database),
+                "--output",
+                str(strategy_export),
+                "--json",
+            ],
+            runtime_dir,
+            env,
+        )
+        if not json.loads(strategy_import_result.stdout).get("ok"):
+            raise RuntimeError("Installed strategy-db import did not report success")
+        if not json.loads(strategy_export_result.stdout).get("ok"):
+            raise RuntimeError("Installed strategy-db export did not report success")
+        if json.loads(strategy_export.read_text(encoding="utf-8")) != {"strategies": []}:
+            raise RuntimeError("Installed strategy-db round trip changed the JSON interchange shape")
         resource_result = run_checked(
             [
                 str(python),
                 "-c",
                 (
-                    "import json; from pathlib import Path; import examlex; "
+                    "import json; from pathlib import Path; import examlex; import skills.examlex as canonical; "
                     "from examlex.scripts.estimate_vocabulary import _DEFAULT_REF; "
                     "from examlex.scripts.tutor_prompts import load_role_contracts; "
                     "from examlex.scripts.tutor_runtime import prepare_tutor_turn; "
                     "from examlex.scripts.source_catalog import load_source_catalog; "
-                    "root = Path(examlex.__file__).resolve().parent; "
-                    "required = {'SKILL.md': root / 'SKILL.md', "
-                    "'assets/schemas': root / 'assets' / 'schemas', "
-                    "'assets/templates': root / 'assets' / 'templates', "
-                    "'references': root / 'references', "
+                    "compatibility_root = Path(examlex.__file__).resolve().parent; "
+                    "canonical_root = Path(canonical.__file__).resolve().parent; "
+                    "required = {'SKILL.md': canonical_root / 'SKILL.md', "
+                    "'assets/schemas': canonical_root / 'assets' / 'schemas', "
+                    "'assets/templates': canonical_root / 'assets' / 'templates', "
+                    "'references': canonical_root / 'references', "
                     "'vocab-reference': _DEFAULT_REF, "
-                    "'tutor-role-contracts': root / 'references' / 'tutor-role-contracts.json', "
-                    "'tutor-runtime': root / 'references' / 'tutor-runtime.md', "
-                    "'source-collection': root / 'references' / 'source-collection.md', "
-                    "'source-catalog': root / 'assets' / 'data' / 'source-catalog.json'}; "
+                    "'tutor-role-contracts': canonical_root / 'references' / 'tutor-role-contracts.json', "
+                    "'tutor-runtime': canonical_root / 'references' / 'tutor-runtime.md', "
+                    "'source-collection': canonical_root / 'references' / 'source-collection.md', "
+                    "'source-catalog': canonical_root / 'assets' / 'data' / 'source-catalog.json'}; "
                     "missing = [name for name, path in required.items() if not path.exists()]; "
+                    "assert not (compatibility_root / 'assets').exists(); "
+                    "assert not (compatibility_root / 'references').exists(); "
                     "assert not missing, missing; assert len(load_role_contracts()) == 8; "
                     "assert len(load_source_catalog()['sources']) >= 50; "
                     "assert prepare_tutor_turn('Correct my grammar', "
@@ -156,8 +217,14 @@ def smoke_test(wheel: Path) -> dict[str, object]:
             "tutor_prepare_help": True,
             "source_collect_help": True,
             "source_fetch_help": True,
+            "strategy_database_help": True,
+            "strategy_database_round_trip": True,
+            "capacity_monitor_help": True,
+            "exam_artifact_help": True,
+            "vocabulary_block_help": True,
             "source_catalog_count": source_list_payload["count"],
             "resources": json.loads(resource_result.stdout),
+            "thin_compatibility_package": True,
             "quiz_word_count": len(vocab_payload["quiz_words"]),
         }
 

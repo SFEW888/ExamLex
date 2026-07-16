@@ -14,7 +14,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(
         description="Run operational readiness checks for deployment safety."
     )
-    parser.add_argument("--library", help="Path to strategy-library.json (for business result check)")
+    parser.add_argument("--library", help="Path to a JSON or SQLite strategy library (for business result check)")
     parser.add_argument("--json", action="store_true", help="JSON output")
     parser.add_argument(
         "--offline",

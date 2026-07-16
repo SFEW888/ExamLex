@@ -1,6 +1,5 @@
 """CI-discoverable end-to-end contract for continuous learning."""
 
-import filecmp
 import hashlib
 import json
 import tempfile
@@ -60,7 +59,7 @@ class ContinuousLearningEndToEndTests(unittest.TestCase):
             self.assertEqual([hint["strategy_id"] for hint in hints], [approved["strategy_id"]])
             self.assertEqual(hints[0]["revision_sha256"], revision_sha256)
 
-    def test_schema_and_script_mirror_are_current(self):
+    def test_schema_and_thin_import_bridge_are_current(self):
         root = Path(__file__).resolve().parents[1]
         schema = json.loads(
             (root / "skills" / "examlex" / "assets" / "schemas" / "strategy-library.schema.json").read_text(encoding="utf-8")
@@ -70,11 +69,14 @@ class ContinuousLearningEndToEndTests(unittest.TestCase):
         self.assertEqual(set(properties["distillation_method"]["enum"]), set(common.DISTILLATION_METHODS))
         self.assertEqual(properties["lifecycle_status"]["enum"], ["draft", "approved", "deprecated"])
 
-        source = root / "skills" / "examlex" / "scripts"
-        mirror = root / "examlex" / "scripts"
-        for script in source.glob("*.py"):
-            with self.subTest(script=script.name):
-                self.assertTrue(filecmp.cmp(script, mirror / script.name, shallow=False))
+        bridge = root / "examlex" / "scripts" / "__init__.py"
+        self.assertIn("skills.examlex", bridge.read_text(encoding="utf-8"))
+        mirrored = [
+            path
+            for path in (root / "examlex" / "scripts").rglob("*.py")
+            if path.name != "__init__.py"
+        ]
+        self.assertEqual([], mirrored)
 
     @staticmethod
     def _temporary_dir():

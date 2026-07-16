@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "answerbook.schema.json",
+  "title": "ExamLex detailed answerbook",
+  "type": "object",
+  "required": ["schema_version", "artifact_type", "paper_id", "exam_type", "detail_level", "official_status", "answers", "section_packages"],
+  "properties": {
+    "schema_version": {"const": 1},
+    "artifact_type": {"const": "answerbook"},
+    "paper_id": {"type": "string", "minLength": 1},
+    "exam_type": {"enum": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"]},
+    "detail_level": {"const": "detailed"},
+    "official_status": {"const": "simulation_not_official"},
+    "answers": {"type": "array"},
+    "section_packages": {"type": "object"}
+  }
+}

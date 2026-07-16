@@ -125,6 +125,19 @@ class TestSampleEssays(unittest.TestCase):
                     self.assertIn(field, data, f"{f.name}: missing {field}")
                 self.assertGreater(len(data["essay_text"]), 50)
 
+    def test_sample_indexes_match_actual_files_for_all_exam_types(self):
+        base = (REPO_ROOT / "skills" / "examlex"
+                / "assets" / "data" / "sample-essays")
+        index = json.loads((base / "index.json").read_text("utf-8"))
+        self.assertEqual({"cet4", "cet6", "postgraduate", "tem4", "tem8"}, set(index))
+        for info in index.values():
+            exam_dir = (base / info["path"]).parent
+            actual = sum(1 for path in exam_dir.rglob("*.json") if path.name != "index.json")
+            self.assertEqual(info["total_samples"], actual, info["exam_type"])
+            sub_index = json.loads((base / info["path"]).read_text("utf-8"))
+            declared = sum(band["samples"] for band in sub_index["bands"].values())
+            self.assertEqual(actual, declared, info["exam_type"])
+
 
 if __name__ == "__main__":
     unittest.main()

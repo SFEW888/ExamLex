@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "profiles": {
+    "CET4": {
+      "required_sections": {
+        "writing": 1,
+        "listening": 25,
+        "reading-section-a": 10,
+        "reading-section-b": 10,
+        "reading-section-c": 10,
+        "translation": 1
+      },
+      "objective_item_count": 55,
+      "writing_word_range": [120, 180]
+    },
+    "CET6": {
+      "required_sections": {
+        "writing": 1,
+        "listening": 25,
+        "reading-section-a": 10,
+        "reading-section-b": 10,
+        "reading-section-c": 10,
+        "translation": 1
+      },
+      "objective_item_count": 55,
+      "writing_word_range": [150, 220]
+    },
+    "POSTGRADUATE_ENGLISH": {
+      "required_sections": {
+        "use-of-english": 20,
+        "reading-part-a": 20,
+        "reading-part-b": 5,
+        "translation": 5,
+        "writing-part-a": 1,
+        "writing-part-b": 1
+      },
+      "objective_item_count": 45,
+      "writing_word_range": [100, 260]
+    },
+    "TEM4": {
+      "required_sections": {
+        "dictation": 1,
+        "listening": 20,
+        "language-knowledge": 20,
+        "cloze": 10,
+        "reading": 20,
+        "writing": 1
+      },
+      "objective_item_count": 70,
+      "writing_word_range": [180, 260]
+    },
+    "TEM8": {
+      "required_sections": {
+        "listening": 25,
+        "reading": 20,
+        "translation": 2,
+        "writing": 1
+      },
+      "optional_sections": ["language-knowledge", "proofreading"],
+      "objective_item_count": 45,
+      "writing_word_range": [300, 450]
+    }
+  }
+}

@@ -2,7 +2,7 @@
   "exam_type": "CET4",
   "bands": {
     "band-425": {
-      "samples": 3,
+      "samples": 1,
       "description": "425-499分段范文 — 达到及格线但仍有提升空间",
       "common_issues": ["中式英语表达", "简单句过多", "拼写错误", "缺少衔接词"]
     }

@@ -36,8 +36,10 @@
 | `examlex source-fetch --source <id> --item <id> --kind <text\|media>` | `source-fetch` | A | Explicitly materialize one indexed public item. |
 | `examlex ingest <file> [opts]` | `ingest-strategy` | U | Ingest strategies into a library. |
 | `examlex strategies [opts]` | `list-strategies` | U | List or search ingested strategies. |
+| `examlex strategy-db import-json|export-json [opts]` | `strategy-db` | M | Migrate between JSON and transactional SQLite storage. |
 | `examlex validate --artifacts-dir <path>` | `validate-strategies` | A | Validate distilled strategies and calculate structure scores. |
 | `examlex commit --artifacts-dir <path> --library <path>` | `commit-strategies` | A | Commit strategies atomically after ratchet checks. |
+| `examlex validate-exam-artifact --kind <paper\|answerbook> --file <json>` | `validate-exam-artifact` | M | Enforce five-exam paper and detailed-answerbook contracts. |
 
 ### Data, vocabulary, and operations
 
@@ -47,10 +49,12 @@
 | `examlex restore <file> <dir> [opts]` | `restore` | U | Restore learner data. |
 | `examlex report [opts]` | `visualize` | U | Generate an HTML progress report. |
 | `examlex vocab [opts]` | `vocab-estimate` | U | Estimate vocabulary size by sampling. |
+| `examlex word --input <json> [--output <md>]` | `vocab-card` | U | Render a detailed memorization vocabulary block. |
 | `examlex prompt-check --private-dir <dir> [opts]` | `prompt-check` | U | Validate an external private prompt set without exposing its text. |
 | `examlex tutor-prepare --request <text> [opts]` | `tutor-prepare` | A | Route a request and return at most two safe clarification questions. |
 | `examlex resume <session-id> [opts]` | `resume` | U | Show guidance for resuming an existing distillation session. |
 | `examlex sessions-cleanup [opts]` | `sessions-cleanup` | M | Inspect or manually clean session artifacts; successful commits also run automatic retention. |
+| `examlex capacity-monitor [opts]` | `capacity-monitor` | M | Run background-safe retention and strategy threshold warnings. |
 | `examlex check-deps [opts]` | `check-deps` | M | Check optional external tools. |
 | `examlex ops-check [opts]` | `ops-check` | M | Run operational readiness checks. |
 | `examlex validate-strategy <file>` | `validate-strategy` | M | Validate a strategy-library file. |
@@ -223,6 +227,21 @@ candidate groups based on identical ingestion fingerprints, normalized content,
 matching title/scope, or repeated content across revisions. It never deletes data;
 revision candidates must be checked for learner-record references before removal.
 
+Libraries ending in `.db`, `.sqlite`, or `.sqlite3` use the transactional SQLite
+backend automatically. JSON remains supported for portability.
+
+### `examlex strategy-db` — migrate strategy storage
+
+```bash
+examlex strategy-db import-json --input strategy-library.json --database strategy-library.db --json
+examlex strategy-db export-json --database strategy-library.db --output strategy-library.json --json
+```
+
+SQLite stores current strategies and immutable revisions in separate indexed
+tables and preserves the JSON interchange shape. Approximate duplicate matches
+are review-only candidates; import, export, listing, and writes never delete a
+strategy automatically.
+
 ### `examlex validate` — validate distilled artifacts
 
 ```bash
@@ -267,6 +286,33 @@ examlex vocab --wordlist answers.json [--json]
 ```
 
 Equivalent full command: `vocab-estimate`. Reference word data is included in the installed package.
+
+### `examlex word` — render a memorization vocabulary block
+
+```bash
+examlex word --input vocabulary-block.json --output vocabulary-block.md
+examlex vocab-card --input vocabulary-block.json --validate-only --json
+```
+
+The input contract requires a sequence number, headword, phonetics, part-of-speech
+senses, a word-formation or memory explanation, a bilingual contextual example,
+and at least one derived or related word. The generated block also includes an
+active-recall task. This is the default presentation when a learner asks to
+memorize words; a compact list must be explicitly requested.
+
+### `examlex validate-exam-artifact` — validate a paper or answerbook
+
+```bash
+examlex validate-exam-artifact --kind paper --file paper.json --json
+examlex validate-exam-artifact --kind answerbook --file answers.json --paper paper.json --json
+```
+
+The paper validator checks the active CET-4, CET-6, postgraduate English,
+TEM-4, or TEM-8 section profile, numbering, item counts, evidence roles, and
+the explicit non-official simulation label. The answerbook validator enforces
+detailed explanations, complete option translations, evidence scope, reasoning
+steps, distractor rejection, and section-specific writing, reading, listening,
+cloze, and translation packages.
 
 ### `examlex prompt-check` — validate external private prompts
 
@@ -318,6 +364,21 @@ a successful `examlex commit` automatically marks a standard managed session as
 session files are excluded. A strategy library at or above 100 MiB emits a warning
 and a bounded duplicate-candidate list but is never automatically modified or pruned.
 
+### `examlex capacity-monitor` — automatic capacity policy
+
+```powershell
+examlex capacity-monitor --json
+examlex capacity-monitor --strategy-library strategy-library.db --notify-windows
+powershell -ExecutionPolicy Bypass -File scripts/install_capacity_monitor.ps1
+```
+
+Each run applies age and hard-size limits only to reproducible audio,
+transcripts, captions, full text, and chapter extracts, then writes a durable
+status report. At the strategy threshold it writes a warning report, lists
+possible duplicate versions for review, and can show a Windows toast. It never
+deletes strategies or immutable revisions. The installer registers a per-user
+scheduled task that runs every 30 minutes by default.
+
 ### `examlex check-deps` and `examlex ops-check`
 
 ```bash
@@ -337,11 +398,12 @@ commit-strategies    daily-plan          extract
 ingest-strategy      list-strategies     ops-check
 prompt-check         record-practice     restore
 resume
-score-writing        sessions-cleanup    summarize-errors
+score-writing        sessions-cleanup    strategy-db
+summarize-errors
 tag-error            tutor-prepare       update-ability
-validate-profile
+validate-exam-artifact validate-profile
 validate-strategies  validate-strategy   visualize
-vocab-estimate       writing-version
+vocab-card           vocab-estimate       writing-version
 ```
 
 ## Equivalent Invocation Forms

@@ -1,0 +1,10 @@
+{
+  "exam_type": "TEM4",
+  "bands": {
+    "band-pass": {
+      "samples": 1,
+      "description": "Pass-level project-authored calibration sample.",
+      "common_issues": ["limited development", "mechanical transitions", "imprecise collocation"]
+    }
+  }
+}

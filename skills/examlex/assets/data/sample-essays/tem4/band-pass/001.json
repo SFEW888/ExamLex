@@ -1,0 +1,23 @@
+{
+  "sample_id": "TEM4-writing-pass-001",
+  "exam_type": "TEM4",
+  "module": "writing",
+  "topic": "Responsible Use of Campus Technology",
+  "band": "pass",
+  "prompt": "Write an essay discussing how university students can use digital tools responsibly in their studies.",
+  "essay_text": "Digital tools have become a normal part of university study. They help students find information, organize notes and communicate with classmates. Yet convenience does not guarantee effective learning, so students need to use technology with clear purposes and sensible limits.\n\nFirst, a tool should support active thinking rather than replace it. Before searching online, students can write down what they already know and what they need to discover. They should also compare sources and record where important claims come from. This habit reduces careless copying and improves judgment. Second, students need boundaries. Turning off unnecessary notifications during a study session can protect attention, while planned breaks can prevent fatigue. Group members should also agree on when digital communication is useful and when a face-to-face discussion would be clearer.\n\nIn short, responsible technology use depends on purpose, verification and self-control. When students remain in charge of the tool, digital resources can widen access to knowledge without weakening independent thought.",
+  "word_count": 171,
+  "rubric_scores": {
+    "task_completion": 7,
+    "structure_logic": 7,
+    "language_accuracy": 7,
+    "expression_richness": 6,
+    "total": 27,
+    "max": 40
+  },
+  "annotations": [
+    {"highlight": "support active thinking rather than replace it", "comment": "Clear controlling claim with an explicit contrast.", "dimension": "task_completion"},
+    {"highlight": "purpose, verification and self-control", "comment": "The conclusion compresses the argument into three reusable criteria.", "dimension": "structure_logic"}
+  ],
+  "origin": "project-authored"
+}

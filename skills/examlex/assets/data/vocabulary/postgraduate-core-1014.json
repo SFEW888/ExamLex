@@ -1,0 +1,7043 @@
+[
+  {
+    "word": "activate",
+    "meaning_cn": "使活动；激活；使活化",
+    "frequency_rank": 1,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "exact",
+    "meaning_cn": "准确的，精确的，严谨的v.要求；强迫；强求",
+    "frequency_rank": 2,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "interact",
+    "meaning_cn": "交流，沟通；相互影响，相互作用",
+    "frequency_rank": 3,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "behave",
+    "meaning_cn": "表现得体；表现",
+    "frequency_rank": 4,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "conduct",
+    "meaning_cn": "组织，安排；实施，执行；指挥；引",
+    "frequency_rank": 5,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "semiconductor",
+    "meaning_cn": "半导体",
+    "frequency_rank": 6,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "implement",
+    "meaning_cn": "使生效；贯彻；执行；实施",
+    "frequency_rank": 7,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "direct",
+    "meaning_cn": "指导，指挥adj.直接的",
+    "frequency_rank": 8,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "antique",
+    "meaning_cn": "古代的；古老的；过时的n.有价值的古物",
+    "frequency_rank": 9,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "participate",
+    "meaning_cn": "参与，参加",
+    "frequency_rank": 10,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "anticipate",
+    "meaning_cn": "预期，期望",
+    "frequency_rank": 11,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "flesh",
+    "meaning_cn": "肉，果肉；肉体，肌肤",
+    "frequency_rank": 12,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "ancient",
+    "meaning_cn": "古代的；古老的",
+    "frequency_rank": 13,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "stale",
+    "meaning_cn": "不新鲜的；（空气）污浊的；陈腐的；没有新",
+    "frequency_rank": 14,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "renovate",
+    "meaning_cn": "修复，翻新，重新粉刷",
+    "frequency_rank": 15,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "award",
+    "meaning_cn": "奖，奖品，奖金v.授予",
+    "frequency_rank": 16,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "reward",
+    "meaning_cn": "奖励；回报；报酬v.奖赏；奖励",
+    "frequency_rank": 17,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "embarrass",
+    "meaning_cn": "使窘迫，使尴尬；使困惑；使为难；使陷入困境",
+    "frequency_rank": 18,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "bargain",
+    "meaning_cn": "减价品；便宜货；协议；交易",
+    "frequency_rank": 19,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "embassy",
+    "meaning_cn": "大使馆；(统称)使馆官员",
+    "frequency_rank": 20,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "barrier",
+    "meaning_cn": "屏障；障碍物；阻力；关卡；分界线；隔阅",
+    "frequency_rank": 21,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "barren",
+    "meaning_cn": "贫瘠的；不毛的，不孕的",
+    "frequency_rank": 22,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "boundary",
+    "meaning_cn": "边界，分界线，界限",
+    "frequency_rank": 23,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "applaud",
+    "meaning_cn": "称赞；鼓掌",
+    "frequency_rank": 24,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "clap",
+    "meaning_cn": "&v.鼓掌；拍手",
+    "frequency_rank": 25,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "prize",
+    "meaning_cn": "奖赏，奖金，奖品v.珍视",
+    "frequency_rank": 26,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "astonish",
+    "meaning_cn": "使十分惊讶",
+    "frequency_rank": 27,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "amuse",
+    "meaning_cn": "逗乐，逗笑；（使）娱乐",
+    "frequency_rank": 28,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "maintain",
+    "meaning_cn": "维持；维修；坚持认为",
+    "frequency_rank": 29,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "obese",
+    "meaning_cn": "臃肿的，虚胖的",
+    "frequency_rank": 30,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "burnout",
+    "meaning_cn": "精疲力竭；过度劳累；燃尽",
+    "frequency_rank": 31,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "fatigue",
+    "meaning_cn": "疲劳；劳累",
+    "frequency_rank": 32,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "pension",
+    "meaning_cn": "养老金，退休金",
+    "frequency_rank": 33,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "allowance",
+    "meaning_cn": "津贴，补贴；零用钱；限额；免税额",
+    "frequency_rank": 34,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "subsidy",
+    "meaning_cn": "津贴，补贴",
+    "frequency_rank": 35,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "revenue",
+    "meaning_cn": "税收，国家的收入；收益",
+    "frequency_rank": 36,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "avenue",
+    "meaning_cn": "大街；林荫大道；选择，途径",
+    "frequency_rank": 37,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "profit",
+    "meaning_cn": "利润，益处v.获益；得到好处；对....有用（或有益）",
+    "frequency_rank": 38,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "benefit",
+    "meaning_cn": "利益，好处；津贴，救济金v.有益于，对...…",
+    "frequency_rank": 39,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "prolong",
+    "meaning_cn": "延长，拖延",
+    "frequency_rank": 40,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "benevolent",
+    "meaning_cn": "慈善的；行善的；乐善好施的",
+    "frequency_rank": 41,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "background",
+    "meaning_cn": "背景，后台",
+    "frequency_rank": 42,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "capital",
+    "meaning_cn": "资本，资金；大写字母；首都",
+    "frequency_rank": 43,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "bloom",
+    "meaning_cn": "开花；变得健康n.花",
+    "frequency_rank": 44,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "boast",
+    "meaning_cn": "自夸，吹嘘；炫耀",
+    "frequency_rank": 45,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "gloom",
+    "meaning_cn": "忧郁；愁闷；无望；幽暗；黑暗；昏暗",
+    "frequency_rank": 46,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "dense",
+    "meaning_cn": "密集的，稠密的；难懂的",
+    "frequency_rank": 47,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "condense",
+    "meaning_cn": "压缩；浓缩；冷凝",
+    "frequency_rank": 48,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "impact",
+    "meaning_cn": "碰撞；巨大影响",
+    "frequency_rank": 49,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "force",
+    "meaning_cn": "力量；武力；影响力；部队v.强迫；使发生",
+    "frequency_rank": 50,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "fluctuate",
+    "meaning_cn": "波动，起伏",
+    "frequency_rank": 51,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "enforce",
+    "meaning_cn": "强制；强迫；执行",
+    "frequency_rank": 52,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "exert",
+    "meaning_cn": "运用，施加",
+    "frequency_rank": 53,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "reinforce",
+    "meaning_cn": "加强；加固；充实使更强烈；给.加强力量",
+    "frequency_rank": 54,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "powerful",
+    "meaning_cn": "有权力的，有权势的；有影响的；强有力的",
+    "frequency_rank": 55,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "democratic",
+    "meaning_cn": "民主的；民主政体的；民主制度的；（美国）",
+    "frequency_rank": 56,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "scratch",
+    "meaning_cn": "划痕；抓痕v.抓，挠；划破",
+    "frequency_rank": 57,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "snatch",
+    "meaning_cn": "抢走，夺去；抓紧时间做；一下夺过",
+    "frequency_rank": 58,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "capture",
+    "meaning_cn": "捕获；战利品v.俘获，捕获；引起（兴趣）",
+    "frequency_rank": 59,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "breeze",
+    "meaning_cn": "微风，轻风；轻而易举的事",
+    "frequency_rank": 60,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "encourage",
+    "meaning_cn": "鼓舞；起激励作用的事物",
+    "frequency_rank": 61,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "blank",
+    "meaning_cn": "空白的；空着的；茫然的，没有表情的",
+    "frequency_rank": 62,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "bald",
+    "meaning_cn": "光秀的，秃顶的；不加赘述的；简单的",
+    "frequency_rank": 63,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "leak",
+    "meaning_cn": "漏；渗漏；泄漏；渗入",
+    "frequency_rank": 64,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "hollow",
+    "meaning_cn": "洞adj.空的，中空的；空虚的",
+    "frequency_rank": 65,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "shadow",
+    "meaning_cn": "阴影；影子；昏暗处；少许；（坏）影响y",
+    "frequency_rank": 66,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "swallow",
+    "meaning_cn": "燕子v.吞下，咽下",
+    "frequency_rank": 67,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "shallow",
+    "meaning_cn": "浅的；浅薄的",
+    "frequency_rank": 68,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "scatter",
+    "meaning_cn": "撒；撒播；散布n.散落",
+    "frequency_rank": 69,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "appetite",
+    "meaning_cn": "胃口；强烈欲望；喜好，喜爱",
+    "frequency_rank": 70,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "catalogue",
+    "meaning_cn": "目录v.将......编入目录",
+    "frequency_rank": 71,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "category",
+    "meaning_cn": "类别，种类；范畴",
+    "frequency_rank": 72,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "petition",
+    "meaning_cn": "请愿书；申诉书v.祈求；请求；请愿；申请",
+    "frequency_rank": 73,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "fiction",
+    "meaning_cn": "小说；虚构的事",
+    "frequency_rank": 74,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "mystery",
+    "meaning_cn": "神秘，神秘的人或物；奥秘",
+    "frequency_rank": 75,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "junction",
+    "meaning_cn": "交叉点；接合点；汇合处",
+    "frequency_rank": 76,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "damp",
+    "meaning_cn": "潮湿的n.潮湿；潮气v.使潮湿",
+    "frequency_rank": 77,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "humble",
+    "meaning_cn": "谦卑的；没有特别之处的；谦虚的",
+    "frequency_rank": 78,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "humour",
+    "meaning_cn": "幽默，幽默感",
+    "frequency_rank": 79,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "humiliate",
+    "meaning_cn": "羞辱；使丧失尊严",
+    "frequency_rank": 80,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "divide",
+    "meaning_cn": "（使）分开，分散，分割；分配；分享；分担",
+    "frequency_rank": 81,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "massive",
+    "meaning_cn": "巨大的；严重的；大而重的；结实的",
+    "frequency_rank": 82,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "chunk",
+    "meaning_cn": "厚块；厚片；大块；相当大的量；语块",
+    "frequency_rank": 83,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "folk",
+    "meaning_cn": "人们;家人;亲属",
+    "frequency_rank": 84,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "mass",
+    "meaning_cn": "大量；团，块；群众，大众；adj. 大规模的",
+    "frequency_rank": 85,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "disorder",
+    "meaning_cn": "混乱；杂乱；失调；紊乱",
+    "frequency_rank": 86,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "chaos",
+    "meaning_cn": "混乱，杂乱；素乱",
+    "frequency_rank": 87,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "compatible",
+    "meaning_cn": "兼容的；可共用的；可共存的；（因思想、志",
+    "frequency_rank": 88,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "creature",
+    "meaning_cn": "生物，动物",
+    "frequency_rank": 89,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "existence",
+    "meaning_cn": "存在,生存",
+    "frequency_rank": 90,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "create",
+    "meaning_cn": "创造，创作；造成，引起，产生",
+    "frequency_rank": 91,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "absent",
+    "meaning_cn": "缺席的；不（存）在的；心不在焉的",
+    "frequency_rank": 92,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "representative",
+    "meaning_cn": "代表，代理人adj.典型的，有代表性的",
+    "frequency_rank": 93,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "present",
+    "meaning_cn": "礼物；目前；现在adj.现存的；当前",
+    "frequency_rank": 94,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "resent",
+    "meaning_cn": "愤恨，怨恨",
+    "frequency_rank": 95,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "consent",
+    "meaning_cn": "同意，准许，允许；赞同",
+    "frequency_rank": 96,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "represent",
+    "meaning_cn": "代表，代理；展示，描绘",
+    "frequency_rank": 97,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "submit",
+    "meaning_cn": "呈递，提交；顺从",
+    "frequency_rank": 98,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "admission",
+    "meaning_cn": "承认；允许进入；入场券",
+    "frequency_rank": 99,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "summit",
+    "meaning_cn": "最高点，顶峰；峰会",
+    "frequency_rank": 100,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "dismiss",
+    "meaning_cn": "解雇，免职；不予理会",
+    "frequency_rank": 101,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "peak",
+    "meaning_cn": "山顶，顶峰adj.最高的",
+    "frequency_rank": 102,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "admit",
+    "meaning_cn": "承认；准许进入",
+    "frequency_rank": 103,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "missile",
+    "meaning_cn": "导弹；投掷物",
+    "frequency_rank": 104,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "intermittent",
+    "meaning_cn": "间歇的；断断续续的",
+    "frequency_rank": 105,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "committee",
+    "meaning_cn": "委员会",
+    "frequency_rank": 106,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "commission",
+    "meaning_cn": "委员会；委托v，委托；任命",
+    "frequency_rank": 107,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "transaction",
+    "meaning_cn": "微信交易业务办理处理",
+    "frequency_rank": 108,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "transplant",
+    "meaning_cn": "移植；移种；（使）迁移",
+    "frequency_rank": 109,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "transfer",
+    "meaning_cn": "搬迁；转会；换乘；迁移",
+    "frequency_rank": 110,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "contemporary",
+    "meaning_cn": "现代的，当代的；同一时代的，同时期",
+    "frequency_rank": 111,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "transient",
+    "meaning_cn": "短暂的，临时的",
+    "frequency_rank": 112,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "transparent",
+    "meaning_cn": "透明的，清澈的；易看穿的，易懂的",
+    "frequency_rank": 113,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "opaque",
+    "meaning_cn": "不透明的；晦涩的；难懂的",
+    "frequency_rank": 114,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "temporary",
+    "meaning_cn": "暂时的，临时的；短暂的",
+    "frequency_rank": 115,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "apparent",
+    "meaning_cn": "显而易见的，明白易懂的，显然的；貌似的",
+    "frequency_rank": 116,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "striking",
+    "meaning_cn": "显著的，引人注目的",
+    "frequency_rank": 117,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "evidence",
+    "meaning_cn": "证据，迹象v.证明，表明",
+    "frequency_rank": 118,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "proof",
+    "meaning_cn": "证据；检验；证明",
+    "frequency_rank": 119,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "strike",
+    "meaning_cn": "击，撞；罢工；发现，找到；突然想到；划（火柴）",
+    "frequency_rank": 120,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "approve",
+    "meaning_cn": "批准；赞成，同意",
+    "frequency_rank": 121,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "evident",
+    "meaning_cn": "明显的，显然的",
+    "frequency_rank": 122,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "straightforward",
+    "meaning_cn": "直接的，简单的，易懂的；坦率的",
+    "frequency_rank": 123,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "blunt",
+    "meaning_cn": "不锋利的，钝的；率直的v.使减弱；使变钝",
+    "frequency_rank": 124,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "plausible",
+    "meaning_cn": "貌似有理的，可信的；花言巧语的",
+    "frequency_rank": 125,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "employment",
+    "meaning_cn": "工作，职业；雇用；就业",
+    "frequency_rank": 126,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "deploy",
+    "meaning_cn": "部署，调度（军队或武器）；有效地利用",
+    "frequency_rank": 127,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "plot",
+    "meaning_cn": "故事情节；布局；阴谋v.密谋；暗中策划",
+    "frequency_rank": 128,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "tender",
+    "meaning_cn": "嫩的，柔软的；脆弱的；温柔的，亲切的",
+    "frequency_rank": 129,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "vulnerable",
+    "meaning_cn": "脆弱的，易受伤害的",
+    "frequency_rank": 130,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "mild",
+    "meaning_cn": "温和的；和善的；不严厉的",
+    "frequency_rank": 131,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "feeble",
+    "meaning_cn": "、虚弱的，衰弱的；无效的；无力的",
+    "frequency_rank": 132,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "lean",
+    "meaning_cn": "瘦的；贫瘠的，贫乏的；不景气的；精干的",
+    "frequency_rank": 133,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "tremble",
+    "meaning_cn": "（因紧张、激动、惊慌等）颤抖，哆嗦，抖动，战",
+    "frequency_rank": 134,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "amiable",
+    "meaning_cn": "和葛可亲的，亲切的",
+    "frequency_rank": 135,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "arrogant",
+    "meaning_cn": "傲慢的，自大的",
+    "frequency_rank": 136,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "eloquent",
+    "meaning_cn": "雄辩的；有口才的；流利的",
+    "frequency_rank": 137,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "anxious",
+    "meaning_cn": "焦虑的；渴望的",
+    "frequency_rank": 138,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "enormous",
+    "meaning_cn": "巨大的；庞大的；极大的",
+    "frequency_rank": 139,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "numerous",
+    "meaning_cn": "众多的；许多的",
+    "frequency_rank": 140,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "numerical",
+    "meaning_cn": "数字的；用数字表示的",
+    "frequency_rank": 141,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "plentiful",
+    "meaning_cn": "许多的，大量的，丰富的",
+    "frequency_rank": 142,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "superfluous",
+    "meaning_cn": "多余的；不必要的",
+    "frequency_rank": 143,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "handsome",
+    "meaning_cn": "数量大的；英俊的；漂亮的",
+    "frequency_rank": 144,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "extravagant",
+    "meaning_cn": "奢侈的，浪费的；过于昂贵的",
+    "frequency_rank": 145,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "flock",
+    "meaning_cn": "一群；一大群，众多；信众，追随者v.群集",
+    "frequency_rank": 146,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "abundant",
+    "meaning_cn": "大量的，充裕的，丰富的",
+    "frequency_rank": 147,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "luxury",
+    "meaning_cn": "奢侈，华贵；奢侈品",
+    "frequency_rank": 148,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "redundant",
+    "meaning_cn": "的",
+    "frequency_rank": 149,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "multitude",
+    "meaning_cn": "众多，大量；群众，大批百姓，民众",
+    "frequency_rank": 150,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "addition",
+    "meaning_cn": "加法；增加；增加物；扩建部分",
+    "frequency_rank": 151,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "host",
+    "meaning_cn": "主人；主持人；主办国（或城市、机构）v.主办",
+    "frequency_rank": 152,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "supplement",
+    "meaning_cn": "增补（物）；增刊；补编；附录；额外费用",
+    "frequency_rank": 153,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "complement",
+    "meaning_cn": "补充，补足；使相配；使完美",
+    "frequency_rank": 154,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "landlord",
+    "meaning_cn": "业丰；房东；老板；地主",
+    "frequency_rank": 155,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "hostile",
+    "meaning_cn": "敌意的，敌视的",
+    "frequency_rank": 156,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "multiply",
+    "meaning_cn": "增加；繁殖；乘",
+    "frequency_rank": 157,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "urge",
+    "meaning_cn": "主张；催促；敦促n.强烈的欲望；冲动",
+    "frequency_rank": 158,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "haste",
+    "meaning_cn": "急速，匆忙，仓促。",
+    "frequency_rank": 159,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "lobby",
+    "meaning_cn": "门厅，大厅；游说，游说团体v.游说",
+    "frequency_rank": 160,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "agent",
+    "meaning_cn": "代理人，经纪人；动因",
+    "frequency_rank": 161,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "client",
+    "meaning_cn": "委托人；当事人；客户",
+    "frequency_rank": 162,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "agency",
+    "meaning_cn": "服务机构；（尤指）代理机构，经销机构；（政府",
+    "frequency_rank": 163,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "customer",
+    "meaning_cn": "顾客，主顾，客户",
+    "frequency_rank": 164,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "deputy",
+    "meaning_cn": "副手，副职，代理",
+    "frequency_rank": 165,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "treaty",
+    "meaning_cn": "（国家间的）条约，协议",
+    "frequency_rank": 166,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "retreat",
+    "meaning_cn": "退却，撤退；静处；隐居处v.撤退，后退",
+    "frequency_rank": 167,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "withdraw",
+    "meaning_cn": "提，取（账户存款）；(使）撤回，撤离；收回",
+    "frequency_rank": 168,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "sheer",
+    "meaning_cn": "（用来强调事物的大小、程度或数量）极",
+    "frequency_rank": 169,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "tough",
+    "meaning_cn": "坚强的，不屈不挠的；艰苦的，困难的",
+    "frequency_rank": 170,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "passive",
+    "meaning_cn": "被动的，消极的",
+    "frequency_rank": 171,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "optimistic",
+    "meaning_cn": "乐观（主义）的",
+    "frequency_rank": 172,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "pessimistic",
+    "meaning_cn": "悲观的，悲观主义的；厌世的",
+    "frequency_rank": 173,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "passion",
+    "meaning_cn": "激情，热情",
+    "frequency_rank": 174,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "enthusiastic",
+    "meaning_cn": "热心的，热情的",
+    "frequency_rank": 175,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "compassion",
+    "meaning_cn": "同情；怜悯",
+    "frequency_rank": 176,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "thrill",
+    "meaning_cn": "震颤感，兴奋感；兴奋，激动；令人兴奋的经历",
+    "frequency_rank": 177,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "excitement",
+    "meaning_cn": "刺激，兴奋，激动",
+    "frequency_rank": 178,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "energy",
+    "meaning_cn": "精力，活力，干劲；力量；能量",
+    "frequency_rank": 179,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "dynamic",
+    "meaning_cn": "动力；力学adj.动态的，发展变化的；充满流",
+    "frequency_rank": 180,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "ignorant",
+    "meaning_cn": "无知的，不了解的；无学识的",
+    "frequency_rank": 181,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "ignore",
+    "meaning_cn": "忽视，不理睬",
+    "frequency_rank": 182,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "emphasise",
+    "meaning_cn": "加强；强调，着重；使突出，使明显",
+    "frequency_rank": 183,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "bore",
+    "meaning_cn": "令人讨厌的人或事v.使厌烦",
+    "frequency_rank": 184,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "tedious",
+    "meaning_cn": "单调的，乏味的",
+    "frequency_rank": 185,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "bother",
+    "meaning_cn": "打扰，烦扰；花费时间精力（做某事）",
+    "frequency_rank": 186,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "cheat",
+    "meaning_cn": "作弊者，骗子；欺骗手段；欺诈行为",
+    "frequency_rank": 187,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "perceive",
+    "meaning_cn": "注意到；意识到；察觉到；将...·理解为",
+    "frequency_rank": 188,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "conceive",
+    "meaning_cn": "构想，设想；怀孕",
+    "frequency_rank": 189,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "frame",
+    "meaning_cn": "框架，结构；体形，身材",
+    "frequency_rank": 190,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "flee",
+    "meaning_cn": "逃走，逃跑；迅速离开",
+    "frequency_rank": 191,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "flame",
+    "meaning_cn": "火焰；强烈的情感，激情",
+    "frequency_rank": 192,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "flatter",
+    "meaning_cn": "奉承；讨好；向.....谄媚",
+    "frequency_rank": 193,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "flare",
+    "meaning_cn": "闪光；闪耀；燃烧；突发；加剧；发怒",
+    "frequency_rank": 194,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "idle",
+    "meaning_cn": "无所事事，虚度",
+    "frequency_rank": 195,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "adolescent",
+    "meaning_cn": "青少年adj.青春期的；青少年的",
+    "frequency_rank": 196,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "stroll",
+    "meaning_cn": "&v.散步；溜达；闲逛",
+    "frequency_rank": 197,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "linger",
+    "meaning_cn": "逗留，徘徊；继续存留；缓慢消失",
+    "frequency_rank": 198,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "enrol",
+    "meaning_cn": "（使）加入；登记，注册",
+    "frequency_rank": 199,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "recruit",
+    "meaning_cn": "新兵，新成员v.招募（新兵），吸收（新成员）",
+    "frequency_rank": 200,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "swarm",
+    "meaning_cn": "一大群（蜜蜂等昆虫）;人群",
+    "frequency_rank": 201,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "register",
+    "meaning_cn": "登记，注册，登记簿v.登记，注册",
+    "frequency_rank": 202,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "crawl",
+    "meaning_cn": "&v，爬行；缓慢行进",
+    "frequency_rank": 203,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "lag",
+    "meaning_cn": "缓慢移动；发展缓慢；滞后；落后于",
+    "frequency_rank": 204,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "elegant",
+    "meaning_cn": "优雅的，端庄的；精美的",
+    "frequency_rank": 205,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "faint",
+    "meaning_cn": "（光、声、味）微弱的，不清楚的；可能性不大",
+    "frequency_rank": 206,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "grace",
+    "meaning_cn": "优美，优雅；风度；体面",
+    "frequency_rank": 207,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "stun",
+    "meaning_cn": "使震惊；打昏；给....以深刻的印象",
+    "frequency_rank": 208,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "dizzy",
+    "meaning_cn": "头晕目眩的，眩晕的；（可能）使人眩晕的",
+    "frequency_rank": 209,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "disgrace",
+    "meaning_cn": "丢脸；耻辱；不光彩；丢脸的人或事",
+    "frequency_rank": 210,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "glow",
+    "meaning_cn": "微弱稳定的光；容光焕发，满脸通红",
+    "frequency_rank": 211,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "polish",
+    "meaning_cn": "亮光剂；擦亮，磨光v.擦亮，磨光；修改，润色",
+    "frequency_rank": 212,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "flash",
+    "meaning_cn": "闪光，闪烁；闪光灯；快讯",
+    "frequency_rank": 213,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sparkle",
+    "meaning_cn": "闪烁的光；亮点v.闪烁；闪耀；神采飞扬",
+    "frequency_rank": 214,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "glitter",
+    "meaning_cn": "灿烂的光辉；闪烁；闪耀",
+    "frequency_rank": 215,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "radiate",
+    "meaning_cn": "辐射；流露；发射（光或热）",
+    "frequency_rank": 216,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "literature",
+    "meaning_cn": "文学；文献；著作",
+    "frequency_rank": 217,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "compensate",
+    "meaning_cn": "偿还，补偿；赔偿",
+    "frequency_rank": 218,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "candidate",
+    "meaning_cn": "（竞选或求职的）候选人，申请人；投考者，应",
+    "frequency_rank": 219,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "considerate",
+    "meaning_cn": "体贴的，考虑周到的",
+    "frequency_rank": 220,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "negotiate",
+    "meaning_cn": "谈判，商，协商；商定，达成（协议）",
+    "frequency_rank": 221,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "imitate",
+    "meaning_cn": "、模仿，仿效",
+    "frequency_rank": 222,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "dialogue",
+    "meaning_cn": "对话，对白",
+    "frequency_rank": 223,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "via",
+    "meaning_cn": "经；通过；凭借",
+    "frequency_rank": 224,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "analogy",
+    "meaning_cn": "类比，类似，类推",
+    "frequency_rank": 225,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "simulate",
+    "meaning_cn": "模仿；假装；冒充；模拟",
+    "frequency_rank": 226,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "simultaneous",
+    "meaning_cn": "同步的，同时发生的",
+    "frequency_rank": 227,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "stimulate",
+    "meaning_cn": "促进；激发；激励；刺激；使兴奋",
+    "frequency_rank": 228,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "absorb",
+    "meaning_cn": "使全神贯注；吸收；使并入；纳入",
+    "frequency_rank": 229,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "incorporate",
+    "meaning_cn": "包含；吸收；使并入",
+    "frequency_rank": 230,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "assimilate",
+    "meaning_cn": "（使）同化；吸收",
+    "frequency_rank": 231,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "delay",
+    "meaning_cn": "延期，耽搁，延误；延迟（或耽搁、拖延）的时间",
+    "frequency_rank": 232,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "defer",
+    "meaning_cn": "推迟，延期",
+    "frequency_rank": 233,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "suffer",
+    "meaning_cn": "遭受；忍受；受苦，受折磨",
+    "frequency_rank": 234,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "differ",
+    "meaning_cn": "不同，相异",
+    "frequency_rank": 235,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "infer",
+    "meaning_cn": "推断，推论，推理",
+    "frequency_rank": 236,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "indifferent",
+    "meaning_cn": "冷漠的，不关心的",
+    "frequency_rank": 237,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "refer",
+    "meaning_cn": "将..送交给（以求获得帮助等）;；（~to",
+    "frequency_rank": 238,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "fertile",
+    "meaning_cn": "肥沃的；能生育的，可繁殖的；能结果的",
+    "frequency_rank": 239,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "reference",
+    "meaning_cn": "提及，涉及；参考，参考书目",
+    "frequency_rank": 240,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "prefer",
+    "meaning_cn": "较喜欢；喜欢.....多于",
+    "frequency_rank": 241,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "confer",
+    "meaning_cn": "授予；商讨，协商，交换意见",
+    "frequency_rank": 242,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "channel",
+    "meaning_cn": "海峡；频道；渠道，途径",
+    "frequency_rank": 243,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "style",
+    "meaning_cn": "风格；流行样式，时尚；方式，作风v.设计",
+    "frequency_rank": 244,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "mean",
+    "meaning_cn": "平均的；吝音的",
+    "frequency_rank": 245,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "genre",
+    "meaning_cn": "体裁，类型",
+    "frequency_rank": 246,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "generous",
+    "meaning_cn": "慷慨的，大方的；丰富的",
+    "frequency_rank": 247,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "typical",
+    "meaning_cn": "典型的，象征性的",
+    "frequency_rank": 248,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "manner",
+    "meaning_cn": "最优秀的，第一流的；有代表性的，典型",
+    "frequency_rank": 249,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "classic",
+    "meaning_cn": "最优秀的，第一流的；有代表性的，典型",
+    "frequency_rank": 250,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "upgrade",
+    "meaning_cn": "使升级;提高",
+    "frequency_rank": 251,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "earnest",
+    "meaning_cn": "非常认真的，真诚的",
+    "frequency_rank": 252,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "degree",
+    "meaning_cn": "度，度数；程度；（大学）学位",
+    "frequency_rank": 253,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "modify",
+    "meaning_cn": "调整，稍作修改，使更适合",
+    "frequency_rank": 254,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "moderate",
+    "meaning_cn": "一般的;温和的;适度的",
+    "frequency_rank": 255,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "rate",
+    "meaning_cn": "速度；比率；价格，费用v.估价，评估",
+    "frequency_rank": 256,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "duration",
+    "meaning_cn": "期间，持续时间",
+    "frequency_rank": 257,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "exaggerate",
+    "meaning_cn": "夸张，夸大，言过其实",
+    "frequency_rank": 258,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "endure",
+    "meaning_cn": "忍受，忍耐；持久",
+    "frequency_rank": 259,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "indication",
+    "meaning_cn": "表明，标示，显示，象征",
+    "frequency_rank": 260,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "hint",
+    "meaning_cn": "暗示，提示；少许；秘诀v.暗示，透露，示意",
+    "frequency_rank": 261,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "embrace",
+    "meaning_cn": "拥抱；欣然接受v.拥抱；欣然接受：包括",
+    "frequency_rank": 262,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "prohibit",
+    "meaning_cn": "禁止；阻止",
+    "frequency_rank": 263,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "imply",
+    "meaning_cn": "暗示，暗指；说明，表明",
+    "frequency_rank": 264,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "forbid",
+    "meaning_cn": "禁止，不准，不许",
+    "frequency_rank": 265,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "implicit",
+    "meaning_cn": "含蓄的，不直接言明的",
+    "frequency_rank": 266,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "explicit",
+    "meaning_cn": "明确的，清楚的；坦率的",
+    "frequency_rank": 267,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "staff",
+    "meaning_cn": "全体职工v.为.....配备（人员）；在.....工作",
+    "frequency_rank": 268,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "scrutiny",
+    "meaning_cn": "详细检查，仔细观察",
+    "frequency_rank": 269,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "stuff",
+    "meaning_cn": "材料，填充物，素材，东西v.塞满",
+    "frequency_rank": 270,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "analyse",
+    "meaning_cn": "分析；解析",
+    "frequency_rank": 271,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "deliver",
+    "meaning_cn": "递送，传送，交付，运载；发表，宣布，发布；兑",
+    "frequency_rank": 272,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "organise",
+    "meaning_cn": "组织，筹备；安排",
+    "frequency_rank": 273,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "plunge",
+    "meaning_cn": "使突然前冲（或下落）；暴跌，骤降，突降；跳进",
+    "frequency_rank": 274,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "foam",
+    "meaning_cn": "泡沫；泡沫材料（橡胶、塑料等）；泡沫剂",
+    "frequency_rank": 275,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "slump",
+    "meaning_cn": "（销售量、价格、价值等的）骤降，猛跌，萧条期",
+    "frequency_rank": 276,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "lump",
+    "meaning_cn": "块；方糖；肿块；笨重的人把心归并一起",
+    "frequency_rank": 277,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "breakdown",
+    "meaning_cn": "崩溃，衰弱；损坏，故障",
+    "frequency_rank": 278,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "slack",
+    "meaning_cn": "懈怠的，松弛的；萧条的",
+    "frequency_rank": 279,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "collapse",
+    "meaning_cn": "&v.倒塌；崩溃；突然失败；突然降价",
+    "frequency_rank": 280,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "bubble",
+    "meaning_cn": "泡，气泡；肥皂泡；泡沫（很可能持续不长的好",
+    "frequency_rank": 281,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "elapse",
+    "meaning_cn": "（时间）消逝，流逝",
+    "frequency_rank": 282,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "defend",
+    "meaning_cn": "防御，保护，保卫；辩解，辩白；（为…..·）辩护",
+    "frequency_rank": 283,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "defeat",
+    "meaning_cn": "失败，战败，挫败；战胜",
+    "frequency_rank": 284,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "guard",
+    "meaning_cn": "保卫，守卫；看守",
+    "frequency_rank": 285,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "strip",
+    "meaning_cn": "除去，剥；剥夺，拿走n.条，带；狭长地带",
+    "frequency_rank": 286,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "comparison",
+    "meaning_cn": "比较，对照",
+    "frequency_rank": 287,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "stripe",
+    "meaning_cn": "条纹，线条；种类",
+    "frequency_rank": 288,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "desperately",
+    "meaning_cn": "不顾一切地；拼命地；极度地",
+    "frequency_rank": 289,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adv."
+  },
+  {
+    "word": "drought",
+    "meaning_cn": "干旱；旱灾",
+    "frequency_rank": 290,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "laundry",
+    "meaning_cn": "洗衣物；洗衣房",
+    "frequency_rank": 291,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "deadly",
+    "meaning_cn": "致命的，极度的；枯燥的",
+    "frequency_rank": 292,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "scan",
+    "meaning_cn": "扫描检查；浏览v.细看，审视；浏览；扫描",
+    "frequency_rank": 293,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "glance",
+    "meaning_cn": "一警；匆匆一看v.警一眼；匆匆一看；扫视",
+    "frequency_rank": 294,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "oy",
+    "meaning_cn": "凝视；注视",
+    "frequency_rank": 295,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "peep",
+    "meaning_cn": "偷偷一v.窥视，偷看",
+    "frequency_rank": 296,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "glimpse",
+    "meaning_cn": "一鳖，一看v.警见，看一眼",
+    "frequency_rank": 297,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "primary",
+    "meaning_cn": "首要的，主要的；最初的，小学教育的",
+    "frequency_rank": 298,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "stem",
+    "meaning_cn": "茎，干v.阻止；（~from）起源于",
+    "frequency_rank": 299,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "prime",
+    "meaning_cn": "盛年；鼎盛时期v.使（某人）做好准备",
+    "frequency_rank": 300,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "cradle",
+    "meaning_cn": "摇篮；发源地v.轻轻抱着",
+    "frequency_rank": 301,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "origin",
+    "meaning_cn": "起源；源头；起因；出身",
+    "frequency_rank": 302,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "source",
+    "meaning_cn": "源头，发源地；根源，原因；来源；出处",
+    "frequency_rank": 303,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "originate",
+    "meaning_cn": "起源；发源；发端于",
+    "frequency_rank": 304,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "resource",
+    "meaning_cn": "资源；财力；资料v.向.....提供资金",
+    "frequency_rank": 305,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "region",
+    "meaning_cn": "地方，区域；领域",
+    "frequency_rank": 306,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "timber",
+    "meaning_cn": "木材，木料；树木",
+    "frequency_rank": 307,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "scheme",
+    "meaning_cn": "计划；方案；体系；体制；阴谋v.密谋，图谋",
+    "frequency_rank": 308,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "agenda",
+    "meaning_cn": "议程表，议事日程；计划；方案；意图；目的",
+    "frequency_rank": 309,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "achieve",
+    "meaning_cn": "（凭长期努力）达到（某目标、地位、标准）",
+    "frequency_rank": 310,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "triumph",
+    "meaning_cn": "巨大成功；重大成就；伟大胜利；（巨大成功或",
+    "frequency_rank": 311,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "delight",
+    "meaning_cn": "、高兴v.（使）高兴",
+    "frequency_rank": 312,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "ignite",
+    "meaning_cn": "（使）燃烧，着火；点燃",
+    "frequency_rank": 313,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "applicable",
+    "meaning_cn": "适用的；合适的",
+    "frequency_rank": 314,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "applicant",
+    "meaning_cn": "申请人",
+    "frequency_rank": 315,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "appliance",
+    "meaning_cn": "用具，器具；（家用）电器",
+    "frequency_rank": 316,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "device",
+    "meaning_cn": "机械装置；方法；机制",
+    "frequency_rank": 317,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "engage",
+    "meaning_cn": "、吸引1（注意力、兴趣）；（~in）参与；雇用；聘用",
+    "frequency_rank": 318,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "couple",
+    "meaning_cn": "两人；几个，一些；一对，夫妻v.连接；结合",
+    "frequency_rank": 319,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "household",
+    "meaning_cn": "家庭，一家人",
+    "frequency_rank": 320,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "divorce",
+    "meaning_cn": "&v.离婚；分离",
+    "frequency_rank": 321,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "spouse",
+    "meaning_cn": "配偶",
+    "frequency_rank": 322,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "heritage",
+    "meaning_cn": "遗产；传统",
+    "frequency_rank": 323,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "inherit",
+    "meaning_cn": "继承，经遗传获得；接替；继任",
+    "frequency_rank": 324,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "legacy",
+    "meaning_cn": "遗产；遗留问题；后遗症",
+    "frequency_rank": 325,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "uphold",
+    "meaning_cn": "支持；维护；维持",
+    "frequency_rank": 326,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "hoist",
+    "meaning_cn": "起重机；吊车v.吊起；提升；拉高",
+    "frequency_rank": 327,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "elevate",
+    "meaning_cn": "举起；提高；提升；使情绪高昂",
+    "frequency_rank": 328,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "eligible",
+    "meaning_cn": "有资格的；合格的；具备条件的",
+    "frequency_rank": 329,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "qualify",
+    "meaning_cn": "（使）胜任，（使）具有资格；取得资格（或学历）",
+    "frequency_rank": 330,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "liable",
+    "meaning_cn": "：（法律上）负有偿付责任的；可能（做某事）",
+    "frequency_rank": 331,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "ally",
+    "meaning_cn": "同盟国；盟友",
+    "frequency_rank": 332,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "rely",
+    "meaning_cn": "依赖，依靠，信任",
+    "frequency_rank": 333,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "credible",
+    "meaning_cn": "可信的；可接受的",
+    "frequency_rank": 334,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "reliable",
+    "meaning_cn": "可靠的，可信赖的",
+    "frequency_rank": 335,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "incredible",
+    "meaning_cn": "难以置信的，惊人的",
+    "frequency_rank": 336,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "doubtful",
+    "meaning_cn": "怀疑的；不大可能的",
+    "frequency_rank": 337,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "dilemma",
+    "meaning_cn": "进退两难，困境",
+    "frequency_rank": 338,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "scale",
+    "meaning_cn": "规模，范围，程度；等级；标度；比例",
+    "frequency_rank": 339,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "dimension",
+    "meaning_cn": "尺寸；范围；规模；方面",
+    "frequency_rank": 340,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "measure",
+    "meaning_cn": "措施；方法；度量单位；判断；尺度",
+    "frequency_rank": 341,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "fierce",
+    "meaning_cn": "凶猛的；强烈的；猛烈的；狂暴的；狂热的",
+    "frequency_rank": 342,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "terrify",
+    "meaning_cn": "使恐惧；便十分害怕：使惊吓",
+    "frequency_rank": 343,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "rebel",
+    "meaning_cn": "造反者，叛乱者;叛逆者",
+    "frequency_rank": 344,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "alert",
+    "meaning_cn": "提防的，警惕的v.向....报警n.警报；警惕",
+    "frequency_rank": 345,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "release",
+    "meaning_cn": "释放；放开：发表；发行；发泄n，释放；公开：发",
+    "frequency_rank": 346,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "punish",
+    "meaning_cn": "处罚，惩罚",
+    "frequency_rank": 347,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "bulletin",
+    "meaning_cn": "公告，布告；简报",
+    "frequency_rank": 348,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "fabulous",
+    "meaning_cn": "、绝妙的；极好的；很大的；巨大的",
+    "frequency_rank": 349,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "terrific",
+    "meaning_cn": "极好的；绝妙的；巨大的；异乎寻常的",
+    "frequency_rank": 350,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "fabricate",
+    "meaning_cn": "编造；捏造；制造",
+    "frequency_rank": 351,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "fabric",
+    "meaning_cn": "织物；布料；结构",
+    "frequency_rank": 352,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "magnify",
+    "meaning_cn": "放大：夸张；扩大，增强",
+    "frequency_rank": 353,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "exception",
+    "meaning_cn": "例外；异议，反对",
+    "frequency_rank": 354,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "marvellous",
+    "meaning_cn": "例外；异议，反对",
+    "frequency_rank": 355,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "exceptional",
+    "meaning_cn": "例外的，特殊的；优鼻的，非凡的",
+    "frequency_rank": 356,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "extraordinary",
+    "meaning_cn": "非凡的，不平常的；令人惊奇的",
+    "frequency_rank": 357,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "remark",
+    "meaning_cn": "评论，话语v.谈论，评论；注意，观察",
+    "frequency_rank": 358,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "eminent",
+    "meaning_cn": "杰出的，有名的",
+    "frequency_rank": 359,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "prominent",
+    "meaning_cn": "突出的，卓越的；著名的；重要的",
+    "frequency_rank": 360,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "remarkably",
+    "meaning_cn": "不同寻常地；值得注意地",
+    "frequency_rank": 361,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adv."
+  },
+  {
+    "word": "outstanding",
+    "meaning_cn": "优秀的，出色的；突出的，显著的",
+    "frequency_rank": 362,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "comment",
+    "meaning_cn": "评论，意见v.发表意见，做出评论",
+    "frequency_rank": 363,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "delete",
+    "meaning_cn": "删除；删去",
+    "frequency_rank": 364,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "erase",
+    "meaning_cn": "律师；法律顾问；忠告；劝告",
+    "frequency_rank": 365,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "eradicate",
+    "meaning_cn": "消灭；根除；杜绝",
+    "frequency_rank": 366,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "cancel",
+    "meaning_cn": "取消；撤销；终止",
+    "frequency_rank": 367,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "console",
+    "meaning_cn": "安慰；抚慰；慰藉",
+    "frequency_rank": 368,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "prompt",
+    "meaning_cn": "立即的；迅速的；及时的v.促使；导致；激",
+    "frequency_rank": 369,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "promote",
+    "meaning_cn": "促进，推动：促销；提升",
+    "frequency_rank": 370,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "remote",
+    "meaning_cn": "偏远的；偏僻的；遥远的，久远的；相差很大",
+    "frequency_rank": 371,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "promotion",
+    "meaning_cn": "提升；提拔；晋升；促销活动",
+    "frequency_rank": 372,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "motive",
+    "meaning_cn": "动机；原因；目的",
+    "frequency_rank": 373,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "push",
+    "meaning_cn": "推动；推进；促使；鼓励，鞭策n.推；进攻；追",
+    "frequency_rank": 374,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "motivate",
+    "meaning_cn": "激励，激发成为..的动机，是···的原因",
+    "frequency_rank": 375,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "emotion",
+    "meaning_cn": "强烈的感情；激情；情感；情绪",
+    "frequency_rank": 376,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "remove",
+    "meaning_cn": "移开；拿开；去掉；从····.机构开除；脱去（衣服",
+    "frequency_rank": 377,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "rational",
+    "meaning_cn": "合理的；理性的；明智的；理智的；清醒的",
+    "frequency_rank": 378,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "reasonable",
+    "meaning_cn": "合乎情理的，合理的；不错的",
+    "frequency_rank": 379,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "advisable",
+    "meaning_cn": "可取的，明智的",
+    "frequency_rank": 380,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "irrational",
+    "meaning_cn": "不合理的，失去理性的",
+    "frequency_rank": 381,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "celebrate",
+    "meaning_cn": "续美注公",
+    "frequency_rank": 382,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "ceremony",
+    "meaning_cn": "典礼，仪式：礼节",
+    "frequency_rank": 383,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "loyal",
+    "meaning_cn": "忠诚的，忠心的",
+    "frequency_rank": 384,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "faithful",
+    "meaning_cn": "忠诚的，忠实的；如实的",
+    "frequency_rank": 385,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "royal",
+    "meaning_cn": "王室的，皇家的；盛大的n.王室成员",
+    "frequency_rank": 386,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "stress",
+    "meaning_cn": "（精神）压力；强调，重要性；重音v、着重，强调",
+    "frequency_rank": 387,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "distress",
+    "meaning_cn": "忧虑：悲伤，痛苦；贫困y.使痛苦，使悲伤",
+    "frequency_rank": 388,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "torture",
+    "meaning_cn": "拷打；拷问；酷刑v.拷打；拷问；严刑逼供；使",
+    "frequency_rank": 389,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "torment",
+    "meaning_cn": "（尤指精神上的）折磨，痛苦；苦难",
+    "frequency_rank": 390,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "agony",
+    "meaning_cn": "极大的痛苦",
+    "frequency_rank": 391,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "retort",
+    "meaning_cn": "回应；反驳v.反驳；回嘴",
+    "frequency_rank": 392,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "misery",
+    "meaning_cn": "痛苦；悲惨；穷困；悲惨的生活",
+    "frequency_rank": 393,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "distort",
+    "meaning_cn": "（使）变形，扭曲；歪曲",
+    "frequency_rank": 394,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "painful",
+    "meaning_cn": "痛苦的；令人痛苦的；困难的；艰难的",
+    "frequency_rank": 395,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "deprive",
+    "meaning_cn": "(~of)剥夺，使丧失",
+    "frequency_rank": 396,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "contrive",
+    "meaning_cn": "设法做到；促成某事，巧妙地策划",
+    "frequency_rank": 397,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "thrive",
+    "meaning_cn": "兴旺，繁荣；茁壮成长",
+    "frequency_rank": 398,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "statue",
+    "meaning_cn": "雕像，雕塑",
+    "frequency_rank": 399,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "deliberate",
+    "meaning_cn": "故意的，蓄意的；小心翼翼的",
+    "frequency_rank": 400,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "devote",
+    "meaning_cn": "（~to）投入，献身",
+    "frequency_rank": 401,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "decay",
+    "meaning_cn": "&v.衰退，衰落；腐烂，腐朽",
+    "frequency_rank": 402,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "erode",
+    "meaning_cn": "腐蚀；风化；逐渐毁坏；削弱",
+    "frequency_rank": 403,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "dedicate",
+    "meaning_cn": "把.奉献给；题献词；为（建筑物等）举行落",
+    "frequency_rank": 404,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "delicate",
+    "meaning_cn": "易碎的，脆弱的；微妙的；精巧的，精致的",
+    "frequency_rank": 405,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "following",
+    "meaning_cn": "（统称）拥护者，跟随者adj.后面的，接着的",
+    "frequency_rank": 406,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "agitate",
+    "meaning_cn": "煽动，鼓动；激怒，使不安",
+    "frequency_rank": 407,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "trigger",
+    "meaning_cn": "引发，引起，触发n.扳机",
+    "frequency_rank": 408,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "stir",
+    "meaning_cn": "搅拌；激起，引起n.搅拌；激动；愤怒",
+    "frequency_rank": 409,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "evoke",
+    "meaning_cn": "唤起；引起",
+    "frequency_rank": 410,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "blend",
+    "meaning_cn": "混合，融合n.混合物",
+    "frequency_rank": 411,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "mixture",
+    "meaning_cn": "混合；混合物",
+    "frequency_rank": 412,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "bend",
+    "meaning_cn": "使弯曲，折弯：使倾斜n，弯道，（身体的",
+    "frequency_rank": 413,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "turbulent",
+    "meaning_cn": "动荡的，混乱的；汹涌的",
+    "frequency_rank": 414,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "bound",
+    "meaning_cn": "跳跃；范围，限度adj.受约束的；有义务的",
+    "frequency_rank": 415,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "bond",
+    "meaning_cn": "纽带；联系；关系；契合；债券；公债",
+    "frequency_rank": 416,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "abound",
+    "meaning_cn": "富于，充满；大量存在",
+    "frequency_rank": 417,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "bind",
+    "meaning_cn": "捆绑，使结合；约束",
+    "frequency_rank": 418,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "bench",
+    "meaning_cn": "长凳；长椅；法官席位；法官",
+    "frequency_rank": 419,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sanction",
+    "meaning_cn": "批准，同意；制裁；处罚v.批准，同意；惩罚",
+    "frequency_rank": 420,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "auction",
+    "meaning_cn": "&y，拍卖",
+    "frequency_rank": 421,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "contest",
+    "meaning_cn": "竞争，争夺；比赛；竞赛",
+    "frequency_rank": 422,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "setting",
+    "meaning_cn": "环境；背景；挡，级；设定",
+    "frequency_rank": 423,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "incline",
+    "meaning_cn": "斜坡，斜度",
+    "frequency_rank": 424,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "decline",
+    "meaning_cn": "下降，衰落，衰退v.谢绝；下降，衰退",
+    "frequency_rank": 425,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "discipline",
+    "meaning_cn": "训练；纪律；学科",
+    "frequency_rank": 426,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "prone",
+    "meaning_cn": "易于遭受..的有做...倾向的",
+    "frequency_rank": 427,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "apt",
+    "meaning_cn": "易于，有....倾向的；恰当的",
+    "frequency_rank": 428,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "principal",
+    "meaning_cn": "最重要的，主要的n.校长",
+    "frequency_rank": 429,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "opt",
+    "meaning_cn": "选择；挑选",
+    "frequency_rank": 430,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "principle",
+    "meaning_cn": "法则，道德原则",
+    "frequency_rank": 431,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "option",
+    "meaning_cn": "供选择的事物；买卖选择（权）",
+    "frequency_rank": 432,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "compulsory",
+    "meaning_cn": "因法律或规则而）必须做的，强制的，强迫的",
+    "frequency_rank": 433,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "expand",
+    "meaning_cn": "扩大，增加，增强",
+    "frequency_rank": 434,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "extent",
+    "meaning_cn": "程度；限度；范围",
+    "frequency_rank": 435,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "widespread",
+    "meaning_cn": "广泛的，分布广的，普遍的",
+    "frequency_rank": 436,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "stretch",
+    "meaning_cn": "伸展，舒展；拉紧；拉长；延续n.一片；连续的",
+    "frequency_rank": 437,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "content",
+    "meaning_cn": "内容；目录；主题；含量",
+    "frequency_rank": 438,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "tendency",
+    "meaning_cn": "、倾向，偏好；趋势",
+    "frequency_rank": 439,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "tent",
+    "meaning_cn": "帐篷",
+    "frequency_rank": 440,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "trend",
+    "meaning_cn": "趋势；趋向；倾向；动态；动向",
+    "frequency_rank": 441,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "camp",
+    "meaning_cn": "营地；度假营；营帐；阵营v.露营；借宿",
+    "frequency_rank": 442,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "attend",
+    "meaning_cn": "出席，参加；注意，专心；经常去，定期去（某处）",
+    "frequency_rank": 443,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "intend",
+    "meaning_cn": "打算，计划，想要；意指",
+    "frequency_rank": 444,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "contend",
+    "meaning_cn": "主张，认为；竞争",
+    "frequency_rank": 445,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "intention",
+    "meaning_cn": "打算；计划；意图；目的",
+    "frequency_rank": 446,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "disguise",
+    "meaning_cn": "假装，伪装；掩蔽，掩饰",
+    "frequency_rank": 447,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "veil",
+    "meaning_cn": "面纱，面罩v.遮掩；掩饰",
+    "frequency_rank": 448,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "conceal",
+    "meaning_cn": "隐藏；隐瞒；掩盖",
+    "frequency_rank": 449,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "mask",
+    "meaning_cn": "面具,假面具;伪装 v. 掩饰",
+    "frequency_rank": 450,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "betray",
+    "meaning_cn": "出卖，背叛；泄露",
+    "frequency_rank": 451,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "enclose",
+    "meaning_cn": "把·围起来；围住；附入；随函（或包裹等）",
+    "frequency_rank": 452,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "licence",
+    "meaning_cn": "执照，许可证v.批准；许可",
+    "frequency_rank": 453,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "diplomat",
+    "meaning_cn": "外交官；善于交际的人",
+    "frequency_rank": 454,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "decorate",
+    "meaning_cn": "装饰：装修；粉刷",
+    "frequency_rank": 455,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "ornament",
+    "meaning_cn": "装饰，装饰品；首饰v.装饰；点缀；美化",
+    "frequency_rank": 456,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "furnish",
+    "meaning_cn": "配备家具，布置；提供，供应",
+    "frequency_rank": 457,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "core",
+    "meaning_cn": "核心；果核；要点",
+    "frequency_rank": 458,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "spot",
+    "meaning_cn": "地点，场所；污渍v.看见；看出",
+    "frequency_rank": 459,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "permeate",
+    "meaning_cn": "弥漫，渗透；（影响，情感等）扩散，传播",
+    "frequency_rank": 460,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "penetrate",
+    "meaning_cn": "渗透，进入",
+    "frequency_rank": 461,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "potential",
+    "meaning_cn": "潜质，潜力；可能性；潜在性",
+    "frequency_rank": 462,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sie",
+    "meaning_cn": "地点，场所：网站88",
+    "frequency_rank": 463,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "permanent",
+    "meaning_cn": "永久的，持久的，固定的",
+    "frequency_rank": 464,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "cite",
+    "meaning_cn": "引用，引证；列举",
+    "frequency_rank": 465,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "quote",
+    "meaning_cn": "引文；引语v.引用，举例说明",
+    "frequency_rank": 466,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "perpetual",
+    "meaning_cn": "永久的，终身的；持续的；长久的",
+    "frequency_rank": 467,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "curious",
+    "meaning_cn": "求知欲强的；好奇的",
+    "frequency_rank": 468,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "secure",
+    "meaning_cn": "安全的；可靠的，稳固的v.保护，使安全",
+    "frequency_rank": 469,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "speciality",
+    "meaning_cn": "特产；特色菜；专业，专长",
+    "frequency_rank": 470,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "specialise",
+    "meaning_cn": "专攻，专门研究",
+    "frequency_rank": 471,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "specific",
+    "meaning_cn": "具体的，详细的；特定的",
+    "frequency_rank": 472,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "weird",
+    "meaning_cn": "怪异的，不可思议的",
+    "frequency_rank": 473,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "exploit",
+    "meaning_cn": "剥削，利用；开发，开拓",
+    "frequency_rank": 474,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "supreme",
+    "meaning_cn": "最高的，至高无上的；最大的",
+    "frequency_rank": 475,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "superiority",
+    "meaning_cn": "优势，优越性",
+    "frequency_rank": 476,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "inferior",
+    "meaning_cn": "次的，较差的，比不上.…的；等的，下",
+    "frequency_rank": 477,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "superstition",
+    "meaning_cn": "迷信",
+    "frequency_rank": 478,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "relate",
+    "meaning_cn": "相关，关联",
+    "frequency_rank": 479,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "correlate",
+    "meaning_cn": "相关，关联",
+    "frequency_rank": 480,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "relevant",
+    "meaning_cn": "紧密相关的；切题的",
+    "frequency_rank": 481,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "regulate",
+    "meaning_cn": "管理；调节；控制",
+    "frequency_rank": 482,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "relation",
+    "meaning_cn": "关系，关联；亲属",
+    "frequency_rank": 483,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "relationship",
+    "meaning_cn": "关系；联系",
+    "frequency_rank": 484,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "frequent",
+    "meaning_cn": "频繁的，经常发生的",
+    "frequency_rank": 485,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "immune",
+    "meaning_cn": "有免疫力的；不受影响的；免除的；豁免的",
+    "frequency_rank": 486,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "alcohol",
+    "meaning_cn": "酒；酒精；乙醇",
+    "frequency_rank": 487,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "mental",
+    "meaning_cn": "思想的；精神的；思考的；智力的",
+    "frequency_rank": 488,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "fundamental",
+    "meaning_cn": "基本法则，基本原理adj.基础的，根本的",
+    "frequency_rank": 489,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "total",
+    "meaning_cn": "总的，总计的；全部的；完全的；彻底的",
+    "frequency_rank": 490,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "digital",
+    "meaning_cn": "数字的，数码的",
+    "frequency_rank": 491,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "refund",
+    "meaning_cn": "退款",
+    "frequency_rank": 492,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "vital",
+    "meaning_cn": "必不可少的，对....极重要的；生气勃勃的",
+    "frequency_rank": 493,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "inevitable",
+    "meaning_cn": "不可避免的；必然的",
+    "frequency_rank": 494,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "essential",
+    "meaning_cn": "必需品；要素，要点",
+    "frequency_rank": 495,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "crucial",
+    "meaning_cn": "至关重要的；关键性的",
+    "frequency_rank": 496,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "indispensable",
+    "meaning_cn": "不可或缺的；必不可少的",
+    "frequency_rank": 497,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "decisive",
+    "meaning_cn": "决定性的；果断的",
+    "frequency_rank": 498,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "clumsy",
+    "meaning_cn": "笨拙的，不灵巧的；难处理的；复杂难懂的",
+    "frequency_rank": 499,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "correspond",
+    "meaning_cn": "相一致，相符合：类似于；通信",
+    "frequency_rank": 500,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "probable",
+    "meaning_cn": "很可能的",
+    "frequency_rank": 501,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "circumstance",
+    "meaning_cn": "条件；环境，境况",
+    "frequency_rank": 502,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "calculate",
+    "meaning_cn": "计算，核算：推测",
+    "frequency_rank": 503,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "circulate",
+    "meaning_cn": "（液体或气体）环流，循环；传播；传送",
+    "frequency_rank": 504,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "calendar",
+    "meaning_cn": "日历；历书；历法；日程表；（一年之中的）重大",
+    "frequency_rank": 505,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "ventilate",
+    "meaning_cn": "使（房间、建筑物等）通风；使通气；公开表达",
+    "frequency_rank": 506,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "algorithm",
+    "meaning_cn": "算法，计算程序",
+    "frequency_rank": 507,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "irritable",
+    "meaning_cn": "暴躁的，易怒的",
+    "frequency_rank": 508,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "output",
+    "meaning_cn": "（人、机器、机构的）产量，输出量v.输出",
+    "frequency_rank": 509,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "overnight",
+    "meaning_cn": "一夜之间；突然；在夜间；在晚上",
+    "frequency_rank": 510,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adv."
+  },
+  {
+    "word": "fortnight",
+    "meaning_cn": "两周；十四天",
+    "frequency_rank": 511,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "comprehensive",
+    "meaning_cn": "全面的，详尽的；综合的",
+    "frequency_rank": 512,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "scold",
+    "meaning_cn": "责骂；训斥",
+    "frequency_rank": 513,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "scorn",
+    "meaning_cn": "&v.轻蔑，鄙视",
+    "frequency_rank": 514,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sprout",
+    "meaning_cn": "发芽；长芽；出现；长出",
+    "frequency_rank": 515,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "span",
+    "meaning_cn": "范围；持续时间；宽度，跨度v.持续；贯穿",
+    "frequency_rank": 516,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "spoil",
+    "meaning_cn": "损坏；宠坏；溺爱",
+    "frequency_rank": 517,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "scope",
+    "meaning_cn": "范围；机会",
+    "frequency_rank": 518,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "destroy",
+    "meaning_cn": "破坏，毁灭，摧毁",
+    "frequency_rank": 519,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "deteriorate",
+    "meaning_cn": "恶化，变坏",
+    "frequency_rank": 520,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "field",
+    "meaning_cn": "田；地；场地；运动场；专业；学科；界；实地；行",
+    "frequency_rank": 521,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "poison",
+    "meaning_cn": "毒药v.毒害，下毒",
+    "frequency_rank": 522,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "vibrate",
+    "meaning_cn": "振动，颤动",
+    "frequency_rank": 523,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "violent",
+    "meaning_cn": "暴力的；猛烈的",
+    "frequency_rank": 524,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "product",
+    "meaning_cn": "产品，制品；产物",
+    "frequency_rank": 525,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "productive",
+    "meaning_cn": "生产的；（尤指）多产的；有效益的；富有成",
+    "frequency_rank": 526,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "productivity",
+    "meaning_cn": "生产力，生产效率",
+    "frequency_rank": 527,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "reproduce",
+    "meaning_cn": "复制；繁殖；再生产",
+    "frequency_rank": 528,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "commodity",
+    "meaning_cn": "商品；有用的东西",
+    "frequency_rank": 529,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "trial",
+    "meaning_cn": "审讯，审判；试用，试验",
+    "frequency_rank": 530,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "trivial",
+    "meaning_cn": "琐碎的，不重要的",
+    "frequency_rank": 531,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "companion",
+    "meaning_cn": "同伴，朋友；陪伴",
+    "frequency_rank": 532,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "gamble",
+    "meaning_cn": "&v.冒险，投机；赌博",
+    "frequency_rank": 533,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "hazard",
+    "meaning_cn": "危险，危害；风险v.冒..的风险",
+    "frequency_rank": 534,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "ownership",
+    "meaning_cn": "所有权；产权；物主身份",
+    "frequency_rank": 535,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "ca",
+    "meaning_cn": "镇静的；沉着的；平静的v.使平静；使镇定",
+    "frequency_rank": 536,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "imagine",
+    "meaning_cn": "想象；猜想",
+    "frequency_rank": 537,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "moral",
+    "meaning_cn": "（pl.）道德adj.道德（上）的",
+    "frequency_rank": 538,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "mature",
+    "meaning_cn": "成熟的；成年的；技艺精湛的",
+    "frequency_rank": 539,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "contradict",
+    "meaning_cn": "反驳，驳斥；同……...矛盾，同……..·抵触",
+    "frequency_rank": 540,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "distinguish",
+    "meaning_cn": "区分，辨别",
+    "frequency_rank": 541,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "distinct",
+    "meaning_cn": "有区别的；明确的；显著的；明显的",
+    "frequency_rank": 542,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "string",
+    "meaning_cn": "弦，线，细绳；一串v.悬挂；系",
+    "frequency_rank": 543,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "vocation",
+    "meaning_cn": "工作；职业；信心；使命感",
+    "frequency_rank": 544,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "vacation",
+    "meaning_cn": "假期；休庭；度假",
+    "frequency_rank": 545,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "excursion",
+    "meaning_cn": "远足，短途旅行",
+    "frequency_rank": 546,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "terminal",
+    "meaning_cn": "航站楼；航空终点站；（火车、公共汽车或船",
+    "frequency_rank": 547,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "chronic",
+    "meaning_cn": "长期的；慢性的；难以治愈（或根除力的）",
+    "frequency_rank": 548,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "discover",
+    "meaning_cn": "发现，察觉",
+    "frequency_rank": 549,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "vivid",
+    "meaning_cn": "生动的，逼真的；鲜艳的",
+    "frequency_rank": 550,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "survive",
+    "meaning_cn": "幸免于，幸存，生还；生存",
+    "frequency_rank": 551,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "recovery",
+    "meaning_cn": "恢复；痊愈；改善；回升；复苏",
+    "frequency_rank": 552,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "understanding",
+    "meaning_cn": "了解，理解（力）；谅解；协议adj.善解人意",
+    "frequency_rank": 553,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "grip",
+    "meaning_cn": "紧握；紧抓；（对....·的）控制，影响力；理解",
+    "frequency_rank": 554,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "grab",
+    "meaning_cn": "猛然的抓取；突然的抢夺v.抓住；撰取",
+    "frequency_rank": 555,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "constrain",
+    "meaning_cn": "限制，约束；强迫，迫使",
+    "frequency_rank": 556,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "restrain",
+    "meaning_cn": "阻止，制止，约束",
+    "frequency_rank": 557,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "refrain",
+    "meaning_cn": "克制；节制；避免",
+    "frequency_rank": 558,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "block",
+    "meaning_cn": "大块；街区；大楼；阻碍物v.阻碍；堵塞；拦截",
+    "frequency_rank": 559,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "hammer",
+    "meaning_cn": "槌，锤子，铁锤v.锤击，锤打",
+    "frequency_rank": 560,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sympathetic",
+    "meaning_cn": "同情的，有同情心的；赞同的",
+    "frequency_rank": 561,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "symbol",
+    "meaning_cn": "符号，标志，象征",
+    "frequency_rank": 562,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "assemble",
+    "meaning_cn": "聚集；组装",
+    "frequency_rank": 563,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "resemble",
+    "meaning_cn": "与.….相像，类似于",
+    "frequency_rank": 564,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "nourish",
+    "meaning_cn": "滋养；抚养；培养；促进",
+    "frequency_rank": 565,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "flourish",
+    "meaning_cn": "繁荣，茂盛，兴旺；茁壮成长",
+    "frequency_rank": 566,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "nutrition",
+    "meaning_cn": "营养；滋养；营养的补给",
+    "frequency_rank": 567,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "flour",
+    "meaning_cn": "面粉，粉状物v.撒面粉",
+    "frequency_rank": 568,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "powder",
+    "meaning_cn": "粉末；细面；美容粉v.抹粉",
+    "frequency_rank": 569,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "nuisance",
+    "meaning_cn": "令人讨厌的人或事物",
+    "frequency_rank": 570,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "feedback",
+    "meaning_cn": "反馈",
+    "frequency_rank": 571,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "nutrient",
+    "meaning_cn": "营养素，营养物",
+    "frequency_rank": 572,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "nurture",
+    "meaning_cn": "养育；养护；培养；扶持；帮助n.养育；培养",
+    "frequency_rank": 573,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "vicious",
+    "meaning_cn": "庄重；庄严；尊严；高贵",
+    "frequency_rank": 574,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "brutal",
+    "meaning_cn": "残暴的；兽性的；冷酷的",
+    "frequency_rank": 575,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "shrewd",
+    "meaning_cn": "精明的；敏锐的；有眼光的",
+    "frequency_rank": 576,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "radical",
+    "meaning_cn": "激进分子adj.根本的；激进的",
+    "frequency_rank": 577,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "cunning",
+    "meaning_cn": "狡猾的；奸诈的；灵巧的n.狡猾；狡诈",
+    "frequency_rank": 578,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "diligent",
+    "meaning_cn": "孜孜不倦的；勤勉的；刻苦的",
+    "frequency_rank": 579,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "ethnic",
+    "meaning_cn": "种族的，民族的n.少数民族的人",
+    "frequency_rank": 580,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "fragment",
+    "meaning_cn": "碎片；片段",
+    "frequency_rank": 581,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "collider",
+    "meaning_cn": "碰撞，互撞；抵触，冲突",
+    "frequency_rank": 582,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "clash",
+    "meaning_cn": "冲突；差别，差异；不协调；撞击声；争论",
+    "frequency_rank": 583,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "crash",
+    "meaning_cn": "撞击，坠毁；崩溃；倒闭，暴跌n.撞车事故，失",
+    "frequency_rank": 584,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "friction",
+    "meaning_cn": "摩擦（力）;不和",
+    "frequency_rank": 585,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "smash",
+    "meaning_cn": "打碎，粉碎：猛击n.破碎；撞车事故：扣球",
+    "frequency_rank": 586,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "conflict",
+    "meaning_cn": "冲突；矛盾；抵触",
+    "frequency_rank": 587,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "vulgar",
+    "meaning_cn": "粗俗的，庸俗的；无礼的",
+    "frequency_rank": 588,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "forge",
+    "meaning_cn": "伪造；锻造；艰苦干成；努力加强；形成，缔造",
+    "frequency_rank": 589,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "crude",
+    "meaning_cn": "天然的；未加工的；粗鲁的n.原油",
+    "frequency_rank": 590,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "raw",
+    "meaning_cn": "生的；未经加工的；天然状态的；不熟练的",
+    "frequency_rank": 591,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "mortgage",
+    "meaning_cn": "抵押贷款v.抵押",
+    "frequency_rank": 592,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "gesture",
+    "meaning_cn": "姿势，手势；姿态v.做手势；用动作示意",
+    "frequency_rank": 593,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "cognitive",
+    "meaning_cn": "认知的；感知的；认识的",
+    "frequency_rank": 594,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "identity",
+    "meaning_cn": "身份，特性；同一性，一致",
+    "frequency_rank": 595,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "recognise",
+    "meaning_cn": "认识；认出；辨别出；承认，意识到",
+    "frequency_rank": 596,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "dentist",
+    "meaning_cn": "牙科医生",
+    "frequency_rank": 597,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "perplex",
+    "meaning_cn": "使困惑",
+    "frequency_rank": 598,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "puzzle",
+    "meaning_cn": "谜；智力游戏；拼图v.（使）迷惑，（使）困惑",
+    "frequency_rank": 599,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "complex",
+    "meaning_cn": "复杂的；复合的n.建筑群，复合体",
+    "frequency_rank": 600,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "complicate",
+    "meaning_cn": "使复杂化",
+    "frequency_rank": 601,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "moan",
+    "meaning_cn": "呻吟；抱怨；鸣咽n.呻吟声",
+    "frequency_rank": 602,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "refuse",
+    "meaning_cn": "拒绝，回绝；不准许",
+    "frequency_rank": 603,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "fluent",
+    "meaning_cn": "流利的，流畅的",
+    "frequency_rank": 604,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "diffuse",
+    "meaning_cn": "散布；（光等）漫射；传播；扩散adj.扩散的，弥",
+    "frequency_rank": 605,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "misfortune",
+    "meaning_cn": "不幸，厄运",
+    "frequency_rank": 606,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "mischief",
+    "meaning_cn": "恶作剧；伤害；顽皮",
+    "frequency_rank": 607,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "discard",
+    "meaning_cn": "丢弃，抛弃",
+    "frequency_rank": 608,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "digest",
+    "meaning_cn": "消化；领悟",
+    "frequency_rank": 609,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "discharge",
+    "meaning_cn": "排出；释放；解雇；准许（某人）",
+    "frequency_rank": 610,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "summary",
+    "meaning_cn": "摘要，概要；总结adj.总结性的；草草的",
+    "frequency_rank": 611,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "charge",
+    "meaning_cn": "收费；掌管，职责；指控；遣责；充电量；充电",
+    "frequency_rank": 612,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sum",
+    "meaning_cn": "总数；金额",
+    "frequency_rank": 613,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "disgust",
+    "meaning_cn": "厌恶，反感v.使人厌恶，使人作呕",
+    "frequency_rank": 614,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "summon",
+    "meaning_cn": "召唤，召集；鼓起，振作；传唤",
+    "frequency_rank": 615,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "abolish",
+    "meaning_cn": "废除，废止（法律、制度、习俗等）",
+    "frequency_rank": 616,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "abuse",
+    "meaning_cn": "滥用；虐待",
+    "frequency_rank": 617,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "formal",
+    "meaning_cn": "、形式上的；正式的，正规的",
+    "frequency_rank": 618,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "transform",
+    "meaning_cn": "使改变形态；使改观",
+    "frequency_rank": 619,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "formation",
+    "meaning_cn": "组成，形成；编队，队形",
+    "frequency_rank": 620,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "perform",
+    "meaning_cn": "演出，表演；做，履行，执行；工作",
+    "frequency_rank": 621,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "conform",
+    "meaning_cn": "遵守；相一致",
+    "frequency_rank": 622,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "formulate",
+    "meaning_cn": "确切表达，认真阐述；制定，规划，构想",
+    "frequency_rank": 623,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "allege",
+    "meaning_cn": "（未提出证据）断言，指称，声称",
+    "frequency_rank": 624,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "insure",
+    "meaning_cn": "投保；给....保险；接受投保；承保",
+    "frequency_rank": 625,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "assure",
+    "meaning_cn": "使确信，保证，确保；弄清",
+    "frequency_rank": 626,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "ensure",
+    "meaning_cn": "保证，确保",
+    "frequency_rank": 627,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "guarantee",
+    "meaning_cn": "保证，担保；保证金；保修单v.保证，担保",
+    "frequency_rank": 628,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "architecture",
+    "meaning_cn": "建筑；建筑学；建筑式样或风格；建筑物",
+    "frequency_rank": 629,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "facility",
+    "meaning_cn": "设施；设备；场所；才能",
+    "frequency_rank": 630,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "artefact",
+    "meaning_cn": "人工制品，手工艺品",
+    "frequency_rank": 631,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "affect",
+    "meaning_cn": "影响；感染；假装",
+    "frequency_rank": 632,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "perfect",
+    "meaning_cn": "完美的；完全的；最佳的",
+    "frequency_rank": 633,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "utilise",
+    "meaning_cn": "利用，使用",
+    "frequency_rank": 634,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "affection",
+    "meaning_cn": "喜爱；钟爱；爱情",
+    "frequency_rank": 635,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "utility",
+    "meaning_cn": "效用，功用；公用事业",
+    "frequency_rank": 636,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "drawback",
+    "meaning_cn": "缺点，不利条件",
+    "frequency_rank": 637,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "shortcut",
+    "meaning_cn": "近路；捷径",
+    "frequency_rank": 638,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "error",
+    "meaning_cn": "错误；差错",
+    "frequency_rank": 639,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "handicap",
+    "meaning_cn": "（身体或智力方面的）缺陷，不利条件；障碍",
+    "frequency_rank": 640,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "fault",
+    "meaning_cn": "责任；过错；弱点；缺点",
+    "frequency_rank": 641,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "flaw",
+    "meaning_cn": "瑕疵，裂痕，缺点",
+    "frequency_rank": 642,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "default",
+    "meaning_cn": "&v.违约；默认",
+    "frequency_rank": 643,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "shortcoming",
+    "meaning_cn": "缺点，短处",
+    "frequency_rank": 644,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "vanish",
+    "meaning_cn": "突然不见，消失；不存在，灭绝",
+    "frequency_rank": 645,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "package",
+    "meaning_cn": "将....包装好，包装成n.包裹；小包；一套，一",
+    "frequency_rank": 646,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "parcel",
+    "meaning_cn": "打包，包n.小包，包裹",
+    "frequency_rank": 647,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "finance",
+    "meaning_cn": "财政，金融，资金v.提供资金，负担经费",
+    "frequency_rank": 648,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "purpose",
+    "meaning_cn": "意图，目的，目标；有价值的意义",
+    "frequency_rank": 649,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "loan",
+    "meaning_cn": "贷款；借款v.借出，贷与（尤指钱）",
+    "frequency_rank": 650,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "goal",
+    "meaning_cn": "球门；射门；目标",
+    "frequency_rank": 651,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "deficit",
+    "meaning_cn": "赤字，亏损，逆差",
+    "frequency_rank": 652,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "economy",
+    "meaning_cn": "经济；节约",
+    "frequency_rank": 653,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "economical",
+    "meaning_cn": "经济的，实惠的；节俭的；简洁的",
+    "frequency_rank": 654,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "target",
+    "meaning_cn": "对象，目标；（射击的）靶子v.瞄准；面向",
+    "frequency_rank": 655,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "economics",
+    "meaning_cn": "经济学；经济情况",
+    "frequency_rank": 656,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "aim",
+    "meaning_cn": "力求达到，力争做到；目的是，旨在；瞄准",
+    "frequency_rank": 657,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "thrift",
+    "meaning_cn": "节约，节俭",
+    "frequency_rank": 658,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "autonomy",
+    "meaning_cn": "自治，自治权",
+    "frequency_rank": 659,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "parade",
+    "meaning_cn": "游行；阅兵；炫耀；行进v.游行，排队行进",
+    "frequency_rank": 660,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "paradise",
+    "meaning_cn": "天堂；乐土；乐园；完美去处",
+    "frequency_rank": 661,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "quantity",
+    "meaning_cn": "数量，数额；大量",
+    "frequency_rank": 662,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "resident",
+    "meaning_cn": "居民adj.居住的，定居的",
+    "frequency_rank": 663,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "inhabit",
+    "meaning_cn": "居住于，栖息于",
+    "frequency_rank": 664,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "president",
+    "meaning_cn": "主持，担任（会议）主席",
+    "frequency_rank": 665,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "habitat",
+    "meaning_cn": "栖息地；产地",
+    "frequency_rank": 666,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "civil",
+    "meaning_cn": "国家的；公民的；民用的，民事的；有礼貌的",
+    "frequency_rank": 667,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "urban",
+    "meaning_cn": "城市的；都市的；城镇的",
+    "frequency_rank": 668,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "citizen",
+    "meaning_cn": "公民；市民",
+    "frequency_rank": 669,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "suburb",
+    "meaning_cn": "市郊，郊区",
+    "frequency_rank": 670,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "downtown",
+    "meaning_cn": "在市中心，往市中心（尤指商业中心区）",
+    "frequency_rank": 671,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adv."
+  },
+  {
+    "word": "metropolis",
+    "meaning_cn": "大都会，大城市；首都",
+    "frequency_rank": 672,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "local",
+    "meaning_cn": "本地人adj.地方性的，当地的",
+    "frequency_rank": 673,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "continent",
+    "meaning_cn": "大陆；洲；欧洲大陆",
+    "frequency_rank": 674,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "allocate",
+    "meaning_cn": "分配，调拨",
+    "frequency_rank": 675,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "federal",
+    "meaning_cn": "联邦（制）的；联邦政府的",
+    "frequency_rank": 676,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "ease",
+    "meaning_cn": "舒适；轻松v.减轻；缓和",
+    "frequency_rank": 677,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "intact",
+    "meaning_cn": "未触动的；完整的；未受伤害的",
+    "frequency_rank": 678,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "tangible",
+    "meaning_cn": "有形的；实际的；真实的",
+    "frequency_rank": 679,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "cling",
+    "meaning_cn": "紧紧抓住；粘着；（~to）坚持",
+    "frequency_rank": 680,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "stick",
+    "meaning_cn": "粘贴；粘住；卡住；容忍；忍受n.枝条；枯枝",
+    "frequency_rank": 681,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "coherent",
+    "meaning_cn": "连贯的，一致的；凝聚性的；合乎逻辑的；有",
+    "frequency_rank": 682,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "donate",
+    "meaning_cn": "捐赠，赠予；捐献",
+    "frequency_rank": 683,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "distribute",
+    "meaning_cn": "分发，分配；散布",
+    "frequency_rank": 684,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "contribute",
+    "meaning_cn": "贡献，有助于；捐助，捐献",
+    "frequency_rank": 685,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "retribution",
+    "meaning_cn": "惩罚，报应",
+    "frequency_rank": 686,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "attribute",
+    "meaning_cn": "属性，性质，特征",
+    "frequency_rank": 687,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "documentary",
+    "meaning_cn": "纪录片，纪实节目",
+    "frequency_rank": 688,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "document",
+    "meaning_cn": "公文，文件；文献v.记载，记录",
+    "frequency_rank": 689,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "accordingly",
+    "meaning_cn": "相应地；因此，从而",
+    "frequency_rank": 690,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adv."
+  },
+  {
+    "word": "recommend",
+    "meaning_cn": "推荐，介绍；建议",
+    "frequency_rank": 691,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "adore",
+    "meaning_cn": "崇拜，爱慕；喜爱",
+    "frequency_rank": 692,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "admire",
+    "meaning_cn": "钦佩，赞赏，仰慕；欣赏",
+    "frequency_rank": 693,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "worship",
+    "meaning_cn": "&v.崇拜；热爱；爱慕",
+    "frequency_rank": 694,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "abstract",
+    "meaning_cn": "摘要，概要adj.抽象（派）的",
+    "frequency_rank": 695,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "tractor",
+    "meaning_cn": "拖拉机",
+    "frequency_rank": 696,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "attract",
+    "meaning_cn": "吸引；引起",
+    "frequency_rank": 697,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "extract",
+    "meaning_cn": "抽出，拔出；提取，提炼",
+    "frequency_rank": 698,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "distract",
+    "meaning_cn": "分散注意力",
+    "frequency_rank": 699,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "contract",
+    "meaning_cn": "合同，契约",
+    "frequency_rank": 700,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "academy",
+    "meaning_cn": "（高等）专科院校；研究院",
+    "frequency_rank": 701,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "tutor",
+    "meaning_cn": "导师，家庭教师v.教授，辅导",
+    "frequency_rank": 702,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "forum",
+    "meaning_cn": "论坛，讨论会",
+    "frequency_rank": 703,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "abroad",
+    "meaning_cn": "到国外；在国外；广为流传",
+    "frequency_rank": 704,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adv."
+  },
+  {
+    "word": "contemplate",
+    "meaning_cn": "沉思；审视；考虑；预期；冥思苦想；深思熟虑",
+    "frequency_rank": 705,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "endeavour",
+    "meaning_cn": "努力，尝试v.尝试，试图",
+    "frequency_rank": 706,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "reluctant",
+    "meaning_cn": "不情愿的，勉强的",
+    "frequency_rank": 707,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "volunteer",
+    "meaning_cn": "志愿者；志愿兵v.自愿做",
+    "frequency_rank": 708,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "readily",
+    "meaning_cn": "乐意地；轻易地；迅速地",
+    "frequency_rank": 709,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adv."
+  },
+  {
+    "word": "sequence",
+    "meaning_cn": "一连串，一系列；顺序",
+    "frequency_rank": 710,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "subsequent",
+    "meaning_cn": "随后的；后来的",
+    "frequency_rank": 711,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "contrary",
+    "meaning_cn": "与之相异的；相对立的；相反的",
+    "frequency_rank": 712,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "discount",
+    "meaning_cn": "折扣v.打折扣",
+    "frequency_rank": 713,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "competitive",
+    "meaning_cn": "竞争的；有竞争力的；好胜的",
+    "frequency_rank": 714,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "versus",
+    "meaning_cn": "对，对抗；与...相对，与.....相比",
+    "frequency_rank": 715,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "definite",
+    "meaning_cn": "明显的，确定的，明确的",
+    "frequency_rank": 716,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "refine",
+    "meaning_cn": "精炼，提纯；改进，改善",
+    "frequency_rank": 717,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "restrictive",
+    "meaning_cn": "有限制性的",
+    "frequency_rank": 718,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "limited",
+    "meaning_cn": "、有限的，受限的",
+    "frequency_rank": 719,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "rigorous",
+    "meaning_cn": "严格的，严厉的；谨慎的；细致的；彻底的",
+    "frequency_rank": 720,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "preliminary",
+    "meaning_cn": "预备性的；初步的；开始的",
+    "frequency_rank": 721,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "rigid",
+    "meaning_cn": "严格死板的，僵硬的；固执的，僵化的；坚",
+    "frequency_rank": 722,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "eliminate",
+    "meaning_cn": "排除，消除；淘汰",
+    "frequency_rank": 723,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "restrict",
+    "meaning_cn": "限制，约束，限定",
+    "frequency_rank": 724,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "stern",
+    "meaning_cn": "严厉的，苛刻的",
+    "frequency_rank": 725,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "constant",
+    "meaning_cn": "不变的；连续不断的n.常数，常量",
+    "frequency_rank": 726,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "withstand",
+    "meaning_cn": "抵挡；承受",
+    "frequency_rank": 727,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "withhold",
+    "meaning_cn": "拒绝给，不给",
+    "frequency_rank": 728,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "substance",
+    "meaning_cn": "物质；实质；主旨",
+    "frequency_rank": 729,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "stable",
+    "meaning_cn": "稳定的，稳固的",
+    "frequency_rank": 730,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "establish",
+    "meaning_cn": "建立，设立，创办",
+    "frequency_rank": 731,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "auditorium",
+    "meaning_cn": "礼堂，会堂；观众席",
+    "frequency_rank": 732,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "census",
+    "meaning_cn": "人口普查，人口调查",
+    "frequency_rank": 733,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "comprise",
+    "meaning_cn": "包含，由….组成",
+    "frequency_rank": 734,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "consensus",
+    "meaning_cn": "共识，一致意见",
+    "frequency_rank": 735,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "premise",
+    "meaning_cn": "前提；假设",
+    "frequency_rank": 736,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "compromise",
+    "meaning_cn": "妥协，折中v.妥协，折中；危及（安全等）",
+    "frequency_rank": 737,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "operate",
+    "meaning_cn": "运转，工作；操作，控制，使运行；经营",
+    "frequency_rank": 738,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "collaborate",
+    "meaning_cn": "工作人员",
+    "frequency_rank": 739,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "cooperate",
+    "meaning_cn": "合作，协作",
+    "frequency_rank": 740,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "elaborate",
+    "meaning_cn": "详细描述；精心制作",
+    "frequency_rank": 741,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "rid",
+    "meaning_cn": "（~of）使摆脱，使去掉",
+    "frequency_rank": 742,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "deposit",
+    "meaning_cn": "订金；存款；沉积物v.放下；寄放；存储",
+    "frequency_rank": 743,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "levy",
+    "meaning_cn": "征收额，税款v.征收（税等）",
+    "frequency_rank": 744,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "oppose",
+    "meaning_cn": "反对，对抗",
+    "frequency_rank": 745,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "opponent",
+    "meaning_cn": "对手，竞争者，反对者",
+    "frequency_rank": 746,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "envy",
+    "meaning_cn": "&v嫉妒，忌妒；羡慕",
+    "frequency_rank": 747,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "devise",
+    "meaning_cn": "设计，发明，想出（办法）",
+    "frequency_rank": 748,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "revise",
+    "meaning_cn": "修改；改变；复习",
+    "frequency_rank": 749,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "visible",
+    "meaning_cn": "看得见的；明显的",
+    "frequency_rank": 750,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "vision",
+    "meaning_cn": "视力；视野；想象；远见卓识",
+    "frequency_rank": 751,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "viewpoint",
+    "meaning_cn": "观点，看法",
+    "frequency_rank": 752,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "angle",
+    "meaning_cn": "角；角度；观点，立场",
+    "frequency_rank": 753,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "standpoint",
+    "meaning_cn": "立场，观点",
+    "frequency_rank": 754,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "element",
+    "meaning_cn": "基本部分；元素；因素，要素；基本原理",
+    "frequency_rank": 755,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "ingredient",
+    "meaning_cn": "成分；因素，要素；原料",
+    "frequency_rank": 756,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "prejudice",
+    "meaning_cn": "偏见，成见v.使有偏见；不利于，损害",
+    "frequency_rank": 757,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "independent",
+    "meaning_cn": "独立的；中立的，不相关的",
+    "frequency_rank": 758,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "department",
+    "meaning_cn": "部，部门，系，处，局",
+    "frequency_rank": 759,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "depart",
+    "meaning_cn": "离开，出发，启程；离职",
+    "frequency_rank": 760,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "apartment",
+    "meaning_cn": "公寓",
+    "frequency_rank": 761,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "visualise",
+    "meaning_cn": "构思，设想；使可视化",
+    "frequency_rank": 762,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "confront",
+    "meaning_cn": "迎面遇到，正视；面对；处理，解决",
+    "frequency_rank": 763,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "visual",
+    "meaning_cn": "视力的；视觉的",
+    "frequency_rank": 764,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "press",
+    "meaning_cn": "按，压n、新闻界；出版社",
+    "frequency_rank": 765,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "compress",
+    "meaning_cn": "压缩，压紧；精简",
+    "frequency_rank": 766,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "depress",
+    "meaning_cn": "使沮丧；使萧条；降低",
+    "frequency_rank": 767,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "repress",
+    "meaning_cn": "镇压；抑制（感情）",
+    "frequency_rank": 768,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "suppress",
+    "meaning_cn": "镇压；压制；忍住（眼泪等）",
+    "frequency_rank": 769,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "express",
+    "meaning_cn": "表达；表现n.快递；快车adj.快递的；特快的",
+    "frequency_rank": 770,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "oppress",
+    "meaning_cn": "压迫，压抑；使....烦恼",
+    "frequency_rank": 771,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "impress",
+    "meaning_cn": "留下印象，使铭记",
+    "frequency_rank": 772,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "preclude",
+    "meaning_cn": "阻止；妨碍",
+    "frequency_rank": 773,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "exclude",
+    "meaning_cn": "不包括；不放在考虑之列；防止..·进入",
+    "frequency_rank": 774,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "conclude",
+    "meaning_cn": "得出结论；结束，终止",
+    "frequency_rank": 775,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "include",
+    "meaning_cn": "包括；包含",
+    "frequency_rank": 776,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "suspend",
+    "meaning_cn": "悬挂；暂缓，推迟，暂停",
+    "frequency_rank": 777,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "aspire",
+    "meaning_cn": "渴望（成就）：有志（成为）",
+    "frequency_rank": 778,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "inspire",
+    "meaning_cn": "激励，鼓励",
+    "frequency_rank": 779,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "perspire",
+    "meaning_cn": "流汗；渗出",
+    "frequency_rank": 780,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "approach",
+    "meaning_cn": "靠近，接近；方法，办法v.靠近，接近",
+    "frequency_rank": 781,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "assess",
+    "meaning_cn": "评估；估价，确定金额",
+    "frequency_rank": 782,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "access",
+    "meaning_cn": "通道，入口；接近（或见面、使用）的机会（或权",
+    "frequency_rank": 783,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "obsess",
+    "meaning_cn": "迷住，缠住；使.....着迷；使..困扰",
+    "frequency_rank": 784,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "profile",
+    "meaning_cn": "侧面轮廓；概述；简介；概况",
+    "frequency_rank": 785,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "compel e",
+    "meaning_cn": "强迫，迫使；使发生",
+    "frequency_rank": 786,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "proceed",
+    "meaning_cn": "进行，继续下去，前进",
+    "frequency_rank": 787,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "accelerate",
+    "meaning_cn": "。（使）加快，（使）增速",
+    "frequency_rank": 788,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "descend",
+    "meaning_cn": "下来，下降",
+    "frequency_rank": 789,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "precedent",
+    "meaning_cn": "先例，范例；传统；常规",
+    "frequency_rank": 790,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "procession",
+    "meaning_cn": "队伍，行列，一连串的人",
+    "frequency_rank": 791,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "procedure",
+    "meaning_cn": "程序，步骤",
+    "frequency_rank": 792,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "exceed",
+    "meaning_cn": "超过；胜过",
+    "frequency_rank": 793,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "ancestor",
+    "meaning_cn": "祖先，祖宗；原型",
+    "frequency_rank": 794,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "recession",
+    "meaning_cn": "衰退，不景气；退回；撤回",
+    "frequency_rank": 795,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "altitude",
+    "meaning_cn": "海拔；海拔高度；高地；高处",
+    "frequency_rank": 796,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "latitude",
+    "meaning_cn": "纬度（地区）；选择的自由",
+    "frequency_rank": 797,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "progress",
+    "meaning_cn": "前进，进步",
+    "frequency_rank": 798,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "congress",
+    "meaning_cn": "国会，代表大会",
+    "frequency_rank": 799,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sector",
+    "meaning_cn": "(尤指一国经济的）部门，领域，行业",
+    "frequency_rank": 800,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "minister",
+    "meaning_cn": "(尤指一国经济的）部门，领域，行业",
+    "frequency_rank": 801,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "administer",
+    "meaning_cn": "管理；执行；给予",
+    "frequency_rank": 802,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "bureau",
+    "meaning_cn": "局，科；处；办事处",
+    "frequency_rank": 803,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "delegate",
+    "meaning_cn": "代表；参会人员",
+    "frequency_rank": 804,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "headquarters",
+    "meaning_cn": "司令部；总部",
+    "frequency_rank": 805,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "session",
+    "meaning_cn": "会议；（法庭的）开庭；学年；一场；一节",
+    "frequency_rank": 806,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sign",
+    "meaning_cn": "迹象；征兆；预兆；标志；符号；记号v.签（名）",
+    "frequency_rank": 807,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "accommodate",
+    "meaning_cn": "为.….·提供住宿；容纳；适应",
+    "frequency_rank": 808,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "signal",
+    "meaning_cn": "信号，标志；信号灯",
+    "frequency_rank": 809,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "assign",
+    "meaning_cn": "委派，指派；分配",
+    "frequency_rank": 810,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "adapt",
+    "meaning_cn": "(使)适应；改编；改写",
+    "frequency_rank": 811,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "appoint",
+    "meaning_cn": "任命；委任；约定；安排",
+    "frequency_rank": 812,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "adopt",
+    "meaning_cn": "收养；采纳，采用；采取",
+    "frequency_rank": 813,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "resign",
+    "meaning_cn": "辞职；放弃",
+    "frequency_rank": 814,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "significant",
+    "meaning_cn": "有意义的重大的，重要的；显著的",
+    "frequency_rank": 815,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "design",
+    "meaning_cn": "设计；计划n.设计；制图；构思；计划",
+    "frequency_rank": 816,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "signify",
+    "meaning_cn": "意味着；象征；表示，显示",
+    "frequency_rank": 817,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "designate",
+    "meaning_cn": "指派，委任；命名，指定，认定；标明",
+    "frequency_rank": 818,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "width",
+    "meaning_cn": "宽度；广度",
+    "frequency_rank": 819,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "honour",
+    "meaning_cn": "名誉；尊敬，荣幸v.尊敬；给以荣誉",
+    "frequency_rank": 820,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "dishonour",
+    "meaning_cn": "使蒙羞，污n.不名誉；拒付；丢脸",
+    "frequency_rank": 821,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "flexible",
+    "meaning_cn": "柔韧的，易弯曲的；灵活的，可通融的",
+    "frequency_rank": 822,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "blast",
+    "meaning_cn": "爆炸；一阵（风），一股（气流）v.炸，爆破",
+    "frequency_rank": 823,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "reflect",
+    "meaning_cn": "反射；反映；反省",
+    "frequency_rank": 824,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "plastic",
+    "meaning_cn": "塑料；信用卡adj.塑料（制）的；可塑的",
+    "frequency_rank": 825,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "elastic",
+    "meaning_cn": "橡皮圈;松紧带adj.有弹性的，灵活的",
+    "frequency_rank": 826,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "objective",
+    "meaning_cn": "客观的n.目的；目标",
+    "frequency_rank": 827,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "reject",
+    "meaning_cn": "主观的",
+    "frequency_rank": 828,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "subjective",
+    "meaning_cn": "主观的",
+    "frequency_rank": 829,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "object",
+    "meaning_cn": "物品，东西",
+    "frequency_rank": 830,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "proficient",
+    "meaning_cn": "熟练的，精通的",
+    "frequency_rank": 831,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "efficient",
+    "meaning_cn": "效率高的",
+    "frequency_rank": 832,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "medium",
+    "meaning_cn": "媒体，新闻媒介；手段，方法",
+    "frequency_rank": 833,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "minimum",
+    "meaning_cn": "最小值，最少量adj.最小的，最低的",
+    "frequency_rank": 834,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "intermediate",
+    "meaning_cn": "中间的，居中的；中级的n.中级学生",
+    "frequency_rank": 835,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "miniature",
+    "meaning_cn": "微型的，很小的n.缩影；微型画；微型模型",
+    "frequency_rank": 836,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "maximum",
+    "meaning_cn": "最大量，最大限度adj.最高的，最多的",
+    "frequency_rank": 837,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "lower",
+    "meaning_cn": "较低的，低等的v.降低，降下，放低",
+    "frequency_rank": 838,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "acrobat",
+    "meaning_cn": "杂技演员",
+    "frequency_rank": 839,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "monster",
+    "meaning_cn": "怪物，妖怪；庞然大物；恶人，恶魔",
+    "frequency_rank": 840,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "beat",
+    "meaning_cn": "敲击；（心脏等）跳动；节拍",
+    "frequency_rank": 841,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "debate",
+    "meaning_cn": "争论，辩论v.争论；讨论",
+    "frequency_rank": 842,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "beast",
+    "meaning_cn": "兽；牲畜；凶残的人；举止粗鲁的人",
+    "frequency_rank": 843,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "argument",
+    "meaning_cn": "争论，辩论；论点",
+    "frequency_rank": 844,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "campaign",
+    "meaning_cn": "战役；运动v.参加运动",
+    "frequency_rank": 845,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "dispute",
+    "meaning_cn": "争论，辩论；争端；纠纷v.对.表示异议",
+    "frequency_rank": 846,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "champion",
+    "meaning_cn": "冠军；第一名；优胜者",
+    "frequency_rank": 847,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "campus",
+    "meaning_cn": "校园，校区",
+    "frequency_rank": 848,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "combat",
+    "meaning_cn": "战斗；搏斗；打仗",
+    "frequency_rank": 849,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "reputation",
+    "meaning_cn": "名声，名誉",
+    "frequency_rank": 850,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "monotonous",
+    "meaning_cn": "单调的，无变化的",
+    "frequency_rank": 851,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "vary",
+    "meaning_cn": "改变，变化",
+    "frequency_rank": 852,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "alter",
+    "meaning_cn": "改变，改动",
+    "frequency_rank": 853,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "various",
+    "meaning_cn": "各种不同的；各种各样的",
+    "frequency_rank": 854,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "variation",
+    "meaning_cn": "变异，变化",
+    "frequency_rank": 855,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "shift",
+    "meaning_cn": "（电路的）开关，闸，转换器",
+    "frequency_rank": 856,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "diverse",
+    "meaning_cn": "不同的；多种多样的",
+    "frequency_rank": 857,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "controversy",
+    "meaning_cn": "争论，争议，辩论",
+    "frequency_rank": 858,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "avert",
+    "meaning_cn": "避免，防止；转移目光",
+    "frequency_rank": 859,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "versatile",
+    "meaning_cn": "多才多艺的；多功能的；多面手的",
+    "frequency_rank": 860,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "anniversary",
+    "meaning_cn": "周年纪念日",
+    "frequency_rank": 861,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "evolve",
+    "meaning_cn": "（使）演变，（使）进化，（使）发展",
+    "frequency_rank": 862,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "revolve",
+    "meaning_cn": "旋转；环绕",
+    "frequency_rank": 863,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "susceptible",
+    "meaning_cn": "易受影响（或伤害等）的；敏感的；过敏的",
+    "frequency_rank": 864,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "spectator",
+    "meaning_cn": "观众，观看者",
+    "frequency_rank": 865,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "speculate",
+    "meaning_cn": "推测，推断；投机",
+    "frequency_rank": 866,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "despise",
+    "meaning_cn": "鄙视，轻视",
+    "frequency_rank": 867,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "promising",
+    "meaning_cn": "有希望的；有前途的；有出息的",
+    "frequency_rank": 868,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "prosper",
+    "meaning_cn": "繁荣，昌盛",
+    "frequency_rank": 869,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "expectation",
+    "meaning_cn": "期待，预期；期望，期盼",
+    "frequency_rank": 870,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "conspicuous",
+    "meaning_cn": "显著的，明显的，引人注目的",
+    "frequency_rank": 871,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "mutual",
+    "meaning_cn": "交流，沟通",
+    "frequency_rank": 872,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "communicate",
+    "meaning_cn": "交流，沟通",
+    "frequency_rank": 873,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "community",
+    "meaning_cn": "社区，社会；群体，界；群落",
+    "frequency_rank": 874,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "neighbourhood",
+    "meaning_cn": "eibahud/n.街坊，邻居；邻近地区；居住区",
+    "frequency_rank": 875,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "commute",
+    "meaning_cn": "上下班路程；通勤v.上下班往返，经常往返",
+    "frequency_rank": 876,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "social",
+    "meaning_cn": "社会的，社交的；群居的",
+    "frequency_rank": 877,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "integrate",
+    "meaning_cn": "使成为整体，使一体化",
+    "frequency_rank": 878,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "immigrant",
+    "meaning_cn": "（外来）移民；外侨",
+    "frequency_rank": 879,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "union",
+    "meaning_cn": "结合，联合；工会；协会",
+    "frequency_rank": 880,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "segment",
+    "meaning_cn": "部分；份；片；段v.分割；划分",
+    "frequency_rank": 881,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "joint",
+    "meaning_cn": "关节，接头adj.联合的，共同的",
+    "frequency_rank": 882,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "separate",
+    "meaning_cn": "单独的；独立的;分开的;不同的",
+    "frequency_rank": 883,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "insulate",
+    "meaning_cn": "使绝缘；使隔热，使隔音；隔离",
+    "frequency_rank": 884,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "coincide",
+    "meaning_cn": "同时发生；相符；巧合",
+    "frequency_rank": 885,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "arbitrary",
+    "meaning_cn": "任意的，随意的；专横的，专制的",
+    "frequency_rank": 886,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "incident",
+    "meaning_cn": "偶然事件；事故",
+    "frequency_rank": 887,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "suicide",
+    "meaning_cn": "自杀，自杀事件v.自杀",
+    "frequency_rank": 888,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "casual",
+    "meaning_cn": "漫不经心的，休闲的，随意的；偶然的，碰巧",
+    "frequency_rank": 889,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "pesticide",
+    "meaning_cn": "杀虫剂",
+    "frequency_rank": 890,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "precise",
+    "meaning_cn": "精确的，准确的",
+    "frequency_rank": 891,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "range",
+    "meaning_cn": "一系列；范围，界限；山脉；类；种",
+    "frequency_rank": 892,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "arrange",
+    "meaning_cn": "安排；排列，整理",
+    "frequency_rank": 893,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "concise",
+    "meaning_cn": "简明的，简练的",
+    "frequency_rank": 894,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "subtle",
+    "meaning_cn": "微妙的；敏锐的",
+    "frequency_rank": 895,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "territory",
+    "meaning_cn": "领土，领域，范围",
+    "frequency_rank": 896,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "gallery",
+    "meaning_cn": "画廊；走廊",
+    "frequency_rank": 897,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "landscape",
+    "meaning_cn": "风景，景色；乡村风景画；政治（社会）形势",
+    "frequency_rank": 898,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "horizon",
+    "meaning_cn": "地平线；范围；视野",
+    "frequency_rank": 899,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "manuscript",
+    "meaning_cn": "手稿，原稿",
+    "frequency_rank": 900,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "graduate",
+    "meaning_cn": "毕业生,大学毕业生",
+    "frequency_rank": 901,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "postgraduate",
+    "meaning_cn": "研究生",
+    "frequency_rank": 902,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "gradual",
+    "meaning_cn": "逐渐的，逐步的",
+    "frequency_rank": 903,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "master",
+    "meaning_cn": "精通；掌握；控制adj.熟练的，灵巧的，有技能",
+    "frequency_rank": 904,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "undergraduate",
+    "meaning_cn": "本科生",
+    "frequency_rank": 905,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "freshman",
+    "meaning_cn": "大一的学生，新手",
+    "frequency_rank": 906,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "chase",
+    "meaning_cn": "&v.追求，追逐；求爱：努力获得",
+    "frequency_rank": 907,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "sophomore",
+    "meaning_cn": "大二的学生",
+    "frequency_rank": 908,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "purchase",
+    "meaning_cn": "买；购买的物品v.买，购买",
+    "frequency_rank": 909,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "junior",
+    "meaning_cn": "青少年的，地位较低的n.大三的学生",
+    "frequency_rank": 910,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "trace",
+    "meaning_cn": "踪迹，痕迹v.查出，追踪",
+    "frequency_rank": 911,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "senior",
+    "meaning_cn": "（地位、水平或级别）较高的，高级的；年长",
+    "frequency_rank": 912,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "track",
+    "meaning_cn": "记",
+    "frequency_rank": 913,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "pursue",
+    "meaning_cn": "继续探讨（或从事）；追赶；追求",
+    "frequency_rank": 914,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "trail",
+    "meaning_cn": "（长串的）踪迹，痕迹；小路v.跟踪，追踪：福",
+    "frequency_rank": 915,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "persevere",
+    "meaning_cn": "坚持不懈，坚持",
+    "frequency_rank": 916,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "consist",
+    "meaning_cn": "（~of）由…..·组成，由..构成；（~in）存",
+    "frequency_rank": 917,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "corrupt",
+    "meaning_cn": "随落的；腐败的，贪污的",
+    "frequency_rank": 918,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "rotate",
+    "meaning_cn": "（使）旋转，转动；轮值",
+    "frequency_rank": 919,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "bribe",
+    "meaning_cn": "贿赂y.贿赂，行贿",
+    "frequency_rank": 920,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "rot",
+    "meaning_cn": "腐烂；腐败变质；形势恶化",
+    "frequency_rank": 921,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "interfere",
+    "meaning_cn": "干涉，干预；干扰",
+    "frequency_rank": 922,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "intervene",
+    "meaning_cn": "旋，调停；干扰；插话",
+    "frequency_rank": 923,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "journal",
+    "meaning_cn": "期刊，日报；日记",
+    "frequency_rank": 924,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "interval",
+    "meaning_cn": "间隔，间距；幕间休息",
+    "frequency_rank": 925,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "edit",
+    "meaning_cn": "编辑，校订",
+    "frequency_rank": 926,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "interpret",
+    "meaning_cn": "解释，说明；口译；领会，把....·理解为",
+    "frequency_rank": 927,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "version",
+    "meaning_cn": "版本，译本；说法；变体",
+    "frequency_rank": 928,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "interview",
+    "meaning_cn": "&v.会见；面试；面谈；采访",
+    "frequency_rank": 929,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "advertise",
+    "meaning_cn": "登广告；公布；宣传",
+    "frequency_rank": 930,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "confess",
+    "meaning_cn": "承认，坦白；忏悔",
+    "frequency_rank": 931,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "occupy",
+    "meaning_cn": "占用，占领；使忙碌；任职",
+    "frequency_rank": 932,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "amateur",
+    "meaning_cn": "业余爱好者；外行adj.业余的",
+    "frequency_rank": 933,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "profession",
+    "meaning_cn": "职业，行业；表白",
+    "frequency_rank": 934,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "layman",
+    "meaning_cn": "非专业人员；外行",
+    "frequency_rank": 935,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "occupation",
+    "meaning_cn": "职业",
+    "frequency_rank": 936,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "veteran",
+    "meaning_cn": "久经世故的，老练的；有经验的；复杂的",
+    "frequency_rank": 937,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "sophisticated",
+    "meaning_cn": "久经世故的，老练的；有经验的；复杂的",
+    "frequency_rank": 938,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "skilled",
+    "meaning_cn": "熟练的,有技能的",
+    "frequency_rank": 939,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "sane",
+    "meaning_cn": "心智健全的，明智的，清醒的",
+    "frequency_rank": 940,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "wise",
+    "meaning_cn": "明智的；英明的；有判断力的",
+    "frequency_rank": 941,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "renaissance",
+    "meaning_cn": "文艺复兴",
+    "frequency_rank": 942,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "wisdom",
+    "meaning_cn": "智慧，才智，精明；知识，学问",
+    "frequency_rank": 943,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "intelligent",
+    "meaning_cn": "聪明的;有才智的;有智力的;智能的",
+    "frequency_rank": 944,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "intellectual",
+    "meaning_cn": "知识分子；脑力劳动者adj.知识的，智力的",
+    "frequency_rank": 945,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "select",
+    "meaning_cn": "选择；选拔；选取",
+    "frequency_rank": 946,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "elect",
+    "meaning_cn": "选举，推选",
+    "frequency_rank": 947,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "vote",
+    "meaning_cn": "票；选票，投票；表决v.选举，投票；表决",
+    "frequency_rank": 948,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "veto",
+    "meaning_cn": "&v.否决（权）；禁止",
+    "frequency_rank": 949,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "deny",
+    "meaning_cn": "否认，否定；拒绝承认",
+    "frequency_rank": 950,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "reserve",
+    "meaning_cn": "保存，保留；预订n.储备；（野生动物）保护区",
+    "frequency_rank": 951,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "conserve",
+    "meaning_cn": "保存，保藏；节省；节约",
+    "frequency_rank": 952,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "observe",
+    "meaning_cn": "观察；遵守；评论，评述",
+    "frequency_rank": 953,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "preserve",
+    "meaning_cn": "保护；保留；保存",
+    "frequency_rank": 954,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "deserve",
+    "meaning_cn": "值得，应受，应得",
+    "frequency_rank": 955,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "undermine",
+    "meaning_cn": "暗中破坏，逐渐削弱",
+    "frequency_rank": 956,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "overtake",
+    "meaning_cn": "超过；赶上；（在数量或重要性方面）大于",
+    "frequency_rank": 957,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "overpass",
+    "meaning_cn": "跨线桥；上跨式立交桥",
+    "frequency_rank": 958,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "undercut",
+    "meaning_cn": "削价竞争；削弱；暗中破坏",
+    "frequency_rank": 959,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "outline",
+    "meaning_cn": "提纲；外形；轮廓v.概述",
+    "frequency_rank": 960,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "undertake",
+    "meaning_cn": "承担，担任；保证；从事",
+    "frequency_rank": 961,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "outbreak",
+    "meaning_cn": "（战争的）爆发；（疾病的）发作",
+    "frequency_rank": 962,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "outcome",
+    "meaning_cn": "结果，成果",
+    "frequency_rank": 963,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "deadline",
+    "meaning_cn": "截止日期，最终期限",
+    "frequency_rank": 964,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "outset",
+    "meaning_cn": "截止日期，最终期限",
+    "frequency_rank": 965,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "outlet",
+    "meaning_cn": "专营店；经销店；折扣店；出路，表现机会",
+    "frequency_rank": 966,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "headline",
+    "meaning_cn": "标题，头条",
+    "frequency_rank": 967,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "outweigh",
+    "meaning_cn": "超过，胜过；比.....重",
+    "frequency_rank": 968,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "forecast",
+    "meaning_cn": "&v.预测；预报",
+    "frequency_rank": 969,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "cast",
+    "meaning_cn": "扔；掷；向....投以；使人怀疑n.扔；掷；全体",
+    "frequency_rank": 970,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "portable",
+    "meaning_cn": "便携的，手提的",
+    "frequency_rank": 971,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "depict",
+    "meaning_cn": "描绘；描写；描述",
+    "frequency_rank": 972,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "trait",
+    "meaning_cn": "显著的特点，特性",
+    "frequency_rank": 973,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "feature",
+    "meaning_cn": "特点，特征，特色v.突出，以.....为特色",
+    "frequency_rank": 974,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "character",
+    "meaning_cn": "性格，特征；人物，角色",
+    "frequency_rank": 975,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "provision",
+    "meaning_cn": "供应，准备；条款，规定",
+    "frequency_rank": 976,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "item",
+    "meaning_cn": "项目，条款；一则，一条",
+    "frequency_rank": 977,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "bill",
+    "meaning_cn": "账单，议案，法案：传单：票据：清单",
+    "frequency_rank": 978,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "legislation",
+    "meaning_cn": "立法；法律",
+    "frequency_rank": 979,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "draft",
+    "meaning_cn": "草稿，草案，草图v.起草",
+    "frequency_rank": 980,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "mandate",
+    "meaning_cn": "强制执行；命令；指示；颁布；授权",
+    "frequency_rank": 981,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "sketch",
+    "meaning_cn": "素描；速写；草图",
+    "frequency_rank": 982,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "statute",
+    "meaning_cn": "成文法；法规；章程；条例；规程",
+    "frequency_rank": 983,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "drift",
+    "meaning_cn": "漂流；漂移；飘",
+    "frequency_rank": 984,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "float",
+    "meaning_cn": "浮动；漂浮；浮；飘动；漂流",
+    "frequency_rank": 985,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "code",
+    "meaning_cn": "密码；代码；道德准则；行为规范；法规",
+    "frequency_rank": 986,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "replace",
+    "meaning_cn": "取代，代替；替换；更新",
+    "frequency_rank": 987,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "institute",
+    "meaning_cn": "学院，学会；协会y.制定，创立",
+    "frequency_rank": 988,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "displace",
+    "meaning_cn": "取代，代替",
+    "frequency_rank": 989,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "obedient",
+    "meaning_cn": "顺从的，服从的",
+    "frequency_rank": 990,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "valid",
+    "meaning_cn": "（法律上）有效的，有法律效力的；正当的",
+    "frequency_rank": 991,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "consolidate",
+    "meaning_cn": "(使)加强，(使)巩固",
+    "frequency_rank": 992,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "invalid",
+    "meaning_cn": "不承认的；无效的；无充分事实",
+    "frequency_rank": 993,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "solid",
+    "meaning_cn": "固体的；结实的，稳固的；可靠的n.固体",
+    "frequency_rank": 994,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "testify",
+    "meaning_cn": "作证；表明，证明",
+    "frequency_rank": 995,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "testimony",
+    "meaning_cn": "证词，证明，证据",
+    "frequency_rank": 996,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "simplify",
+    "meaning_cn": "单一化，简单化",
+    "frequency_rank": 997,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "warrant",
+    "meaning_cn": "正当理由，根据，保证；授权令，执行",
+    "frequency_rank": 998,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "clarify",
+    "meaning_cn": "澄清，阐明；净化",
+    "frequency_rank": 999,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "clarity",
+    "meaning_cn": "清楚，明晰",
+    "frequency_rank": 1000,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "verify",
+    "meaning_cn": "核实，证实，证明",
+    "frequency_rank": 1001,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "verdict",
+    "meaning_cn": "结论；裁决，判决",
+    "frequency_rank": 1002,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "prosecute",
+    "meaning_cn": "对.....提起公诉，告发",
+    "frequency_rank": 1003,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "convict",
+    "meaning_cn": "定罪；宣判.....有罪",
+    "frequency_rank": 1004,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "jury",
+    "meaning_cn": "陪审团；（竞赛或展览的）评判委员会",
+    "frequency_rank": 1005,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "judgement",
+    "meaning_cn": "意见，看法；判断力；审判",
+    "frequency_rank": 1006,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "adjust",
+    "meaning_cn": "调整，调节；校准；使适合",
+    "frequency_rank": 1007,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "surrender",
+    "meaning_cn": "投降，自首；交出；放弃n.投降；屈服",
+    "frequency_rank": 1008,
+    "cet_level": "POSTGRADUATE",
+    "pos": "v."
+  },
+  {
+    "word": "victim",
+    "meaning_cn": "受害人：牺牲者，牺牲品",
+    "frequency_rank": 1009,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "decent",
+    "meaning_cn": "体面的；正派的；适当的；合宜的；合乎礼",
+    "frequency_rank": 1010,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adj."
+  },
+  {
+    "word": "percentage",
+    "meaning_cn": "百分数，百分率，百分比",
+    "frequency_rank": 1011,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "percent",
+    "meaning_cn": "百分率，百分数",
+    "frequency_rank": 1012,
+    "cet_level": "POSTGRADUATE",
+    "pos": "n."
+  },
+  {
+    "word": "lest",
+    "meaning_cn": "唯恐，以免",
+    "frequency_rank": 1013,
+    "cet_level": "POSTGRADUATE"
+  },
+  {
+    "word": "otherwise",
+    "meaning_cn": "不然，否则；除此之外；以其他方式",
+    "frequency_rank": 1014,
+    "cet_level": "POSTGRADUATE",
+    "pos": "adv."
+  }
+]

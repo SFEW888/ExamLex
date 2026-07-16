@@ -4,14 +4,17 @@ import argparse
 import datetime as dt
 import json
 import re
+import sqlite3
 import sys
 from dataclasses import asdict, dataclass
 from typing import Any
 
 try:
     from . import common
+    from .strategy_store import load_strategy_library
 except ImportError:  # pragma: no cover - supports direct script execution.
     import common  # type: ignore[no-redef]
+    from strategy_store import load_strategy_library  # type: ignore[no-redef]
 
 
 STRATEGY_ID_RE = re.compile(r"^[a-z0-9]+-[a-z-]+-[a-z0-9-]+-\d{3}$")
@@ -170,15 +173,15 @@ def _date(strategy: dict[str, Any], field: str) -> Check:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="Validate a strategy library JSON file.")
-    parser.add_argument("--library", required=True, help="Strategy library JSON path.")
+    parser = argparse.ArgumentParser(description="Validate a JSON or SQLite strategy library.")
+    parser.add_argument("--library", required=True, help="Strategy library JSON or SQLite path.")
     parser.add_argument("--strict", action="store_true", help="Treat warnings as errors.")
     parser.add_argument("--json", action="store_true", help="Print JSON output.")
     args = parser.parse_args(argv)
 
     try:
-        library = common.load_data(args.library)
-    except (FileNotFoundError, PermissionError, OSError, json.JSONDecodeError) as exc:
+        library = load_strategy_library(args.library)
+    except (FileNotFoundError, PermissionError, OSError, ValueError, sqlite3.Error) as exc:
         if args.json:
             _print_json({"file": args.library, "fatal": str(exc)})
         else:

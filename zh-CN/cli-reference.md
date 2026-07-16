@@ -40,8 +40,10 @@
 | `examlex source-fetch --source <id> --item <id> --kind <text\|media>` | `source-fetch` | 🤖 | 显式获取一条已索引的公开正文或媒体 |
 | `examlex ingest <file> [opts]` | `ingest-strategy` | 👤 | 从文件提取策略写入策略库 |
 | `examlex strategies [opts]` | `list-strategies` | 👤 | 列出/搜索已摄入的策略 |
+| `examlex strategy-db import-json\|export-json [opts]` | `strategy-db` | 🔧 | 在 JSON 与事务型 SQLite 策略库之间迁移 |
 | `examlex validate --artifacts-dir <path>` | `validate-strategies` | 🤖 | 验证蒸馏策略格式并计算 Darwin 6 维结构评分（第 3 阶段） |
 | `examlex commit --artifacts-dir <path> --library <path>` | `commit-strategies` | 🤖 | 通过 ratchet 检查将策略原子写入策略库（第 5 阶段） |
+| `examlex validate-exam-artifact --kind <paper\|answerbook> --file <json>` | `validate-exam-artifact` | 🔧 | 校验五类考试整卷与详细答案册契约 |
 
 ### 💾 数据管理
 
@@ -58,6 +60,7 @@
 | 快捷命令 | 底层命令 | 触发 | 说明 |
 |----------|----------|:--:|------|
 | `examlex vocab [opts]` | `vocab-estimate` | 👤 | 抽样估算词汇量 |
+| `examlex word --input <json> [--output <md>]` | `vocab-card` | 👤 | 生成精细背词词条版块 |
 | `examlex prompt-check --private-dir <dir> [opts]` | `prompt-check` | 👤 | 校验仓库外的八助教私有提示词集，不输出正文 |
 | `examlex tutor-prepare --request <text> [opts]` | `tutor-prepare` | 🤖 | 路由请求并返回最多两个安全澄清问题 |
 
@@ -69,6 +72,7 @@
 | `ops-check` | 🔧 | 运行 13 项运维就绪检查 |
 | `resume` | 👤 | 读取已有蒸馏会话并返回续跑指引 |
 | `sessions-cleanup` | 🔧 | 检查或手动清理会话产物；成功提交还会自动执行保留策略 |
+| `capacity-monitor` | 🔧 | 后台执行保留策略并对策略库阈值发出复核提醒 |
 | `validate-strategy` | 🔧 | 校验策略库文件 |
 | `validate_repo.py` | 🔧 | 仓库完整性校验（非 CLI 命令） |
 
@@ -209,7 +213,7 @@ examlex ingest <file>
   [--json]
 
 # 示例
-examlex ingest "四级阅读技巧.md" --library strategy-library.json
+examlex ingest "reading-method.md" --library strategy-library.json
 ```
 
 相同源文件在考试类型、模块、来源类型、蒸馏方式、来源 URL 和显式结构化参数均相同
@@ -229,6 +233,19 @@ examlex strategies --library strategy-library.json --duplicates
 `--duplicates` 只列出供复核的候选组，依据包括相同摄入指纹、规范化正文、相同标题与
 适用范围，以及历史版本间的重复正文。该命令不删除数据；删除历史版本前必须先核对
 学习记录中的版本引用。
+
+以 `.db`、`.sqlite` 或 `.sqlite3` 结尾的策略库会自动使用事务型 SQLite 后端；JSON
+仍作为便携交换格式继续支持。
+
+### `examlex strategy-db` — 迁移策略库存储
+
+```bash
+examlex strategy-db import-json --input strategy-library.json --database strategy-library.db --json
+examlex strategy-db export-json --database strategy-library.db --output strategy-library.json --json
+```
+
+SQLite 将当前策略与不可变历史版本存入分离且带索引的表，并保证导出后的 JSON 结构
+可回读。近似重复只作为用户复核候选；导入、导出、列出和写入都不会自动删除策略。
 
 ### `examlex backup` — 数据备份
 
@@ -278,6 +295,28 @@ examlex vocab --wordlist <answers.json> [--output <path>]
 # 示例
 examlex vocab --interactive --output vocab-result.json
 ```
+
+### `examlex word` — 生成背词词条版块
+
+```bash
+examlex word --input vocabulary-block.json --output vocabulary-block.md
+examlex vocab-card --input vocabulary-block.json --validate-only --json
+```
+
+输入必须包含序号、单词、音标、按词性区分的释义、构词或记忆说明、双语语境例句，
+以及至少一个派生词或同族词；输出还会附主动回忆任务。学习者表达“背单词”意图时，
+默认使用这一精细结构，只有明确要求简版时才可改为紧凑清单。
+
+### `examlex validate-exam-artifact` — 校验整卷或答案册
+
+```bash
+examlex validate-exam-artifact --kind paper --file paper.json --json
+examlex validate-exam-artifact --kind answerbook --file answers.json --paper paper.json --json
+```
+
+整卷校验覆盖四级、六级、考研英语、专四和专八的题型配置、编号、题量、证据角色和
+“非官方模拟”声明；答案册校验会强制检查详细解析、题干与全部选项翻译、证据范围、
+推理步骤、逐项排除，以及写作、阅读、听力、完形和翻译的专用解析包。
 
 ### `examlex prompt-check` — 校验外部私有提示词
 
@@ -350,7 +389,7 @@ examlex extract --input <url|file|name>
   [--json]                               # JSON 格式输出
 
 # 示例
-examlex extract --input 四级阅读技巧.md --type text
+examlex extract --input reading-method.md --type text
 examlex extract --input VIDEO_URL --type video
 ```
 
@@ -406,6 +445,19 @@ examlex sessions-cleanup --older-than-hours 168 --prune-terminal-artifacts --app
 会话标记为 `committed`，清理超过 168 小时的可再生成产物，并按从旧到新的顺序执行
 4 GiB 硬上限。活动会话文件不计入该上限。策略库达到 100 MiB 时只发出提醒并列出有限
 数量的重复候选，不会自动修改或删除策略及其不可变历史版本。
+
+### `examlex capacity-monitor` — 后台容量策略
+
+```powershell
+examlex capacity-monitor --json
+examlex capacity-monitor --strategy-library strategy-library.db --notify-windows
+powershell -ExecutionPolicy Bypass -File scripts/install_capacity_monitor.ps1
+```
+
+每次运行只对可重新生成的音频、字幕、转录稿、全文和章节提取物执行时限与硬容量
+上限，并写入持久状态报告。策略库达到阈值时会另写警告报告，列出可能重复的版本供
+用户选择，并可显示 Windows 通知；策略和不可变历史版本始终不会被自动删除。安装
+脚本默认注册一个每 30 分钟运行一次的当前用户计划任务。
 
 ### `examlex check-deps` — 检查依赖
 

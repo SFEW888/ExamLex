@@ -1,0 +1,10 @@
+{
+  "exam_type": "TEM8",
+  "bands": {
+    "band-pass": {
+      "samples": 1,
+      "description": "Pass-level project-authored calibration sample.",
+      "common_issues": ["summary without evaluation", "weak counterargument", "register inconsistency"]
+    }
+  }
+}
