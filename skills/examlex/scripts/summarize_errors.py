@@ -49,9 +49,32 @@ def summarize_errors(ledger_path: str | Path, window_days: int = 30) -> dict[str
             _add(summary["by_module"], dimension, total_error_tags)
             _add(summary["by_dimension"], ability, total_error_tags)
 
-    # Spaced repetition: compute review urgency for each error tag
-    for tag in list(summary["by_tag"].keys()):
-        last_date, urgency = compute_review_urgency(tag, ledger, today, window_days)
+    # Spaced repetition: compute review urgency for each error tag. Build the
+    # per-tag occurrence dates and the (tag-independent) in-window record count
+    # in a single pass, then score each tag from that index. This replaces the
+    # previous O(T*N) behavior (one full ledger walk per distinct tag, each
+    # re-parsing every record date) with a single O(N) pass plus O(T) scoring.
+    tag_dates: dict[str, list[datetime.date]] = {}
+    records_in_window = 0
+    for record in ledger:
+        if not isinstance(record, dict):
+            continue
+        parsed_date = _parse_iso_date(record.get("date"))
+        if parsed_date is not None and (today - parsed_date).days <= window_days:
+            records_in_window += 1
+        if parsed_date is None:
+            continue
+        tags = record.get("error_tags", [])
+        if not isinstance(tags, list):
+            continue
+        # De-duplicate per record so a tag repeated in one record contributes a
+        # single date, matching the previous `tag in error_tags` membership test.
+        for tag in {t for t in tags if isinstance(t, str)}:
+            tag_dates.setdefault(tag, []).append(parsed_date)
+    for tag in summary["by_tag"]:
+        last_date, urgency = _review_urgency_from_index(
+            tag, tag_dates.get(tag, []), records_in_window, today, window_days
+        )
         summary["by_tag"][tag]["last_practice_date"] = last_date
         summary["by_tag"][tag]["review_urgency"] = urgency
 
@@ -111,6 +134,44 @@ def _add(bucket: dict[str, Any], key: str, total_error_tags: int, **extra: str) 
     entry["percentage"] = round(entry["count"] / total_error_tags, 2) if total_error_tags else 0.0
 
 
+def _parse_iso_date(value: Any) -> datetime.date | None:
+    """Parse an ISO date string, returning None for missing/non-string/invalid values.
+
+    Records with unparseable dates are excluded from window counts rather than
+    defaulted to "today" (which would inflate urgency), and a bad value never
+    crashes the summary.
+    """
+    if not isinstance(value, str):
+        return None
+    try:
+        return datetime.date.fromisoformat(value)
+    except ValueError:
+        return None
+
+
+def _review_urgency_from_index(
+    tag: str,
+    dates: list[datetime.date],
+    records_in_window: int,
+    today: datetime.date,
+    window_days: int,
+) -> tuple[str | None, float]:
+    """Score one tag from its precomputed occurrence dates and the window count.
+
+    Shared by the batch path in summarize_errors and the public
+    compute_review_urgency so both produce identical urgency values.
+    """
+    if not dates:
+        return (None, 0.0)
+    last_date = max(dates)
+    days_since = max(0, (today - last_date).days)
+    recent_count = sum(1 for d in dates if (today - d).days <= window_days)
+    error_freq = recent_count / records_in_window if records_in_window > 0 else 0.0
+    base_weight = common.ERROR_SEVERITY_WEIGHTS.get(tag, 0.5)
+    urgency = min(base_weight * (days_since / 7.0) * (error_freq + 0.1), 1.0)
+    return (last_date.isoformat(), round(urgency, 3))
+
+
 def compute_review_urgency(
     tag: str,
     ledger: list[dict],
@@ -126,51 +187,23 @@ def compute_review_urgency(
     if today is None:
         today = datetime.date.today()
 
-    tagged = [r for r in ledger if isinstance(r, dict) and tag in r.get("error_tags", [])]
-    if not tagged:
-        return (None, 0.0)
-
-    # Last occurrence date
-    dates = []
-    for r in tagged:
+    dates: list[datetime.date] = []
+    for record in ledger:
+        if not (isinstance(record, dict) and tag in record.get("error_tags", [])):
+            continue
         try:
-            dates.append(datetime.date.fromisoformat(str(r["date"])))
+            dates.append(datetime.date.fromisoformat(str(record["date"])))
         except (ValueError, KeyError):
             continue
-    if not dates:
-        return (None, 0.0)
 
-    last_date = max(dates)
-    days_since = max(0, (today - last_date).days)
-
-    # Recent frequency within window
-    recent_count = sum(1 for d in dates if (today - d).days <= window_days)
-
-    def _days_since(record: dict) -> int | None:
-        # Exclude records with missing or malformed dates from the window count
-        # (instead of defaulting them to "today", which would inflate urgency)
-        # and never let a bad date string crash the whole summary.
-        date_str = record.get("date")
-        if not isinstance(date_str, str):
-            return None
-        try:
-            return (today - datetime.date.fromisoformat(date_str)).days
-        except ValueError:
-            return None
-
-    total_records_in_window = sum(
-        1 for r in ledger
-        if isinstance(r, dict)
-        and (_ds := _days_since(r)) is not None
-        and _ds <= window_days
+    records_in_window = sum(
+        1
+        for record in ledger
+        if isinstance(record, dict)
+        and (_parsed := _parse_iso_date(record.get("date"))) is not None
+        and (today - _parsed).days <= window_days
     )
-    error_freq = recent_count / total_records_in_window if total_records_in_window > 0 else 0.0
-
-    base_weight = common.ERROR_SEVERITY_WEIGHTS.get(tag, 0.5)
-    urgency = base_weight * (days_since / 7.0) * (error_freq + 0.1)
-    urgency = min(urgency, 1.0)
-
-    return (last_date.isoformat(), round(urgency, 3))
+    return _review_urgency_from_index(tag, dates, records_in_window, today, window_days)
 
 
 def main(argv: list[str] | None = None) -> int:

@@ -151,34 +151,43 @@ def find_possible_duplicate_strategies(
     add_current_groups("same_title_and_scope", by_title_scope)
 
     # Review-only approximate matching. Scope blocking and token overlap avoid
-    # comparing every unrelated strategy in a growing library.
-    comparisons = 0
-    for left_index, left in enumerate(entries):
-        left_content = _normalized_text(left.get("content"))
-        if not left_content:
+    # comparing every unrelated strategy in a growing library. Per-entry values
+    # (normalized content, scope, tokens, length) are computed once here rather
+    # than O(n^2) times inside the pair loop.
+    prepared: list[tuple[dict[str, Any], str, tuple, set[str], int]] = []
+    for entry in entries:
+        content = _normalized_text(entry.get("content"))
+        if not content:
             continue
-        left_scope = (
-            _sorted_strings(left.get("exam_types")),
-            _sorted_strings(left.get("modules")),
+        scope = (
+            _sorted_strings(entry.get("exam_types")),
+            _sorted_strings(entry.get("modules")),
         )
-        left_tokens = set(left_content.split())
-        for right in entries[left_index + 1:]:
-            right_scope = (
-                _sorted_strings(right.get("exam_types")),
-                _sorted_strings(right.get("modules")),
-            )
+        tokens = set(content.split())
+        prepared.append((entry, content, scope, tokens, len(content)))
+
+    comparisons = 0
+    for left_index in range(len(prepared)):
+        left, left_content, left_scope, left_tokens, left_len = prepared[left_index]
+        for right_index in range(left_index + 1, len(prepared)):
+            right, right_content, right_scope, right_tokens, right_len = prepared[right_index]
             if left_scope != right_scope:
                 continue
-            right_content = _normalized_text(right.get("content"))
-            if not right_content or right_content == left_content:
+            if right_content == left_content:
                 continue
-            right_tokens = set(right_content.split())
             union = left_tokens | right_tokens
             if not union or len(left_tokens & right_tokens) / len(union) < 0.55:
                 continue
             comparisons += 1
             if comparisons > 20_000:
                 break
+            # Exact upper bound on SequenceMatcher.ratio() (difflib's
+            # real_quick_ratio): a pair whose length ratio is already below the
+            # threshold can never reach it, so skip building the matcher. Any
+            # pair skipped here would fail the ratio() check below anyway, so
+            # the recorded candidates are identical.
+            if 2 * min(left_len, right_len) / (left_len + right_len) < similarity_threshold:
+                continue
             similarity = SequenceMatcher(None, left_content, right_content, autojunk=False).ratio()
             if similarity < similarity_threshold:
                 continue

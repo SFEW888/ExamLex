@@ -129,26 +129,31 @@ def verify_backup(input_path: str | Path, *, expected_checksum: str | None = Non
         if sum(member.name == "backup-metadata.json" for member in members) != 1:
             mismatches.append("backup-metadata.json")
         content_members = [member for member in members if member.name != "backup-metadata.json"]
-        actual_names: list[str] = []
+        # Index members by name once. Replaces three O(n) scans per iteration
+        # (list membership x2 and tarfile.getmember, which itself scans
+        # self.members in reverse) with O(1) dict lookups, so verification of a
+        # large archive (up to MAX_ARCHIVE_MEMBERS) stays linear. Dict insertion
+        # order matches the original list, so the mismatch order is unchanged.
+        members_by_name: dict[str, tarfile.TarInfo] = {}
         for member in content_members:
-            if not member.isfile() or member.name in actual_names:
+            if not member.isfile() or member.name in members_by_name:
                 mismatches.append(member.name)
                 continue
-            actual_names.append(member.name)
+            members_by_name[member.name] = member
         expected_names = set()
         for name, digest in expected.items():
             if not isinstance(name, str) or not isinstance(digest, str) or not _is_sha256(digest):
                 mismatches.append(str(name))
                 continue
             expected_names.add(name)
-            if name not in actual_names:
+            member = members_by_name.get(name)
+            if member is None:
                 mismatches.append(name)
                 continue
-            member = archive.getmember(name)
             stream = archive.extractfile(member)
             if stream is None or _sha256_stream(stream) != digest:
                 mismatches.append(name)
-        for name in actual_names:
+        for name in members_by_name:
             if name not in expected_names:
                 mismatches.append(name)
         actual_checksum = _sha256_file(path)

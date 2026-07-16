@@ -770,6 +770,33 @@ class CorpusStore:
             )
             _atomic_write_text(self.manifest_path, manifest)
 
+    def update_items(self, items: Iterable[CollectedItem]) -> None:
+        """Persist several mutated items with a single manifest read and write.
+
+        Equivalent to calling update_item() for each item but avoids the O(N)
+        manifest reload and full rewrite per item — the batch path in
+        collect_source_feeds would otherwise reload and rewrite the whole
+        manifest once per materialized article.
+        """
+        updates = list(items)
+        if not updates:
+            return
+        with exclusive_file_lock(self.manifest_path):
+            existing = self._load_unlocked()
+            for item in updates:
+                if item.item_id not in existing:
+                    raise SourceCollectionError(f"unknown corpus item: {item.item_id}")
+                existing[item.item_id] = item
+                _atomic_write_text(
+                    self.items_dir / f"{item.item_id}.json",
+                    json.dumps(asdict(item), ensure_ascii=False, indent=2) + "\n",
+                )
+            manifest = "".join(
+                json.dumps(asdict(value), ensure_ascii=False, sort_keys=True) + "\n"
+                for value in sorted(existing.values(), key=lambda value: value.item_id)
+            )
+            _atomic_write_text(self.manifest_path, manifest)
+
     def get(self, item_id: str) -> CollectedItem:
         items = self.load()
         try:
@@ -840,18 +867,28 @@ def collect_source_feeds(
     new_count, updated_count = store.upsert(items, observed_at=observed_at)
     materialized = 0
     if content_mode == "text":
+        # Materialize each article against its in-memory item (upsert already set
+        # the timestamps on these objects), deferring every manifest write to a
+        # single update_items() call. The previous per-item materialize_text +
+        # update_item pair reloaded and rewrote the whole manifest twice per
+        # article, which is O(M*N log N) over a growing corpus.
+        touched: list[CollectedItem] = []
         for item_index, item in enumerate(items):
             if item.media_type != "article":
                 continue
             if item_index and delay_seconds:
                 time.sleep(delay_seconds)
             try:
-                materialize_text(source, store, item.item_id, fetcher=fetcher)
+                materialize_text(
+                    source, store, item.item_id, fetcher=fetcher, item=item, persist=False
+                )
             except (HTTPError, SourceCollectionError) as exc:
                 item.warnings.append(f"text_not_materialized:{str(exc)[:160]}")
-                store.update_item(item)
             else:
                 materialized += 1
+            touched.append(item)
+        if touched:
+            store.update_items(touched)
     return {
         "source_id": source["source_id"],
         "fetched": len(items),
@@ -871,18 +908,28 @@ def materialize_text(
     item_id: str,
     *,
     fetcher: SourceFetcher | None = None,
+    item: CollectedItem | None = None,
+    persist: bool = True,
 ) -> CollectedItem:
-    """Fetch one selected article as readable text after a robots check."""
-    item = store.get(item_id)
-    if item.source_id != source["source_id"]:
+    """Fetch one selected article as readable text after a robots check.
+
+    Callers that already hold the item (e.g. the batch loop in
+    collect_source_feeds, right after upsert) may pass it as ``item`` to skip a
+    redundant full-manifest reload, and set ``persist=False`` to defer the
+    manifest write to a single batched CorpusStore.update_items() call. All
+    validation raises before the item is mutated, so a deferred caller can
+    safely persist the item unchanged on failure.
+    """
+    resolved = item if item is not None else store.get(item_id)
+    if resolved.source_id != source["source_id"]:
         raise SourceCollectionError("item does not belong to the selected source")
-    if item.media_type != "article":
+    if resolved.media_type != "article":
         raise SourceCollectionError("selected item is not an article")
     client = fetcher or SourceFetcher(source["domains"])
-    if not client.robots_allowed(item.canonical_url):
+    if not client.robots_allowed(resolved.canonical_url):
         raise SourceCollectionError("robots.txt does not permit automated article retrieval")
     result = client.fetch(
-        item.canonical_url,
+        resolved.canonical_url,
         accept="text/html, application/xhtml+xml;q=0.9",
         max_bytes=MAX_HTML_BYTES,
     )
@@ -891,12 +938,13 @@ def materialize_text(
     text = extract_readable_text(result.body)
     if len(text) < 300:
         raise SourceCollectionError("article text is unavailable or too short; no paywall bypass attempted")
-    target = store.content_dir / f"{item.item_id}.txt"
+    target = store.content_dir / f"{resolved.item_id}.txt"
     _atomic_write_text(target, text + "\n")
-    item.content_path = target.relative_to(store.root).as_posix()
-    item.content_sha256 = hashlib.sha256((text + "\n").encode("utf-8")).hexdigest()
-    store.update_item(item)
-    return item
+    resolved.content_path = target.relative_to(store.root).as_posix()
+    resolved.content_sha256 = hashlib.sha256((text + "\n").encode("utf-8")).hexdigest()
+    if persist:
+        store.update_item(resolved)
+    return resolved
 
 
 def _media_extension(item: CollectedItem) -> str:
