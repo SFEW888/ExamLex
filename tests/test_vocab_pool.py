@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import json
-import hashlib
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -57,7 +57,7 @@ class TestVocabPool(unittest.TestCase):
             path = self.vocab_dir / info["path"]
             verification = info["verification"]
             self.assertEqual(
-                hashlib.sha256(path.read_bytes()).hexdigest(),
+                vocab_generator._content_sha256(path),
                 verification["content_sha256"],
             )
             self.assertNotIn("legacy_paths", info)
@@ -83,6 +83,19 @@ class TestVocabPool(unittest.TestCase):
             self.assertEqual(advertised, len(generate_level(level)))
             self.assertTrue(config["index_key"].endswith("-starter"))
             self.assertNotIn("legacy_paths", config)
+
+    def test_content_hash_is_stable_when_checkout_line_endings_change(self):
+        path = self.vocab_dir / "cet4-core-200.json"
+        normalized = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+        with tempfile.TemporaryDirectory() as temp_dir:
+            lf_path = Path(temp_dir) / "pool-lf.json"
+            crlf_path = Path(temp_dir) / "pool-crlf.json"
+            lf_path.write_bytes(normalized)
+            crlf_path.write_bytes(normalized.replace(b"\n", b"\r\n"))
+            self.assertEqual(
+                vocab_generator._content_sha256(lf_path),
+                vocab_generator._content_sha256(crlf_path),
+            )
 
     def test_all_entries_valid(self):
         """All vocabulary entries pass schema validation."""

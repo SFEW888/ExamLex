@@ -71,7 +71,9 @@ def write_json(data, path: Path) -> None:
 
 
 def _content_sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+    """Return a content digest that is stable across Git line-ending checkout modes."""
+    content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(content).hexdigest()
 
 
 def _starter_metadata(config: dict, path: Path, count: int) -> dict:

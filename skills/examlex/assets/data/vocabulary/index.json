@@ -11,7 +11,7 @@
       "origin_class": "locally_verified_learning_vocabulary",
       "method": "ocr_assisted_with_manual_exception_review",
       "verified_on": "2026-07-16",
-      "content_sha256": "dd9e1a8ec660737afbabf76419f2d5a48c864498d9fd90c8ee511e72c98b0080"
+      "content_sha256": "e44c7da1990ffee88622d3f7b58848d505f67f031bf166b0b863786ce772470e"
     }
   },
   "cet4-starter": {
@@ -26,7 +26,7 @@
       "origin_class": "project_curated_vocabulary",
       "method": "maintained_embedded_dataset",
       "verified_on": "2026-07-16",
-      "content_sha256": "a53c1f0cd12b0757641624250b3c6a03e84f398b73be038131e3d22358c7aa23"
+      "content_sha256": "a0a8a5db49a2857b91ba7c4b356a6fb59f9fe707901c9c3675b77448de5f64a0"
     }
   },
   "cet6-core-extended": {
@@ -41,7 +41,7 @@
       "origin_class": "locally_verified_learning_vocabulary",
       "method": "ocr_assisted_with_manual_exception_review",
       "verified_on": "2026-07-16",
-      "content_sha256": "156d415f9cf8419492789b961ee39477b09e2afbc97f218d96a088cbcc9795b7"
+      "content_sha256": "8b7291e0409000587a9404ebb07a765d7548d8a5a7db7e898ee3a8bb82983dfa"
     }
   },
   "cet6-starter": {
@@ -56,7 +56,7 @@
       "origin_class": "project_curated_vocabulary",
       "method": "maintained_embedded_dataset",
       "verified_on": "2026-07-16",
-      "content_sha256": "851ef02394a0254cb03b3b7b85ba65b1c52f70b2f64a43685b356ba73261d4b5"
+      "content_sha256": "9298de70c6a93088a0715881c01e13e1d2bf492c242c2435b776508ded0eb220"
     }
   },
   "postgraduate-core-extended": {
@@ -71,7 +71,7 @@
       "origin_class": "locally_verified_learning_vocabulary",
       "method": "ocr_assisted_with_manual_exception_review",
       "verified_on": "2026-07-16",
-      "content_sha256": "877fc3674a6930436dddad3a887d85b3e204cda1641dc852c3925ffe85add569"
+      "content_sha256": "2d412a0ce5e7eb0644e7bd1550b0416ab6eba6004577c4777dffcedf920b6a76"
     }
   },
   "postgraduate-starter": {
@@ -86,7 +86,7 @@
       "origin_class": "project_curated_vocabulary",
       "method": "maintained_embedded_dataset",
       "verified_on": "2026-07-16",
-      "content_sha256": "8157346692f3afd42477e62f778c46008d7a2ca3cb4ca6ce1c7f7de7cd1a17eb"
+      "content_sha256": "681ea73a421e6b415fd3ad05e42e7780b734b03f9dfe7c63fee395bad6d8e2f7"
     }
   },
   "tem4-starter": {
@@ -101,7 +101,7 @@
       "origin_class": "project_curated_vocabulary",
       "method": "maintained_embedded_dataset",
       "verified_on": "2026-07-16",
-      "content_sha256": "dcfe9c117bae38a60878e29a59e0f36e0c21cf8ad33cc72f29dfc00d79b4157a"
+      "content_sha256": "b8239c29548718ab4431a06c3cf789593321926c28e1e1d607544b80c147505a"
     }
   },
   "tem8-starter": {
@@ -116,7 +116,7 @@
       "origin_class": "project_curated_vocabulary",
       "method": "maintained_embedded_dataset",
       "verified_on": "2026-07-16",
-      "content_sha256": "f85993985a4480816105da8c6b7060ecb97ba397eceb7a6c8cbba17ace9fa6eb"
+      "content_sha256": "ae43237946d2c3050305e2faca21445b4897dd893fbc463b14191ff1e93d8204"
     }
   }
 }

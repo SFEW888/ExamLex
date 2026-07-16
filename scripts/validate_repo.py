@@ -236,6 +236,12 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def canonical_text_sha256(path: Path) -> str:
+    """Hash text assets independently of Git's platform-specific EOL checkout."""
+    content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(content).hexdigest()
+
+
 def validate_tracked_learner_artifacts(
     root: Path,
     errors: list[str],
@@ -775,7 +781,7 @@ def validate_vocab_contracts(root: Path, errors: list[str]) -> None:
         if not required_verification.issubset(verification):
             errors.append(f"vocabulary verification record is incomplete: {key}")
             continue
-        actual_sha256 = hashlib.sha256((vocab_dir / filename).read_bytes()).hexdigest()
+        actual_sha256 = canonical_text_sha256(vocab_dir / filename)
         if verification.get("content_sha256") != actual_sha256:
             errors.append(f"vocabulary content hash mismatch: {filename}")
         words = [entry.get("word", "").casefold() for entry in entries]
