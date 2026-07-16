@@ -70,18 +70,22 @@ def load_library(path: str | Path) -> dict[str, Any]:
                 "SELECT key, value_json FROM metadata WHERE key <> 'sqlite_schema_version'"
             )
         }
+        # Fetch every revision in one pass and group in Python to avoid an
+        # N+1 query (one revision query per strategy). ORDER BY strategy_id,
+        # rowid preserves each strategy's original revision order.
+        revisions_by_strategy: dict[str, list[dict[str, Any]]] = {}
+        for revision in connection.execute(
+            "SELECT strategy_id, revision_json FROM revisions ORDER BY strategy_id, rowid"
+        ):
+            revisions_by_strategy.setdefault(revision["strategy_id"], []).append(
+                json.loads(revision["revision_json"])
+            )
         strategies: list[dict[str, Any]] = []
         for row in connection.execute(
             "SELECT strategy_id, strategy_json FROM strategies ORDER BY rowid"
         ):
             strategy = json.loads(row["strategy_json"])
-            revisions = [
-                json.loads(revision["revision_json"])
-                for revision in connection.execute(
-                    "SELECT revision_json FROM revisions WHERE strategy_id = ? ORDER BY rowid",
-                    (row["strategy_id"],),
-                )
-            ]
+            revisions = revisions_by_strategy.get(row["strategy_id"])
             if revisions:
                 strategy["revisions"] = revisions
             strategies.append(strategy)

@@ -172,8 +172,9 @@ def ingest_strategy(
     if heuristic:
         strategy["heuristic"] = heuristic
 
-    path = Path(library_path)
-    library = load_strategy_library(path)
+    # Reuse the library loaded above. Nothing has mutated it since the duplicate
+    # check, so a second read would be redundant work — doubly so for the SQLite
+    # backend, where every load fans out into per-strategy revision queries.
     strategies = library.setdefault("strategies", [])
     if not isinstance(strategies, list):
         raise ValueError("strategy library must contain a strategies list")

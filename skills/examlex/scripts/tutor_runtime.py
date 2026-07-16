@@ -98,6 +98,30 @@ _PIPELINE_PRIORITY = {
     "culture-guide": 7,
 }
 
+
+def _compile_keyword_matcher(keyword: str) -> tuple[re.Pattern[str] | str, int]:
+    """Precompute a keyword's matcher and score weight once at module load.
+
+    ASCII keywords become a compiled word-boundary regex (spaces match runs of
+    whitespace); non-ASCII keywords use a plain substring test. The weight
+    matches the previous inline rule: multi-word or >=4-char keywords score 2.
+    """
+    lowered = keyword.lower()
+    weight = 2 if (" " in keyword or len(keyword) >= 4) else 1
+    if lowered.isascii():
+        expression = r"\b" + re.escape(lowered).replace(r"\ ", r"\s+") + r"\b"
+        return (re.compile(expression, re.IGNORECASE), weight)
+    return (lowered, weight)
+
+
+# Build every role's (matcher, weight) pairs once instead of re-escaping,
+# re-lowering, and recomputing weights on every route_tutor_roles call (a
+# per-turn hot path over ~96 keywords).
+_ROLE_KEYWORD_MATCHERS: dict[str, tuple[tuple[re.Pattern[str] | str, int], ...]] = {
+    role_id: tuple(_compile_keyword_matcher(keyword) for keyword in keywords)
+    for role_id, keywords in _ROLE_KEYWORDS.items()
+}
+
 _EXAM_RE = re.compile(
     r"(?i)\b(?:cet[- ]?[46]|tem[- ]?[48]|postgraduate english)\b|"
     r"四级|六级|专四|专八|考研英语"
@@ -356,11 +380,10 @@ def save_private_prompt_directory(
             temporary.unlink(missing_ok=True)
 
 
-def _keyword_present(normalized: str, keyword: str) -> bool:
-    if keyword.isascii():
-        expression = r"\b" + re.escape(keyword).replace(r"\ ", r"\s+") + r"\b"
-        return re.search(expression, normalized, flags=re.IGNORECASE) is not None
-    return keyword in normalized
+def _matcher_present(normalized: str, matcher: re.Pattern[str] | str) -> bool:
+    if isinstance(matcher, str):
+        return matcher in normalized
+    return matcher.search(normalized) is not None
 
 
 def _normalize_explicit_role(role_id: str) -> str:
@@ -388,11 +411,9 @@ def route_tutor_roles(request: str, explicit_role: str | None = None) -> tuple[s
     if explicit_role and explicit_role.lower() != "auto":
         return (_normalize_explicit_role(explicit_role),)
     scored: list[tuple[str, int]] = []
-    for role_id, keywords in _ROLE_KEYWORDS.items():
+    for role_id, matchers in _ROLE_KEYWORD_MATCHERS.items():
         score = sum(
-            2 if (" " in keyword or len(keyword) >= 4) else 1
-            for keyword in keywords
-            if _keyword_present(normalized, keyword.lower())
+            weight for matcher, weight in matchers if _matcher_present(normalized, matcher)
         )
         if score:
             scored.append((role_id, score))
