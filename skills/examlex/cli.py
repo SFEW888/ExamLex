@@ -13,15 +13,19 @@ from .scripts import (
     ingest_strategy,
     list_strategies,
     manage_writing_versions,
+    monitor_capacity,
     record_practice,
     score_writing_rubric,
     session,
+    strategy_database,
     summarize_errors,
     tag_error,
     update_ability_profile,
     validate_strategy,
     validate_profile,
+    validate_exam_artifact,
     visualize,
+    vocabulary_block,
 )
 from .scripts.cli_extract import main as extract_main
 from .scripts.cli_validate import main as validate_main
@@ -65,7 +69,12 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
     "analyze-trends": ("Analyze practice and ability trends.", analyze_trends.main),
     "ingest-strategy": ("Ingest a strategy note into a strategy library.", ingest_strategy.main),
     "list-strategies": ("List or search strategy library entries.", list_strategies.main),
+    "strategy-db": ("Import or export a transactional SQLite strategy library.", strategy_database.main),
     "validate-strategy": ("Validate a strategy library file.", validate_strategy.main),
+    "validate-exam-artifact": (
+        "Validate a simulation paper or detailed answerbook artifact.",
+        validate_exam_artifact.main,
+    ),
     "backup": ("Backup learner data to a tar.gz archive.", backup_data.backup_main),
     "restore": ("Restore learner data from a tar.gz archive.", backup_data.restore_main),
     "extract": ("Extract raw materials from a source (URL/file/name).", extract_main),
@@ -79,8 +88,13 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
     "source-fetch": ("Materialize one indexed article or media item.", source_fetch_main),
     "tutor-prepare": ("Route a tutor request and return safe clarification metadata.", tutor_prepare_main),
     "sessions-cleanup": ("Preview or archive stale sessions.", cleanup_sessions.main),
+    "capacity-monitor": (
+        "Apply artifact retention and review-only strategy capacity warnings.",
+        monitor_capacity.main,
+    ),
     "resume": ("Resume an existing distillation session.", session.resume_main),
     "vocab-estimate": ("Estimate vocabulary size via Yes/No sampling.", estimate_vocabulary.main),
+    "vocab-card": ("Validate and render a detailed memorization vocabulary block.", vocabulary_block.main),
     "visualize": ("Generate HTML progress report with SVG charts.", visualize.main),
 }
 
@@ -119,6 +133,7 @@ ALIASES: dict[str, tuple[str, Callable[[list[str] | None], list[str]]]] = {
     "ingest": ("ingest-strategy", lambda args: _prepend_option(args, "--file")),
     "strategies": ("list-strategies", lambda args: list(args or [])),
     "vocab": ("vocab-estimate", lambda args: list(args or [])),
+    "word": ("vocab-card", lambda args: list(args or [])),
     "report": ("visualize", lambda args: list(args or [])),
     "validate": ("validate-strategies", lambda args: list(args or [])),
     "commit": ("commit-strategies", lambda args: list(args or [])),

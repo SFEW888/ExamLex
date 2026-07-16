@@ -4,12 +4,12 @@ This project favors deterministic standard-library scripts over hidden local set
 
 ## Source Layout
 
-- `skills/examlex/`: portable public-safe Skill package.
-- `examlex/`: importable Python mirror used by the CLI and tests.
+- `skills/examlex/`: canonical portable public-safe Skill, implementation, and resource package.
+- `examlex/`: thin compatibility package for the historical CLI and import path.
 - `scripts/`: repository installers and validation.
 - `tests/`: unit tests for scripts, CLI behavior, installers, and project invariants.
 
-The project does not use a separate `src/` directory because the distributable artifact is an agent Skill plus an importable mirror under `skills/`.
+The project does not use a separate `src/` directory because the canonical importable package is the Agent Skill under `skills/`.
 
 ## Local Checks
 
@@ -34,7 +34,7 @@ python -m examlex --help
 
 ## Change Rules
 
-- Edit automation scripts under `skills/examlex/scripts/`, then run `python skills\examlex\scripts\sync_mirror.py --sync` and verify with `--check`.
+- Edit automation scripts under `skills/examlex/scripts/`, then run `python skills\examlex\scripts\sync_mirror.py` to repair the compatibility bridge and verify it with `--check`.
 - Add or update tests for behavior changes.
 - Keep the portable Skill directory free of root-style project docs.
 - Keep generated files in `local/`, `test-artifacts/`, or another ignored path.

@@ -101,11 +101,16 @@ EXPECTED_AUTOMATION_SCRIPTS = {
     "manage_writing_versions.py",
     "record_practice.py",
     "score_writing_rubric.py",
+    "monitor_capacity.py",
+    "strategy_database.py",
+    "strategy_sqlite.py",
     "summarize_errors.py",
     "tag_error.py",
     "update_ability_profile.py",
+    "validate_exam_artifact.py",
     "validate_strategy.py",
     "validate_profile.py",
+    "vocabulary_block.py",
 }
 EXPECTED_GITHUB_HEALTH_FILES = {
     "CODE_OF_CONDUCT.md",
@@ -229,6 +234,12 @@ class ValidationResult:
 
 def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def canonical_text_sha256(path: Path) -> str:
+    """Hash text assets independently of Git's platform-specific EOL checkout."""
+    content = path.read_bytes().replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+    return hashlib.sha256(content).hexdigest()
 
 
 def validate_tracked_learner_artifacts(
@@ -444,40 +455,12 @@ def validate_writing_article_omission(common_path: Path, errors: list[str]) -> N
 
 
 def validate_resource_mirror(skill_dir: Path, importable_dir: Path, errors: list[str]) -> None:
-    """Require package resources to exactly mirror the portable Skill resources."""
-    skill_file = skill_dir / "SKILL.md"
-    package_skill = importable_dir / "SKILL.md"
-    if not package_skill.is_file() or sha256(skill_file) != sha256(package_skill):
-        errors.append("resource mirror mismatch: SKILL.md")
-
-    for directory_name in ("assets", "references"):
-        skill_resources = skill_dir / directory_name
-        package_resources = importable_dir / directory_name
-        source_files = {
-            path.relative_to(skill_resources): path
-            for path in skill_resources.rglob("*")
-            if path.is_file()
-        }
-        package_files = (
-            {
-                path.relative_to(package_resources): path
-                for path in package_resources.rglob("*")
-                if path.is_file()
-            }
-            if package_resources.exists()
-            else {}
-        )
-
-        for relative, source in sorted(source_files.items()):
-            package_file = package_files.get(relative)
-            if package_file is None or sha256(source) != sha256(package_file):
-                errors.append(
-                    f"resource mirror mismatch: {directory_name}/{relative.as_posix()}"
-                )
-        for relative in sorted(package_files.keys() - source_files.keys()):
-            errors.append(
-                f"extra package resource: {directory_name}/{relative.as_posix()}"
-            )
+    """Reject duplicated package resources; canonical data stays in the Skill tree."""
+    for relative in ("SKILL.md", "assets", "references"):
+        if (importable_dir / relative).exists():
+            errors.append(f"duplicated package resource: {relative}")
+    if not (skill_dir / "__init__.py").is_file():
+        errors.append("canonical Skill package is missing __init__.py")
 
 
 def validate_python_mirror(
@@ -485,31 +468,31 @@ def validate_python_mirror(
     importable_dir: Path,
     errors: list[str],
 ) -> None:
-    """Require the importable Python tree to be generated exactly from the Skill."""
-    source_root = skill_dir / "scripts"
+    """Require a thin import bridge instead of a second Python implementation."""
     target_root = importable_dir / "scripts"
-    source_files = {
-        path.relative_to(source_root): path
-        for path in source_root.rglob("*.py")
-        if "__pycache__" not in path.parts
-    }
     target_files = {
         path.relative_to(target_root): path
         for path in target_root.rglob("*.py")
         if "__pycache__" not in path.parts
     }
-    for relative, source in sorted(source_files.items()):
-        target = target_files.get(relative)
-        if target is None or sha256(source) != sha256(target):
-            errors.append(f"Python mirror mismatch: scripts/{relative.as_posix()}")
-    for relative in sorted(target_files.keys() - source_files.keys()):
-        errors.append(f"extra generated Python file: scripts/{relative.as_posix()}")
-
+    if set(target_files) != {Path("__init__.py")}:
+        extras = sorted(path.as_posix() for path in target_files if path != Path("__init__.py"))
+        errors.append(f"thin package contains mirrored Python files: {extras}")
+    bridge = target_root / "__init__.py"
+    try:
+        bridge_text = bridge.read_text(encoding="utf-8")
+    except OSError:
+        bridge_text = ""
+    if "skills.examlex" not in bridge_text or "__path__" not in bridge_text:
+        errors.append("thin package script bridge is invalid")
     for filename in ("cli.py", "run.py"):
-        source = skill_dir / filename
         target = importable_dir / filename
-        if source.is_file() and (not target.is_file() or sha256(source) != sha256(target)):
-            errors.append(f"Python mirror mismatch: {filename}")
+        try:
+            text = target.read_text(encoding="utf-8")
+        except OSError:
+            text = ""
+        if "skills.examlex" not in text:
+            errors.append(f"thin package wrapper is invalid: {filename}")
 
 
 IGNORED_TREE_PARTS = {
@@ -682,7 +665,7 @@ def validate_documentation(
 
 
 def validate_template_contracts(root: Path, errors: list[str]) -> None:
-    templates = root / IMPORTABLE_NAME / "assets" / "templates"
+    templates = root / "skills" / SKILL_NAME / "assets" / "templates"
     try:
         ability = json.loads((templates / "ability-profile.yaml").read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as exc:
@@ -731,6 +714,32 @@ def validate_vocab_contracts(root: Path, errors: list[str]) -> None:
         errors.append("vocabulary index must contain an object")
         return
 
+    expected_starters = {
+        "cet4-starter",
+        "cet6-starter",
+        "postgraduate-starter",
+        "tem4-starter",
+        "tem8-starter",
+    }
+    expected_extended = {
+        "cet4-core-extended",
+        "cet6-core-extended",
+        "postgraduate-core-extended",
+    }
+    missing = (expected_starters | expected_extended) - set(index)
+    if missing:
+        errors.append(f"vocabulary index is missing required pools: {sorted(missing)}")
+
+    for misleading in (
+        "cet4-core-2000.json",
+        "cet6-core-1500.json",
+        "postgraduate-core-1000.json",
+        "tem4-core-2000.json",
+        "tem8-core-2000.json",
+    ):
+        if (vocab_dir / misleading).exists():
+            errors.append(f"misleading duplicate vocabulary file must be removed: {misleading}")
+
     for key, metadata in index.items():
         if not isinstance(metadata, dict):
             errors.append(f"vocabulary index entry must be an object: {key}")
@@ -754,24 +763,33 @@ def validate_vocab_contracts(root: Path, errors: list[str]) -> None:
             continue
         if metadata.get("count") != expected_count:
             errors.append(f"vocabulary index count mismatch: {filename}")
-        if metadata.get("scope") != "curated_starter":
-            errors.append(f"vocabulary index scope must be curated_starter: {key}")
-        legacy_paths = metadata.get("legacy_paths")
-        if not isinstance(legacy_paths, list) or not legacy_paths:
-            errors.append(f"vocabulary index must list legacy_paths: {key}")
+        scope = metadata.get("scope")
+        if scope not in {"curated_starter", "verified_extended"}:
+            errors.append(f"unsupported vocabulary pool scope: {key}: {scope}")
+        if "source" in metadata or "legacy_paths" in metadata:
+            errors.append(f"vocabulary metadata contains deprecated source/legacy fields: {key}")
+        verification = metadata.get("verification")
+        if not isinstance(verification, dict):
+            errors.append(f"vocabulary pool has no verification record: {key}")
             continue
-        for legacy_path in legacy_paths:
-            try:
-                legacy_entries = json.loads(
-                    (vocab_dir / legacy_path).read_text(encoding="utf-8")
-                )
-            except (OSError, json.JSONDecodeError) as exc:
-                errors.append(f"legacy vocabulary file is invalid: {legacy_path}: {exc}")
-                continue
-            if legacy_entries != entries:
-                errors.append(
-                    f"legacy vocabulary data differs from canonical file: {legacy_path}"
-                )
+        required_verification = {
+            "origin_class",
+            "method",
+            "verified_on",
+            "content_sha256",
+        }
+        if not required_verification.issubset(verification):
+            errors.append(f"vocabulary verification record is incomplete: {key}")
+            continue
+        actual_sha256 = canonical_text_sha256(vocab_dir / filename)
+        if verification.get("content_sha256") != actual_sha256:
+            errors.append(f"vocabulary content hash mismatch: {filename}")
+        words = [entry.get("word", "").casefold() for entry in entries]
+        if len(words) != len(set(words)):
+            errors.append(f"vocabulary pool contains duplicate words: {filename}")
+        ranks = [entry.get("frequency_rank") for entry in entries]
+        if ranks != list(range(1, expected_count + 1)):
+            errors.append(f"vocabulary frequency ranks must be continuous: {filename}")
 
 
 def validate_source_catalog_contracts(root: Path, errors: list[str]) -> None:
@@ -1050,18 +1068,10 @@ def validate_project(root: str | Path) -> ValidationResult:
         errors.append("pyproject.toml [tool.examlex] prompt-mode must remain public-safe.")
 
     portable_scripts = skill_dir / "scripts"
-    importable_scripts = importable_dir / "scripts"
     for script_name in sorted(EXPECTED_AUTOMATION_SCRIPTS):
         portable = portable_scripts / script_name
-        importable = importable_scripts / script_name
         if not portable.is_file():
             errors.append(f"Missing portable automation script: {portable.relative_to(root_path).as_posix()}")
-            continue
-        if not importable.is_file():
-            errors.append(f"Missing importable automation script: {importable.relative_to(root_path).as_posix()}")
-            continue
-        if sha256(portable) != sha256(importable):
-            errors.append(f"Automation script mirror mismatch: {script_name}")
 
     validate_resource_mirror(skill_dir, importable_dir, errors)
     validate_python_mirror(skill_dir, importable_dir, errors)

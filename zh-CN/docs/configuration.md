@@ -76,10 +76,15 @@ Darwin 评分控制持续学习各轮的自适应通过阈值。
 | `auto_cleanup` | `True` | 受管会话成功提交后自动执行保留策略 |
 | `session_retention_hours` | `168.0` | 已完成会话的可再生成产物保留七天后自动清理 |
 | `max_reproducible_artifact_bytes` | `4294967296`（4 GiB） | 已完成会话中的全文、音频、转录稿和章节提取物硬上限；超过时从最旧产物开始清理 |
+| `strategy_library_path` | 与 `sessions_root` 同级的 `strategy-library.db` | 后台容量任务默认监控的事务型策略数据库 |
 | `strategy_library_warning_bytes` | `104857600`（100 MiB） | 达到阈值时提醒并列出可能重复项供用户复核；不自动删除策略或不可变历史版本 |
 
 4 GiB 上限只计算已完成会话的可再生成产物。提取过程中，活动会话的工作文件可能暂时
 超过该值；管线状态、蒸馏策略、验证/评估报告和审计文件不在自动删除范围内。
+
+Windows 可运行 `scripts/install_capacity_monitor.ps1` 注册当前用户计划任务，默认每
+30 分钟执行一次。`examlex capacity-monitor` 是跨平台的单次执行形式，并始终写入
+状态文件。
 
 ### 题源语料目录
 

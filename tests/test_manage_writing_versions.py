@@ -19,7 +19,7 @@ class ManageWritingVersionsTests(unittest.TestCase):
         schema = json.loads(
             (
                 PROJECT_ROOT
-                / "examlex/assets/schemas/writing-version-record.schema.json"
+                / "skills/examlex/assets/schemas/writing-version-record.schema.json"
             ).read_text(encoding="utf-8")
         )
         pattern = schema["properties"]["version"]["pattern"]
@@ -63,7 +63,7 @@ class ManageWritingVersionsTests(unittest.TestCase):
         template = json.loads(
             (
                 PROJECT_ROOT
-                / "examlex/assets/templates/writing-version-record.yaml"
+                / "skills/examlex/assets/templates/writing-version-record.yaml"
             ).read_text(encoding="utf-8")
         )
 

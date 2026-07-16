@@ -113,7 +113,10 @@ The score is deterministic and useful for revision guidance. It is not official 
 
 ## Strategy Library
 
-Produced by `scripts/ingest_strategy.py`. Path: `strategy-library.json`.
+Produced by `scripts/ingest_strategy.py` or `examlex commit`. The same logical
+model can be stored as `strategy-library.json` or transactionally as
+`strategy-library.db`; `examlex strategy-db` imports or exports the JSON
+interchange form.
 
 Required fields per strategy entry:
 
@@ -142,4 +145,4 @@ Optional fields:
 - `mental_model`: cognitive extraction output — name, one_liner, evidence, application, limitations
 - `heuristic`: cognitive extraction output — name, rule, scenario, example
 
-The strategy library is global — one file serves all learner profiles. Pass to `generate_daily_plan.py` via `--strategies` to attach relevant methods to planned tasks. See [multi-source-distillation.md](multi-source-distillation.md) for the ingestion workflow.
+The strategy library is global — one store serves all learner profiles. Pass it to `generate_daily_plan.py` via `--strategies` to attach relevant methods to planned tasks. Duplicate matches are review-only candidates; neither current strategies nor immutable revisions are deleted automatically. See [multi-source-distillation.md](multi-source-distillation.md) for the ingestion workflow.

@@ -7,8 +7,10 @@ from typing import Any
 
 try:
     from . import common
+    from . import strategy_store
 except ImportError:  # pragma: no cover - supports direct script execution.
     import common  # type: ignore[no-redef]
+    import strategy_store  # type: ignore[no-redef]
 
 
 MIN_TASK_MINUTES = 10
@@ -335,12 +337,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--ability", required=True, help="Path to ability profile JSON.")
     parser.add_argument("--output", required=True, help="Path to write the generated plan JSON.")
     parser.add_argument("--errors", help="Optional summarized error JSON input.")
-    parser.add_argument("--strategies", help="Optional strategy library JSON for method hints.")
+    parser.add_argument("--strategies", help="Optional JSON or SQLite strategy library for method hints.")
     parser.add_argument("--vocab-pool", help="Optional vocabulary pool JSON for word assignments.")
     args = parser.parse_args(argv)
 
     errors = common.load_data(args.errors) if args.errors else None
-    strategies = common.load_data(args.strategies) if args.strategies else None
+    strategies = strategy_store.load_strategy_library(args.strategies) if args.strategies else None
     vocab_pool = common.load_data(args.vocab_pool) if args.vocab_pool else None
     plan = generate_daily_plan(common.load_data(args.profile), common.load_data(args.ability), errors, strategies, vocab_pool)
     common.save_data(args.output, plan)

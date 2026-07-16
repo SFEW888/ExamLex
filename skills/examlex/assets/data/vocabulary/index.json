@@ -1,67 +1,122 @@
 {
-  "cet4-core": {
-    "path": "cet4-core-200.json",
-    "count": 200,
-    "scope": "curated_starter",
-    "legacy_paths": [
-      "cet4-core-2000.json"
-    ],
+  "cet4-core-extended": {
+    "path": "cet4-core-3331.json",
+    "count": 3331,
+    "scope": "verified_extended",
     "exam_types": [
       "CET4"
     ],
-    "description": "四级高频核心词汇，按真题出现频率降序排列",
-    "source": "基于 CET-4 历年真题词频统计（public domain 数据源）"
+    "description": "四级完整学习词表",
+    "verification": {
+      "origin_class": "locally_verified_learning_vocabulary",
+      "method": "ocr_assisted_with_manual_exception_review",
+      "verified_on": "2026-07-16",
+      "content_sha256": "e44c7da1990ffee88622d3f7b58848d505f67f031bf166b0b863786ce772470e"
+    }
   },
-  "cet6-core": {
-    "path": "cet6-core-149.json",
-    "count": 149,
+  "cet4-starter": {
+    "path": "cet4-core-200.json",
+    "count": 200,
     "scope": "curated_starter",
-    "legacy_paths": [
-      "cet6-core-1500.json"
+    "exam_types": [
+      "CET4"
     ],
+    "description": "四级精选起步词表",
+    "verification": {
+      "origin_class": "project_curated_vocabulary",
+      "method": "maintained_embedded_dataset",
+      "verified_on": "2026-07-16",
+      "content_sha256": "a0a8a5db49a2857b91ba7c4b356a6fb59f9fe707901c9c3675b77448de5f64a0"
+    }
+  },
+  "cet6-core-extended": {
+    "path": "cet6-core-3650.json",
+    "count": 3650,
+    "scope": "verified_extended",
     "exam_types": [
       "CET6"
     ],
-    "description": "六级增量高频词汇，假设用户已掌握四级词表",
-    "source": "基于 CET-6 历年真题词频统计"
+    "description": "六级完整学习词表",
+    "verification": {
+      "origin_class": "locally_verified_learning_vocabulary",
+      "method": "ocr_assisted_with_manual_exception_review",
+      "verified_on": "2026-07-16",
+      "content_sha256": "8b7291e0409000587a9404ebb07a765d7548d8a5a7db7e898ee3a8bb82983dfa"
+    }
   },
-  "postgraduate-core": {
-    "path": "postgraduate-core-100.json",
-    "count": 100,
+  "cet6-starter": {
+    "path": "cet6-core-149.json",
+    "count": 149,
     "scope": "curated_starter",
-    "legacy_paths": [
-      "postgraduate-core-1000.json"
+    "exam_types": [
+      "CET6"
     ],
+    "description": "六级精选起步词表",
+    "verification": {
+      "origin_class": "project_curated_vocabulary",
+      "method": "maintained_embedded_dataset",
+      "verified_on": "2026-07-16",
+      "content_sha256": "9298de70c6a93088a0715881c01e13e1d2bf492c242c2435b776508ded0eb220"
+    }
+  },
+  "postgraduate-core-extended": {
+    "path": "postgraduate-core-1014.json",
+    "count": 1014,
+    "scope": "verified_extended",
     "exam_types": [
       "POSTGRADUATE_ENGLISH"
     ],
-    "description": "考研英语增量高频词汇",
-    "source": "基于考研英语(一/二)历年真题词频统计"
+    "description": "考研英语完整学习词表",
+    "verification": {
+      "origin_class": "locally_verified_learning_vocabulary",
+      "method": "ocr_assisted_with_manual_exception_review",
+      "verified_on": "2026-07-16",
+      "content_sha256": "2d412a0ce5e7eb0644e7bd1550b0416ab6eba6004577c4777dffcedf920b6a76"
+    }
   },
-  "tem4-core": {
+  "postgraduate-starter": {
+    "path": "postgraduate-core-100.json",
+    "count": 100,
+    "scope": "curated_starter",
+    "exam_types": [
+      "POSTGRADUATE_ENGLISH"
+    ],
+    "description": "考研英语精选起步词表",
+    "verification": {
+      "origin_class": "project_curated_vocabulary",
+      "method": "maintained_embedded_dataset",
+      "verified_on": "2026-07-16",
+      "content_sha256": "681ea73a421e6b415fd3ad05e42e7780b734b03f9dfe7c63fee395bad6d8e2f7"
+    }
+  },
+  "tem4-starter": {
     "path": "tem4-core-100.json",
     "count": 100,
     "scope": "curated_starter",
-    "legacy_paths": [
-      "tem4-core-2000.json"
-    ],
     "exam_types": [
       "TEM4"
     ],
-    "description": "英语专业四级高频词汇",
-    "source": "基于 TEM-4 历年真题词频统计"
+    "description": "英语专业四级精选起步词表",
+    "verification": {
+      "origin_class": "project_curated_vocabulary",
+      "method": "maintained_embedded_dataset",
+      "verified_on": "2026-07-16",
+      "content_sha256": "b8239c29548718ab4431a06c3cf789593321926c28e1e1d607544b80c147505a"
+    }
   },
-  "tem8-core": {
+  "tem8-starter": {
     "path": "tem8-core-100.json",
     "count": 100,
     "scope": "curated_starter",
-    "legacy_paths": [
-      "tem8-core-2000.json"
-    ],
     "exam_types": [
       "TEM8"
     ],
-    "description": "英语专业八级高频进阶词汇",
-    "source": "基于 TEM-8 历年真题词频统计"
+    "description": "英语专业八级精选起步词表",
+    "verification": {
+      "origin_class": "project_curated_vocabulary",
+      "method": "maintained_embedded_dataset",
+      "verified_on": "2026-07-16",
+      "content_sha256": "ae43237946d2c3050305e2faca21445b4897dd893fbc463b14191ff1e93d8204"
+    }
   }
 }

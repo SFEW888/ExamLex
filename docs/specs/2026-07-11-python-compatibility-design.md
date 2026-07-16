@@ -20,7 +20,7 @@ The package requirement remains `Python >=3.10`. Existing installation documenta
 1. Extend `.github/workflows/ci.yml` with Python 3.11 and 3.13.
 2. Extend the workflow regression test to require exactly Python 3.10 through 3.13 and both supported runner families.
 3. Run the full test suite locally with Python 3.11 and 3.13. Retain the already verified Python 3.10.11 and 3.12 results, and rerun relevant checks after any compatibility fix.
-4. Run repository validation, mirror consistency, package build, isolated wheel smoke testing, and whitespace validation.
+4. Run repository validation, thin-package consistency, package build, isolated wheel smoke testing, and whitespace validation.
 5. Push `master` and require all eight CI jobs plus CodeQL to complete successfully.
 
 ## Compatibility Handling
@@ -33,6 +33,6 @@ If a version-specific failure occurs, the fix must preserve behavior on the othe
 - All eight CI jobs pass on GitHub Actions.
 - CodeQL passes for the same pushed commit.
 - `python scripts/validate_repo.py --root . --json` reports no errors or warnings.
-- `python skills/examlex/scripts/sync_mirror.py --check` reports that the mirrors are synchronized.
+- `python skills/examlex/scripts/sync_mirror.py --check` reports that the thin compatibility package is clean.
 - Distribution build and isolated wheel smoke test succeed.
 - The working tree is clean after the final push.

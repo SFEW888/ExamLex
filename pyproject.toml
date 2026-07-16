@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "examlex"
-version = "0.1.0"
-description = "Agent Skill plus automation toolkit for CET-4, CET-6, and postgraduate English preparation."
+version = "0.2.0"
+description = "Agent Skill and automation toolkit for CET-4, CET-6, postgraduate English, TEM-4, and TEM-8 preparation."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -33,10 +33,10 @@ Issues = "https://github.com/SFEW888/ExamLex/issues"
 examlex = "examlex.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["examlex*"]
+include = ["examlex*", "skills.examlex*"]
 
 [tool.setuptools.package-data]
-examlex = ["SKILL.md", "assets/**/*", "references/*.md", "references/*.json"]
+"skills.examlex" = ["SKILL.md", "assets/**/*", "references/**/*"]
 
 [tool.unittest]
 start-directory = "tests"
@@ -54,6 +54,6 @@ extend-exclude = ["examlex"]
 skill-path = "skills/examlex"
 prompt-mode = "public-safe"
 
-[tool.examlex.mirror]
+[tool.examlex.compatibility-package]
 source = "skills/examlex"
-generated = "examlex"
+wrapper = "examlex"

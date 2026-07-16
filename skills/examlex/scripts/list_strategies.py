@@ -7,11 +7,9 @@ from pathlib import Path
 from typing import Any
 
 try:
-    from . import common
-    from .strategy_store import find_possible_duplicate_strategies
+    from .strategy_store import find_possible_duplicate_strategies, load_strategy_library
 except ImportError:  # pragma: no cover - supports direct script execution.
-    import common  # type: ignore[no-redef]
-    from strategy_store import find_possible_duplicate_strategies  # type: ignore[no-redef]
+    from strategy_store import find_possible_duplicate_strategies, load_strategy_library  # type: ignore[no-redef]
 
 
 def list_strategies(
@@ -21,9 +19,9 @@ def list_strategies(
     include_duplicates: bool = False,
     duplicate_limit: int = 20,
 ) -> dict[str, Any]:
-    library = common.load_data(library_path)
+    library = load_strategy_library(library_path)
     if not isinstance(library, dict):
-        raise ValueError("strategy library must be a JSON object")
+        raise ValueError("strategy library must be an object")
     strategies = library.get("strategies", [])
     if not isinstance(strategies, list):
         raise ValueError("strategy library must contain a strategies list")
@@ -66,7 +64,7 @@ def list_strategies(
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="List or search strategy library entries.")
-    parser.add_argument("--library", required=True, help="Strategy library JSON path.")
+    parser.add_argument("--library", required=True, help="Strategy library JSON or SQLite path.")
     parser.add_argument("--search", help="Optional keyword search.")
     parser.add_argument(
         "--duplicates",

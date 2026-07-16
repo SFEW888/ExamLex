@@ -20,7 +20,7 @@ class TestTEMProfileValidation(unittest.TestCase):
         schema = json.loads(
             (
                 REPO_ROOT
-                / "examlex/assets/schemas/learner-profile.schema.json"
+                / "skills/examlex/assets/schemas/learner-profile.schema.json"
             ).read_text(encoding="utf-8")
         )
 

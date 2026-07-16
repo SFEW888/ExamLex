@@ -101,7 +101,7 @@ This tutor supports five exam types:
 - **Timed Practice**: `examlex log --timed` — auto time-limit lookup + overtime tracking
 - **Spaced Repetition**: automatic review urgency scoring in error summaries
 - **Progress Visualization**: `examlex report` — standalone HTML with SVG radar/trend/error charts
-- **Vocabulary Pool**: a curated starter set of 649 unique built-in words across 5 exam levels (not a complete exam lexicon)
+- **Vocabulary Pools**: count-bearing verified pools for CET-4 (3,331), CET-6 (3,650), and Postgraduate English (1,014), plus 100-entry curated starters for TEM-4 and TEM-8
 - **Common Error Library**: 21 curated error patterns with examples
 - **Model Essay Library**: scored sample essays for rubric anchoring
 - **Backup & Restore**: `examlex backup` / `examlex restore` with tar.gz support

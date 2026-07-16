@@ -18,6 +18,7 @@ try:
     from .strategy_store import (
         atomic_save_strategy_library,
         find_possible_duplicate_strategies,
+        load_strategy_library,
         warn_duplicate_candidates,
         warn_if_strategy_library_large,
     )
@@ -28,6 +29,7 @@ except ImportError:  # pragma: no cover - supports direct script execution.
     from strategy_store import (  # type: ignore[no-redef]
         atomic_save_strategy_library,
         find_possible_duplicate_strategies,
+        load_strategy_library,
         warn_duplicate_candidates,
         warn_if_strategy_library_large,
     )
@@ -78,11 +80,8 @@ def ingest_strategy(
         raise ValueError("warning_threshold_bytes must be positive")
 
     path = Path(library_path)
-    if path.exists():
-        library = common.load_data(path)
-        existing_entries = library.get("strategies", []) if isinstance(library, dict) else []
-    else:
-        existing_entries = []
+    library = load_strategy_library(path)
+    existing_entries = library.get("strategies", []) if isinstance(library, dict) else []
     if not isinstance(existing_entries, list):
         raise ValueError("strategy library must contain a strategies list")
     ingest_fingerprint = _ingest_fingerprint(
@@ -174,13 +173,7 @@ def ingest_strategy(
         strategy["heuristic"] = heuristic
 
     path = Path(library_path)
-    if path.exists():
-        try:
-            library = common.load_data(path)
-        except json.JSONDecodeError as exc:
-            raise ValueError(f"strategy library at {path} is corrupted — not valid JSON: {exc}") from exc
-    else:
-        library = {"strategies": []}
+    library = load_strategy_library(path)
     strategies = library.setdefault("strategies", [])
     if not isinstance(strategies, list):
         raise ValueError("strategy library must contain a strategies list")
@@ -465,7 +458,7 @@ def _parse_json_arg(value: str | None) -> dict[str, Any] | None:
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Ingest a strategy note into a strategy library.")
     parser.add_argument("--file", required=True, help="Source strategy text file.")
-    parser.add_argument("--library", required=True, help="Strategy library JSON path.")
+    parser.add_argument("--library", required=True, help="Strategy library JSON or SQLite path.")
     parser.add_argument("--exam-types", help="Comma-separated exam types.")
     parser.add_argument("--modules", help="Comma-separated modules.")
     parser.add_argument("--source-type", default="text",

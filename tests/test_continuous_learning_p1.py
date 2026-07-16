@@ -179,7 +179,7 @@ class ContinuousLearningP1Tests(unittest.TestCase):
     def test_strategy_library_schema_requires_content_bound_approval_evidence(self):
         schema_path = (
             Path(__file__).resolve().parents[1]
-            / "examlex/assets/schemas/strategy-library.schema.json"
+            / "skills/examlex/assets/schemas/strategy-library.schema.json"
         )
         schema = json.loads(schema_path.read_text(encoding="utf-8"))
         evidence = schema["properties"]["strategies"]["items"]["properties"][

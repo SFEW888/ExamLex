@@ -33,7 +33,7 @@ jobs:
       - name: Validate repository
         run: python scripts/validate_repo.py --root . --json
 
-      - name: Verify generated Python mirror
+      - name: Verify thin compatibility package
         run: python skills/examlex/scripts/sync_mirror.py --check
 
       - name: Run Ruff

@@ -79,12 +79,17 @@ The "Darwin" scoring system controls adaptive pass thresholds for learning round
 | `auto_cleanup` | `True` | Run the retention policy after a managed session is successfully committed |
 | `session_retention_hours` | `168.0` | Retain reproducible committed-session artifacts for seven days before automatic pruning |
 | `max_reproducible_artifact_bytes` | `4294967296` (4 GiB) | Hard limit for retained committed-session full text, audio, transcripts, and chapter extracts; oldest artifacts are pruned first |
+| `strategy_library_path` | Next to `sessions_root` as `strategy-library.db` | Default transactional strategy database monitored by the background capacity task |
 | `strategy_library_warning_bytes` | `104857600` (100 MiB) | Warn and list possible duplicates for user review; never automatically delete strategies or immutable revisions |
 
 The 4 GiB limit applies only to reproducible artifacts from committed sessions.
 Active-session working files may temporarily exceed it while extraction is in progress.
 Pipeline state, distilled strategies, validation/evaluation reports, and audit files
 are excluded from automatic deletion.
+
+Run `scripts/install_capacity_monitor.ps1` on Windows to register a per-user
+task that applies these policies every 30 minutes. `examlex capacity-monitor`
+is the portable run-once form and always writes a status file.
 
 ### Source Corpus
 

@@ -255,10 +255,7 @@ class ValidateProjectTests(unittest.TestCase):
         with copy_project() as temp:
             root = Path(temp) / "repo"
             invalid = '{"total_items": 0, "correct_items": 0}\n'
-            for relative in (
-                "examlex/assets/templates/exercise-record.json",
-                "skills/examlex/assets/templates/exercise-record.json",
-            ):
+            for relative in ("skills/examlex/assets/templates/exercise-record.json",):
                 (root / relative).write_text(invalid, encoding="utf-8")
 
             result = validate_repo.validate_project(root)
@@ -759,15 +756,15 @@ class ValidateProjectTests(unittest.TestCase):
 
         self.assertTrue(any("description" in error and "Use when" in error for error in result.errors))
 
-    def test_detects_mirror_mismatch(self):
+    def test_detects_invalid_thin_package_bridge(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
-            script = root / "skills" / "examlex" / "scripts" / "record_practice.py"
-            script.write_text(script.read_text(encoding="utf-8") + "\n# mismatch\n", encoding="utf-8")
+            script = root / "examlex" / "scripts" / "__init__.py"
+            script.write_text("# broken bridge\n", encoding="utf-8")
 
             result = validate_repo.validate_project(root)
 
-        self.assertTrue(any("mirror mismatch" in error for error in result.errors))
+        self.assertIn("thin package script bridge is invalid", result.errors)
 
     def test_detects_extra_generated_python_file(self):
         with copy_project() as temp:
@@ -778,11 +775,11 @@ class ValidateProjectTests(unittest.TestCase):
             result = validate_repo.validate_project(root)
 
         self.assertIn(
-            "extra generated Python file: scripts/manual-only.py",
+            "thin package contains mirrored Python files: ['manual-only.py']",
             result.errors,
         )
 
-    def test_detects_resource_mirror_mismatch(self):
+    def test_detects_duplicated_package_resource(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
             package_asset = root / "examlex" / "assets" / "data" / "vocab-test-words.json"
@@ -791,33 +788,27 @@ class ValidateProjectTests(unittest.TestCase):
 
             result = validate_repo.validate_project(root)
 
-        self.assertTrue(
-            any("resource mirror mismatch" in error for error in result.errors)
-        )
+        self.assertIn("duplicated package resource: assets", result.errors)
 
-    def test_importable_package_contains_skill_references(self):
+    def test_canonical_skill_package_contains_references(self):
         package_reference = (
-            PROJECT_ROOT / "examlex" / "references" / "darwin-rubric.md"
+            PROJECT_ROOT / "skills" / "examlex" / "references" / "darwin-rubric.md"
         )
 
         self.assertTrue(package_reference.is_file(), str(package_reference))
 
-    def test_detects_reference_mirror_mismatch(self):
+    def test_detects_duplicated_reference_tree(self):
         with copy_project() as temp:
             root = Path(temp) / "repo"
             package_reference = (
                 root / "examlex" / "references" / "darwin-rubric.md"
             )
+            package_reference.parent.mkdir(parents=True)
             package_reference.write_text("# mismatch\n", encoding="utf-8")
 
             result = validate_repo.validate_project(root)
 
-        self.assertTrue(
-            any(
-                "resource mirror mismatch: references/darwin-rubric.md" in error
-                for error in result.errors
-            )
-        )
+        self.assertIn("duplicated package resource: references", result.errors)
 
     def test_detects_missing_github_health_file(self):
         with copy_project() as temp:

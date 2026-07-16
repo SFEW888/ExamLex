@@ -31,6 +31,8 @@ class TutorConfigTests(unittest.TestCase):
             self.assertEqual(cfg.strategy_library_warning_bytes, 100 * 1024 ** 2)
             self.assertIsInstance(cfg.sessions_root, Path)
             self.assertIn("ExamLex", str(cfg.sessions_root))
+            self.assertIsInstance(cfg.strategy_library_path, Path)
+            self.assertEqual("strategy-library.db", cfg.strategy_library_path.name)
 
     def test_env_var_siliconflow_api_key_is_read(self):
         env = {**self.clean_env, "SILICONFLOW_API_KEY": "sk-test-123"}

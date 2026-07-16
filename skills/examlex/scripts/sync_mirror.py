@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
-"""Sync the portable ExamLex Skill into the importable ExamLex package.
+"""Validate or repair the thin ``examlex`` compatibility package.
 
-Usage: python sync_mirror.py [--check]
-  --check   Only report mismatches, don't fix
+The canonical implementation and resources live under ``skills/examlex``.
+The historical ``examlex`` import path contains only lightweight wrappers, so
+tracked project size no longer doubles whenever a resource is added.
 """
 
-import filecmp
+from __future__ import annotations
+
 import shutil
 import sys
 from pathlib import Path
@@ -14,181 +16,90 @@ from pathlib import Path
 SKILL_ROOT = Path("skills/examlex")
 PACKAGE_ROOT = Path("examlex")
 
+SCRIPT_INIT = '''"""Expose canonical Skill scripts under the historical ``examlex.scripts`` path."""\n\nfrom skills.examlex import scripts as _canonical_scripts\n\n__path__ = _canonical_scripts.__path__\n'''
+CLI_WRAPPER = '''"""Compatibility entry point backed by the canonical Skill package."""\n\nfrom skills.examlex import cli as _canonical_cli\nfrom skills.examlex.cli import *  # noqa: F401,F403\nfrom skills.examlex.cli import main\n\n\ndef __getattr__(name: str):\n    """Forward private compatibility imports to the canonical CLI module."""\n    return getattr(_canonical_cli, name)\n\n\ndef __dir__() -> list[str]:\n    return sorted(set(globals()) | set(dir(_canonical_cli)))\n'''
+RUN_WRAPPER = '''"""Compatibility runner backed by the canonical Skill package."""\n\nfrom skills.examlex.cli import main\n\n\nif __name__ == "__main__":\n    raise SystemExit(main())\n'''
+
+
+def _write_text(path: Path, content: str) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(content, encoding="utf-8")
+
 
 def sync_scripts(check_only: bool = False) -> list[str]:
-    """Sync scripts/ directory. Returns list of mismatched files."""
-    src = SKILL_ROOT / "scripts"
-    dst = PACKAGE_ROOT / "scripts"
-    source_files = _python_files(src)
-    target_files = _python_files(dst)
+    """Keep only the namespace bridge below ``examlex/scripts``."""
+    target = PACKAGE_ROOT / "scripts"
     mismatches: list[str] = []
-
-    for relative, src_file in sorted(source_files.items()):
-        dst_file = dst / relative
-        try:
-            if not dst_file.exists():
-                mismatches.append(f"missing: {dst_file}")
-                if not check_only:
-                    _mirror_file(src_file, dst_file)
-            elif not filecmp.cmp(str(src_file), str(dst_file), shallow=False):
-                mismatches.append(f"mismatch: {relative}")
-                if not check_only:
-                    _mirror_file(src_file, dst_file)
-        except OSError as exc:
-            mismatches.append(f"error: {relative}: {exc}")
-
-    for relative, dst_file in sorted(target_files.items()):
-        if relative in source_files:
-            continue
-        mismatches.append(f"extra script: {relative}")
+    init = target / "__init__.py"
+    if not init.exists() or init.read_text(encoding="utf-8") != SCRIPT_INIT:
+        mismatches.append("thin wrapper mismatch: scripts/__init__.py")
         if not check_only:
-            dst_file.unlink()
-
-    if not check_only and dst.exists():
-        _remove_empty_directories(dst)
-
+            _write_text(init, SCRIPT_INIT)
+    if target.exists():
+        for path in sorted(target.rglob("*"), reverse=True):
+            if path.is_file() and path != init and "__pycache__" not in path.parts:
+                mismatches.append(
+                    f"extra mirrored script: {path.relative_to(target).as_posix()}"
+                )
+                if not check_only:
+                    path.unlink()
+        if not check_only:
+            for directory in sorted(
+                (item for item in target.rglob("*") if item.is_dir()),
+                key=lambda item: len(item.parts),
+                reverse=True,
+            ):
+                try:
+                    directory.rmdir()
+                except OSError:
+                    pass
     return mismatches
-
-
-def _python_files(root: Path) -> dict[Path, Path]:
-    if not root.exists():
-        return {}
-    return {
-        path.relative_to(root): path
-        for path in root.rglob("*.py")
-        if "__pycache__" not in path.parts
-    }
-
-
-def _remove_empty_directories(root: Path) -> None:
-    for directory in sorted(
-        (path for path in root.rglob("*") if path.is_dir()),
-        key=lambda path: len(path.parts),
-        reverse=True,
-    ):
-        try:
-            directory.rmdir()
-        except OSError:
-            pass
-
-
-def _mirror_file(src_file: Path, dst_file: Path) -> None:
-    """Copy src_file to dst_file, creating parent directories as needed."""
-    dst_file.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(src_file, dst_file)
 
 
 def sync_cli(check_only: bool = False) -> list[str]:
-    """Sync CLI entry points."""
-    mismatches = []
-    for fname in ("cli.py", "run.py"):
-        src = SKILL_ROOT / fname
-        dst = PACKAGE_ROOT / fname
-        if not src.exists():
-            continue
-        try:
-            if not dst.exists():
-                mismatches.append(f"missing: {dst}")
-                if not check_only:
-                    _mirror_file(src, dst)
-            elif not filecmp.cmp(str(src), str(dst), shallow=False):
-                mismatches.append(f"mismatch: {fname}")
-                if not check_only:
-                    _mirror_file(src, dst)
-        except OSError as exc:
-            mismatches.append(f"error: {fname}: {exc}")
-    return mismatches
-
-
-def _resource_files(root: Path) -> dict[Path, Path]:
-    """Return relative paths mapped to resource files below *root*."""
-    if not root.exists():
-        return {}
-    return {
-        path.relative_to(root): path
-        for path in root.rglob("*")
-        if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"
-    }
-
-
-def _mirror_binary(src_file: Path, dst_file: Path) -> None:
-    dst_file.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copy2(src_file, dst_file)
-
-
-def _sync_resource_tree(directory_name: str, check_only: bool) -> list[str]:
-    source_root = SKILL_ROOT / directory_name
-    target_root = PACKAGE_ROOT / directory_name
-    source_files = _resource_files(source_root)
-    target_files = _resource_files(target_root)
     mismatches: list[str] = []
-
-    for relative, source in sorted(source_files.items()):
-        target = target_root / relative
-        if not target.exists() or not filecmp.cmp(str(source), str(target), shallow=False):
-            mismatches.append(
-                f"resource mismatch: {directory_name}/{relative.as_posix()}"
-            )
+    for filename, content in (("cli.py", CLI_WRAPPER), ("run.py", RUN_WRAPPER)):
+        target = PACKAGE_ROOT / filename
+        if not target.exists() or target.read_text(encoding="utf-8") != content:
+            mismatches.append(f"thin wrapper mismatch: {filename}")
             if not check_only:
-                _mirror_binary(source, target)
-
-    for relative, target in sorted(target_files.items()):
-        if relative not in source_files:
-            mismatches.append(
-                f"extra resource: {directory_name}/{relative.as_posix()}"
-            )
-            if not check_only:
-                target.unlink()
-
-    if not check_only and target_root.exists():
-        _remove_empty_directories(target_root)
-
+                _write_text(target, content)
     return mismatches
 
 
 def sync_resources(check_only: bool = False) -> list[str]:
-    """Sync SKILL.md, assets, and references into the importable package."""
+    """Remove resource mirrors; wheel packaging reads the canonical Skill tree."""
     mismatches: list[str] = []
-
-    skill_source = SKILL_ROOT / "SKILL.md"
-    skill_target = PACKAGE_ROOT / "SKILL.md"
-    if not skill_target.exists() or not filecmp.cmp(
-        str(skill_source), str(skill_target), shallow=False
-    ):
-        mismatches.append("resource mismatch: SKILL.md")
+    targets = [PACKAGE_ROOT / "SKILL.md", PACKAGE_ROOT / "assets", PACKAGE_ROOT / "references"]
+    for target in targets:
+        if not target.exists():
+            continue
+        mismatches.append(f"duplicated package resource: {target.name}")
         if not check_only:
-            _mirror_binary(skill_source, skill_target)
-
-    for directory_name in ("assets", "references"):
-        mismatches.extend(_sync_resource_tree(directory_name, check_only))
-
+            if target.is_dir():
+                shutil.rmtree(target)
+            else:
+                target.unlink()
     return mismatches
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = argv or sys.argv[1:]
-    check_only = "--check" in args
-
-    all_mismatches = []
-    all_mismatches.extend(sync_scripts(check_only=check_only))
-    all_mismatches.extend(sync_cli(check_only=check_only))
-    all_mismatches.extend(sync_resources(check_only=check_only))
-
-    if all_mismatches:
-        for m in all_mismatches:
-            print(f"  {m}")
+    check_only = "--check" in (argv or sys.argv[1:])
+    mismatches = [
+        *sync_scripts(check_only=check_only),
+        *sync_cli(check_only=check_only),
+        *sync_resources(check_only=check_only),
+    ]
+    if mismatches:
+        for mismatch in mismatches:
+            print(f"  {mismatch}")
         if check_only:
-            print(f"\n{len(all_mismatches)} mismatches found. Run without --check to fix.")
+            print(f"\n{len(mismatches)} thin-package issues found.")
             return 1
-        errors = [m for m in all_mismatches if m.startswith("error:")]
-        print(f"\n{len(all_mismatches) - len(errors)} files synced.")
-        if errors:
-            print(f"{len(errors)} errors — see above.")
-            return 1
+        print(f"\n{len(mismatches)} thin-package issues repaired.")
         return 0
-    else:
-        print("Mirror is in sync.")
-        return 0
+    print("Thin compatibility package is clean.")
+    return 0
 
 
 if __name__ == "__main__":

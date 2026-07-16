@@ -8,55 +8,55 @@ from unittest import mock
 from examlex.scripts import sync_mirror
 
 
-class SyncMirrorTests(unittest.TestCase):
-    def test_check_reports_and_sync_removes_extra_generated_script(self):
-        with tempfile.TemporaryDirectory() as temp:
+class ThinPackageTests(unittest.TestCase):
+    def test_check_reports_and_sync_removes_mirrored_scripts(self):
+        with tempfile.TemporaryDirectory(dir=self._artifact_root()) as temp:
             root = Path(temp)
             skill = root / "skills" / "examlex"
             package = root / "examlex"
-            source_script = skill / "scripts" / "kept.py"
-            generated_script = package / "scripts" / "kept.py"
-            extra_script = package / "scripts" / "manual-only.py"
-            source_script.parent.mkdir(parents=True)
-            generated_script.parent.mkdir(parents=True)
-            source_script.write_text("VALUE = 1\n", encoding="utf-8")
-            generated_script.write_text("VALUE = 1\n", encoding="utf-8")
-            extra_script.write_text("VALUE = 2\n", encoding="utf-8")
+            (skill / "scripts").mkdir(parents=True)
+            extra = package / "scripts" / "duplicated.py"
+            extra.parent.mkdir(parents=True)
+            extra.write_text("VALUE = 1\n", encoding="utf-8")
 
             with mock.patch.object(sync_mirror, "SKILL_ROOT", skill), mock.patch.object(
-                sync_mirror,
-                "PACKAGE_ROOT",
-                package,
+                sync_mirror, "PACKAGE_ROOT", package
             ):
-                mismatches = sync_mirror.sync_scripts(check_only=True)
-                self.assertIn("extra script: manual-only.py", mismatches)
-                self.assertTrue(extra_script.exists())
-
+                issues = sync_mirror.sync_scripts(check_only=True)
+                self.assertTrue(any("extra mirrored script" in item for item in issues))
                 sync_mirror.sync_scripts(check_only=False)
 
-            self.assertFalse(extra_script.exists())
-            self.assertEqual("VALUE = 1\n", generated_script.read_text(encoding="utf-8"))
+            self.assertFalse(extra.exists())
+            bridge = package / "scripts" / "__init__.py"
+            self.assertEqual(sync_mirror.SCRIPT_INIT, bridge.read_text(encoding="utf-8"))
 
-    def test_sync_copies_missing_generated_script(self):
-        with tempfile.TemporaryDirectory() as temp:
+    def test_sync_removes_resource_copies_and_repairs_wrappers(self):
+        with tempfile.TemporaryDirectory(dir=self._artifact_root()) as temp:
             root = Path(temp)
             skill = root / "skills" / "examlex"
             package = root / "examlex"
-            source_script = skill / "scripts" / "new.py"
-            source_script.parent.mkdir(parents=True)
-            source_script.write_text("VALUE = 3\n", encoding="utf-8")
+            skill.mkdir(parents=True)
+            duplicated = package / "assets" / "data.json"
+            duplicated.parent.mkdir(parents=True)
+            duplicated.write_text("{}", encoding="utf-8")
 
             with mock.patch.object(sync_mirror, "SKILL_ROOT", skill), mock.patch.object(
-                sync_mirror,
-                "PACKAGE_ROOT",
-                package,
+                sync_mirror, "PACKAGE_ROOT", package
             ):
-                sync_mirror.sync_scripts(check_only=False)
+                sync_mirror.sync_cli(check_only=False)
+                sync_mirror.sync_resources(check_only=False)
 
+            self.assertFalse((package / "assets").exists())
             self.assertEqual(
-                "VALUE = 3\n",
-                (package / "scripts" / "new.py").read_text(encoding="utf-8"),
+                sync_mirror.CLI_WRAPPER,
+                (package / "cli.py").read_text(encoding="utf-8"),
             )
+
+    @staticmethod
+    def _artifact_root() -> Path:
+        root = Path("test-artifacts")
+        root.mkdir(exist_ok=True)
+        return root
 
 
 if __name__ == "__main__":

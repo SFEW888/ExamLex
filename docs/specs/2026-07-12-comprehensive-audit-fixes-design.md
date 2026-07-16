@@ -40,9 +40,9 @@ Canonical vocabulary files will use truthful names:
 - `tem4-core-100.json`
 - `tem8-core-100.json`
 
-The old numeric filenames will remain packaged as deprecated compatibility copies for direct-path users. The vocabulary index will distinguish canonical pools from legacy aliases and state both included count and intended exam scope. Documentation will explicitly describe the 649 unique entries as a curated starter set, not a full exam lexicon.
+This compatibility proposal was later superseded: rounded duplicate filenames were removed instead of retained. The current vocabulary index distinguishes curated starter pools from verified extended pools and records the exact included count, scope, verification method, and content hash.
 
-Repository validation will verify that each canonical filename's numeric suffix equals the JSON entry count and that compatibility copies match their canonical source.
+Repository validation verifies that every canonical filename's numeric suffix equals the JSON entry count and rejects known misleading duplicate names.
 
 ## File and extraction safety
 
