@@ -43,6 +43,24 @@ class ExamArtifactContractTests(unittest.TestCase):
         self.assertTrue(any("translate every option" in error for error in errors))
         self.assertTrue(any("reject each wrong option" in error for error in errors))
 
+    def test_paper_questions_tolerates_null_sections_and_questions(self):
+        # A user-supplied paper may carry null (or non-list) sections/questions;
+        # the validator must index what it can rather than crash on the artifact
+        # it exists to check.
+        self.assertEqual({}, validate_exam_artifact._paper_questions({"sections": None}))
+        self.assertEqual(
+            {},
+            validate_exam_artifact._paper_questions(
+                {"sections": [{"questions": None}, "not-a-section"]}
+            ),
+        )
+        self.assertEqual(
+            {5: {"number": 5}},
+            validate_exam_artifact._paper_questions(
+                {"sections": [{"questions": [{"number": 5}, "skip", {"no": "number"}]}]}
+            ),
+        )
+
     def test_answerbook_requires_detailed_writing_and_translation_packages(self):
         paper = build_paper("CET4", self.profiles["CET4"])
         answerbook = build_answerbook(paper)

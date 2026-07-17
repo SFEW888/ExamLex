@@ -535,10 +535,19 @@ def check_business_results(library_path: str | None = None) -> CheckResult:
                 elif hist:
                     malformed += 1
 
-                for exam in s.get("exam_types", []):
-                    exam_counts[exam] = exam_counts.get(exam, 0) + 1
-                for mod in s.get("modules", []):
-                    module_counts[mod] = module_counts.get(mod, 0) + 1
+                # Guard: exam_types/modules may be null or a non-list in a
+                # malformed library; iterating that would crash the check. Count
+                # only string members (matching list_strategies' histograms).
+                exam_types = s.get("exam_types")
+                if isinstance(exam_types, list):
+                    for exam in exam_types:
+                        if isinstance(exam, str):
+                            exam_counts[exam] = exam_counts.get(exam, 0) + 1
+                modules = s.get("modules")
+                if isinstance(modules, list):
+                    for mod in modules:
+                        if isinstance(mod, str):
+                            module_counts[mod] = module_counts.get(mod, 0) + 1
 
             if unscored:
                 issues.append(f"{unscored} strategies have no Darwin score")
