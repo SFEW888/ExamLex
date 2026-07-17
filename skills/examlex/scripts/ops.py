@@ -499,31 +499,58 @@ def check_business_results(library_path: str | None = None) -> CheckResult:
             strategies = lib.get("strategies", [])
             detail["total_strategies"] = len(strategies)
 
-            # Check for strategies without scores
-            unscored = [s.get("strategy_id") for s in strategies
-                       if isinstance(s, dict) and "darwin_score" not in s]
-            if unscored:
-                issues.append(f"{len(unscored)} strategies have no Darwin score")
+            # Single pass over strategies: count unscored/low-score entries,
+            # verify score_history integrity, and build the exam/module
+            # histograms. Malformed darwin_score or score_history values are
+            # tolerated so one corrupt entry cannot crash the whole health
+            # check; they are surfaced through a dedicated "malformed" issue.
+            unscored = 0
+            low_score = 0
+            broken_history = 0
+            malformed = 0
+            exam_counts: dict[str, int] = {}
+            module_counts: dict[str, int] = {}
 
-            # Check for strategies with low scores needing optimization
-            low_score = [s.get("strategy_id") for s in strategies
-                        if isinstance(s, dict) and s.get("darwin_score", 0) < 50]
-            if low_score:
-                detail["low_score_count"] = len(low_score)
-
-            # Check score_history integrity
-            broken_history = []
             for s in strategies:
                 if not isinstance(s, dict):
                     continue
-                hist = s.get("score_history", [])
-                if hist and isinstance(hist[-1], dict) and s.get("darwin_score", 0) != hist[-1].get("score", 0):
-                    broken_history.append(s.get("strategy_id"))
-            if broken_history:
-                issues.append(f"{len(broken_history)} strategies have mismatched score_history")
 
-            detail["strategy_exam_distribution"] = _count_by_exam(strategies)
-            detail["strategy_module_distribution"] = _count_by_module(strategies)
+                raw_score = s.get("darwin_score", 0)
+                if "darwin_score" not in s:
+                    unscored += 1
+
+                # Guard: a string/None darwin_score must not crash the "< 50" test.
+                if isinstance(raw_score, (int, float)) and not isinstance(raw_score, bool):
+                    if raw_score < 50:
+                        low_score += 1
+                else:
+                    malformed += 1
+
+                # Guard: score_history must be a list before indexing hist[-1];
+                # a dict/str/int here previously raised KeyError/TypeError.
+                hist = s.get("score_history", [])
+                if isinstance(hist, list):
+                    if hist and isinstance(hist[-1], dict) and raw_score != hist[-1].get("score", 0):
+                        broken_history += 1
+                elif hist:
+                    malformed += 1
+
+                for exam in s.get("exam_types", []):
+                    exam_counts[exam] = exam_counts.get(exam, 0) + 1
+                for mod in s.get("modules", []):
+                    module_counts[mod] = module_counts.get(mod, 0) + 1
+
+            if unscored:
+                issues.append(f"{unscored} strategies have no Darwin score")
+            if low_score:
+                detail["low_score_count"] = low_score
+            if broken_history:
+                issues.append(f"{broken_history} strategies have mismatched score_history")
+            if malformed:
+                issues.append(f"{malformed} strategies have malformed score fields")
+
+            detail["strategy_exam_distribution"] = dict(sorted(exam_counts.items()))
+            detail["strategy_module_distribution"] = dict(sorted(module_counts.items()))
 
         except (json.JSONDecodeError, OSError) as exc:
             issues.append(_safe_failure("Library read failed", exc))
@@ -535,24 +562,6 @@ def check_business_results(library_path: str | None = None) -> CheckResult:
     return CheckResult("business_results", status,
                        f"{detail.get('total_strategies', 0)} strategies in library",
                        detail, "; ".join(issues) if issues else "")
-
-
-def _count_by_exam(strategies: list) -> dict:
-    counts: dict[str, int] = {}
-    for s in strategies:
-        if isinstance(s, dict):
-            for exam in s.get("exam_types", []):
-                counts[exam] = counts.get(exam, 0) + 1
-    return dict(sorted(counts.items()))
-
-
-def _count_by_module(strategies: list) -> dict:
-    counts: dict[str, int] = {}
-    for s in strategies:
-        if isinstance(s, dict):
-            for mod in s.get("modules", []):
-                counts[mod] = counts.get(mod, 0) + 1
-    return dict(sorted(counts.items()))
 
 
 # ═══════════════════════════════════════════

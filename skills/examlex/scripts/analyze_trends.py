@@ -20,6 +20,7 @@ def analyze_trends(
     history: list[dict[str, Any]] | None = None,
 ) -> dict[str, Any]:
     module_series: dict[str, list[float]] = {}
+    ability_series: dict[str, list[float]] = {}
     strategy_series: dict[str, list[float]] = {}
 
     for record in ledger or []:
@@ -61,9 +62,15 @@ def analyze_trends(
             levels = [node.get("level") for node in nodes if isinstance(node, dict)]
             numeric = [level for level in levels if isinstance(level, (int, float)) and not isinstance(level, bool)]
             if numeric:
-                module_series.setdefault(module, []).append(sum(numeric) / len(numeric))
+                # Ability levels (1-4) live on a different scale than ledger
+                # accuracy (0-1). Keep them in a separate series so a module
+                # present in both inputs does not mix the two into one trend.
+                ability_series.setdefault(module, []).append(sum(numeric) / len(numeric))
 
     summaries = {module: _summarize_series(values) for module, values in sorted(module_series.items())}
+    ability_summaries = {
+        module: _summarize_series(values) for module, values in sorted(ability_series.items())
+    }
     strategy_summaries = {
         strategy_id: {**_summarize_series(values), "usage_records": len(values)}
         for strategy_id, values in sorted(strategy_series.items())
@@ -75,6 +82,7 @@ def analyze_trends(
             "history_snapshots": len(history or []),
         },
         "modules": summaries,
+        "ability": ability_summaries,
         "strategies": strategy_summaries,
     }
 

@@ -13,6 +13,7 @@ from examlex.scripts.ops import (
     check_permissions,
     check_network,
     check_dry_run,
+    check_business_results,
     check_safety_limits,
     check_scheduler,
     OpsReport,
@@ -161,6 +162,59 @@ class OpsCheckTests(unittest.TestCase):
             summary={"pass": 0, "warn": 0, "fail": 1, "skip": 0},
         )
         self.assertFalse(report.all_pass())
+
+    def test_business_results_tolerates_malformed_score_fields(self):
+        """A corrupt darwin_score or score_history must not crash the check."""
+        with tempfile.TemporaryDirectory() as temp:
+            library = Path(temp) / "strategy-library.json"
+            library.write_text(
+                json.dumps(
+                    {
+                        "strategies": [
+                            # string darwin_score previously raised TypeError on "< 50"
+                            {"strategy_id": "a", "darwin_score": "high",
+                             "exam_types": ["CET4"], "modules": ["reading"]},
+                            # dict score_history previously raised KeyError on hist[-1]
+                            {"strategy_id": "b", "darwin_score": 40,
+                             "score_history": {"score": 40}},
+                            # well-formed entry alongside the corrupt ones
+                            {"strategy_id": "c", "darwin_score": 80,
+                             "score_history": [{"score": 80}],
+                             "exam_types": ["CET6"], "modules": ["writing"]},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = check_business_results(str(library))
+
+            # The check completes (no exception) and reports, not crashes.
+            self.assertEqual("warn", result.status)
+            self.assertEqual(3, result.detail["total_strategies"])
+            self.assertIn("malformed score fields", result.remedy)
+            self.assertEqual({"CET4": 1, "CET6": 1}, result.detail["strategy_exam_distribution"])
+
+    def test_business_results_passes_on_clean_library(self):
+        with tempfile.TemporaryDirectory() as temp:
+            library = Path(temp) / "strategy-library.json"
+            library.write_text(
+                json.dumps(
+                    {
+                        "strategies": [
+                            {"strategy_id": "a", "darwin_score": 80,
+                             "score_history": [{"score": 80}],
+                             "exam_types": ["CET4"], "modules": ["reading"]},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = check_business_results(str(library))
+
+            self.assertEqual("pass", result.status)
+            self.assertNotIn("low_score_count", result.detail)
 
     def test_cli_ops_runs(self):
         from examlex.scripts.cli_ops import main
