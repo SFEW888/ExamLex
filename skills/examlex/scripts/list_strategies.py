@@ -41,12 +41,16 @@ def list_strategies(
         if not isinstance(strategy, dict):
             print(f"Warning: skipping non-dict strategy entry: {strategy!r}", file=sys.stderr)
             continue
-        for exam in strategy.get("exam_types", []):
-            if isinstance(exam, str):
-                by_exam[exam] = by_exam.get(exam, 0) + 1
-        for module in strategy.get("modules", []):
-            if isinstance(module, str):
-                by_module[module] = by_module.get(module, 0) + 1
+        exam_types = strategy.get("exam_types")
+        if isinstance(exam_types, list):
+            for exam in exam_types:
+                if isinstance(exam, str):
+                    by_exam[exam] = by_exam.get(exam, 0) + 1
+        modules = strategy.get("modules")
+        if isinstance(modules, list):
+            for module in modules:
+                if isinstance(module, str):
+                    by_module[module] = by_module.get(module, 0) + 1
 
     result = {
         "total": len(strategies),

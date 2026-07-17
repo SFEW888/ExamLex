@@ -355,10 +355,16 @@ def _paper_questions(paper: dict[str, Any] | None) -> dict[int, dict[str, Any]]:
     result: dict[int, dict[str, Any]] = {}
     if not isinstance(paper, dict):
         return result
-    for section in paper.get("sections", []):
+    sections = paper.get("sections")
+    if not isinstance(sections, list):
+        return result
+    for section in sections:
         if not isinstance(section, dict):
             continue
-        for question in section.get("questions", []):
+        questions = section.get("questions")
+        if not isinstance(questions, list):
+            continue
+        for question in questions:
             if isinstance(question, dict) and isinstance(question.get("number"), int):
                 result[question["number"]] = question
     return result

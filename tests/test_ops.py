@@ -195,6 +195,35 @@ class OpsCheckTests(unittest.TestCase):
             self.assertIn("malformed score fields", result.remedy)
             self.assertEqual({"CET4": 1, "CET6": 1}, result.detail["strategy_exam_distribution"])
 
+    def test_business_results_tolerates_null_exam_types_and_modules(self):
+        """null (or non-list) exam_types/modules must not crash the histogram."""
+        with tempfile.TemporaryDirectory() as temp:
+            library = Path(temp) / "strategy-library.json"
+            library.write_text(
+                json.dumps(
+                    {
+                        "strategies": [
+                            {"strategy_id": "a", "darwin_score": 80,
+                             "exam_types": None, "modules": None},
+                            {"strategy_id": "b", "darwin_score": 80,
+                             "exam_types": "CET4", "modules": ["reading", 7, None]},
+                            {"strategy_id": "c", "darwin_score": 80,
+                             "exam_types": ["CET6"], "modules": ["writing"]},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            result = check_business_results(str(library))
+
+            # Only well-formed string members are counted; nothing crashes.
+            self.assertEqual(3, result.detail["total_strategies"])
+            self.assertEqual({"CET6": 1}, result.detail["strategy_exam_distribution"])
+            self.assertEqual(
+                {"reading": 1, "writing": 1}, result.detail["strategy_module_distribution"]
+            )
+
     def test_business_results_passes_on_clean_library(self):
         with tempfile.TemporaryDirectory() as temp:
             library = Path(temp) / "strategy-library.json"

@@ -166,6 +166,33 @@ class StrategyStoreHealthTests(unittest.TestCase):
             )
             self.assertTrue(revision_group["requires_reference_check"])
 
+    def test_list_strategies_tolerates_null_exam_types_and_modules(self):
+        # A hand-edited library may carry null (or non-list) exam_types/modules;
+        # the histogram must skip them rather than crash on `for x in None`.
+        with self._temporary_dir() as temp:
+            library_path = Path(temp) / "strategy-library.json"
+            library_path.write_text(
+                json.dumps(
+                    {
+                        "strategies": [
+                            {"strategy_id": "a", "exam_types": None, "modules": None},
+                            {"strategy_id": "b", "exam_types": "CET4", "modules": 3},
+                            {"strategy_id": "c", "exam_types": ["CET6", 7],
+                             "modules": ["reading"]},
+                        ]
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            report = list_strategies.list_strategies(library_path)
+
+            self.assertEqual(3, report["total"])
+            # Only well-formed string members are counted; null/non-list/non-str
+            # values are skipped without error.
+            self.assertEqual({"CET6": 1}, report["by_exam"])
+            self.assertEqual({"reading": 1}, report["by_module"])
+
     def test_ingest_list_and_validate_support_sqlite_libraries(self):
         with self._temporary_dir() as temp:
             root = Path(temp)
