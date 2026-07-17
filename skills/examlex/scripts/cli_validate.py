@@ -60,6 +60,17 @@ def main(argv: list[str] | None = None) -> int:
 
     strategies = data.get("strategies", [])
 
+    if not isinstance(strategies, list):
+        output = {
+            "status": "error",
+            "message": "distilled.json 'strategies' must be a JSON array.",
+        }
+        if args.json:
+            print(json.dumps(output, ensure_ascii=False, indent=2))
+        else:
+            print(f"ERROR: {output['message']}")
+        return 2
+
     if not strategies:
         output = {
             "status": "warning",

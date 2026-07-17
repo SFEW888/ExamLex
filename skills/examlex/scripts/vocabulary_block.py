@@ -33,7 +33,7 @@ def validate_vocabulary_block(data: object) -> list[str]:
         for index, sense in enumerate(senses, 1):
             if not isinstance(sense, dict) or not _text(sense.get("part_of_speech")):
                 errors.append(f"senses[{index}] needs part_of_speech")
-            if not isinstance(sense, dict) or not _text_list(sense.get("meanings")):
+            if not isinstance(sense, dict) or not _is_meanings_list(sense.get("meanings")):
                 errors.append(f"senses[{index}] needs non-empty meanings")
     memory = data.get("memory")
     if not isinstance(memory, dict):
@@ -62,7 +62,7 @@ def validate_vocabulary_block(data: object) -> list[str]:
             for field in ("word", "phonetics", "part_of_speech"):
                 if not _text(item.get(field)):
                     errors.append(f"word_family[{index}].{field} must be non-empty")
-            if not _text_list(item.get("meanings")):
+            if not _is_meanings_list(item.get("meanings")):
                 errors.append(f"word_family[{index}].meanings must be non-empty")
     return errors
 
@@ -119,8 +119,16 @@ def _text(value: object) -> str:
     return value.strip() if isinstance(value, str) else ""
 
 
-def _text_list(value: object) -> list[str]:
-    return [item.strip() for item in value if isinstance(item, str) and item.strip()] if isinstance(value, list) else []
+def _is_meanings_list(value: object) -> bool:
+    # render joins this list directly, so every element must be a string; a
+    # non-string member (which the old filter silently dropped) must fail
+    # validation here rather than crash the join in render_vocabulary_block.
+    return (
+        isinstance(value, list)
+        and bool(value)
+        and all(isinstance(item, str) for item in value)
+        and any(item.strip() for item in value)
+    )
 
 
 def main(argv: list[str] | None = None) -> int:
