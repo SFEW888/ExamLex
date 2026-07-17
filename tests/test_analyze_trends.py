@@ -43,12 +43,34 @@ class AnalyzeTrendsTests(unittest.TestCase):
             )
 
             result = json.loads(output_path.read_text(encoding="utf-8"))
-            self.assertEqual(result["modules"]["reading"]["direction"], "improving")
+            self.assertEqual(result["ability"]["reading"]["direction"], "improving")
+            self.assertEqual(result["modules"], {})
             self.assertEqual(result["inputs"]["history_snapshots"], 2)
         finally:
             for path in (history_path, output_path):
                 if path.exists():
                     path.unlink()
+
+    def test_ledger_accuracy_and_history_ability_stay_separate_for_shared_module(self):
+        # A module present in both inputs must not blend accuracy (0-1) with
+        # ability level (1-4): each belongs to its own trend series.
+        ledger = [
+            {"module": "reading", "total_items": 10, "correct_items": 5},
+            {"module": "reading", "total_items": 10, "correct_items": 9},
+        ]
+        history = [
+            {"modules": {"reading": [{"level": 4}]}},
+            {"modules": {"reading": [{"level": 1}]}},
+        ]
+
+        trends = analyze_trends.analyze_trends(ledger=ledger, history=history)
+
+        self.assertEqual(trends["modules"]["reading"]["direction"], "improving")
+        self.assertEqual(trends["modules"]["reading"]["first"], 0.5)
+        self.assertEqual(trends["modules"]["reading"]["last"], 0.9)
+        self.assertEqual(trends["ability"]["reading"]["direction"], "declining")
+        self.assertEqual(trends["ability"]["reading"]["first"], 4)
+        self.assertEqual(trends["ability"]["reading"]["last"], 1)
 
 
 if __name__ == "__main__":

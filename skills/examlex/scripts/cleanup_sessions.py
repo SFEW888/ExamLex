@@ -174,8 +174,12 @@ def _path_size(path: Path, *, strict: bool = False) -> int:
         root_path = Path(root)
         for directory in directories:
             candidate = root_path / directory
-            if candidate.is_symlink():
-                total += candidate.lstat().st_size
+            try:
+                if candidate.is_symlink():
+                    total += candidate.lstat().st_size
+            except OSError:
+                if strict:
+                    raise
         for file_name in files:
             candidate = root_path / file_name
             try:

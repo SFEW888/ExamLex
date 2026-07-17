@@ -507,28 +507,40 @@ def _local_name(tag: str) -> str:
     return tag.rsplit("}", 1)[-1].lower()
 
 
-def _child_text(element: ET.Element, names: Iterable[str]) -> str | None:
+def _index_children(element: ET.Element) -> list[tuple[str, ET.Element]]:
+    """Compute each direct child's lower-cased local name exactly once.
+
+    parse_feed extracts several distinct fields (title, link, description,
+    author, date, ...) from every entry. Doing that directly against the
+    element re-derived the local name of every child once per field; sharing a
+    single ``(name, child)`` list keeps the per-field lookups but pays the tag
+    parsing cost a single time per entry.
+    """
+    return [(_local_name(child.tag), child) for child in element]
+
+
+def _child_text(children: list[tuple[str, ET.Element]], names: Iterable[str]) -> str | None:
     wanted = {name.lower() for name in names}
-    for child in element:
-        if _local_name(child.tag) in wanted:
+    for name, child in children:
+        if name in wanted:
             value = "".join(child.itertext()).strip()
             if value:
                 return value
     return None
 
 
-def _entry_link(element: ET.Element) -> str | None:
-    plain = _child_text(element, ["link"])
+def _entry_link(children: list[tuple[str, ET.Element]]) -> str | None:
+    plain = _child_text(children, ["link"])
     if plain and plain.startswith("https://"):
         return plain
-    for child in element:
-        if _local_name(child.tag) != "link":
+    for name, child in children:
+        if name != "link":
             continue
         rel = child.attrib.get("rel", "alternate").lower()
         href = child.attrib.get("href", "").strip()
         if rel in {"alternate", ""} and href.startswith("https://"):
             return href
-    guid = _child_text(element, ["guid", "id"])
+    guid = _child_text(children, ["guid", "id"])
     if guid and guid.startswith("https://"):
         return guid
     return None
@@ -605,8 +617,9 @@ def parse_feed(
     for entry in candidates:
         if len(results) >= limit:
             break
-        title = strip_html(_child_text(entry, ["title"]) or "", max_chars=500)
-        page_url = _entry_link(entry)
+        children = _index_children(entry)
+        title = strip_html(_child_text(children, ["title"]) or "", max_chars=500)
+        page_url = _entry_link(children)
         media_url, media_content_type, detected_media = _entry_media(entry)
         fallback_media = str(feed.get("media_type", "article"))
         media_type = detected_media or (fallback_media if fallback_media != "mixed" else "article")
@@ -638,8 +651,8 @@ def parse_feed(
         if item_id in seen_ids:
             continue
         seen_ids.add(item_id)
-        summary_value = _child_text(entry, ["description", "summary", "content"])
-        author = _child_text(entry, ["author", "creator"])
+        summary_value = _child_text(children, ["description", "summary", "content"])
+        author = _child_text(children, ["author", "creator"])
         results.append(
             CollectedItem(
                 item_id=item_id,
@@ -649,7 +662,7 @@ def parse_feed(
                 canonical_url=canonical_url,
                 media_type=media_type,
                 published_at=_normalize_date(
-                    _child_text(entry, ["pubdate", "published", "updated", "date"])
+                    _child_text(children, ["pubdate", "published", "updated", "date"])
                 ),
                 author=strip_html(author, max_chars=300) if author else None,
                 summary=strip_html(summary_value, max_chars=4_000) if summary_value else None,
