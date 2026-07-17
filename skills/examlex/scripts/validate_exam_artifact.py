@@ -60,7 +60,7 @@ def load_profiles(path: str | Path | None = None) -> dict[str, Any]:
     profile_path = Path(path) if path else default_profiles_path()
     data = json.loads(profile_path.read_text(encoding="utf-8"))
     profiles = data.get("profiles") if isinstance(data, dict) else None
-    if data.get("schema_version") != 1 or not isinstance(profiles, dict):
+    if not isinstance(data, dict) or data.get("schema_version") != 1 or not isinstance(profiles, dict):
         raise ValueError("exam artifact profiles must use schema_version 1 and contain profiles")
     return profiles
 
@@ -158,7 +158,7 @@ def validate_answerbook(
     if exam_type not in EXAM_TYPES or exam_type not in profiles:
         errors.append(f"unsupported exam_type: {exam_type}")
         return errors
-    if paper is not None:
+    if isinstance(paper, dict):
         if data.get("paper_id") != paper.get("paper_id"):
             errors.append("answerbook paper_id does not match paper")
         if exam_type != paper.get("exam_type"):

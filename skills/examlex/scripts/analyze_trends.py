@@ -24,6 +24,8 @@ def analyze_trends(
     strategy_series: dict[str, list[float]] = {}
 
     for record in ledger or []:
+        if not isinstance(record, dict):
+            continue
         module = record.get("module")
         total_items = record.get("total_items")
         correct_items = record.get("correct_items")

@@ -155,7 +155,9 @@ def _enum_array(strategy: dict[str, Any], field: str, allowed: set[str]) -> Chec
     values = strategy.get(field)
     if not isinstance(values, list) or not values:
         return Check(field, "ERROR", f"{field} must be a non-empty list")
-    invalid = [value for value in values if value not in allowed]
+    # Guard: a non-string (e.g. an unhashable nested list) must not crash the
+    # `value not in allowed` set-membership test; it is invalid by definition.
+    invalid = [value for value in values if not isinstance(value, str) or value not in allowed]
     if invalid:
         return Check(field, "ERROR", f"invalid values: {', '.join(map(str, invalid))}")
     return Check(field, "PASS", "all values are valid")
