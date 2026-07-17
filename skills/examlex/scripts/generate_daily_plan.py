@@ -89,7 +89,7 @@ def generate_daily_plan(
     # Spaced repetition: add review tasks for urgent error tags
     review_urgent: list[dict[str, Any]] = []
     REVIEW_URGENCY_THRESHOLD = 0.5
-    if error_summary and isinstance(error_summary.get("by_tag"), dict):
+    if isinstance(error_summary, dict) and isinstance(error_summary.get("by_tag"), dict):
         for tag, tag_data in error_summary["by_tag"].items():
             if not isinstance(tag_data, dict):
                 continue
@@ -220,7 +220,9 @@ def _latest_revision_sha256(strategy: Any) -> str | None:
 
 
 def _priority_error(error_summary: dict[str, Any] | None) -> str | None:
-    if not error_summary:
+    # A truthy non-dict (list/str/int from a malformed --errors file) must not
+    # reach .get(); guard on the type rather than mere truthiness.
+    if not isinstance(error_summary, dict):
         return None
     raw_by_tag = error_summary.get("by_tag", error_summary)
     if not isinstance(raw_by_tag, dict):
@@ -286,7 +288,9 @@ def select_daily_vocab(
     Prioritizes words related to ability nodes marked as 'needs_work' or 'priority',
     then fills remaining slots with lowest-frequency-rank words.
     """
-    if not vocab_pool:
+    # A non-list vocab_pool (e.g. a scalar from a malformed --vocab-pool file)
+    # must not reach `for entry in vocab_pool`; treat it as an empty pool.
+    if not isinstance(vocab_pool, list):
         return []
 
     # Collect ability nodes that need work

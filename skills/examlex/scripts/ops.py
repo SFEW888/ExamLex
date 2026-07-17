@@ -340,7 +340,11 @@ def check_dry_run(cfg: TutorConfig, library_path: str | None = None) -> CheckRes
         import shutil as _shutil
         _shutil.rmtree(str(tmpdir), ignore_errors=True)
 
-    except (ImportError, OSError, json.JSONDecodeError, RuntimeError, ValueError) as exc:
+    except (ImportError, OSError, json.JSONDecodeError, RuntimeError, ValueError,
+            AttributeError, TypeError, KeyError) as exc:
+        # AttributeError/TypeError/KeyError cover a malformed library reaching
+        # the ratchet step (e.g. a non-dict library.setdefault) — a dry-run
+        # failure must be reported, never allowed to abort the whole ops-check.
         errors.append(
             _safe_failure(
                 f"Dry run failed at {detail.get('last_step', 'start')}",
@@ -451,6 +455,8 @@ def check_logs(cfg: TutorConfig) -> CheckResult:
         for s in sessions[-20:]:  # last 20
             try:
                 state = json.loads(s.read_text(encoding="utf-8"))
+                if not isinstance(state, dict):
+                    continue
                 stage = state.get("stage", "unknown")
                 if stage == "failed":
                     failed.append(str(s.parent.name))
@@ -496,7 +502,12 @@ def check_business_results(library_path: str | None = None) -> CheckResult:
     if library_path and Path(library_path).exists():
         try:
             lib = load_data(library_path)
-            strategies = lib.get("strategies", [])
+            # A malformed library (non-dict, or a non-list "strategies") must
+            # be reported as an issue, not crash the whole health check.
+            strategies = lib.get("strategies", []) if isinstance(lib, dict) else None
+            if not isinstance(strategies, list):
+                issues.append("strategy library is malformed (no strategies list)")
+                strategies = []
             detail["total_strategies"] = len(strategies)
 
             # Single pass over strategies: count unscored/low-score entries,

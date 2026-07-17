@@ -125,6 +125,11 @@ def _scan_sessions(
             state = json.loads(state_file.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             continue
+        # A well-formed JSON file whose top level is not an object (null, list,
+        # scalar) would crash the .get() calls below; skip it like an unreadable
+        # state file rather than aborting the whole scan.
+        if not isinstance(state, dict):
+            continue
         stage = str(state.get("stage", "unknown"))
         if stages is None and stage in TERMINAL_STAGES:
             continue

@@ -135,18 +135,29 @@ def _svg_trends(dates: list[str], accuracy_by_module: dict[str, list[float]],
            "\n".join(f"  {p}" for p in parts) + '\n</svg>'
 
 
+def _as_number(value: object) -> float:
+    """Return a number for display math; a non-number (or bool) degrades to 0."""
+    if isinstance(value, bool):
+        return 0
+    return value if isinstance(value, (int, float)) else 0
+
+
 def _compute_ability_levels(ability_history: list[dict]) -> dict[str, float]:
     """Compute average ability level (0-1) per module from ability history."""
     if not ability_history:
         return {}
     latest = ability_history[-1]
     levels: dict[str, float] = {}
+    # A malformed history whose last element is not an object must not crash the
+    # report; a non-numeric per-node level degrades to 0 rather than raising.
+    if not isinstance(latest, dict):
+        return levels
     modules = latest.get("modules", {})
     if isinstance(modules, dict):
         for mod_name, nodes in modules.items():
             if isinstance(nodes, list) and nodes:
                 avg = sum(
-                    n.get("level", 0) / 10.0
+                    _as_number(n.get("level", 0)) / 10.0
                     for n in nodes if isinstance(n, dict)
                 ) / len(nodes)
                 levels[mod_name] = min(1.0, avg)
@@ -237,8 +248,8 @@ def generate_report(
 
     # Speed from error_summary
     speed_info = ""
-    if error_summary and "speed_analysis" in error_summary:
-        sa = error_summary["speed_analysis"]
+    sa = error_summary.get("speed_analysis") if isinstance(error_summary, dict) else None
+    if isinstance(sa, dict):
         speed_info = f"""
     <div class="stat">
       <div class="stat-value">{sa.get('timed_sessions', 0)}</div>
@@ -315,21 +326,24 @@ th {{ background: #f9fafb; font-weight: 600; }}
 
 
 def _error_table(error_summary: dict | None) -> str:
-    if not error_summary:
+    # A malformed --error-summary (non-dict, or a non-dict by_tag / string
+    # numeric fields) must not crash the report; degrade to the empty-state
+    # message or coerce non-numbers to 0 for the format specifiers below.
+    if not isinstance(error_summary, dict):
         return "<p>No error data available.</p>"
     by_tag = error_summary.get("by_tag", {})
-    if not by_tag:
+    if not isinstance(by_tag, dict) or not by_tag:
         return "<p>No error data available.</p>"
     rows = []
     for tag, data in sorted(
         by_tag.items(),
-        key=lambda x: -(x[1].get("count", 0) if isinstance(x[1], dict) else 0),
+        key=lambda x: -_as_number(x[1].get("count", 0) if isinstance(x[1], dict) else 0),
     ):
         if not isinstance(data, dict):
             continue
-        count = data.get("count", 0)
-        pct = data.get("percentage", 0)
-        urgency = data.get("review_urgency", 0)
+        count = _as_number(data.get("count", 0))
+        pct = _as_number(data.get("percentage", 0))
+        urgency = _as_number(data.get("review_urgency", 0))
         rows.append(f"<tr><td>{html.escape(str(tag))}</td><td>{count}</td><td>{pct:.0%}</td>"
                     f"<td>{urgency:.2f}</td></tr>")
     header = "<tr><th>Error Tag</th><th>Count</th><th>%</th><th>Urgency</th></tr>"

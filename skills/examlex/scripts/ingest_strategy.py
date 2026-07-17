@@ -116,7 +116,9 @@ def ingest_strategy(
         )
         return duplicate
     existing_ids = {
-        entry.get("strategy_id") for entry in existing_entries if isinstance(entry, dict)
+        entry.get("strategy_id")
+        for entry in existing_entries
+        if isinstance(entry, dict) and isinstance(entry.get("strategy_id"), str)
     }
 
     # When distillation_method implies structured output, parse the text
