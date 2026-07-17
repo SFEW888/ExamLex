@@ -150,6 +150,15 @@ def find_possible_duplicate_strategies(
     add_current_groups("same_normalized_content", by_content)
     add_current_groups("same_title_and_scope", by_title_scope)
 
+    # The function returns candidates[:limit] and only ever appends candidates
+    # (never reorders), so once the cheap exact-match groups above already fill
+    # the quota, neither the O(n^2) approximate pass nor the revision pass can
+    # change the sliced result. Skipping them keeps a pathological library
+    # (many same-scope, near-identical strategies) from running up to 20k
+    # SequenceMatcher comparisons this call cannot surface.
+    if len(candidates) >= limit:
+        return candidates[:limit]
+
     # Review-only approximate matching. Scope blocking and token overlap avoid
     # comparing every unrelated strategy in a growing library. Per-entry values
     # (normalized content, scope, tokens, length) are computed once here rather
@@ -168,6 +177,8 @@ def find_possible_duplicate_strategies(
 
     comparisons = 0
     for left_index in range(len(prepared)):
+        if len(candidates) >= limit:
+            break
         left, left_content, left_scope, left_tokens, left_len = prepared[left_index]
         for right_index in range(left_index + 1, len(prepared)):
             right, right_content, right_scope, right_tokens, right_len = prepared[right_index]
@@ -205,10 +216,17 @@ def find_possible_duplicate_strategies(
                     requires_reference_check=True,
                 )
             )
+            if len(candidates) >= limit:
+                break
         if comparisons > 20_000:
             break
 
+    if len(candidates) >= limit:
+        return candidates[:limit]
+
     for entry in entries:
+        if len(candidates) >= limit:
+            break
         revisions = entry.get("revisions", [])
         if not isinstance(revisions, list):
             continue
