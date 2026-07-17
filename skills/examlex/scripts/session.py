@@ -150,6 +150,11 @@ class SessionManager:
                     raise ValueError(
                         f"Corrupted pipeline state in {state_file}: {exc}"
                     ) from exc
+                if not isinstance(state, dict):
+                    raise ValueError(
+                        f"Corrupted pipeline state in {state_file}: "
+                        "expected a JSON object"
+                    )
                 return Session(
                     session_id=session_id,
                     artifacts_dir=candidate,

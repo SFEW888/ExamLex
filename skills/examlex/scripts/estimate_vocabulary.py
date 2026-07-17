@@ -73,7 +73,14 @@ def estimate(bands_data: dict, answers: list[dict], learner_id: str = "") -> dic
     where H  = claimed_known / tested_real
           FA = claimed_false_known / tested_nonword
     """
-    bands = bands_data.get("bands", bands_data)
+    # A malformed reference (bands_data or its "bands" is not an object, or an
+    # individual band is not an object) must yield an empty estimate, not crash.
+    bands = bands_data.get("bands", bands_data) if isinstance(bands_data, dict) else {}
+    if not isinstance(bands, dict):
+        bands = {}
+    # Drop non-dict answer rows so the .get() calls below cannot raise on a
+    # malformed --wordlist (e.g. [42] or a scalar entry).
+    answers = [a for a in answers if isinstance(a, dict)] if isinstance(answers, list) else []
     total_estimated = 0
     total_false_alarms = 0
     total_nonword_tests = 0
@@ -81,6 +88,8 @@ def estimate(bands_data: dict, answers: list[dict], learner_id: str = "") -> dic
 
     for band_label in sorted(bands.keys()):
         band = bands[band_label]
+        if not isinstance(band, dict):
+            continue
         real_words_set = set(band.get("real_words", []))
         non_words_set = set(band.get("non_words", []))
 
@@ -177,7 +186,11 @@ def generate_interactive_quiz(
 
     Returns a list of word prompts that an agent can present to the learner.
     """
-    all_bands = bands_data.get("bands", bands_data)
+    # A malformed reference (bands_data or its "bands" is not an object) yields
+    # an empty quiz rather than crashing on .keys()/membership below.
+    all_bands = bands_data.get("bands", bands_data) if isinstance(bands_data, dict) else {}
+    if not isinstance(all_bands, dict):
+        all_bands = {}
     quiz: list[dict[str, Any]] = []
     target_bands = bands if bands else sorted(all_bands.keys())
 
@@ -186,8 +199,15 @@ def generate_interactive_quiz(
             print(f"Warning: band '{band_label}' not found in reference data, skipping.", file=sys.stderr)
             continue
         band = all_bands[band_label]
+        if not isinstance(band, dict):
+            print(f"Warning: band '{band_label}' is malformed, skipping.", file=sys.stderr)
+            continue
         real_words = band.get("real_words", [])
         non_words = band.get("non_words", [])
+        if not isinstance(real_words, list):
+            real_words = []
+        if not isinstance(non_words, list):
+            non_words = []
 
         # Randomly sample to avoid systematic bias from a frequency/difficulty
         # ordering in the reference file.
@@ -215,13 +235,17 @@ def load_reference(path: str | None = None) -> dict:
     else:
         ref_path = _DEFAULT_REF
     try:
-        return json.loads(ref_path.read_text(encoding="utf-8"))
+        reference = json.loads(ref_path.read_text(encoding="utf-8"))
     except FileNotFoundError:
         print(f"Reference file not found: {ref_path}", file=sys.stderr)
         raise SystemExit(1)
     except (json.JSONDecodeError, PermissionError) as exc:
         print(f"Failed to load reference file {ref_path}: {exc}", file=sys.stderr)
         raise SystemExit(1)
+    if not isinstance(reference, dict):
+        print(f"Reference file {ref_path} must contain a JSON object.", file=sys.stderr)
+        raise SystemExit(1)
+    return reference
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -265,6 +289,9 @@ def main(argv: list[str] | None = None) -> int:
             data = common.load_data(args.wordlist)
         except (FileNotFoundError, json.JSONDecodeError, PermissionError, OSError) as exc:
             print(f"error: failed to load wordlist: {exc}", file=sys.stderr)
+            return 1
+        if not isinstance(data, dict):
+            print("error: wordlist must be a JSON object", file=sys.stderr)
             return 1
         answers = data.get("answers", [])
         learner_id = data.get("learner_id", "")
