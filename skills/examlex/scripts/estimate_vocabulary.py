@@ -90,16 +90,26 @@ def estimate(bands_data: dict, answers: list[dict], learner_id: str = "") -> dic
         band = bands[band_label]
         if not isinstance(band, dict):
             continue
-        real_words_set = set(band.get("real_words", []))
-        non_words_set = set(band.get("non_words", []))
+        real_words = band.get("real_words", [])
+        non_words = band.get("non_words", [])
+        real_words_set = {
+            word for word in real_words if isinstance(word, str) and word
+        } if isinstance(real_words, list) else set()
+        non_words_set = {
+            word for word in non_words if isinstance(word, str) and word
+        } if isinstance(non_words, list) else set()
 
         real_answers = [
             a for a in answers
-            if a.get("band") == band_label and a.get("word", "") in real_words_set
+            if a.get("band") == band_label
+            and isinstance(a.get("word"), str)
+            and a["word"] in real_words_set
         ]
         fake_answers = [
             a for a in answers
-            if a.get("band") == band_label and a.get("word", "") in non_words_set
+            if a.get("band") == band_label
+            and isinstance(a.get("word"), str)
+            and a["word"] in non_words_set
         ]
 
         tested_real = len(real_answers)
@@ -208,6 +218,8 @@ def generate_interactive_quiz(
             real_words = []
         if not isinstance(non_words, list):
             non_words = []
+        real_words = [word for word in real_words if isinstance(word, str) and word]
+        non_words = [word for word in non_words if isinstance(word, str) and word]
 
         # Randomly sample to avoid systematic bias from a frequency/difficulty
         # ordering in the reference file.

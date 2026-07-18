@@ -117,6 +117,25 @@ class MalformedInputHardeningTests(unittest.TestCase):
         html2 = visualize.generate_report(ability, [], error_summary=["nope"])
         self.assertIn("No error data available.", html2)
 
+    def test_generate_report_blocks_html_injection_in_speed_count(self):
+        payload = "</div><script>alert(1)</script><div>"
+        error_summary = {
+            "speed_analysis": {"timed_sessions": payload, "verdict": "ok"}
+        }
+        rendered = visualize.generate_report([], [], error_summary=error_summary)
+        self.assertNotIn(payload, rendered)
+        self.assertNotIn("<script>alert(1)</script>", rendered)
+        self.assertIn('<div class="stat-value">0</div>', rendered)
+
+    def test_generate_report_tolerates_non_list_error_tags(self):
+        ledger = [
+            {"date": "2026-07-18", "error_tags": None},
+            {"date": "2026-07-18", "error_tags": 7},
+            {"date": "2026-07-18", "error_tags": ["VALID", None, 3]},
+        ]
+        rendered = visualize.generate_report([], ledger)
+        self.assertIn('<div class="stat-value">1</div>', rendered)
+
     # ---- validate_strategy.py ----
 
     def test_validate_library_tolerates_unhashable_enum_member(self):

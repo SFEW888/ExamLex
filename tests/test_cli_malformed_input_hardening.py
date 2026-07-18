@@ -69,6 +69,27 @@ class CliMalformedInputHardeningTests(unittest.TestCase):
         # Non-dict answer rows are dropped, not crashed on.
         self.assertIsInstance(estimate_vocabulary.estimate({"bands": {}}, [42, "x"]), dict)
 
+    def test_estimate_tolerates_unhashable_words_in_reference_and_answers(self):
+        reference = {
+            "bands": {
+                "1-1000": {
+                    "real_words": ["valid", {"nested": "bad"}],
+                    "non_words": ["faux", ["bad"]],
+                }
+            }
+        }
+        answers = [
+            {"band": "1-1000", "word": {"nested": "bad"}, "known": True},
+            {"band": "1-1000", "word": "valid", "known": True},
+            {"band": "1-1000", "word": "faux", "known": False},
+        ]
+        result = estimate_vocabulary.estimate(reference, answers)
+        self.assertEqual(1000, result["estimated_vocabulary"])
+        quiz = estimate_vocabulary.generate_interactive_quiz(
+            reference, samples_per_band=10, nonwords_per_band=10
+        )
+        self.assertTrue(all(isinstance(entry["word"], str) for entry in quiz))
+
     def test_generate_interactive_quiz_tolerates_malformed_reference(self):
         self.assertEqual([], estimate_vocabulary.generate_interactive_quiz(None))
         self.assertEqual([], estimate_vocabulary.generate_interactive_quiz({"bands": "x"}))
