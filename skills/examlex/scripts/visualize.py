@@ -142,6 +142,13 @@ def _as_number(value: object) -> float:
     return value if isinstance(value, (int, float)) else 0
 
 
+def _as_nonnegative_count(value: object) -> int:
+    """Return a safe display count for HTML; malformed values degrade to 0."""
+    if isinstance(value, int) and not isinstance(value, bool) and value >= 0:
+        return value
+    return 0
+
+
 def _compute_ability_levels(ability_history: list[dict]) -> dict[str, float]:
     """Compute average ability level (0-1) per module from ability history."""
     if not ability_history:
@@ -243,16 +250,20 @@ def generate_report(
     total_records = len(ledger)
     total_recent = len(recent_ledger)
     total_errors = sum(
-        len(r.get("error_tags", [])) for r in ledger if isinstance(r, dict)
+        sum(1 for tag in tags if isinstance(tag, str))
+        for record in ledger
+        if isinstance(record, dict)
+        and isinstance((tags := record.get("error_tags", [])), list)
     )
 
     # Speed from error_summary
     speed_info = ""
     sa = error_summary.get("speed_analysis") if isinstance(error_summary, dict) else None
     if isinstance(sa, dict):
+        timed_sessions = _as_nonnegative_count(sa.get("timed_sessions", 0))
         speed_info = f"""
     <div class="stat">
-      <div class="stat-value">{sa.get('timed_sessions', 0)}</div>
+      <div class="stat-value">{timed_sessions}</div>
       <div class="stat-label">计时训练次数</div>
     </div>
     <div class="stat">

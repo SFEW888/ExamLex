@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
 
 from examlex.scripts.source_collector import (
+    CollectedItem,
     CorpusStore,
     FetchResult,
     SourceCollectionError,
@@ -128,6 +130,43 @@ class SourceCollectorTests(unittest.TestCase):
             self.assertEqual("a" * 64, loaded.content_sha256)
             self.assertEqual("2026-07-13T00:00:00Z", loaded.first_seen_at)
             self.assertEqual("2026-07-14T00:00:00Z", loaded.last_seen_at)
+
+    def test_corpus_store_rejects_path_traversal_item_ids_before_writing(self):
+        unsafe_ids = ("../escaped", r"..\escaped", "/absolute", r"C:\absolute", "a:b")
+        for item_id in unsafe_ids:
+            with self.subTest(item_id=item_id), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                store = CorpusStore(root)
+                item = CollectedItem(
+                    item_id=item_id,
+                    source_id="example",
+                    source_name="Example Source",
+                    title="Unsafe",
+                    canonical_url="https://example.com/unsafe",
+                    media_type="article",
+                )
+                with self.assertRaisesRegex(SourceCollectionError, "item_id"):
+                    store.upsert([item], observed_at="2026-07-18T00:00:00Z")
+                self.assertFalse((root / "escaped.json").exists())
+                self.assertFalse(store.manifest_path.exists())
+
+    def test_corpus_store_rejects_unsafe_item_id_in_tampered_manifest(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            store = CorpusStore(Path(temporary))
+            item = CollectedItem(
+                item_id="../escaped",
+                source_id="example",
+                source_name="Example Source",
+                title="Unsafe",
+                canonical_url="https://example.com/unsafe",
+                media_type="article",
+            )
+            store.manifest_path.write_text(
+                json.dumps(item.__dict__, ensure_ascii=False) + "\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(SourceCollectionError, "item_id"):
+                store.load()
 
     def test_text_materialization_obeys_robots_and_writes_hash(self):
         class FakeFetcher:

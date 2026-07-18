@@ -52,6 +52,7 @@ TRACKING_QUERY_PREFIXES = ("utm_", "mc_")
 TRACKING_QUERY_NAMES = frozenset({"fbclid", "gclid", "igshid"})
 MEDIA_CONTENT_TYPES = ("audio/", "video/", "application/octet-stream")
 PROXY_FAKE_IP_NETWORK = ipaddress.ip_network("198.18.0.0/15")
+SAFE_ITEM_ID = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,254}\Z")
 
 
 class SourceCollectionError(RuntimeError):
@@ -586,7 +587,31 @@ def _normalize_date(value: str | None) -> str | None:
 def _item_id(source_id: str, canonical_url: str, media_url: str | None) -> str:
     identity = canonical_url or media_url or source_id
     digest = hashlib.sha256(f"{source_id}\0{identity}".encode("utf-8")).hexdigest()[:24]
-    return f"{source_id}-{digest}"
+    return _validate_item_id(f"{source_id}-{digest}")
+
+
+def _validate_item_id(item_id: object) -> str:
+    """Return a filesystem-safe corpus item identifier.
+
+    Item identifiers become filenames in three corpus directories. Restricting
+    them to a portable ASCII subset prevents traversal, absolute paths, Windows
+    drive/ADS syntax, and control characters at every read and write boundary.
+    """
+    if not isinstance(item_id, str) or SAFE_ITEM_ID.fullmatch(item_id) is None:
+        raise SourceCollectionError(
+            "item_id must be 1-255 portable characters: letters, digits, dot, underscore, or hyphen"
+        )
+    return item_id
+
+
+def _item_artifact_path(directory: Path, item_id: object, suffix: str) -> Path:
+    """Build and verify one item artifact path beneath its fixed directory."""
+    safe_id = _validate_item_id(item_id)
+    root = directory.resolve()
+    target = (root / f"{safe_id}{suffix}").resolve()
+    if not target.is_relative_to(root):
+        raise SourceCollectionError("item artifact path escapes its corpus directory")
+    return target
 
 
 def parse_feed(
@@ -725,6 +750,7 @@ class CorpusStore:
                 item = CollectedItem(**payload)
             except (json.JSONDecodeError, TypeError) as exc:
                 raise SourceCollectionError(f"invalid manifest line {line_number}") from exc
+            _validate_item_id(item.item_id)
             if item.item_id in items:
                 raise SourceCollectionError(f"duplicate item_id in manifest: {item.item_id}")
             items[item.item_id] = item
@@ -735,11 +761,14 @@ class CorpusStore:
             return self._load_unlocked()
 
     def upsert(self, incoming: Iterable[CollectedItem], *, observed_at: str) -> tuple[int, int]:
+        incoming_items = list(incoming)
+        for item in incoming_items:
+            _validate_item_id(item.item_id)
         with exclusive_file_lock(self.manifest_path):
             existing = self._load_unlocked()
             new_count = 0
             updated_count = 0
-            for item in incoming:
+            for item in incoming_items:
                 previous = existing.get(item.item_id)
                 if previous is None:
                     item.first_seen_at = observed_at
@@ -755,7 +784,7 @@ class CorpusStore:
                     item.media_sha256 = previous.media_sha256
                     existing[item.item_id] = item
                     updated_count += 1
-                item_path = self.items_dir / f"{item.item_id}.json"
+                item_path = _item_artifact_path(self.items_dir, item.item_id, ".json")
                 _atomic_write_text(
                     item_path,
                     json.dumps(asdict(existing[item.item_id]), ensure_ascii=False, indent=2) + "\n",
@@ -768,13 +797,14 @@ class CorpusStore:
             return new_count, updated_count
 
     def update_item(self, item: CollectedItem) -> None:
+        _validate_item_id(item.item_id)
         with exclusive_file_lock(self.manifest_path):
             existing = self._load_unlocked()
             if item.item_id not in existing:
                 raise SourceCollectionError(f"unknown corpus item: {item.item_id}")
             existing[item.item_id] = item
             _atomic_write_text(
-                self.items_dir / f"{item.item_id}.json",
+                _item_artifact_path(self.items_dir, item.item_id, ".json"),
                 json.dumps(asdict(item), ensure_ascii=False, indent=2) + "\n",
             )
             manifest = "".join(
@@ -794,14 +824,17 @@ class CorpusStore:
         updates = list(items)
         if not updates:
             return
+        for item in updates:
+            _validate_item_id(item.item_id)
         with exclusive_file_lock(self.manifest_path):
             existing = self._load_unlocked()
+            unknown = [item.item_id for item in updates if item.item_id not in existing]
+            if unknown:
+                raise SourceCollectionError(f"unknown corpus item: {unknown[0]}")
             for item in updates:
-                if item.item_id not in existing:
-                    raise SourceCollectionError(f"unknown corpus item: {item.item_id}")
                 existing[item.item_id] = item
                 _atomic_write_text(
-                    self.items_dir / f"{item.item_id}.json",
+                    _item_artifact_path(self.items_dir, item.item_id, ".json"),
                     json.dumps(asdict(item), ensure_ascii=False, indent=2) + "\n",
                 )
             manifest = "".join(
@@ -811,11 +844,12 @@ class CorpusStore:
             _atomic_write_text(self.manifest_path, manifest)
 
     def get(self, item_id: str) -> CollectedItem:
+        safe_id = _validate_item_id(item_id)
         items = self.load()
         try:
-            return items[item_id]
+            return items[safe_id]
         except KeyError as exc:
-            raise SourceCollectionError(f"unknown corpus item: {item_id}") from exc
+            raise SourceCollectionError(f"unknown corpus item: {safe_id}") from exc
 
 
 def _utc_now() -> str:
@@ -933,7 +967,11 @@ def materialize_text(
     validation raises before the item is mutated, so a deferred caller can
     safely persist the item unchanged on failure.
     """
-    resolved = item if item is not None else store.get(item_id)
+    safe_id = _validate_item_id(item_id)
+    resolved = item if item is not None else store.get(safe_id)
+    if resolved.item_id != safe_id:
+        raise SourceCollectionError("provided item does not match the selected item_id")
+    _validate_item_id(resolved.item_id)
     if resolved.source_id != source["source_id"]:
         raise SourceCollectionError("item does not belong to the selected source")
     if resolved.media_type != "article":
@@ -951,7 +989,7 @@ def materialize_text(
     text = extract_readable_text(result.body)
     if len(text) < 300:
         raise SourceCollectionError("article text is unavailable or too short; no paywall bypass attempted")
-    target = store.content_dir / f"{resolved.item_id}.txt"
+    target = _item_artifact_path(store.content_dir, resolved.item_id, ".txt")
     _atomic_write_text(target, text + "\n")
     resolved.content_path = target.relative_to(store.root).as_posix()
     resolved.content_sha256 = hashlib.sha256((text + "\n").encode("utf-8")).hexdigest()
@@ -993,7 +1031,7 @@ def materialize_media(
         raise SourceCollectionError("item does not belong to the selected source")
     if item.media_type not in {"audio", "video"} or not item.media_url:
         raise SourceCollectionError("selected item has no allowed audio/video enclosure")
-    target = store.media_dir / f"{item.item_id}{_media_extension(item)}"
+    target = _item_artifact_path(store.media_dir, item.item_id, _media_extension(item))
     digest, content_type = SourceFetcher(source["domains"]).download_media(
         item.media_url, target, max_bytes=max_bytes
     )
