@@ -26,6 +26,7 @@ from .scripts import (
     validate_exam_artifact,
     visualize,
     vocabulary_block,
+    web_app,
 )
 from .scripts.cli_extract import main as extract_main
 from .scripts.cli_validate import main as validate_main
@@ -96,6 +97,7 @@ COMMANDS: dict[str, tuple[str, CommandMain]] = {
     "vocab-estimate": ("Estimate vocabulary size via Yes/No sampling.", estimate_vocabulary.main),
     "vocab-card": ("Validate and render a detailed memorization vocabulary block.", vocabulary_block.main),
     "visualize": ("Generate HTML progress report with SVG charts.", visualize.main),
+    "web": ("Run the local ExamLex web workspace.", web_app.main),
 }
 
 

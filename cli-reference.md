@@ -55,6 +55,7 @@
 | `examlex resume <session-id> [opts]` | `resume` | U | Show guidance for resuming an existing distillation session. |
 | `examlex sessions-cleanup [opts]` | `sessions-cleanup` | M | Inspect or manually clean session artifacts; successful commits also run automatic retention. |
 | `examlex capacity-monitor [opts]` | `capacity-monitor` | M | Run background-safe retention and strategy threshold warnings. |
+| `examlex web [opts]` | `web` | U | Run the local-first ExamLex learning workspace. |
 | `examlex check-deps [opts]` | `check-deps` | M | Check optional external tools. |
 | `examlex ops-check [opts]` | `ops-check` | M | Run operational readiness checks. |
 | `examlex validate-strategy <file>` | `validate-strategy` | M | Validate a strategy-library file. |
@@ -388,6 +389,14 @@ examlex ops-check [--library <file>] [--json] [--offline]
 
 `check-deps` reports optional tools. `ops-check` runs the operational readiness suite. Use `--offline` for deterministic local or CI diagnostics without live Bilibili, YouTube, or SiliconFlow requests.
 
+### `examlex web` — local learning workspace
+
+```powershell
+examlex web --host 127.0.0.1 --port 8765 --data-dir "$env:LOCALAPPDATA\ExamLex\web"
+```
+
+The web command serves the same-origin dashboard and API locally. It includes the five exam tracks, daily plan, learner profile, monthly heatmap, practice/error evidence, Memory Ribbon, Ebbinghaus cards, upload classification queues, and provider settings. Uploaded files are kept in quarantine until the relevant source or content review is complete. The default bind address is loopback; do not expose it publicly without adding authentication and a deployment boundary.
+
 ## Full Command Names
 
 The dispatcher also accepts these full names directly:
@@ -403,7 +412,8 @@ summarize-errors
 tag-error            tutor-prepare       update-ability
 validate-exam-artifact validate-profile
 validate-strategies  validate-strategy   visualize
-vocab-card           vocab-estimate       writing-version
+vocab-card           vocab-estimate       web
+writing-version
 ```
 
 ## Equivalent Invocation Forms

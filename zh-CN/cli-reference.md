@@ -73,6 +73,7 @@
 | `resume` | 👤 | 读取已有蒸馏会话并返回续跑指引 |
 | `sessions-cleanup` | 🔧 | 检查或手动清理会话产物；成功提交还会自动执行保留策略 |
 | `capacity-monitor` | 🔧 | 后台执行保留策略并对策略库阈值发出复核提醒 |
+| `web` | 👤 | 启动本地 ExamLex 学习工作台与同源 API |
 | `validate-strategy` | 🔧 | 校验策略库文件 |
 | `validate_repo.py` | 🔧 | 仓库完整性校验（非 CLI 命令） |
 
@@ -485,6 +486,14 @@ examlex ops-check --offline --json
 ```
 
 底层命令：`ops-check`。运行 13 项运维就绪检查（环境、配置、数据完整性等），返回通过/警告/失败报告。需要离线或确定性 CI 诊断时使用 `--offline`。
+
+### `examlex web` — 本地学习工作台
+
+```powershell
+examlex web --host 127.0.0.1 --port 8765 --data-dir "$env:LOCALAPPDATA\ExamLex\web"
+```
+
+该命令启动同源仪表盘和 API，包含五类考试、学习档案、今日计划、月度热力图、练习与错题证据、Memory Ribbon（记忆轨迹）、艾宾浩斯记忆卡、上传分类队列和 Provider 设置。上传文件先进入 quarantine（隔离区），历年真题必须经过题目级来源核验；默认只监听 loopback（本机回环地址），不要在没有认证和部署边界的情况下公开暴露。
 
 ---
 

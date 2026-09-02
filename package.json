@@ -1,0 +1,94 @@
+{
+  "name": "examlex-desktop",
+  "version": "2.0.0",
+  "description": "ExamLex - AI 驱动的英语备考桌面应用",
+  "main": "desktop/main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "vite",
+    "build": "vite build",
+    "build:desktop": "vite build && electron-builder",
+    "build:win": "vite build && electron-builder --win --x64",
+    "build:mac": "vite build && electron-builder --mac",
+    "build:linux": "vite build && electron-builder --linux",
+    "electron:dev": "concurrently -k \"vite\" \"wait-on http://127.0.0.1:5173 && electron .\""
+  },
+  "keywords": [
+    "exam",
+    "learning",
+    "ai",
+    "agent",
+    "langgraph"
+  ],
+  "author": "ExamLex Team",
+  "license": "MIT",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.0",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.2",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11",
+    "vite-plugin-pwa": "^0.21.0",
+    "wait-on": "^8.0.3"
+  },
+  "dependencies": {
+    "@lucide/vue": "^1.30.0",
+    "axios": "^1.6.2",
+    "cropperjs": "^1.6.2",
+    "dayjs": "^1.11.13",
+    "echarts": "^5.5.1",
+    "electron-updater": "^6.6.2",
+    "html2canvas": "^1.4.1",
+    "katex": "^0.16.11",
+    "markdown-it": "^15.0.0",
+    "pdfjs-dist": "^4.10.38",
+    "pinia": "^2.2.6",
+    "vue": "^3.5.13",
+    "vue-router": "^4.4.5"
+  },
+  "build": {
+    "appId": "com.examlex.app",
+    "productName": "ExamLex",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "desktop/**/*",
+      "skills/examlex/assets/web/**/*",
+      "skills/examlex/assets/data/**/*",
+      "skills/examlex/**/*.py",
+      "skills/examlex/api/**/*",
+      "skills/examlex/agents/**/*",
+      "skills/examlex/core/**/*",
+      "skills/examlex/config/**/*",
+      "requirements.txt"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "ExamLex"
+    }
+  }
+}

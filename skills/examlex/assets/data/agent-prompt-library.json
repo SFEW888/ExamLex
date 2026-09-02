@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "source": {
+    "title": "AI私人助教提示词库",
+    "path": "D:/微信聊天记录/xwechat_files/wxid_4ak7tahzne2m22_b4f3/msg/file/2026-09/5cd6ca8f48e16b27f5b9203cb4a79a9b.pdf",
+    "pages": 49,
+    "source_status": "user_provided_prompt_library",
+    "note": "提示词作为行为参考和交互模板使用，不把其中的示例事实当作官方考试资料。"
+  },
+  "shared_principles": [
+    "角色扮演 + 任务提示 + 学习材料/场景 + 互动要求/格式限制",
+    "提示词中的方括号是待替换变量，运行时应使用当前考试、模块、练习记录和用户输入填充",
+    "默认先引导学习者思考，再给出解释、反馈和下一步练习",
+    "模型无法可靠听到真实发音时，优先提供文本、音标和发音规则证据，不伪造听感评分",
+    "回答语言可按学习者要求切换为中文或英文"
+  ],
+  "bundles": {
+    "writing": {
+      "title": "写作精进：语法、润色与结构规划",
+      "related_agents": ["writing", "translation", "error_review", "planner"],
+      "prompts": [
+        {"id": "021", "title": "逐句语法错误分析", "template": "Act as a strict but helpful English grammar teacher. Check the text for grammatical errors, spelling mistakes, and punctuation issues. Return a table with Original Sentence, Corrected Sentence, and Explanation of the Error."},
+        {"id": "022", "title": "语法点专项练习", "template": "Act as my grammar tutor. Briefly explain the uses of [the target grammar point], then create a 5-question fill-in-the-blank exercise and wait for my answers."},
+        {"id": "023", "title": "易混淆词辨析", "template": "Act as an English lexicologist. Explain the difference between [word A] and [word B], with definitions, examples, and a memorable distinction tip."},
+        {"id": "024", "title": "句子结构诊断", "template": "Analyze whether the sentence is simple, compound, complex, or compound-complex. Identify the main clause and explain each subordinate clause and phrase."},
+        {"id": "030", "title": "避免中式英语", "template": "Act as a language editor. Explain why the expression is unnatural, then provide three authentic alternatives while preserving the intended meaning."},
+        {"id": "031", "title": "表达润色与升级", "template": "Rewrite the sentence to sound more sophisticated, natural, and professional. Do not only fix grammar; improve vocabulary and sentence structure, then explain the changes."},
+        {"id": "033", "title": "调整语气", "template": "Rewrite the text in a [polite and formal] tone. Preserve facts, identify the tone choices, and provide one alternative tone if useful."},
+        {"id": "036", "title": "过渡词增强逻辑", "template": "Insert appropriate transition words such as however, therefore, and in addition. Explain the logical relation created by each transition."},
+        {"id": "039", "title": "增强文章说服力", "template": "Act as a writing instructor. Make the argument more persuasive by strengthening verbs, adding warranted evidence, and identifying any unsupported leap."},
+        {"id": "041", "title": "生成写作大纲", "template": "Generate a logical five-paragraph argumentative essay outline with a thesis statement, body paragraph claims, supporting evidence, and a conclusion."},
+        {"id": "043", "title": "开发段落", "template": "Develop the topic sentence into a full paragraph by suggesting supporting details, examples, evidence, and a final link back to the thesis."},
+        {"id": "046", "title": "检查逻辑谬误", "template": "Review the argument for fallacies such as straw man, ad hominem, and slippery slope. Explain each finding and propose a defensible revision."},
+        {"id": "050", "title": "反驳论点", "template": "Acknowledge the opponent's strongest point, identify its limit, and construct a concise rebuttal with evidence and a clear transition."}
+      ]
+    },
+    "listening": {
+      "title": "听力与发音：陪练、语音、节奏和跟读",
+      "related_agents": ["listening", "basics", "planner"],
+      "prompts": [
+        {"id": "011", "title": "IPA音标与易错点", "template": "Act as a pronunciation coach. For each word, provide IPA in the requested accent and point out common pronunciation mistakes for Chinese speakers."},
+        {"id": "012", "title": "绕口令挑战", "template": "Give a tongue twister targeting [the sound contrast], explain the key sounds, and provide feedback criteria for my attempt."},
+        {"id": "013", "title": "最小音对辨析", "template": "Give five minimal pairs for [sound A] and [sound B], explain the difference, and create quiz sentences where I choose the word I hear."},
+        {"id": "014", "title": "重音与节奏", "template": "Analyze sentence stress and rhythm. Mark stressed words, reduced words, and the reason each contributes to natural speech."},
+        {"id": "015", "title": "升调与降调", "template": "Explain rising intonation for questions and falling intonation for statements, then create five identification items."},
+        {"id": "016", "title": "连读指导", "template": "Explain consonant-to-vowel linking in American English and show five example phrases with linked boundaries."},
+        {"id": "017", "title": "特定音标指导", "template": "Give step-by-step instructions for producing [the target sound], including tongue placement, airflow, and a short practice word list."},
+        {"id": "018", "title": "跟读脚本标注", "template": "Annotate the script for shadowing. Mark linked words, reduced sounds, stress, pauses, and intonation patterns without changing the text."},
+        {"id": "019", "title": "英式与美式发音", "template": "Explain the main British and American pronunciation differences for [word], with phonetic transcriptions for both."},
+        {"id": "020", "title": "个性化发音计划", "template": "Based on my native language and error evidence, identify likely pronunciation challenges and create a one-week practice plan."}
+      ]
+    },
+    "reading": {
+      "title": "阅读领航：长难句、主旨、推断和批判性阅读",
+      "related_agents": ["reading", "vocabulary", "error_review"],
+      "prompts": [
+        {"id": "051", "title": "长难句拆解", "template": "Deconstruct the complex sentence. Identify the main clause, subject, verb, object, subordinate clauses, phrases, and their functions."},
+        {"id": "052", "title": "文章主旨提炼", "template": "Summarize the main idea in one sentence, list three to five supporting facts, and identify the author's primary purpose."},
+        {"id": "053", "title": "上下文猜词", "template": "Do not give the direct definition of [word]. Guide me to infer its meaning from context clues, syntax, and nearby contrasts."},
+        {"id": "054", "title": "文本简化", "template": "Rewrite the academic paragraph in simple English for a middle-school learner while preserving the logical relations and key terms."},
+        {"id": "055", "title": "作者语气与态度", "template": "Identify the author's tone and cite the specific words or phrases that support the classification."},
+        {"id": "056", "title": "快速阅读训练", "template": "After reading the article, ask three specific scanning questions whose answers can be located quickly in the text."},
+        {"id": "057", "title": "推断题训练", "template": "Infer the requested trait or conclusion from the passage and explain the evidence without exceeding what the text supports."},
+        {"id": "058", "title": "事实与观点", "template": "Separate the paragraph into verifiable Facts and the author's Opinions, quoting the supporting wording for each."},
+        {"id": "059", "title": "批判性阅读问题", "template": "Generate five critical questions about the author's evidence, assumptions, purpose, bias, and alternative explanations."},
+        {"id": "060", "title": "体裁特征分析", "template": "Compare the language, structure, evidence, and purpose of a news report and an opinion editorial on the same topic."
+        }
+      ]
+    },
+    "vocabulary": {
+      "title": "词汇拓展：词义、词根、搭配和记忆",
+      "related_agents": ["vocabulary", "reading", "translation"],
+      "prompts": [
+        {"id": "061", "title": "单词深度解析", "template": "Provide IPA, parts of speech, multiple definitions, common examples, collocations, synonyms, antonyms, and etymology for [word]."},
+        {"id": "062", "title": "主题词汇网络", "template": "Generate fifteen terms for [topic], categorized into nouns, verbs, and adjectives, each with a simple definition and one exam-relevant collocation."},
+        {"id": "063", "title": "词根词缀法", "template": "Explain the root [root], then list five words containing it and show how the root contributes to each meaning."},
+        {"id": "064", "title": "近义词辨析", "template": "Explain subtle differences in meaning, register, collocation, and usage among [word A], [word B], and [word C], with examples."},
+        {"id": "065", "title": "造句反馈", "template": "Check whether my sentence uses [word] correctly and naturally. Explain the issue and provide a better example if needed."},
+        {"id": "066", "title": "词汇填空故事", "template": "Create a short contextual story with five blanks and a word bank. Wait for my answers before revealing the key and explanations."},
+        {"id": "067", "title": "习语来源与用法", "template": "Explain the meaning, origin, register, and appropriate situations for [idiom], then create a natural dialogue."},
+        {"id": "068", "title": "形象化记忆", "template": "Create a memorable mental image or short mnemonic story for [word], then test recall after a delay."},
+        {"id": "069", "title": "搭配词典", "template": "List at least five common collocations for [word or noun phrase], label the register, and give exam-style examples."},
+        {"id": "070", "title": "Frayer Model", "template": "Generate a Frayer Model for [word] with Definition, Characteristics, Examples, and Non-Examples."
+        }
+      ]
+    },
+    "planner": {
+      "title": "通用助教、情景应用与学习规划",
+      "related_agents": ["planner", "error_review", "writing", "listening", "reading", "vocabulary", "translation", "basics"],
+      "prompts": [
+        {"id": "071", "title": "模拟工作面试", "template": "Conduct a role-play interview. Ask one question at a time, adapt to my answer, and provide evidence-based feedback after the interview."},
+        {"id": "072", "title": "商务谈判", "template": "Simulate a negotiation with opposing but realistic goals. Do not give away the outcome; respond to my moves and review my strategy."},
+        {"id": "073", "title": "公开演讲与问答", "template": "Listen to my speech section by section, then ask two or three challenging questions and assess clarity, evidence, and delivery."},
+        {"id": "077", "title": "情景对话", "template": "Role-play the selected real-world scenario. Stay in character, ask natural follow-up questions, and correct only the most useful errors."},
+        {"id": "081", "title": "文化背景", "template": "Explain the cultural meaning, register, and appropriate use of [expression] and provide a safe sample dialogue."},
+        {"id": "091", "title": "定制化学习计划", "template": "Based on my level, target, deadline, daily time budget, mastery, and error evidence, create a realistic weekly study plan."},
+        {"id": "093", "title": "SMART目标", "template": "Turn my vague English-learning goal into a Specific, Measurable, Achievable, Relevant, and Time-bound goal."},
+        {"id": "094", "title": "突破平台期", "template": "Identify three concrete strategies for my plateau, each with a small action, a success metric, and a review date."},
+        {"id": "095", "title": "复习与记忆策略", "template": "Explain spaced repetition and apply it to my current evidence and due cards without inventing a review history."},
+        {"id": "096", "title": "学习进度评估", "template": "Design a small monthly assessment across the relevant skills and define how results should update the next plan."
+        }
+      ]
+    }
+  }
+}

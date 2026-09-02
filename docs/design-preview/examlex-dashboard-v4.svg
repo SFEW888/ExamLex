@@ -1,0 +1,225 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1120" viewBox="0 0 1800 1120">
+  <defs>
+    <filter id="paper" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.7" numOctaves="2" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix in="noise" type="saturate" values="0" result="gray"/>
+      <feComponentTransfer in="gray" result="fade"><feFuncA type="table" tableValues="0 0.025"/></feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="fade" mode="multiply"/>
+    </filter>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="7" stdDeviation="12" flood-color="#1d252c" flood-opacity="0.07"/>
+    </filter>
+    <linearGradient id="route" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#245366"/>
+      <stop offset="0.48" stop-color="#d84b3e"/>
+      <stop offset="1" stop-color="#d7a24f"/>
+    </linearGradient>
+    <pattern id="grid" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#d8d0c4" stroke-width="0.65" opacity="0.45"/>
+    </pattern>
+  </defs>
+
+  <rect width="1800" height="1120" fill="#f4f0e7"/>
+  <rect width="1800" height="1120" fill="#f4f0e7" filter="url(#paper)"/>
+
+  <!-- application bar -->
+  <rect x="0" y="0" width="1800" height="72" fill="#fbf9f4" stroke="#d8d0c4"/>
+  <text x="32" y="43" font-family="Arial, sans-serif" font-size="18" font-weight="700" letter-spacing="3" fill="#1d252c">EXAMLEX</text>
+  <text x="204" y="43" font-family="Arial, sans-serif" font-size="10" letter-spacing="2" fill="#8b8379">EVIDENCE-LED EXAM OS</text>
+  <g font-family="Arial, sans-serif" font-size="11" fill="#5e5a53">
+    <text x="1346" y="43">今日路线</text>
+    <text x="1437" y="43">学习证据</text>
+    <text x="1537" y="43">每日总结</text>
+  </g>
+  <rect x="1644" y="20" width="126" height="32" rx="3" fill="#245366"/>
+  <circle cx="1664" cy="36" r="4" fill="#9ec2b2"/>
+  <text x="1711" y="40" text-anchor="middle" font-family="Arial, sans-serif" font-size="10" fill="#ffffff">AI 服务已连接</text>
+
+  <!-- navigation -->
+  <rect x="0" y="72" width="250" height="1048" fill="#ebe6dc" stroke="#d8d0c4"/>
+  <text x="28" y="112" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">EXAM TRACK</text>
+  <text x="28" y="151" font-family="'Microsoft YaHei', sans-serif" font-size="23" fill="#1d252c">大学英语六级</text>
+  <text x="28" y="178" font-family="Arial, sans-serif" font-size="11" fill="#6f6a63">CET-6 · 目标 500</text>
+  <rect x="28" y="198" width="194" height="4" fill="#d3cbbf"/>
+  <rect x="28" y="198" width="128" height="4" fill="#d84b3e"/>
+  <text x="28" y="226" font-family="'Microsoft YaHei', sans-serif" font-size="11" fill="#6f6a63">距离考试 117 天 · 规则估计 462</text>
+
+  <line x1="28" y1="254" x2="222" y2="254" stroke="#cbc2b6"/>
+  <text x="28" y="288" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">WORKSPACE</text>
+  <rect x="16" y="307" width="218" height="42" rx="3" fill="#faf8f2"/>
+  <rect x="16" y="307" width="3" height="42" fill="#d84b3e"/>
+  <g font-family="'Microsoft YaHei', sans-serif" font-size="13" fill="#4e4b46">
+    <text x="34" y="333" font-weight="700" fill="#1d252c">今日路线</text>
+    <text x="34" y="379">五项学习</text>
+    <text x="34" y="421">真题与模拟</text>
+    <text x="34" y="463">记忆卡</text>
+    <text x="34" y="505">文档上传</text>
+    <text x="34" y="547">错题与证据</text>
+    <text x="34" y="589">基础知识</text>
+    <text x="34" y="631">每日总结</text>
+    <text x="34" y="673">成就与段位</text>
+    <text x="34" y="715">AI 助教设置</text>
+  </g>
+  <g fill="#8b8379" font-family="Arial, sans-serif" font-size="10">
+    <text x="205" y="379">05</text>
+    <text x="205" y="421">18</text>
+    <text x="200" y="463" fill="#d84b3e">24</text>
+    <text x="198" y="505">NEW</text>
+  </g>
+
+  <line x1="28" y1="752" x2="222" y2="752" stroke="#cbc2b6"/>
+  <text x="28" y="786" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">ACHIEVEMENT</text>
+  <text x="28" y="824" font-family="Georgia, 'Times New Roman', serif" font-size="28" fill="#1d252c">Silver II</text>
+  <text x="28" y="851" font-family="'Microsoft YaHei', sans-serif" font-size="11" fill="#6f6a63">连续学习 7 天 · 1,280 分</text>
+  <g fill="#d6e2e6">
+    <rect x="28" y="878" width="13" height="13"/><rect x="47" y="878" width="13" height="13" fill="#8fb5c0"/><rect x="66" y="878" width="13" height="13"/><rect x="85" y="878" width="13" height="13" fill="#245366"/><rect x="104" y="878" width="13" height="13"/><rect x="123" y="878" width="13" height="13" fill="#8fb5c0"/><rect x="142" y="878" width="13" height="13"/><rect x="161" y="878" width="13" height="13" fill="#245366"/><rect x="180" y="878" width="13" height="13"/><rect x="199" y="878" width="13" height="13" fill="#d84b3e"/>
+  </g>
+  <text x="28" y="918" font-family="'Microsoft YaHei', sans-serif" font-size="11" fill="#6f6a63">“把能解释的进步留下来。”</text>
+  <text x="28" y="1076" font-family="Arial, sans-serif" font-size="9" letter-spacing="1.2" fill="#8b8379">LOCAL-FIRST · PRIVATE DATA</text>
+
+  <!-- heading -->
+  <text x="290" y="116" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#d84b3e">TODAY / 2026-08-18</text>
+  <text x="290" y="163" font-family="'Noto Serif SC','Songti SC','SimSun',serif" font-size="39" fill="#1d252c">今天只做最能提分的事。</text>
+  <text x="290" y="192" font-family="'Microsoft YaHei', sans-serif" font-size="13" fill="#6f6a63">系统根据近 30 天证据，把“听力连读”和“阅读推断题”排在最前面。</text>
+
+  <text x="1397" y="112" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">EXAM CLASSIFICATION</text>
+  <g font-family="Arial, sans-serif" font-size="10" fill="#6f6a63">
+    <text x="1397" y="143" fill="#d84b3e" font-weight="700">CET-6</text><text x="1454" y="143">CET-4</text><text x="1510" y="143">考研英语</text><text x="1585" y="143">TEM-4</text><text x="1644" y="143">TEM-8</text>
+  </g>
+  <line x1="1397" y1="155" x2="1708" y2="155" stroke="#d8d0c4"/>
+  <line x1="1397" y1="155" x2="1437" y2="155" stroke="#d84b3e" stroke-width="3"/>
+  <text x="1397" y="185" font-family="'Microsoft YaHei', sans-serif" font-size="11" fill="#6f6a63">考试介绍 · 分值结构 · 时间流程 · 备考指南</text>
+
+  <!-- metrics -->
+  <line x1="290" y1="221" x2="1736" y2="221" stroke="#d8d0c4"/>
+  <g font-family="Arial, sans-serif">
+    <text x="290" y="246" font-size="9" letter-spacing="1.5" fill="#8b8379">TODAY</text><text x="290" y="274" font-family="Georgia, serif" font-size="25" fill="#1d252c">28 / 82 <tspan font-family="'Microsoft YaHei', sans-serif" font-size="11">分钟</tspan></text>
+    <text x="492" y="246" font-size="9" letter-spacing="1.5" fill="#8b8379">DUE CARDS</text><text x="492" y="274" font-family="Georgia, serif" font-size="25" fill="#d84b3e">24 <tspan font-family="'Microsoft YaHei', sans-serif" font-size="11">张到期</tspan></text>
+    <text x="694" y="246" font-size="9" letter-spacing="1.5" fill="#8b8379">TODAY TASKS</text><text x="694" y="274" font-family="Georgia, serif" font-size="25" fill="#245366">2 / 5 <tspan font-family="'Microsoft YaHei', sans-serif" font-size="11">完成</tspan></text>
+    <text x="896" y="246" font-size="9" letter-spacing="1.5" fill="#8b8379">STREAK</text><text x="896" y="274" font-family="Georgia, serif" font-size="25" fill="#d7a24f">7 <tspan font-family="'Microsoft YaHei', sans-serif" font-size="11">天</tspan></text>
+    <text x="1098" y="246" font-size="9" letter-spacing="1.5" fill="#8b8379">WEAK SIGNAL</text><text x="1098" y="274" font-family="'Microsoft YaHei', sans-serif" font-size="15" fill="#1d252c">听力连读 · 阅读推断</text>
+  </g>
+
+  <!-- evidence route, core experience -->
+  <rect x="290" y="304" width="990" height="325" fill="#faf8f2" stroke="#d1c9bd" filter="url(#shadow)"/>
+  <rect x="290" y="304" width="990" height="325" fill="url(#grid)" opacity="0.5"/>
+  <text x="318" y="339" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">EVIDENCE ROUTE / TODAY</text>
+  <text x="318" y="368" font-family="'Microsoft YaHei', sans-serif" font-size="12" fill="#6f6a63">五项能力沿同一路线推进；选择节点会展开题型、技巧、练习和来源证据。</text>
+  <text x="1162" y="340" font-family="'Microsoft YaHei', sans-serif" font-size="10" fill="#8b8379">拖动路线 · ← →</text>
+
+  <path d="M330 505 C410 566 474 552 535 472 S672 390 748 472 S869 568 944 479 S1082 395 1238 455" fill="none" stroke="#d8d0c4" stroke-width="24" opacity="0.32"/>
+  <path d="M330 505 C410 566 474 552 535 472 S672 390 748 472 S869 568 944 479 S1082 395 1238 455" fill="none" stroke="url(#route)" stroke-width="5"/>
+  <path d="M330 505 C410 566 474 552 535 472 S672 390 748 472 S869 568 944 479 S1082 395 1238 455" fill="none" stroke="#f4f0e7" stroke-width="1" stroke-dasharray="2 11" opacity="0.9"/>
+
+  <g fill="#faf8f2" stroke-width="4">
+    <circle cx="417" cy="535" r="14" stroke="#245366"/>
+    <circle cx="594" cy="423" r="14" stroke="#4c7a62"/>
+    <circle cx="776" cy="500" r="22" stroke="#d84b3e"/>
+    <circle cx="972" cy="451" r="14" stroke="#d7a24f"/>
+    <circle cx="1154" cy="429" r="14" stroke="#6a96a5"/>
+  </g>
+  <circle cx="776" cy="500" r="7" fill="#245366"/>
+  <g font-family="'Microsoft YaHei', sans-serif" fill="#1d252c">
+    <text x="391" y="581" font-size="14" font-weight="700">词汇</text><text x="369" y="600" font-size="10" fill="#8b8379">到期复习 24</text>
+    <text x="568" y="399" font-size="14" font-weight="700">阅读</text><text x="545" y="380" font-size="10" fill="#8b8379">推断题 54%</text>
+    <text x="746" y="548" font-size="14" font-weight="700" fill="#d84b3e">听力</text><text x="720" y="568" font-size="10" fill="#8b8379">连读与弱读</text>
+    <text x="946" y="420" font-size="14" font-weight="700">翻译</text><text x="931" y="400" font-size="10" fill="#8b8379">文化主题句</text>
+    <text x="1128" y="475" font-size="14" font-weight="700">写作</text><text x="1102" y="495" font-size="10" fill="#8b8379">论证展开</text>
+  </g>
+
+  <rect x="698" y="389" width="223" height="70" rx="4" fill="#1d252c"/>
+  <text x="716" y="413" font-family="Arial, sans-serif" font-size="9" letter-spacing="1.4" fill="#a9c5c7">ACTIVE NODE</text>
+  <text x="716" y="438" font-family="'Microsoft YaHei', sans-serif" font-size="13" fill="#ffffff">精听 15 分钟 · 连读辨识</text>
+  <text x="903" y="438" text-anchor="end" font-family="'Microsoft YaHei', sans-serif" font-size="9" fill="#d7a24f">来源可追溯</text>
+
+  <line x1="318" y1="593" x2="1252" y2="593" stroke="#d8d0c4"/>
+  <text x="318" y="615" font-family="'Microsoft YaHei', sans-serif" font-size="10" fill="#8b8379">开始</text>
+  <text x="1181" y="615" font-family="'Microsoft YaHei', sans-serif" font-size="10" fill="#8b8379">今日收束</text>
+  <text x="793" y="615" text-anchor="middle" font-family="'Microsoft YaHei', sans-serif" font-size="10" fill="#6f6a63">计划生成 → 任务推进 → 错因转折 → 生成复习证据</text>
+
+  <!-- today's plan -->
+  <rect x="1300" y="304" width="436" height="325" fill="#1d252c" filter="url(#shadow)"/>
+  <text x="1328" y="339" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#a9c5c7">TODAY PLAN / 82 MIN</text>
+  <text x="1328" y="374" font-family="'Noto Serif SC','Songti SC','SimSun',serif" font-size="24" fill="#f4f0e7">先完成这 5 件事</text>
+  <g font-family="'Microsoft YaHei', sans-serif" font-size="12">
+    <circle cx="1337" cy="411" r="7" fill="#4c7a62"/><path d="M1333 411l3 3 6-7" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <text x="1356" y="416" fill="#d4dfdf">词汇到期复习 24 张</text><text x="1704" y="416" text-anchor="end" fill="#8fa7aa">12 min</text>
+    <circle cx="1337" cy="452" r="7" fill="#4c7a62"/><path d="M1333 452l3 3 6-7" fill="none" stroke="#fff" stroke-width="1.5"/>
+    <text x="1356" y="457" fill="#d4dfdf">仔细阅读真题 1 篇</text><text x="1704" y="457" text-anchor="end" fill="#9ec2b2">已核验</text>
+    <circle cx="1337" cy="493" r="7" fill="none" stroke="#d84b3e" stroke-width="2"/>
+    <text x="1356" y="498" fill="#ffffff" font-weight="700">精听训练：连读与弱读</text><text x="1704" y="498" text-anchor="end" fill="#d84b3e">15 min</text>
+    <circle cx="1337" cy="534" r="7" fill="none" stroke="#718087" stroke-width="1.5"/>
+    <text x="1356" y="539" fill="#b9c9c9">翻译文化主题句 6 句</text><text x="1704" y="539" text-anchor="end" fill="#8fa7aa">18 min</text>
+    <circle cx="1337" cy="575" r="7" fill="none" stroke="#718087" stroke-width="1.5"/>
+    <text x="1356" y="580" fill="#b9c9c9">写作观点扩写 1 次</text><text x="1704" y="580" text-anchor="end" fill="#8fa7aa">20 min</text>
+  </g>
+  <rect x="1328" y="594" width="376" height="1" fill="#435159"/>
+  <text x="1328" y="615" font-family="'Microsoft YaHei', sans-serif" font-size="10" fill="#a9c5c7">完成后自动生成今日总结，并调整明日路线。</text>
+
+  <!-- five direct content modules -->
+  <text x="290" y="662" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">FIVE LEARNING MODULES / CONTENT ENTERS MODULES DIRECTLY</text>
+
+  <g filter="url(#shadow)">
+    <rect x="290" y="682" width="278" height="164" fill="#faf8f2" stroke="#d1c9bd"/>
+    <rect x="582" y="682" width="278" height="164" fill="#faf8f2" stroke="#d1c9bd"/>
+    <rect x="874" y="682" width="278" height="164" fill="#faf8f2" stroke="#d1c9bd"/>
+    <rect x="1166" y="682" width="278" height="164" fill="#faf8f2" stroke="#d1c9bd"/>
+    <rect x="1458" y="682" width="278" height="164" fill="#faf8f2" stroke="#d1c9bd"/>
+  </g>
+  <rect x="290" y="682" width="278" height="4" fill="#6a96a5"/><rect x="582" y="682" width="278" height="4" fill="#d84b3e"/><rect x="874" y="682" width="278" height="4" fill="#4c7a62"/><rect x="1166" y="682" width="278" height="4" fill="#d7a24f"/><rect x="1458" y="682" width="278" height="4" fill="#245366"/>
+  <g font-family="'Microsoft YaHei', sans-serif">
+    <text x="314" y="721" font-size="20" fill="#1d252c">写作</text><text x="540" y="721" text-anchor="end" font-size="11" fill="#6a96a5">63%</text>
+    <text x="314" y="751" font-size="11" fill="#6f6a63">题型概述 · 高分结构 · 写作模板</text><text x="314" y="775" font-size="11" fill="#6f6a63">高分表达 · 论证方式 · 二次写作</text><text x="314" y="817" font-size="11" fill="#1d252c">下一步：观点展开练习</text><text x="540" y="817" text-anchor="end" font-size="16" fill="#6a96a5">→</text>
+
+    <text x="606" y="721" font-size="20" fill="#1d252c">听力</text><text x="832" y="721" text-anchor="end" font-size="11" fill="#d84b3e">51%</text>
+    <text x="606" y="751" font-size="11" fill="#6f6a63">短篇新闻 · 长对话 · 听力篇章</text><text x="606" y="775" font-size="11" fill="#6f6a63">泛听 · 精听 · 听写 · 跟读</text><text x="606" y="817" font-size="11" fill="#1d252c">下一步：连读辨识 15 min</text><text x="832" y="817" text-anchor="end" font-size="16" fill="#d84b3e">→</text>
+
+    <text x="898" y="721" font-size="20" fill="#1d252c">阅读</text><text x="1124" y="721" text-anchor="end" font-size="11" fill="#4c7a62">69%</text>
+    <text x="898" y="751" font-size="11" fill="#6f6a63">仔细阅读 · 长篇阅读 · 词汇理解</text><text x="898" y="775" font-size="11" fill="#6f6a63">题型分析 · 定位证据 · 干扰项</text><text x="898" y="817" font-size="11" fill="#1d252c">下一步：推断题专项</text><text x="1124" y="817" text-anchor="end" font-size="16" fill="#4c7a62">→</text>
+
+    <text x="1190" y="721" font-size="20" fill="#1d252c">翻译</text><text x="1416" y="721" text-anchor="end" font-size="11" fill="#d7a24f">58%</text>
+    <text x="1190" y="751" font-size="11" fill="#6f6a63">题型概述 · 提分锦囊 · 常用词句</text><text x="1190" y="775" font-size="11" fill="#6f6a63">信息分块 · 句法转换 · 错漏诊断</text><text x="1190" y="817" font-size="11" fill="#1d252c">下一步：文化主题句</text><text x="1416" y="817" text-anchor="end" font-size="16" fill="#d7a24f">→</text>
+
+    <text x="1482" y="721" font-size="20" fill="#1d252c">词汇</text><text x="1708" y="721" text-anchor="end" font-size="11" fill="#245366">78%</text>
+    <text x="1482" y="751" font-size="11" fill="#6f6a63">高频词汇 · 核心词汇 · 大纲词汇</text><text x="1482" y="775" font-size="11" fill="#6f6a63">搭配 · 易混词 · 真题语境</text><text x="1482" y="817" font-size="11" fill="#1d252c">下一步：复习 24 张卡</text><text x="1708" y="817" text-anchor="end" font-size="16" fill="#245366">→</text>
+  </g>
+
+  <!-- training, memory and evidence footer -->
+  <rect x="290" y="875" width="808" height="190" fill="#faf8f2" stroke="#d1c9bd"/>
+  <text x="316" y="908" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">PRACTICE &amp; MATERIALS</text>
+  <line x1="316" y1="924" x2="1072" y2="924" stroke="#d8d0c4"/>
+  <g font-family="'Microsoft YaHei', sans-serif">
+    <text x="316" y="958" font-size="17" fill="#1d252c">真题演练</text><rect x="408" y="942" width="93" height="23" rx="3" fill="#dce9e1"/><text x="454" y="958" text-anchor="middle" font-size="9" fill="#315e49">官方来源已核验</text>
+    <text x="316" y="987" font-size="11" fill="#6f6a63">按年份、考试、题型进入完整计时训练</text><text x="316" y="1027" font-size="11" fill="#245366">18 套可用</text>
+
+    <line x1="566" y1="942" x2="566" y2="1038" stroke="#d8d0c4"/>
+    <text x="592" y="958" font-size="17" fill="#1d252c">模拟特训</text><rect x="684" y="942" width="79" height="23" rx="3" fill="#f2e7cf"/><text x="723" y="958" text-anchor="middle" font-size="9" fill="#8b6420">非官方模拟</text>
+    <text x="592" y="987" font-size="11" fill="#6f6a63">上传模拟题，或由 ExamLex 生成专项训练</text><text x="592" y="1027" font-size="11" fill="#d08431">4 个训练包</text>
+
+    <line x1="832" y1="942" x2="832" y2="1038" stroke="#d8d0c4"/>
+    <text x="858" y="958" font-size="17" fill="#1d252c">文档上传</text><rect x="950" y="942" width="92" height="23" rx="3" fill="#e8e4dc"/><text x="996" y="958" text-anchor="middle" font-size="9" fill="#6f6a63">隔离解析后确认</text>
+    <text x="858" y="987" font-size="11" fill="#6f6a63">Word · Excel · PDF · TXT · MD · 图片</text><text x="858" y="1027" font-size="11" fill="#1d252c">上传文件  +</text>
+  </g>
+
+  <rect x="1118" y="875" width="318" height="190" fill="#faf8f2" stroke="#d1c9bd"/>
+  <text x="1144" y="908" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">MEMORY CARDS / DUE</text>
+  <text x="1144" y="952" font-family="Georgia, serif" font-size="37" fill="#d84b3e">24</text>
+  <text x="1200" y="952" font-family="'Microsoft YaHei', sans-serif" font-size="11" fill="#6f6a63">张到期 · 6 张逾期</text>
+  <path d="M1146 1006 C1190 984 1225 1033 1267 995 S1348 972 1405 1001" fill="none" stroke="#d8d0c4" stroke-width="9" opacity="0.45"/>
+  <path d="M1146 1006 C1190 984 1225 1033 1267 995 S1348 972 1405 1001" fill="none" stroke="#d84b3e" stroke-width="3"/>
+  <g fill="#faf8f2" stroke="#d84b3e" stroke-width="2"><circle cx="1146" cy="1006" r="6"/><circle cx="1267" cy="995" r="6"/><circle cx="1405" cy="1001" r="6"/></g>
+  <text x="1144" y="1043" font-family="'Microsoft YaHei', sans-serif" font-size="10" fill="#6f6a63">先回忆 → 再揭示 → 后评分</text>
+
+  <rect x="1456" y="875" width="280" height="190" fill="#faf8f2" stroke="#d1c9bd"/>
+  <text x="1482" y="908" font-family="Arial, sans-serif" font-size="9" letter-spacing="2" fill="#8b8379">BASICS &amp; DAILY EVIDENCE</text>
+  <g font-family="'Microsoft YaHei', sans-serif" font-size="11" fill="#4e4b46">
+    <text x="1482" y="948">词性</text><text x="1546" y="948" fill="#6f6a63">名词 · 动词 · 形容词 · 副词</text>
+    <text x="1482" y="980">句型</text><text x="1546" y="980" fill="#6f6a63">简单句 · 并列句 · 复合句</text>
+    <text x="1482" y="1012">语音</text><text x="1546" y="1012" fill="#6f6a63">发音 · 连读 · 重读 · 弱读</text>
+  </g>
+  <line x1="1482" y1="1030" x2="1710" y2="1030" stroke="#d8d0c4"/>
+  <text x="1482" y="1052" font-family="'Microsoft YaHei', sans-serif" font-size="10" fill="#245366">今日新增 17 条可追溯学习证据</text>
+
+  <text x="290" y="1097" font-family="'Microsoft YaHei', sans-serif" font-size="9" fill="#8b8379">设计审查稿 · 内容按能力模块组织；来源页码、hash 与 OCR 状态仅在后台 source_refs 中保留。</text>
+  <text x="1736" y="1097" text-anchor="end" font-family="Arial, sans-serif" font-size="9" letter-spacing="1" fill="#8b8379">DESIGN REVIEW / NOT IMPLEMENTED</text>
+</svg>

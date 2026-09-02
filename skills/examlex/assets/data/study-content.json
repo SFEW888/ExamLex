@@ -1,0 +1,156 @@
+{
+  "schema_version": 1,
+  "exam_order": ["CET4", "CET6", "POSTGRADUATE_ENGLISH", "TEM4", "TEM8"],
+  "shared_basics": {
+    "title": "基础知识",
+    "status": "available_all_tracks",
+    "groups": [
+      {
+        "id": "parts-of-speech",
+        "title": "词性",
+        "items": ["名词：可数、不可数与名词短语", "动词：时态、语态与非谓语", "形容词和副词：位置、比较级与搭配", "代词、介词、连词和限定词的句法作用"]
+      },
+      {
+        "id": "sentence-patterns",
+        "title": "句型",
+        "items": ["简单句：主谓、主系表和主谓宾", "并列句：并列关系、转折关系和因果关系", "复合句：定语、名词性和状语从句", "特殊结构：倒装、强调、虚拟和非谓语"]
+      },
+      {
+        "id": "listening-phonology",
+        "title": "语音",
+        "items": ["语音拆分与拼读", "混淆发音区分", "英音与美音差异", "连读与缩读", "重读、弱读和节奏"]
+      }
+    ]
+  },
+  "exams": {
+    "CET4": {
+      "title": "大学英语四级",
+      "short_title": "CET-4",
+      "content_status": "detailed_materials_draft",
+      "content_note": "写作、听力、阅读、翻译、词汇内容来自用户提供资料的整理版；OCR 和题目级来源仍需人工复核。",
+      "target_bands": ["425~499", "500~550", "550+", "600+"],
+      "official_sections": ["writing", "listening", "reading-section-a", "reading-section-b", "reading-section-c", "translation"],
+      "module_order": ["writing", "listening", "reading", "translation", "vocabulary"],
+      "modules": {
+        "writing": {
+          "title": "写作",
+          "source_status": "user_materials_draft",
+          "overview": "围绕题型识别、段落结构、论证展开和语言质量完成从审题到二次写作的闭环。",
+          "lessons": [
+            {"id": "cet4-writing-types", "title": "题型概述与审题", "summary": "识别现象类、观点类和图表/引语类任务，先确定立场、对象和段落职责。", "checkpoints": ["题目关键词", "中心论点", "段落功能"]},
+            {"id": "cet4-writing-structures", "title": "高分结构与论证方式", "summary": "使用总起、展开、收束的稳定结构，结合举例、因果、对比和让步完成论证。", "checkpoints": ["主题句", "证据句", "转折与收束"]},
+            {"id": "cet4-writing-expressions", "title": "高分表达与常用句式", "summary": "积累可替换的连接、观点、因果和建议表达，避免机械套模板。", "checkpoints": ["表达替换", "搭配准确", "句式变化"]},
+            {"id": "cet4-writing-template", "title": "模板结构与二次写作", "summary": "按模板结构图拆出可迁移骨架，再用题目语境重写，不把模板当成成文答案。", "checkpoints": ["首段改写", "主体展开", "版本对照"]}
+          ]
+        },
+        "listening": {
+          "title": "听力",
+          "source_status": "user_materials_draft",
+          "overview": "先建立题型预测和关键词捕捉，再通过精听、听写、跟读处理连读、弱读和信息衔接。",
+          "lessons": [
+            {"id": "cet4-listening-news", "title": "短篇新闻", "summary": "关注事件主体、时间地点、数字和结果，利用标题与首句建立预测。", "checkpoints": ["主语与动作", "数字时间", "结果判断"]},
+            {"id": "cet4-listening-dialogue", "title": "长对话", "summary": "按人物、目的、态度和转折组织信息，识别同义替换和干扰项。", "checkpoints": ["场景预测", "态度语气", "转折后信息"]},
+            {"id": "cet4-listening-passage", "title": "篇章听力", "summary": "先抓主旨和段落关系，再补充因果、例证和结论信息。", "checkpoints": ["主旨", "结构", "细节"]},
+            {"id": "cet4-listening-phonology", "title": "语音拆解与精听", "summary": "练习混淆音、英美音、连读缩读、重读弱读，形成听音辨词和听写证据。", "checkpoints": ["音素拆分", "连读边界", "弱读还原"]}
+          ]
+        },
+        "reading": {
+          "title": "阅读",
+          "source_status": "user_materials_draft",
+          "overview": "先区分题型和考查能力，再用定位、同义改写、长难句拆解和干扰项排除完成证据链。",
+          "lessons": [
+            {"id": "cet4-reading-detail", "title": "仔细阅读", "summary": "按题干对象回到原文定位，区分事实、观点、推断和词义题。", "checkpoints": ["题干对象", "原文定位", "选项核对"]},
+            {"id": "cet4-reading-matching", "title": "长篇阅读", "summary": "用段落主题、关键词和同义替换匹配信息，避免只按顺序扫描。", "checkpoints": ["段落主旨", "关键词簇", "匹配排除"]},
+            {"id": "cet4-reading-vocab", "title": "词汇理解", "summary": "根据词性、搭配、上下文逻辑和语法位置判断词义，记录易混词。", "checkpoints": ["词性", "搭配", "语境"]},
+            {"id": "cet4-reading-sentence", "title": "长难句与推断", "summary": "先找主干，再识别从句、非谓语、转折和指代，最后回到题目要求。", "checkpoints": ["主干", "逻辑词", "推断边界"]}
+          ]
+        },
+        "translation": {
+          "title": "翻译",
+          "source_status": "user_materials_draft",
+          "overview": "将中文信息拆成主题、动作、关系和修饰，再完成词汇选择、句法转换和复核。",
+          "lessons": [
+            {"id": "cet4-translation-overview", "title": "题型概述", "summary": "区分时间、文化、社会和科技主题，先确定句子主干与信息层级。", "checkpoints": ["主题判断", "主干识别", "信息完整"]},
+            {"id": "cet4-translation-tips", "title": "提分锦囊", "summary": "用名词化、被动、定语从句、分词和连接词处理中文意合结构。", "checkpoints": ["词性转换", "逻辑关系", "句式选择"]},
+            {"id": "cet4-translation-phrases", "title": "常用词句与文化表达", "summary": "建立主题词句、固定搭配和中国文化表达的个人库，并与错因绑定。", "checkpoints": ["主题词", "搭配", "回译检查"]}
+          ]
+        },
+        "vocabulary": {
+          "title": "词汇",
+          "source_status": "user_materials_draft",
+          "overview": "按高频、核心、大纲和真题语境分层学习，卡片复习与练习错误互相驱动。",
+          "lessons": [
+            {"id": "cet4-vocab-high-frequency", "title": "高频词汇", "summary": "优先掌握在阅读、听力和翻译中反复出现的词义、词性和搭配。", "checkpoints": ["词义", "词性", "真题语境"]},
+            {"id": "cet4-vocab-core", "title": "核心词汇", "summary": "通过词根、派生、同义替换和易混词建立可检索的词汇网络。", "checkpoints": ["派生", "易混", "搭配"]},
+            {"id": "cet4-vocab-outline", "title": "大纲词汇", "summary": "按主题和掌握度逐步覆盖大纲词，不用一次性堆叠新词量。", "checkpoints": ["新词", "复习", "长期记忆"]},
+            {"id": "cet4-vocab-cards", "title": "真题语境与记忆卡", "summary": "从已确认考点和错误事件生成卡片，先回忆再揭示，按评分安排下次复习。", "checkpoints": ["回忆", "核对", "间隔"]}
+          ]
+        }
+      }
+    },
+    "CET6": {
+      "title": "大学英语六级",
+      "short_title": "CET-6",
+      "content_status": "detailed_materials_draft",
+      "content_note": "六级主教材只整理第 1-297 页；第 298 页起真题精练暂不导入。",
+      "target_bands": ["425~499", "500~550", "550+", "600+"],
+      "official_sections": ["writing", "listening", "reading-section-a", "reading-section-b", "reading-section-c", "translation"],
+      "module_order": ["writing", "listening", "reading", "translation", "vocabulary"],
+      "modules": {
+        "writing": {"title": "写作", "source_status": "user_materials_draft", "overview": "强化观点展开、复杂句式和论证质量，保留模板迁移但减少套话痕迹。", "lessons": [{"id": "cet6-writing-types", "title": "题型概述与立意", "summary": "从题目关系、价值判断和限定条件中提炼中心立场。", "checkpoints": ["限定条件", "立场", "段落职责"]}, {"id": "cet6-writing-argument", "title": "论证展开与反驳", "summary": "综合举例、因果、对比、让步和反驳，保证论据服务观点。", "checkpoints": ["论点", "论据", "反驳"]}, {"id": "cet6-writing-expression", "title": "高分表达与结构迁移", "summary": "用准确搭配、名词化和多样连接提升表达，但不牺牲清晰度。", "checkpoints": ["搭配", "句式", "衔接"]}, {"id": "cet6-writing-revision", "title": "模板改写与高分结构", "summary": "将结构图拆成可变槽位，完成同题 V1/V2 对照和自我复盘。", "checkpoints": ["模板槽位", "语境改写", "二次写作"]}]},
+        "listening": {"title": "听力", "source_status": "user_materials_draft", "overview": "重点处理长对话和篇章中的同义替换、态度转折、数字细节和隐含结论。", "lessons": [{"id": "cet6-listening-news", "title": "短篇新闻", "summary": "用新闻结构预测事件进展，抓取首句、转折和结果。", "checkpoints": ["事件", "时间", "结果"]}, {"id": "cet6-listening-dialogue", "title": "长对话", "summary": "按问题链记录目的、态度、建议和变化，避免被表面关键词诱导。", "checkpoints": ["目的", "态度", "变化"]}, {"id": "cet6-listening-passage", "title": "篇章与隐含信息", "summary": "从段落主旨、例证和结论判断作者意图及推断边界。", "checkpoints": ["主旨", "例证", "结论"]}, {"id": "cet6-listening-phonology", "title": "连读弱读与听写", "summary": "用音素拆分、英美音辨识和影子跟读提升连续语流解析。", "checkpoints": ["连读", "弱读", "影子跟读"]}]},
+        "reading": {"title": "阅读", "source_status": "user_materials_draft", "overview": "把推断、长难句、同义改写和作者态度作为优先能力，所有判断都回到原文证据。", "lessons": [{"id": "cet6-reading-detail", "title": "仔细阅读与推断", "summary": "区分事实、观点、态度和推断，识别题干对象与选项范围。", "checkpoints": ["对象", "证据", "范围"]}, {"id": "cet6-reading-matching", "title": "长篇阅读", "summary": "结合段落主旨、关键词簇和同义替换定位信息，不被局部词汇带偏。", "checkpoints": ["主旨", "替换", "排除"]}, {"id": "cet6-reading-vocab", "title": "词汇理解", "summary": "综合词性、搭配、语气和上下文逻辑处理生词与熟词僻义。", "checkpoints": ["词性", "搭配", "语气"]}, {"id": "cet6-reading-sentence", "title": "长难句与作者态度", "summary": "识别从句嵌套、指代、转折和让步，输出主干和态度证据。", "checkpoints": ["主干", "指代", "态度"]}]},
+        "translation": {"title": "翻译", "source_status": "user_materials_draft", "overview": "处理文化、历史、科技和社会主题中的复杂信息组织和自然英语表达。", "lessons": [{"id": "cet6-translation-overview", "title": "题型概述与主题分析", "summary": "先判主题和语篇关系，再拆分主干、修饰和逻辑。", "checkpoints": ["主题", "主干", "关系"]}, {"id": "cet6-translation-tips", "title": "提分锦囊与句法转换", "summary": "使用名词化、被动、非谓语、定语和状语从句处理复杂中文结构。", "checkpoints": ["转换", "连接", "复核"]}, {"id": "cet6-translation-phrases", "title": "文化主题常用词句", "summary": "按主题整理文化遗产、科技发展、社会治理等常用词句和搭配。", "checkpoints": ["主题词", "搭配", "回译"]}]},
+        "vocabulary": {"title": "词汇", "source_status": "user_materials_draft", "overview": "以核心词和真题语境为主线，重点解决熟词僻义、同义替换、搭配和听音辨词。", "lessons": [{"id": "cet6-vocab-high-frequency", "title": "高频词汇与熟词僻义", "summary": "优先处理阅读和听力高频义项，记录词性变化和语境线索。", "checkpoints": ["义项", "词性", "语境"]}, {"id": "cet6-vocab-core", "title": "核心词汇与易混词", "summary": "通过派生、同义替换、搭配和对比建立核心词网络。", "checkpoints": ["派生", "易混", "搭配"]}, {"id": "cet6-vocab-outline", "title": "大纲词汇覆盖", "summary": "按掌握度和考试优先级分批覆盖大纲词，避免只追求新词数量。", "checkpoints": ["覆盖", "复习", "长期"]}, {"id": "cet6-vocab-cards", "title": "真题语境与记忆卡", "summary": "把错题、薄弱义项和音形混淆点转成可追溯卡片。", "checkpoints": ["回忆", "核对", "评分"]}]}
+      }
+    },
+    "POSTGRADUATE_ENGLISH": {
+      "title": "考研英语",
+      "short_title": "考研英语",
+      "content_status": "foundation_release",
+      "content_note": "当前版本提供官方题型框架、学习计划和训练接口；真题与教材内容待后续资料接入。",
+      "target_bands": ["50+", "70~80", "80+", "90+"],
+      "official_sections": ["use-of-english", "reading-part-a", "reading-part-b", "translation", "writing-part-a", "writing-part-b"],
+      "module_order": ["writing", "reading", "translation", "vocabulary"],
+      "modules": {
+        "writing": {"title": "写作", "source_status": "official_outline_summary", "overview": "覆盖应用文与图表/图画作文的结构、任务完成和语言准确性。", "lessons": [{"id": "pg-writing-foundation", "title": "应用文与大作文框架", "summary": "区分应用文目的、对象和格式，掌握大作文图表/图画的描述与评论结构。", "checkpoints": ["任务", "结构", "语域"]}]},
+        "listening": {"title": "听力（扩展）", "source_status": "extension_not_exam_section", "overview": "考研英语统考笔试不设置四六级式听力，本入口提供基础听力训练，不计入考试结构。", "lessons": [{"id": "pg-listening-extension", "title": "扩展听力", "summary": "用于建立语音和词汇基础，作为阅读与词汇训练的辅助。", "checkpoints": ["音形", "关键词"]}]},
+        "reading": {"title": "阅读与新题型", "source_status": "official_outline_summary", "overview": "覆盖完形、阅读 Part A、Part B 新题型和长难句分析。", "lessons": [{"id": "pg-reading-foundation", "title": "阅读 Part A / Part B", "summary": "围绕定位、推断、段落匹配和逻辑衔接构建训练路线。", "checkpoints": ["定位", "逻辑", "匹配"]}]},
+        "translation": {"title": "翻译", "source_status": "official_outline_summary", "overview": "覆盖英译汉长难句、结构拆分、指代和语篇衔接。", "lessons": [{"id": "pg-translation-foundation", "title": "英译汉与长难句", "summary": "先找主干和逻辑，再处理定语、状语、非谓语和指代。", "checkpoints": ["主干", "修饰", "衔接"]}]},
+        "vocabulary": {"title": "词汇", "source_status": "official_outline_summary", "overview": "按考研语境、熟词僻义、派生和搭配管理词汇。", "lessons": [{"id": "pg-vocab-foundation", "title": "考研词汇与语境", "summary": "建立词义、派生、搭配和真题语境的复习卡片。", "checkpoints": ["义项", "派生", "复习"]}]}
+      }
+    },
+    "TEM4": {
+      "title": "英语专业四级",
+      "short_title": "TEM-4",
+      "content_status": "foundation_release",
+      "content_note": "当前版本按现有考试结构提供功能骨架；专四真题、听写和语言知识资料待后续接入。",
+      "target_bands": ["60~69", "70~79", "80+"],
+      "official_sections": ["dictation", "listening", "language-knowledge", "cloze", "reading", "writing"],
+      "module_order": ["writing", "listening", "reading", "translation", "vocabulary"],
+      "modules": {
+        "writing": {"title": "写作", "source_status": "official_outline_summary", "overview": "覆盖专业四级写作任务、结构、论证和语言质量。", "lessons": [{"id": "tem4-writing-foundation", "title": "写作任务与结构", "summary": "从题目要求、段落职责和论证展开入手，建立限时写作流程。", "checkpoints": ["任务", "结构", "语言"]}]},
+        "listening": {"title": "听力", "source_status": "official_outline_summary", "overview": "覆盖听写、听力理解和讲座/对话类信息捕捉。", "lessons": [{"id": "tem4-listening-foundation", "title": "听写与听力理解", "summary": "训练关键词、连续语流、细节记录和听写后的拼写复核。", "checkpoints": ["关键词", "听写", "复核"]}]},
+        "reading": {"title": "阅读", "source_status": "official_outline_summary", "overview": "覆盖阅读理解、信息定位、推断和篇章结构。", "lessons": [{"id": "tem4-reading-foundation", "title": "阅读与篇章逻辑", "summary": "以段落主旨、证据定位和推断边界组织训练。", "checkpoints": ["主旨", "定位", "推断"]}]},
+        "translation": {"title": "翻译（扩展）", "source_status": "extension_not_exam_section", "overview": "翻译不是当前专四主结构入口，但保留作为专业英语输出和词汇迁移训练。", "lessons": [{"id": "tem4-translation-extension", "title": "专业英语表达", "summary": "把词汇和句型迁移到专业语境，服务写作与阅读输出。", "checkpoints": ["搭配", "句法"]}]},
+        "vocabulary": {"title": "词汇与语言知识", "source_status": "official_outline_summary", "overview": "覆盖语言知识、词汇辨析、搭配和语法选择。", "lessons": [{"id": "tem4-vocab-foundation", "title": "语言知识与词汇辨析", "summary": "把词性、搭配、语法选择和易混词放入同一复习队列。", "checkpoints": ["词性", "搭配", "辨析"]}]}
+      }
+    },
+    "TEM8": {
+      "title": "英语专业八级",
+      "short_title": "TEM-8",
+      "content_status": "foundation_release",
+      "content_note": "当前版本按现有考试结构提供功能骨架；专八真题、翻译和写作资料待后续接入。",
+      "target_bands": ["60~69", "70~79", "80+"],
+      "official_sections": ["listening", "reading", "translation", "writing", "language-knowledge", "proofreading"],
+      "module_order": ["writing", "listening", "reading", "translation", "vocabulary"],
+      "modules": {
+        "writing": {"title": "写作", "source_status": "official_outline_summary", "overview": "覆盖专业八级长篇写作、论证层次、语域和语言准确性。", "lessons": [{"id": "tem8-writing-foundation", "title": "长篇写作与论证", "summary": "从材料理解、观点组织、段落推进和语言复核构建完整写作流程。", "checkpoints": ["材料", "论证", "语域"]}]},
+        "listening": {"title": "听力", "source_status": "official_outline_summary", "overview": "覆盖讲座、采访、新闻和对话中的主旨、细节和推断。", "lessons": [{"id": "tem8-listening-foundation", "title": "讲座与采访听力", "summary": "以结构笔记、态度变化和事实细节为主线训练。", "checkpoints": ["结构", "态度", "细节"]}]},
+        "reading": {"title": "阅读", "source_status": "official_outline_summary", "overview": "覆盖专业篇章、信息定位、推断和篇章衔接。", "lessons": [{"id": "tem8-reading-foundation", "title": "专业篇章阅读", "summary": "处理长篇信息密度、作者态度和跨段落逻辑。", "checkpoints": ["定位", "态度", "逻辑"]}]},
+        "translation": {"title": "翻译", "source_status": "official_outline_summary", "overview": "覆盖中英互译中的语篇组织、术语选择、文化表达和句法转换。", "lessons": [{"id": "tem8-translation-foundation", "title": "专业翻译与语篇", "summary": "从信息分层、术语一致性和句法自然度完成复核。", "checkpoints": ["术语", "结构", "语篇"]}]},
+        "vocabulary": {"title": "词汇与校改", "source_status": "official_outline_summary", "overview": "词汇、语法和校改作为专业八级综合能力的共享底座。", "lessons": [{"id": "tem8-vocab-foundation", "title": "词汇、语法与校改", "summary": "把搭配、词性、语法和篇章错误归因到可复习的能力节点。", "checkpoints": ["搭配", "校改", "复习"]}]}
+      }
+    }
+  }
+}
