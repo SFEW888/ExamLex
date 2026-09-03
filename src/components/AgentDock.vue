@@ -7,11 +7,13 @@ type ModelCapability = { id: string; label: string; level: string; provider?: st
 type AgentRun = { module: string; mode: string; provider?: string | null; model?: string | null; output?: { findings?: string[]; next_action?: string; evidence?: unknown[] }; rag?: { results?: Array<{ source_id: string; title: string; source_status: string; source_type: string; snippet: string }> }; errors?: string[] }
 
 const route = useRoute()
+const EXAM_IDS = ['CET4', 'CET6', 'POSTGRADUATE_ENGLISH', 'TEM4', 'TEM8']
 const open = ref(false)
 const input = ref('')
 const busy = ref(false)
 const result = ref<AgentRun | null>(null)
-const exam = ref('CET4')
+const initialExam = String(route.query.exam || localStorage.getItem('examlex-active-exam') || 'CET4')
+const exam = ref(EXAM_IDS.includes(initialExam) ? initialExam : 'CET4')
 const agentMode = ref('global')
 const selectedModelId = ref('offline')
 const capabilities = ref<ModelCapability[]>([{ id: 'offline', label: 'ExamLex 本地模式', level: '基础', available: true, description: '无需密钥，使用本地证据检索和确定性教练规则。' }])
@@ -69,6 +71,11 @@ function onShortcut(event: KeyboardEvent) {
 }
 
 watch(() => route.path, () => { result.value = null })
+watch(() => route.query.exam, value => {
+  const next = String(value || '')
+  if (EXAM_IDS.includes(next) && next !== exam.value) exam.value = next
+})
+watch(exam, value => localStorage.setItem('examlex-active-exam', value))
 onMounted(() => { loadCapabilities(); window.addEventListener('keydown', onShortcut) })
 onBeforeUnmount(() => window.removeEventListener('keydown', onShortcut))
 </script>

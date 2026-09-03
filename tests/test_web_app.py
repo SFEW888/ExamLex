@@ -5,6 +5,7 @@ import unittest
 from datetime import date
 from http.client import HTTPConnection
 from pathlib import Path
+from urllib.parse import quote
 
 from skills.examlex.scripts.web_app import classify_upload, create_server, today_local
 
@@ -203,6 +204,76 @@ class WebAppTests(unittest.TestCase):
         self.assertEqual(200, status)
         self.assertIn("required_sections", rules["profiles"])
 
+    def test_profile_separates_self_assessment_from_evidence_assessment(self):
+        status, before = self.request("GET", "/api/profile/diagnosis?exam=CET4")
+        self.assertEqual(200, status)
+        self.assertFalse(before["self_assessment"]["configured"])
+        self.assertIsNone(before["self_assessment"]["foundation_level"])
+        self.assertEqual([], before["system_assessment"]["strengths"])
+        self.assertEqual("insufficient_evidence", before["system_assessment"]["status"])
+
+        status, saved = self.request("POST", "/api/profile", {
+            "exam_type": "CET4",
+            "foundation_level": "基础较好",
+            "target_band": "550+",
+            "self_strengths": "词汇，语法",
+            "self_gaps": ["听力连读", "阅读定位"],
+            "daily_time_budget_minutes": 60,
+        })
+        self.assertEqual(200, status)
+        self.assertEqual(["词汇", "语法"], saved["profile"]["self_strengths"])
+
+        status, after = self.request("GET", "/api/profile/diagnosis?exam=CET4")
+        self.assertEqual(200, status)
+        self.assertTrue(after["self_assessment"]["configured"])
+        self.assertEqual("基础较好", after["self_assessment"]["foundation_level"])
+        self.assertEqual(["听力连读", "阅读定位"], after["self_assessment"]["gaps"])
+        self.assertEqual("550+", after["system_assessment"]["target_band"])
+        self.assertEqual("insufficient_evidence", after["system_assessment"]["status"])
+
+        status, _ = self.request("POST", "/api/practice/record", {
+            "exam": "CET4", "module": "reading", "total_items": 10,
+            "correct_items": 8, "duration_minutes": 20,
+        })
+        self.assertEqual(201, status)
+        status, after_one = self.request("GET", "/api/profile/diagnosis?exam=CET4")
+        self.assertEqual(200, status)
+        self.assertEqual("insufficient_evidence", after_one["system_assessment"]["status"])
+        self.assertEqual(0, after_one["system_assessment"]["evidence_records"])
+
+        for index in range(3):
+            status, _ = self.request("POST", "/api/practice/record", {
+                "exam": "CET4", "module": "reading", "total_items": 10,
+                "correct_items": 7 + index, "duration_minutes": 20,
+                "source_status": "simulation_not_official", "title": f"CET4 模拟卷 {index + 1}",
+            })
+            self.assertEqual(201, status)
+        status, with_evidence = self.request("GET", "/api/profile/diagnosis?exam=CET4")
+        self.assertEqual(200, status)
+        self.assertEqual("evidence_based", with_evidence["system_assessment"]["status"])
+        self.assertEqual(3, with_evidence["system_assessment"]["evidence_records"])
+        self.assertTrue(with_evidence["system_assessment"]["assessment_ready"])
+
+    def test_exam_scoped_practice_records_and_agent_context_do_not_overlap(self):
+        for exam in ("CET4", "CET6"):
+            status, _ = self.request("POST", "/api/practice/record", {
+                "exam": exam, "module": "reading", "total_items": 5,
+                "correct_items": 4, "duration_minutes": 10,
+                "source_status": "simulation_not_official", "title": f"{exam} 模拟卷",
+            })
+        status, cet4 = self.request("GET", "/api/practice/records?exam=CET4&kind=simulation")
+        self.assertEqual(200, status)
+        self.assertTrue(all(item["exam"] == "CET4" for item in cet4["records"]))
+        self.assertEqual(1, len(cet4["records"]))
+        status, cet6 = self.request("GET", "/api/practice/records?exam=CET6&kind=simulation")
+        self.assertEqual(200, status)
+        self.assertTrue(all(item["exam"] == "CET6" for item in cet6["records"]))
+        self.assertEqual(1, len(cet6["records"]))
+        status, context = self.request("GET", f"/api/agent/context?exam=CET4&module=reading&q={quote('模拟卷')}")
+        self.assertEqual(200, status)
+        self.assertEqual("CET4", context["exam"])
+        self.assertTrue(all("CET6" not in json.dumps(item, ensure_ascii=False) for item in context["results"]))
+
     def test_profile_plan_errors_and_trends_endpoints(self):
         status, profile = self.request("POST", "/api/profile", {"exam_type": "CET4", "learner_id": "demo", "foundation_level": "基础较好", "target_band": "550+", "daily_time_budget_minutes": 60})
         self.assertEqual(200, status)
@@ -294,10 +365,46 @@ class WebAppTests(unittest.TestCase):
         self.assertEqual(200, status)
         self.assertTrue(errors["top_risks"])
 
+    def test_ai_mock_paper_scope_uses_full_paper_countdown(self):
+        status, created = self.request("POST", "/api/practice/session", {"exam": "CET4", "kind": "ai", "module": "reading", "scope": "full_paper"})
+        self.assertEqual(201, status)
+        self.assertEqual("full_paper", created["session"]["module"])
+        self.assertEqual("countdown", created["session"]["timer_mode"])
+        self.assertGreaterEqual(len(created["session"]["questions"]), 20)
+
     def test_unverified_past_paper_cannot_start_as_official(self):
         status, payload = self.request("POST", "/api/practice/session", {"exam": "CET4", "kind": "past", "module": "reading"})
         self.assertEqual(400, status)
         self.assertIn("verified", payload["error"])
+
+    def test_full_paper_sources_use_exam_timer_and_uploaded_module_uses_countup(self):
+        store = self.server.store
+        store.state["past_paper_candidates"].append({"id": "past-cet4-1", "upload_id": "source-1", "exam": "CET4", "status": "verified_official"})
+        store.state["simulations"].append({"id": "mock-cet4-1", "upload_id": "source-2", "exam": "CET4", "module": "reading", "status": "ready_private"})
+        status, past = self.request("POST", "/api/practice/session", {"exam": "CET4", "kind": "past", "module": "reading", "source_id": "past-cet4-1"})
+        self.assertEqual(201, status)
+        self.assertEqual("full_paper", past["session"]["module"])
+        self.assertEqual("countdown", past["session"]["timer_mode"])
+        self.assertEqual(20, len(past["session"]["questions"]))
+        status, mock = self.request("POST", "/api/practice/session", {"exam": "CET4", "kind": "upload", "module": "reading", "source_id": "mock-cet4-1"})
+        self.assertEqual(201, status)
+        self.assertEqual("full_paper", mock["session"]["module"])
+        self.assertEqual("countdown", mock["session"]["timer_mode"])
+
+        boundary = "----ExamLexModuleUpload"
+        raw = (f"--{boundary}\r\nContent-Disposition: form-data; name=\"file\"; filename=\"阅读专项练习.md\"\r\nContent-Type: text/markdown\r\n\r\n1. The evidence is ____ .\nA. clear\nB. random\nC. weak\nD. absent\r\n--{boundary}--\r\n").encode()
+        status, uploaded = self.request("POST", "/api/upload?exam=CET4&module=reading", headers={"Content-Type": f"multipart/form-data; boundary={boundary}"}, raw=raw)
+        self.assertEqual(201, status)
+        upload_id = uploaded["upload"]["id"]
+        self.assertEqual("module_practice_upload", uploaded["upload"]["classification"]["category"])
+        self.assertEqual("reading", uploaded["upload"]["classification"]["target_module"])
+        status, _ = self.request("POST", "/api/pipeline/run", {"upload_id": upload_id, "action": "auto"})
+        self.assertEqual(200, status)
+        queue = next(item for item in store.state["module_content_queue"] if item["upload_id"] == upload_id)
+        status, session = self.request("POST", "/api/practice/session", {"exam": "CET4", "kind": "upload", "module": "reading", "source_id": queue["id"]})
+        self.assertEqual(201, status)
+        self.assertEqual("reading", session["session"]["module"])
+        self.assertEqual("countup", session["session"]["timer_mode"])
 
 
 if __name__ == "__main__":

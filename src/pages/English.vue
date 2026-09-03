@@ -27,6 +27,7 @@ const initialExam = String(route.query.exam || localStorage.getItem('examlex-act
 const exam = ref(FALLBACK_EXAMS.some(item => item.id === initialExam) ? initialExam : 'CET4')
 const examOptions = ref<ExamOption[]>([...FALLBACK_EXAMS])
 const loadingExams = ref(false)
+const englishSystemStats = ref<Record<string, number | string | null>>({})
 
 const selectedExam = computed(() =>
   examOptions.value.find(item => item.id === exam.value) || FALLBACK_EXAMS[0]
@@ -52,6 +53,16 @@ async function loadExamOptions() {
   }
 }
 
+async function loadEnglishStats() {
+  try {
+    const response = await fetch(`/api/profile/diagnosis?exam=${encodeURIComponent(exam.value)}`)
+    const payload = response.ok ? await response.json() : null
+    englishSystemStats.value = payload?.system_stats || {}
+  } catch {
+    englishSystemStats.value = {}
+  }
+}
+
 function persistExam(value: string) {
   if (!examOptions.value.some(item => item.id === value)) return
   localStorage.setItem('examlex-active-exam', value)
@@ -60,8 +71,12 @@ function persistExam(value: string) {
   }
 }
 
-onMounted(loadExamOptions)
+onMounted(() => {
+  void loadExamOptions()
+  void loadEnglishStats()
+})
 watch(exam, persistExam)
+watch(exam, () => { void loadEnglishStats() })
 watch(() => route.query.exam, value => {
   if (typeof value === 'string' && examOptions.value.some(item => item.id === value) && value !== exam.value) {
     exam.value = value
@@ -93,8 +108,8 @@ watch(() => route.query.exam, value => {
         </label>
       </header>
 
-      <AiMasteryRadar />
-      <SubjectPanel subject-id="english" :hide-mastery="true" />
+      <AiMasteryRadar :exam="exam" />
+      <SubjectPanel subject-id="english" :hide-mastery="true" :exam="exam" :system-stats="englishSystemStats" />
     </template>
 
     <div v-else class="card text-center py-16 text-slate-400">

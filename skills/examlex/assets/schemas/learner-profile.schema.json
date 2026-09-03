@@ -24,16 +24,18 @@
       ]
     },
     "foundation_level": {
-      "type": "string",
+      "type": ["string", "null"],
       "enum": [
+        null,
         "基础偏弱",
         "中等基础",
         "基础较好"
       ]
     },
     "target_band": {
-      "type": "string",
+      "type": ["string", "null"],
       "enum": [
+        null,
         "425~499",
         "500~550",
         "550+",
@@ -52,6 +54,19 @@
     },
     "exam_date": {
       "type": "string"
+    },
+    "self_strengths": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 80 },
+      "maxItems": 8
+    },
+    "self_gaps": {
+      "type": "array",
+      "items": { "type": "string", "maxLength": 80 },
+      "maxItems": 8
+    },
+    "self_assessment_updated_at": {
+      "type": ["string", "null"]
     }
   }
 }

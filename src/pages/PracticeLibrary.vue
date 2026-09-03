@@ -1,28 +1,30 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { AlertTriangle, ArrowRight, FileCheck2, FileText, RefreshCw, ShieldCheck, Upload, Sparkles, Workflow } from '@lucide/vue'
-import { useAppStore } from '../stores/app'
 import Modal from '../components/Modal.vue'
 
 type LibraryKind = 'past' | 'mock'
 type UploadItem = { id?: string; upload_id?: string; filename?: string; title?: string; category?: string; status?: string; source_status?: string; created_at?: string; size_bytes?: number; module?: string; pipeline_stage?: string }
 
 const props = defineProps<{ kind: LibraryKind }>()
-const store = useAppStore()
+const route = useRoute()
 const router = useRouter()
-const exam = ref(localStorage.getItem('examlex-active-exam') || 'CET4')
+const initialExam = String(route.query.exam || localStorage.getItem('examlex-active-exam') || 'CET4')
+const exam = ref(initialExam)
 const exams = ref<{ id: string; title: string; short_title?: string }[]>([])
 const uploads = ref<UploadItem[]>([])
 const candidates = ref<UploadItem[]>([])
 const simulations = ref<UploadItem[]>([])
 const pipelines = ref<any[]>([])
+const officialRecords = ref<any[]>([])
+const simulationRecords = ref<any[]>([])
 const loading = ref(true)
 const uploading = ref(false)
 const message = ref('')
 const fileInput = ref<HTMLInputElement>()
 const showAiGenerator = ref(false)
-const aiForm = ref({ module: 'reading', difficulty: 'standard', questionCount: 5, focus: '' })
+const aiForm = ref({ difficulty: 'standard', questionCount: 20, focus: '' })
 const showVerify = ref(false)
 const verifyTarget = ref<UploadItem | null>(null)
 const verifyForm = ref({ sourceName: '', sourceUrl: '', note: '' })
@@ -32,21 +34,31 @@ const title = computed(() => isPast.value ? '历年真题' : '模拟特训')
 const subtitle = computed(() => isPast.value
   ? '只进入来源已核验的官方题目；上传材料先隔离，核验前不会发布为真题。'
   : '上传题目或使用 ExamLex 生成的训练材料，所有内容明确标记为非官方模拟。')
-const recordedExams = computed(() => store.exams.filter(item => item.subjectId === 'english').slice().reverse())
+const recordedExams = computed(() => officialRecords.value.slice().reverse().map(item => ({
+  id: item.id,
+  title: item.title || `${item.date || '未标注日期'} 官方真题`,
+  score: item.correct_items || 0,
+  totalScore: item.total_items || 0,
+  date: item.date || '',
+})))
 
 async function load() {
   loading.value = true
   message.value = ''
   try {
-    const [directory, library] = await Promise.all([
+    const [directory, library, official, simulation] = await Promise.all([
       fetch('/api/exams').then(r => r.ok ? r.json() : null),
-      fetch(`/api/uploads?exam=${encodeURIComponent(exam.value)}`).then(r => r.ok ? r.json() : null)
+      fetch(`/api/uploads?exam=${encodeURIComponent(exam.value)}`).then(r => r.ok ? r.json() : null),
+      fetch(`/api/practice/records?exam=${encodeURIComponent(exam.value)}&kind=official`).then(r => r.ok ? r.json() : null),
+      fetch(`/api/practice/records?exam=${encodeURIComponent(exam.value)}&kind=simulation`).then(r => r.ok ? r.json() : null)
     ])
     if (directory?.exams) exams.value = directory.exams
     uploads.value = library?.uploads || []
     candidates.value = library?.past_paper_candidates || []
     simulations.value = library?.simulations || []
     pipelines.value = library?.pipelines || []
+    officialRecords.value = official?.records || []
+    simulationRecords.value = simulation?.records || []
   } catch {
     message.value = '本地题源服务暂不可用，仍可查看已记录的学习结果。'
   } finally { loading.value = false }
@@ -116,14 +128,15 @@ function startSession(kind: string, module = 'reading', sourceId = '', options: 
 }
 
 function openAiGenerator() {
-  aiForm.value = { module: 'reading', difficulty: 'standard', questionCount: 5, focus: '' }
+  aiForm.value = { difficulty: 'standard', questionCount: 20, focus: '' }
   showAiGenerator.value = true
 }
 
 function generateSimulation() {
   showAiGenerator.value = false
-  startSession('ai', aiForm.value.module, '', {
-    question_count: String(Math.min(20, Math.max(1, aiForm.value.questionCount))),
+  startSession('ai', 'reading', '', {
+    scope: 'full_paper',
+    question_count: String(Math.min(60, Math.max(20, aiForm.value.questionCount))),
     difficulty: aiForm.value.difficulty,
     focus: aiForm.value.focus.trim()
   })
@@ -131,7 +144,13 @@ function generateSimulation() {
 
 onMounted(load)
 watch(exam, load)
-watch(exam, value => localStorage.setItem('examlex-active-exam', value))
+watch(exam, value => {
+  localStorage.setItem('examlex-active-exam', value)
+  if (route.query.exam !== value) router.replace({ query: { ...route.query, exam: value } })
+})
+watch(() => route.query.exam, value => {
+  if (typeof value === 'string' && value !== exam.value) exam.value = value
+})
 watch(() => props.kind, load)
 </script>
 
@@ -197,6 +216,10 @@ watch(() => props.kind, load)
         <div v-if="!simulations.length" class="py-8 text-center text-xs text-slate-400">暂无模拟题。上传文件后会出现在这里，并标记为“非官方模拟”。</div>
         <div v-for="item in simulations" :key="item.id" class="flex items-center gap-3 border-t border-slate-100 dark:border-slate-700 py-3 text-sm"><FileText class="text-slate-400 shrink-0" :size="16" /><span class="flex-1 truncate">{{ item.filename || item.title || '未命名模拟题' }}</span><span class="rounded-full bg-violet-50 px-2 py-1 text-[10px] text-violet-600 dark:bg-violet-900/30 dark:text-violet-300">非官方模拟</span><span v-if="item.status !== 'ready_private'" class="text-[10px] text-amber-600">{{ item.status || '待处理' }}</span><button v-if="item.status !== 'ready_private'" class="btn-ghost !py-1 !text-xs" @click="runPipeline(item.upload_id)"><Workflow :size="13" />推进解析</button><button class="btn-primary !py-1 !text-xs" :disabled="item.status !== 'ready_private'" @click="startSession('upload', item.module || 'reading', item.id)">开始训练</button><ArrowRight class="text-slate-300" :size="15" /></div>
       </section>
+      <section v-if="simulationRecords.length" class="card space-y-3">
+        <div class="flex items-center gap-2"><FileCheck2 class="text-violet-500" :size="18" /><h2 class="section-title !mb-0">已完成模拟卷</h2><span class="text-xs text-slate-400">{{ simulationRecords.length }} 条</span></div>
+        <div v-for="item in simulationRecords.slice().reverse()" :key="item.id" class="flex items-center gap-3 border-t border-slate-100 dark:border-slate-700 py-2.5 text-sm"><span class="flex-1 truncate">{{ item.title || `${item.date || '未标注日期'} 模拟卷` }}</span><span class="font-semibold">{{ item.correct_items || 0 }}/{{ item.total_items || 0 }}</span><span class="text-xs text-slate-400">{{ item.date || '' }}</span><span class="rounded-full bg-violet-50 px-2 py-1 text-[10px] text-violet-600 dark:bg-violet-900/30 dark:text-violet-300">非官方模拟</span></div>
+      </section>
       <section v-if="uploads.length" class="card space-y-2"><h2 class="section-title">最近上传</h2><p class="text-xs text-slate-400">所有文件都按 ExamLex pipeline 处理：隔离 → 分类 → 提取 → 蒸馏 → 校验 → 提交。任一阶段未通过都不会伪装成可用题源。</p><div v-for="item in uploads" :key="item.id" class="flex items-center gap-3 border-t border-slate-100 dark:border-slate-700 py-2.5 text-xs"><span class="flex-1 truncate">{{ item.filename || item.title }}</span><span class="text-slate-400">{{ item.status || '隔离中' }}</span><span class="text-slate-400">{{ pipelineFor(item.id)?.current_stage || 'extract' }}</span><button class="btn-ghost !py-1 !text-[10px]" @click="runPipeline(item.id)">运行 pipeline</button></div></section>
     </template>
 
@@ -204,11 +227,10 @@ watch(() => props.kind, load)
 
     <Modal title="AI 生成模拟题" :show="showAiGenerator" @close="showAiGenerator = false">
       <div class="space-y-3">
-        <p class="text-xs text-slate-500 dark:text-slate-400">生成内容仅用于私人训练，明确标记为非官方模拟。题目会按考试和专项要求生成，并在提交后进入错题与记忆卡流程。</p>
-        <div><label class="label">专项</label><select v-model="aiForm.module" class="input"><option value="writing">写作</option><option value="listening">听力</option><option value="reading">阅读</option><option value="translation">翻译</option><option value="vocabulary">词汇</option><option value="basics">基础知识</option></select></div>
+        <p class="text-xs text-slate-500 dark:text-slate-400">生成内容仅用于私人训练，明确标记为非官方模拟。将按当前考试生成一份整卷模拟，开始后进入倒计时，提交后进入 AI 批改、错题与记忆卡流程。</p>
         <div class="grid grid-cols-2 gap-3">
           <div><label class="label">难度</label><select v-model="aiForm.difficulty" class="input"><option value="basic">基础</option><option value="standard">标准</option><option value="advanced">进阶</option></select></div>
-          <div><label class="label">题目数量</label><input v-model.number="aiForm.questionCount" type="number" min="1" max="20" class="input" /></div>
+          <div><label class="label">题目数量</label><input v-model.number="aiForm.questionCount" type="number" min="20" max="60" class="input" /></div>
         </div>
         <div><label class="label">生成要求（可选）</label><textarea v-model="aiForm.focus" rows="3" class="input" placeholder="例如：重点训练定位证据和同义替换"></textarea></div>
       </div>

@@ -1,21 +1,27 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAppStore } from '../stores/app'
 import { BUILTIN_TEMPLATES } from '../data/englishTemplates'
 import { uid } from '../utils/date'
 import Modal from '../components/Modal.vue'
+import { FileCheck2, FileText, Sparkles, Upload } from '@lucide/vue'
 
 type Lesson = { id: string; title: string; summary: string; checkpoints?: string[] }
 type ModuleContent = { title: string; overview: string; source_status?: string; lessons?: Lesson[] }
+type PracticeSource = { id?: string; upload_id?: string; filename?: string; title?: string; module?: string; target_module?: string; content_kind?: string; status?: string; source_status?: string }
 
 const route = useRoute()
+const router = useRouter()
 const store = useAppStore()
 const exam = ref(String(route.query.exam || localStorage.getItem('examlex-active-exam') || 'CET4'))
 const content = ref<ModuleContent | null>(null)
 const loading = ref(true)
 const exams = ref<{ id: string; title: string; short_title?: string }[]>([])
-const moduleQueue = ref<Array<{ id: string; upload_id?: string; target_module?: string; content_kind?: string; status?: string }>>([])
+const moduleQueue = ref<PracticeSource[]>([])
+const pastPaperSources = ref<PracticeSource[]>([])
+const simulationSources = ref<PracticeSource[]>([])
+const uploadFiles = ref<Record<string, PracticeSource>>({})
 const moduleKey = computed(() => String(route.params.module || 'writing'))
 const labels: Record<string, string> = { writing: '写作', listening: '听力', reading: '阅读', translation: '翻译', vocabulary: '词汇', basics: '基础知识' }
 const moduleStages: Record<string, string[]> = {
@@ -71,6 +77,102 @@ function generateTemplates() {
   if (added) store.save()
 }
 
+type PracticeChoice = 'ai' | 'past' | 'simulation' | 'upload'
+const showPracticeChooser = ref(false)
+const practiceChoice = ref<PracticeChoice>('ai')
+const selectedPracticeSource = ref('')
+const practiceForm = ref({ difficulty: 'standard', questionCount: 5, focus: '' })
+const practiceFileInput = ref<HTMLInputElement>()
+const uploadingPractice = ref(false)
+const uploadMessage = ref('')
+
+const practiceChoiceMeta: Array<{ id: PracticeChoice; title: string; description: string }> = [
+  { id: 'ai', title: 'AI 模拟出题', description: '结合当前考试、专项与 ExamLex RAG 资料生成，非官方。' },
+  { id: 'past', title: '官方真题整卷', description: '已核验的历年真题，按考试整卷进入并启动倒计时。' },
+  { id: 'simulation', title: '模拟题整卷', description: '已通过 pipeline 的私有模拟卷，整卷倒计时，非官方。' },
+  { id: 'upload', title: '上传的专项试题', description: '你上传并完成解析校验的专项题，按来源回溯。' },
+]
+
+const selectedSources = computed(() => {
+  if (practiceChoice.value === 'past') return pastPaperSources.value
+  if (practiceChoice.value === 'simulation') return simulationSources.value
+  if (practiceChoice.value === 'upload') return moduleQueue.value.filter(item => ['ready_private', 'committed'].includes(String(item.status || '')))
+  return []
+})
+
+function openPracticeChooser() {
+  practiceChoice.value = 'ai'
+  selectedPracticeSource.value = ''
+  practiceForm.value = { difficulty: 'standard', questionCount: 5, focus: '' }
+  uploadMessage.value = ''
+  showPracticeChooser.value = true
+}
+
+function choosePracticeSource(choice: PracticeChoice) {
+  practiceChoice.value = choice
+  selectedPracticeSource.value = ''
+  if (choice !== 'ai' && selectedSources.value.length) selectedPracticeSource.value = String(selectedSources.value[0].id || selectedSources.value[0].upload_id || '')
+}
+
+function beginPractice() {
+  if (practiceChoice.value === 'ai') {
+    showPracticeChooser.value = false
+    routerPushPractice('ai', '', {
+      question_count: String(Math.min(20, Math.max(1, practiceForm.value.questionCount))),
+      difficulty: practiceForm.value.difficulty,
+      focus: practiceForm.value.focus.trim(),
+    })
+    return
+  }
+  if (!selectedPracticeSource.value) return
+  showPracticeChooser.value = false
+  const kind = practiceChoice.value === 'past' ? 'past' : practiceChoice.value === 'simulation' ? 'upload' : 'upload'
+  routerPushPractice(kind, selectedPracticeSource.value)
+}
+
+function routerPushPractice(kind: string, sourceId = '', options: Record<string, string> = {}) {
+  router.push({ path: '/practice/session', query: { exam: exam.value, kind, module: moduleKey.value, source_id: sourceId, ...options } })
+}
+
+async function uploadPracticeFile(file?: File) {
+  if (!file || uploadingPractice.value) return
+  uploadingPractice.value = true
+  uploadMessage.value = ''
+  try {
+    const body = new FormData()
+    body.append('file', file)
+    const response = await fetch(`/api/upload?exam=${encodeURIComponent(exam.value)}&module=${encodeURIComponent(moduleKey.value)}`, { method: 'POST', body })
+    const payload = await response.json().catch(() => ({}))
+    if (!response.ok) throw new Error(payload.error || '上传失败')
+    const uploadId = String(payload.upload?.id || '')
+    if (uploadId) {
+      const pipelineResponse = await fetch('/api/pipeline/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ upload_id: uploadId, action: 'auto' }) })
+      const pipeline = await pipelineResponse.json().catch(() => ({}))
+      if (!pipelineResponse.ok) throw new Error(pipeline.error || '解析失败')
+      if (pipeline.pipeline?.current_stage !== 'complete') {
+        uploadMessage.value = pipeline.pipeline?.errors?.[0] || '文件已隔离，等待可用的文本解析或校验后才能开始训练。'
+        await load()
+        practiceChoice.value = 'upload'
+        return
+      }
+    }
+    uploadMessage.value = '文件已完成隔离解析与校验，请在下方选择它开始训练。'
+    await load()
+    practiceChoice.value = 'upload'
+    const match = moduleQueue.value.find(item => item.upload_id === uploadId && ['ready_private', 'committed'].includes(String(item.status || '')))
+    if (match) selectedPracticeSource.value = String(match.id || match.upload_id || '')
+  } catch (error: any) {
+    uploadMessage.value = error?.message || '上传失败，请重试。'
+  } finally {
+    uploadingPractice.value = false
+    if (practiceFileInput.value) practiceFileInput.value.value = ''
+  }
+}
+
+function onPracticeFileChange(event: Event) {
+  uploadPracticeFile((event.target as HTMLInputElement).files?.[0])
+}
+
 async function load() {
   loading.value = true
   try {
@@ -86,7 +188,16 @@ async function load() {
       content.value = payload.modules?.[moduleKey.value] || null
     }
     const uploads = await fetch(`/api/uploads?exam=${encodeURIComponent(exam.value)}`).then(r => r.json()).catch(() => null)
-    moduleQueue.value = (uploads?.module_content_queue || []).filter((item: any) => item.target_module === moduleKey.value)
+    uploadFiles.value = Object.fromEntries((uploads?.uploads || []).map((item: PracticeSource) => [String(item.id), item]))
+    moduleQueue.value = (uploads?.module_content_queue || [])
+      .filter((item: PracticeSource) => item.target_module === moduleKey.value)
+      .map((item: PracticeSource) => ({ ...item, filename: uploadFiles.value[String(item.upload_id)]?.filename }))
+    pastPaperSources.value = (uploads?.past_paper_candidates || [])
+      .filter((item: PracticeSource) => item.status === 'verified_official')
+      .map((item: PracticeSource) => ({ ...item, filename: item.filename || uploadFiles.value[String(item.upload_id)]?.filename }))
+    simulationSources.value = (uploads?.simulations || [])
+      .filter((item: PracticeSource) => item.status === 'ready_private')
+      .map((item: PracticeSource) => ({ ...item, filename: item.filename || uploadFiles.value[String(item.upload_id)]?.filename }))
   } catch (error: any) {
     console.error(error)
   } finally { loading.value = false }
@@ -108,7 +219,7 @@ watch(exam, value => localStorage.setItem('examlex-active-exam', value))
       <select v-model="exam" class="input !w-auto min-w-36">
         <option v-for="item in exams" :key="item.id" :value="item.id">{{ item.short_title || item.title }}</option>
       </select>
-      <RouterLink class="btn-primary shrink-0" :to="{ path: '/practice/session', query: { exam, kind: 'module', module: moduleKey } }">开始专项训练</RouterLink>
+      <button class="btn-primary shrink-0" type="button" @click="openPracticeChooser">开始专项训练</button>
     </div>
 
     <div v-if="loading" class="card py-12 text-center text-sm text-slate-400">正在读取教材内容…</div>
@@ -149,10 +260,11 @@ watch(exam, value => localStorage.setItem('examlex-active-exam', value))
 
       <section v-if="moduleQueue.length" class="card space-y-2">
         <div class="flex items-center justify-between"><div><div class="section-title !mb-0">已分流到本专项的资料</div><p class="text-[10px] text-slate-400 mt-1">上传内容仍处于隔离/草稿状态，确认后可进入专项训练。</p></div><span class="text-xs text-slate-400">{{ moduleQueue.length }} 条</span></div>
-        <div v-for="item in moduleQueue" :key="item.id" class="flex items-center gap-3 border-t border-slate-100 dark:border-slate-700 pt-2 text-xs"><span class="flex-1 truncate">{{ item.content_kind || '专项内容' }}</span><span class="text-slate-400">{{ item.status || 'draft' }}</span><RouterLink class="btn-primary !py-1 !text-[10px]" :to="{ path: '/practice/session', query: { exam, kind: 'upload', module: moduleKey, source_id: item.upload_id } }">开始训练</RouterLink></div>
+        <div v-for="item in moduleQueue" :key="item.id" class="flex items-center gap-3 border-t border-slate-100 dark:border-slate-700 pt-2 text-xs"><span class="flex-1 truncate">{{ item.filename || item.content_kind || '专项内容' }}</span><span class="text-slate-400">{{ item.status || 'draft' }}</span><button class="btn-primary !py-1 !text-[10px]" type="button" :disabled="!['ready_private', 'committed'].includes(String(item.status || ''))" @click="selectedPracticeSource = String(item.id || item.upload_id || ''); practiceChoice = 'upload'; showPracticeChooser = true">开始训练</button></div>
       </section>
 
-      <div v-else class="space-y-3">
+      <!-- 作文模板是独立标签内容，不能在“写作路线”下重复出现。 -->
+      <div v-if="moduleKey === 'writing' && writingTab === 'templates'" class="space-y-3">
         <div class="card flex items-center justify-between gap-3 flex-wrap">
           <div><div class="section-title !mb-1">作文模板库</div><p class="text-xs text-slate-400">模板只提供可迁移结构，完成题目后请进行二次改写。</p></div>
           <div class="flex gap-2"><button class="btn-ghost !py-1.5 text-xs" @click="generateTemplates">生成内置模板</button><button class="btn-primary !py-1.5 text-xs" @click="openTemplate()">+ 自定义模板</button></div>
@@ -171,6 +283,30 @@ watch(exam, value => localStorage.setItem('examlex-active-exam', value))
 
       <div class="text-xs text-slate-400">全局 Agent 可从右下角打开，会自动识别当前模块。</div>
     </template>
+
+    <Modal title="选择专项训练题源" :show="showPracticeChooser" @close="showPracticeChooser = false">
+      <div class="space-y-4">
+        <p class="text-xs text-slate-500 dark:text-slate-400">先选择题源，再进入答题页。不同考试和专项的真题、模拟题与上传材料相互隔离。</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          <button v-for="item in practiceChoiceMeta" :key="item.id" type="button" class="text-left rounded-xl border p-3 transition-colors" :class="practiceChoice === item.id ? 'border-primary-400 bg-primary-50 dark:bg-primary-900/20' : 'border-slate-200 dark:border-slate-700 hover:border-primary-200'" @click="choosePracticeSource(item.id)">
+            <div class="flex items-center gap-2 text-sm font-semibold"><Sparkles v-if="item.id === 'ai'" :size="15" class="text-violet-500" /><FileCheck2 v-else-if="item.id === 'past'" :size="15" class="text-emerald-500" /><FileText v-else-if="item.id === 'simulation'" :size="15" class="text-sky-500" /><Upload v-else :size="15" class="text-amber-500" />{{ item.title }}</div>
+            <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1.5 leading-5">{{ item.description }}</p>
+          </button>
+        </div>
+        <template v-if="practiceChoice === 'ai'">
+          <div class="grid grid-cols-2 gap-3"><div><label class="label">难度</label><select v-model="practiceForm.difficulty" class="input"><option value="basic">基础</option><option value="standard">标准</option><option value="advanced">进阶</option></select></div><div><label class="label">题目数量</label><input v-model.number="practiceForm.questionCount" class="input" type="number" min="1" max="20" /></div></div>
+          <div><label class="label">生成要求（可选）</label><textarea v-model="practiceForm.focus" class="input" rows="3" placeholder="例如：重点训练定位证据和同义替换"></textarea></div>
+        </template>
+        <template v-else>
+          <div v-if="practiceChoice === 'upload'" class="flex items-center justify-between gap-3 rounded-lg border border-dashed border-primary-200 bg-primary-50/60 dark:bg-primary-900/10 px-3 py-3"><div class="text-xs text-slate-500 dark:text-slate-300">可直接上传当前{{ labels[moduleKey] || '专项' }}题目；系统会先隔离解析、校验，再允许开始训练。</div><button class="btn-ghost !py-1.5 !text-xs shrink-0" type="button" :disabled="uploadingPractice" @click="practiceFileInput?.click"><Upload :size="14" />{{ uploadingPractice ? '解析中…' : '上传专项试题' }}</button></div>
+          <div v-if="uploadMessage" class="rounded-lg bg-sky-50 dark:bg-sky-900/20 px-3 py-2 text-xs text-sky-700 dark:text-sky-300">{{ uploadMessage }}</div>
+          <div v-if="selectedSources.length"><label class="label">选择{{ practiceChoice === 'past' ? '真题' : practiceChoice === 'simulation' ? '模拟卷' : '上传试题' }}</label><select v-model="selectedPracticeSource" class="input"><option v-for="item in selectedSources" :key="item.id || item.upload_id" :value="item.id || item.upload_id">{{ item.filename || item.title || item.content_kind || '未命名题源' }}</option></select></div>
+          <div v-else class="rounded-lg bg-slate-50 dark:bg-slate-700/40 px-3 py-3 text-xs text-slate-500 dark:text-slate-300">当前{{ practiceChoice === 'past' ? '专项暂无已核验真题' : practiceChoice === 'simulation' ? '专项暂无已通过校验的模拟卷' : '暂无已完成解析校验的上传试题' }}。请先到对应栏目上传或推进 pipeline。</div>
+        </template>
+      </div>
+      <template #footer><button class="btn-ghost" type="button" @click="showPracticeChooser = false">取消</button><button class="btn-primary" type="button" :disabled="practiceChoice !== 'ai' && !selectedPracticeSource" @click="beginPractice">进入训练</button></template>
+    </Modal>
+    <input ref="practiceFileInput" type="file" class="hidden" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt,.md,.markdown,image/*" @change="onPracticeFileChange" />
 
     <Modal title="作文模板" :show="showTemplate" @close="showTemplate = false">
       <div class="space-y-3">

@@ -28,7 +28,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, unquote, urlparse
 
-from .common import ABILITY_TREE, ALL_EXAMS, ERROR_TAG_TO_ABILITY, atomic_save_data, load_data, target_bands_for, validate_error_tags
+from .common import ABILITY_TREE, ALL_EXAMS, ERROR_TAG_TO_ABILITY, atomic_save_data, load_data, validate_error_tags
 from .analyze_trends import analyze_trends
 from .generate_daily_plan import generate_daily_plan
 from .update_ability_profile import update_ability_profile
@@ -138,8 +138,37 @@ def default_cards(exam: str) -> list[dict[str, Any]]:
 
 
 def default_profile(exam: str) -> dict[str, Any]:
-    bands = sorted(target_bands_for(exam), key=lambda value: ("+" not in value, value))
-    return {"learner_id": "local-learner", "exam_type": exam, "foundation_level": "中等基础", "target_band": bands[0] if bands else "425~499", "daily_time_budget_minutes": 90}
+    # Do not present a guessed level or target as the learner's own assessment.
+    # The planner can still use the time budget until the learner completes the
+    # profile form; level/target remain explicitly unset in that state.
+    return {
+        "learner_id": "local-learner",
+        "exam_type": exam,
+        "foundation_level": None,
+        "target_band": None,
+        "daily_time_budget_minutes": 90,
+        "self_strengths": [],
+        "self_gaps": [],
+        "self_assessment_updated_at": None,
+    }
+
+
+def _profile_bullets(value: Any) -> list[str]:
+    """Normalize self-reported strengths/gaps without storing unbounded text."""
+    if isinstance(value, str):
+        values = re.split(r"[,，;；\r\n]+", value)
+    elif isinstance(value, list):
+        values = value
+    else:
+        values = []
+    result: list[str] = []
+    for item in values:
+        text = str(item).strip()
+        if text and text not in result:
+            result.append(text[:80])
+        if len(result) >= 8:
+            break
+    return result
 
 
 def default_ability() -> dict[str, Any]:
@@ -429,6 +458,22 @@ class WebStore:
     def ledger(self, exam: str | None = None) -> list[dict[str, Any]]:
         return [item for item in self.state["practice"] if exam is None or item.get("exam") == exam]
 
+    def practice_records(self, exam: str, kind: str = "all") -> list[dict[str, Any]]:
+        """Return practice records for one exam and an explicit source boundary."""
+        statuses = {
+            "official": {"verified_official"},
+            "simulation": {"simulation_not_official", "ai_generated_simulation"},
+            "all": None,
+        }
+        selected = statuses.get(str(kind or "all").lower())
+        if selected is None and str(kind or "all").lower() not in statuses:
+            raise ValueError("kind must be official, simulation or all")
+        return [
+            dict(item)
+            for item in self.ledger(validate_exam(exam))
+            if selected is None or item.get("source_status") in selected
+        ]
+
     def error_summary(self, exam: str) -> dict[str, Any]:
         by_tag: dict[str, dict[str, Any]] = {}
         for record in self.ledger(exam):
@@ -457,9 +502,50 @@ class WebStore:
         value = validate_exam(exam)
         self.ensure_exam_state(value)
         profile = dict(self.state["profiles"][value])
-        mastery = self.mastery(value)
-        risks = self.error_summary(value)["top_risks"]
+        self_assessment_configured = bool(
+            profile.get("self_assessment_updated_at")
+            and profile.get("foundation_level")
+            and profile.get("target_band")
+        )
+        self_assessment = {
+            "configured": self_assessment_configured,
+            "foundation_level": profile.get("foundation_level") if self_assessment_configured else None,
+            "target_band": profile.get("target_band") if self_assessment_configured else None,
+            "strengths": _profile_bullets(profile.get("self_strengths")),
+            "gaps": _profile_bullets(profile.get("self_gaps")),
+            "daily_time_budget_minutes": profile.get("daily_time_budget_minutes"),
+            "updated_at": profile.get("self_assessment_updated_at"),
+        }
         ledger = self.ledger(value)
+        assessment_source_statuses = {"verified_official", "simulation_not_official", "ai_generated_simulation"}
+        assessment_records = [item for item in ledger if item.get("source_status") in assessment_source_statuses]
+        assessment_rounds = len(assessment_records)
+        assessment_required_rounds = 3
+        assessment_ready = assessment_rounds >= assessment_required_rounds
+        # The radar and diagnosis are claims about exam performance, so keep
+        # them empty until three submitted full-paper records exist.  Other
+        # counters below remain live so the learner can still track practice.
+        mastery = self.mastery(value) if assessment_ready else []
+        risks = self.error_summary(value)["top_risks"] if assessment_ready else []
+        focus_minutes = sum(int(item.get("duration_seconds", 0)) // 60 for item in self.state.get("focus_sessions", []) if item.get("exam") == value)
+        practice_minutes = sum(int(item.get("duration_minutes", 0)) for item in ledger)
+        practice_items = sum(int(item.get("total_items", 0)) for item in ledger)
+        practice_correct = sum(int(item.get("correct_items", 0)) for item in ledger)
+        official_records = [item for item in ledger if item.get("source_status") == "verified_official"]
+        simulation_records = [item for item in ledger if item.get("source_status") in {"simulation_not_official", "ai_generated_simulation"}]
+        system_stats = {
+            "learning_minutes": practice_minutes + focus_minutes,
+            "practice_items": practice_items,
+            "practice_correct": practice_correct,
+            "practice_accuracy": round(practice_correct / practice_items * 100, 1) if practice_items else None,
+            "practice_records": len(ledger),
+            "official_paper_records": len(official_records),
+            "simulation_records": len(simulation_records),
+            "assessment_rounds": assessment_rounds,
+            "assessment_required_rounds": assessment_required_rounds,
+            "assessment_ready": assessment_ready,
+            "source": "practice_ledger_and_focus_sessions",
+        }
         totals: dict[str, list[int]] = {}
         for record in ledger:
             module = str(record.get("module", "other"))
@@ -467,16 +553,46 @@ class WebStore:
             totals[module][0] += int(record.get("total_items", 0))
             totals[module][1] += int(record.get("correct_items", 0))
         module_accuracy = {module: round(correct / total * 100, 1) if total else None for module, (total, correct) in totals.items()}
+        system_stats["module_accuracy"] = module_accuracy
         scored = [(item["title"], item["score"]) for item in mastery]
-        strengths = [title for title, _ in sorted(scored, key=lambda item: -item[1])[:2]] if ledger else []
-        gaps = [title for title, _ in sorted(scored, key=lambda item: item[1])[:2]] if ledger else []
-        if not ledger:
-            diagnosis = "尚无足够练习证据，先完成一轮各专项小练习，系统会据此更新画像。"
+        strengths = [title for title, _ in sorted(scored, key=lambda item: -item[1])[:2]] if assessment_ready else []
+        gaps = [title for title, _ in sorted(scored, key=lambda item: item[1])[:2]] if assessment_ready else []
+        if not assessment_ready:
+            diagnosis = f"无（完成真题或模拟卷测试 {assessment_rounds}/{assessment_required_rounds} 轮后，系统才会生成评估。）"
         elif risks:
             diagnosis = f"当前优先处理 {risks[0]['tag']}，它已出现 {risks[0]['count']} 次；同时维持 {', '.join(str(item) for item in strengths)}。"
         else:
             diagnosis = f"当前基础稳定，优先巩固 {', '.join(str(item) for item in gaps)}，并用真题语境验证迁移。"
-        return {"exam": value, "profile": profile, "mastery": mastery, "module_accuracy": module_accuracy, "strengths": strengths, "gaps": gaps, "risks": risks, "diagnosis": diagnosis, "evidence_records": len(ledger), "generated_at": iso_now()}
+        system_assessment = {
+            "status": "evidence_based" if assessment_ready else "insufficient_evidence",
+            "method": "三轮真题或模拟卷提交结果、正确率、耗时和错误标签的系统分析",
+            "target_band": self_assessment.get("target_band"),
+            "mastery": mastery,
+            "strengths": strengths,
+            "gaps": gaps,
+            "risks": risks,
+            "evidence_records": assessment_rounds,
+            "practice_records": len(ledger),
+            "assessment_required_rounds": assessment_required_rounds,
+            "assessment_ready": assessment_ready,
+            "evaluated_at": iso_now(),
+        }
+        return {
+            "exam": value,
+            "profile": profile,
+            "self_assessment": self_assessment,
+            "system_assessment": system_assessment,
+            "system_stats": system_stats,
+            # Keep these fields for existing dashboard consumers.
+            "mastery": mastery,
+            "module_accuracy": module_accuracy,
+            "strengths": strengths,
+            "gaps": gaps,
+            "risks": risks,
+            "diagnosis": diagnosis,
+            "evidence_records": assessment_rounds,
+            "generated_at": iso_now(),
+        }
 
     def period_plan(self, exam: str, period: str = "day") -> dict[str, Any]:
         value = validate_exam(exam)
@@ -565,7 +681,18 @@ class WebStore:
 
     def save_profile(self, payload: dict[str, Any]) -> dict[str, Any]:
         exam = validate_exam(payload.get("exam_type"))
-        profile = {"learner_id": str(payload.get("learner_id", "local-learner")).strip() or "local-learner", "exam_type": exam, "foundation_level": payload.get("foundation_level", "中等基础"), "target_band": payload.get("target_band"), "daily_time_budget_minutes": payload.get("daily_time_budget_minutes", 90)}
+        existing = dict(self.state.setdefault("profiles", {}).get(exam) or default_profile(exam))
+        profile = {
+            **existing,
+            "learner_id": str(payload.get("learner_id", existing.get("learner_id", "local-learner"))).strip() or "local-learner",
+            "exam_type": exam,
+            "foundation_level": payload.get("foundation_level", existing.get("foundation_level")),
+            "target_band": payload.get("target_band", existing.get("target_band")),
+            "daily_time_budget_minutes": payload.get("daily_time_budget_minutes", existing.get("daily_time_budget_minutes", 90)),
+            "self_strengths": _profile_bullets(payload.get("self_strengths", existing.get("self_strengths"))),
+            "self_gaps": _profile_bullets(payload.get("self_gaps", existing.get("self_gaps"))),
+            "self_assessment_updated_at": iso_now(),
+        }
         errors = validate_profile(profile)
         if errors:
             raise ValueError("; ".join(errors))
@@ -609,7 +736,13 @@ class WebStore:
         unknown = validate_error_tags(raw_tags)
         if unknown:
             raise ValueError(f"unknown error tags: {', '.join(unknown)}")
-        record = {"id": uuid.uuid4().hex, "exam": exam, "module": module, "task_id": str(payload.get("task_id", f"web-{module}")), "total_items": total, "correct_items": correct, "duration_minutes": minutes, "date": day, "error_tags": raw_tags, "timed": bool(payload.get("timed", False)), "source_status": payload.get("source_status", "simulation_not_official"), "created_at": iso_now()}
+        # A direct practice record is a专项练习 by default.  It must not be
+        # counted as a full-paper simulation unless the session explicitly
+        # supplies a simulation source status.
+        source_status = str(payload.get("source_status", "learner_practice")).strip() or "learner_practice"
+        if source_status not in {"learner_practice", "verified_official", "simulation_not_official", "ai_generated_simulation"}:
+            raise ValueError("unsupported source_status")
+        record = {"id": uuid.uuid4().hex, "exam": exam, "module": module, "task_id": str(payload.get("task_id", f"web-{module}")), "title": str(payload.get("title", "")).strip()[:200], "source_id": str(payload.get("source_id", "")).strip()[:200], "paper_kind": str(payload.get("paper_kind", "")).strip()[:40], "total_items": total, "correct_items": correct, "duration_minutes": minutes, "date": day, "error_tags": raw_tags, "timed": bool(payload.get("timed", False)), "source_status": source_status, "created_at": iso_now()}
         self.state["practice"].append(record)
         self.add_activity(day, exam=exam, minutes=minutes, items=total, correct=correct, sessions=1)
         self._create_practice_card(record)
@@ -623,6 +756,8 @@ class WebStore:
         module = str(payload.get("module", "reading")).lower()
         if module not in {"writing", "listening", "reading", "translation", "vocabulary", "basics"}:
             raise ValueError("unsupported practice module")
+        is_full_paper = False
+        scope = str(payload.get("scope", "")).lower()
         if kind == "past":
             verified = [item for item in self.state.get("past_paper_candidates", []) if item.get("exam") == exam and item.get("status") == "verified_official"]
             if not verified:
@@ -631,6 +766,8 @@ class WebStore:
             requested_source = str(payload.get("source_id") or "")
             selected = next((item for item in verified if item.get("id") == requested_source or item.get("upload_id") == requested_source), verified[0])
             source_id = str(selected.get("id"))
+            module = "full_paper"
+            is_full_paper = True
             timer_mode, limit = "countdown", 125 * 60
         elif kind == "module":
             source_status = "learner_practice"
@@ -639,20 +776,36 @@ class WebStore:
         elif kind == "upload":
             requested_source = str(payload.get("source_id") or "")
             simulation = next((item for item in self.state.get("simulations", []) if item.get("exam") == exam and (item.get("id") == requested_source or item.get("upload_id") == requested_source)), None)
-            if not simulation or simulation.get("status") != "ready_private":
-                raise ValueError("uploaded simulation has not passed the pipeline validation gate")
-            source_status = "simulation_not_official"
-            source_id = str(simulation.get("id"))
-            module = str(simulation.get("module") or module)
-            timer_mode, limit = "countdown", 125 * 60
+            if simulation:
+                if simulation.get("status") != "ready_private":
+                    raise ValueError("uploaded simulation has not passed the pipeline validation gate")
+                source_status = "simulation_not_official"
+                source_id = str(simulation.get("id"))
+                module = "full_paper"
+                is_full_paper = True
+                timer_mode, limit = "countdown", 125 * 60
+            else:
+                # Module-scoped uploads are learner practice, not simulations.
+                # They become selectable only after the same pipeline commit gate.
+                uploaded = next((item for item in self.state.get("module_content_queue", []) if item.get("exam") == exam and item.get("target_module") == module and (item.get("id") == requested_source or item.get("upload_id") == requested_source)), None)
+                if not uploaded or uploaded.get("status") not in {"ready_private", "committed"}:
+                    raise ValueError("uploaded practice has not passed the pipeline validation gate")
+                source_status = "learner_practice"
+                source_id = str(uploaded.get("id") or uploaded.get("upload_id"))
+                timer_mode, limit = "countup", None
         else:
             source_status = "ai_generated_simulation" if kind == "ai" else "simulation_not_official"
             source_id = str(payload.get("source_id") or "private-simulation")
+            if kind == "ai" and scope == "full_paper":
+                module = "full_paper"
+                is_full_paper = True
             timer_mode, limit = "countdown", 125 * 60
         try:
-            question_count = min(20, max(1, int(payload.get("question_count", 5))))
+            question_count = min(60, max(1, int(payload.get("question_count", 20 if is_full_paper else 5))))
         except (TypeError, ValueError):
             question_count = 5
+        if is_full_paper:
+            question_count = max(20, question_count)
         difficulty = str(payload.get("difficulty", "standard")).lower()
         if difficulty not in {"basic", "standard", "advanced"}:
             difficulty = "standard"
@@ -689,15 +842,27 @@ class WebStore:
             "translation": {"prompt": "Translate: '证据应当支持你的结论。'", "answer": "Evidence should support your conclusion.", "explanation": "保证主干 evidence + should support + conclusion。"},
             "writing": {"prompt": "Write one sentence introducing the main argument about evidence-based learning.", "answer": "Evidence-based learning helps students improve efficiently.", "explanation": "句子应包含明确主语、谓语和中心论点。"},
         }
-        template = bank[module]
+        if module == "full_paper":
+            paper_bank = [
+                ("听力", bank["listening"]),
+                ("阅读", bank["reading"]),
+                ("词汇", bank["vocabulary"]),
+                ("翻译", bank["translation"]),
+                ("写作", bank["writing"]),
+            ]
+        else:
+            paper_bank = [("专项", bank[module])]
         prompt_suffix = f"（难度：{difficulty}）"
         if focus:
             prompt_suffix += f" 重点：{focus}"
         questions = []
         for index in range(max(1, count)):
+            section, template = paper_bank[index % len(paper_bank)]
             prompt = template["prompt"]
             if index:
                 prompt = f"{prompt} · 变式 {index + 1}"
+            if module == "full_paper":
+                prompt = f"[{section}] {prompt}"
             questions.append({"id": f"q-{uuid.uuid4().hex[:10]}", "type": "text" if "answer" in template and "options" not in template else "choice", "prompt": prompt + prompt_suffix, "options": template.get("options", []), "answer_index": template.get("answer_index"), "answer": template.get("answer"), "explanation": template["explanation"]})
         return questions
 
@@ -736,7 +901,7 @@ class WebStore:
         session["result"] = {"total": total, "correct": correct, "accuracy": round(correct / total * 100, 1) if total else 0, "feedback": feedback}
         default_errors = {"writing": "WRITING_TASK_RESPONSE_WEAK", "listening": "LISTENING_KEYWORD_MISS", "reading": "READING_LOCATION_FAIL", "translation": "TRANSLATION_GRAMMAR_FAIL", "vocabulary": "VOCAB_MEANING_RECOGNITION_FAIL", "basics": "LANG_GRAMMAR_SELECT_FAIL"}
         error_tags = [] if correct == total else [default_errors.get(session["module"], "READING_LOCATION_FAIL")]
-        record = self.record_practice({"exam": session["exam"], "module": session["module"], "total_items": total, "correct_items": correct, "duration_minutes": max(1, int((parse_iso(session.get("submitted_at")) - parse_iso(session.get("started_at"))).total_seconds() // 60)), "source_status": session["source_status"], "error_tags": error_tags})
+        record = self.record_practice({"exam": session["exam"], "module": session["module"], "total_items": total, "correct_items": correct, "duration_minutes": max(1, int((parse_iso(session.get("submitted_at")) - parse_iso(session.get("started_at"))).total_seconds() // 60)), "source_status": session["source_status"], "source_id": session.get("source_id"), "paper_kind": session.get("kind"), "title": f"{session.get('kind', 'simulation')} · {session.get('source_id') or session.get('module')}"[:200], "error_tags": error_tags})
         session["practice_record_id"] = record["id"]
         self.save()
         return {"session": self._public_session(session), "result": session["result"], "record": record}
@@ -840,7 +1005,7 @@ class WebStore:
         except (KeyError, TypeError, ValueError, AttributeError):
             return None
 
-    def upload(self, filename: str, content: bytes, content_type: str | None, exam: str) -> dict[str, Any]:
+    def upload(self, filename: str, content: bytes, content_type: str | None, exam: str, module_hint: str | None = None) -> dict[str, Any]:
         original = Path(filename).name
         suffix = Path(original).suffix.lower()
         if suffix not in ALLOWED_EXTENSIONS:
@@ -855,6 +1020,21 @@ class WebStore:
         target.write_bytes(content)
         preview = extract_preview(original, content)
         classification = classify_upload(original, preview)
+        # A file submitted from a named专项训练 page is an explicit learner
+        # practice set. Keep that user intent and its module attribution rather
+        # than guessing from short filenames or individual sentences. Full
+        # papers continue to be uploaded from the dedicated真题/模拟题 pages.
+        hint = str(module_hint or "").strip().lower()
+        if hint in {"writing", "listening", "reading", "translation", "vocabulary", "basics"}:
+            classification = {
+                "category": "module_practice_upload",
+                "target": "module_practice",
+                "target_module": hint,
+                "content_kind": "practice_questions",
+                "confidence": "user_declared",
+                "status": "pending_review",
+                "note": "从专项训练入口提交，按当前专项作为私有练习题处理；不提升为真题或模拟整卷。",
+            }
         item = {"id": upload_id, "exam": exam, "filename": original, "stored_name": target.name, "bytes": len(content), "content_type": content_type or mimetypes.guess_type(original)[0] or "application/octet-stream", "status": "quarantined", "classification": classification, "preview_available": bool(preview), "preview": _compact_snippet(preview, 1500), "sha256": hashlib.sha256(content).hexdigest(), "created_at": iso_now()}
         self.state["uploads"].append(item)
         queue_item = {"id": uuid.uuid4().hex, "upload_id": upload_id, "exam": exam, "category": classification["category"], "target": classification["target"], "target_module": classification.get("target_module"), "content_kind": classification.get("content_kind"), "status": "pending_review", "created_at": iso_now()}
@@ -887,7 +1067,7 @@ class WebStore:
             self.state["vocabulary_sources"].append({"id": uuid.uuid4().hex, "upload_id": upload_id, "exam": exam, "status": "draft", "source_status": "user_upload_draft", "created_at": iso_now()})
         elif classification["category"] == "strategy_ingest":
             self.state["strategy_queue"].append({"id": uuid.uuid4().hex, "upload_id": upload_id, "exam": exam, "status": "pending_distillation", "pipeline_stage": "extract", "next_action": "distill_validate_commit", "distillation_method": "book" if suffix in {".pdf", ".doc", ".docx"} else "direct", "created_at": iso_now()})
-        elif classification["category"].endswith("_ingest"):
+        elif classification["category"].endswith("_ingest") or classification["category"] == "module_practice_upload":
             self.state["module_content_queue"].append({"id": uuid.uuid4().hex, "upload_id": upload_id, "exam": exam, "target_module": classification.get("target_module"), "content_kind": classification.get("content_kind"), "status": "draft", "source_status": "user_upload_draft", "created_at": iso_now()})
         if classification.get("target_module") in {"writing", "listening", "reading", "translation", "vocabulary"}:
             self.state.setdefault("memory_candidates", []).append({"id": uuid.uuid4().hex, "upload_id": upload_id, "exam": exam, "module": classification["target_module"], "status": "pending_confirmation", "front": f"资料考点：{original}", "back": "请先确认资料内容和来源，再把其中一个可复习考点写成自己的话。", "created_at": iso_now()})
@@ -990,6 +1170,10 @@ class WebStore:
                     for item in self.state.get("simulations", []):
                         if item.get("upload_id") == upload_id:
                             item["status"] = "ready_private"
+                    for item in self.state.get("module_content_queue", []):
+                        if item.get("upload_id") == upload_id:
+                            item["status"] = "ready_private"
+                            item["source_status"] = "user_upload"
                     self._set_pipeline_stage(pipeline, "commit", "done", target=classification.get("target"))
                     pipeline["current_stage"] = "complete"
                     pipeline["checkpoint"] = f"upload:{upload_id}:commit"
@@ -1280,6 +1464,10 @@ class ExamLexHandler(BaseHTTPRequestHandler):
             if path == "/api/trends/specialized":
                 exam = validate_exam(query.get("exam", ["CET4"])[0])
                 return self.send_json(self.store.module_trends(exam, query.get("period", ["month"])[0]))
+            if path == "/api/practice/records":
+                exam = validate_exam(query.get("exam", ["CET4"])[0])
+                kind = query.get("kind", ["all"])[0]
+                return self.send_json({"exam": exam, "kind": kind, "records": self.store.practice_records(exam, kind)})
             if path == "/api/uploads":
                 exam = validate_exam(query.get("exam", ["CET4"])[0])
                 uploads = [item for item in self.store.state["uploads"] if item.get("exam") == exam]
@@ -1430,13 +1618,15 @@ class ExamLexHandler(BaseHTTPRequestHandler):
             return self.error(HTTPStatus.BAD_REQUEST, "invalid upload size")
         raw = self.rfile.read(length)
         message = BytesParser(policy=default).parsebytes(b"Content-Type: " + content_type.encode() + b"\r\n\r\n" + raw)
-        exam = validate_exam((parse_qs(urlparse(self.path).query).get("exam", ["CET4"])[0]))
+        query = parse_qs(urlparse(self.path).query)
+        exam = validate_exam(query.get("exam", ["CET4"])[0])
+        module_hint = query.get("module", [None])[0]
         for part in message.iter_parts():
             if part.get_filename() is None:
                 continue
             filename = part.get_filename()
             with self.store._lock:
-                item = self.store.upload(filename, part.get_payload(decode=True) or b"", part.get_content_type(), exam)
+                item = self.store.upload(filename, part.get_payload(decode=True) or b"", part.get_content_type(), exam, module_hint)
             return self.send_json({"upload": item}, HTTPStatus.CREATED)
         return self.error(HTTPStatus.BAD_REQUEST, "file field is required")
 

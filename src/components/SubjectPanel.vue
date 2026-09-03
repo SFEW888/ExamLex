@@ -10,13 +10,28 @@ import Modal from './Modal.vue'
 import EnhancedRadarChart from './EnhancedRadarChart.vue'
 import type { Note, TopicImportance } from '../types'
 
-const props = withDefaults(defineProps<{ subjectId: string; hideMastery?: boolean }>(), {
+type SystemStats = {
+  learning_minutes?: number
+  practice_items?: number
+  practice_correct?: number
+  practice_accuracy?: number | null
+  practice_records?: number
+  official_paper_records?: number
+  simulation_records?: number
+  source?: string
+}
+
+const props = withDefaults(defineProps<{ subjectId: string; hideMastery?: boolean; exam?: string; systemStats?: SystemStats }>(), {
   hideMastery: false,
 })
 const store = useAppStore()
 const toast = inject<(m: string) => void>('toast', () => {})
 
 const subject = computed(() => store.subjectMap[props.subjectId])
+const isEnglishSystemTracked = computed(() => props.subjectId === 'english' && !!props.exam && !!props.systemStats)
+const systemStats = computed(() => props.systemStats || {})
+const topicPlaceholder = computed(() => props.subjectId === 'english' ? '添加英语知识点小标题，如：非谓语动词、定语从句' : props.subjectId === 'math' ? '添加知识点小标题，如：洛必达法则' : '添加知识点小标题')
+const notePlaceholder = computed(() => props.subjectId === 'english' ? '例如：听力连读错题整理' : props.subjectId === 'math' ? '例如：洛必达法则错题整理' : '例如：本次学习要点')
 const tab = ref<'chapters' | 'records' | 'problems' | 'exams' | 'notes'>('chapters')
 
 const subjectRecords = computed(() => store.records.filter(r => r.subjectId === props.subjectId).slice().reverse())
@@ -342,6 +357,9 @@ function removeChapter(chapterId: string) {
 
 const expanded = ref<Record<string, boolean>>({})
 const totalMin = computed(() => subjectRecords.value.reduce((s, r) => s + r.minutes, 0))
+const displayStudyMinutes = computed(() => isEnglishSystemTracked.value ? Number(systemStats.value.learning_minutes || 0) : totalMin.value)
+const displayPracticeItems = computed(() => isEnglishSystemTracked.value ? Number(systemStats.value.practice_items || 0) : subjectProblems.value.reduce((s, p) => s + p.total, 0))
+const displayAccuracy = computed(() => isEnglishSystemTracked.value ? (systemStats.value.practice_accuracy == null ? 0 : Number(systemStats.value.practice_accuracy)) : accuracy.value)
 </script>
 
 <template>
@@ -349,16 +367,16 @@ const totalMin = computed(() => subjectRecords.value.reduce((s, r) => s + r.minu
     <!-- 概览 -->
     <div class="grid grid-cols-3 gap-3">
       <div class="card !p-3 text-center">
-        <div class="text-xl font-black" :style="{ color: subject.color }">{{ formatMinutes(totalMin) }}</div>
-        <div class="text-[11px] text-slate-400">累计学习</div>
+        <div class="text-xl font-black" :style="{ color: subject.color }">{{ formatMinutes(displayStudyMinutes) }}</div>
+        <div class="text-[11px] text-slate-400">累计学习<span v-if="isEnglishSystemTracked">（系统）</span></div>
       </div>
       <div class="card !p-3 text-center">
-        <div class="text-xl font-black" :style="{ color: subject.color }">{{ subjectProblems.reduce((s, p) => s + p.total, 0) }}</div>
-        <div class="text-[11px] text-slate-400">累计刷题</div>
+        <div class="text-xl font-black" :style="{ color: subject.color }">{{ displayPracticeItems }}</div>
+        <div class="text-[11px] text-slate-400">累计刷题<span v-if="isEnglishSystemTracked">（系统）</span></div>
       </div>
       <div class="card !p-3 text-center">
-        <div class="text-xl font-black" :style="{ color: subject.color }">{{ accuracy }}%</div>
-        <div class="text-[11px] text-slate-400">总正确率</div>
+        <div class="text-xl font-black" :style="{ color: subject.color }">{{ displayAccuracy }}%</div>
+        <div class="text-[11px] text-slate-400">总正确率<span v-if="isEnglishSystemTracked">（系统）</span></div>
       </div>
     </div>
 
@@ -423,7 +441,7 @@ const totalMin = computed(() => subjectRecords.value.reduce((s, r) => s + r.minu
               </div>
               <!-- 添加知识点 -->
               <div class="flex gap-2 pt-1">
-                <input v-model="newTopic[ch.id]" class="input !py-1 !text-xs" placeholder="添加知识点小标题，如：洛必达法则" @keyup.enter="addTopic(ch.id)" />
+                <input v-model="newTopic[ch.id]" class="input !py-1 !text-xs" :placeholder="topicPlaceholder" @keyup.enter="addTopic(ch.id)" />
                 <button class="btn-ghost !py-1 !text-xs shrink-0" @click="addTopic(ch.id)">+ 添加</button>
               </div>
             </div>
@@ -438,7 +456,13 @@ const totalMin = computed(() => subjectRecords.value.reduce((s, r) => s + r.minu
 
     <!-- 学习记录 -->
     <div v-show="tab === 'records'" class="space-y-3">
-      <div class="card space-y-3">
+      <div v-if="isEnglishSystemTracked" class="card space-y-3">
+        <div class="flex items-center justify-between"><div class="section-title !mb-0">系统学习记录</div><span class="text-[10px] text-emerald-500">自动统计</span></div>
+        <p class="text-xs text-slate-500 dark:text-slate-300">专项训练、真题/模拟题提交和专注会话完成后，系统自动累计学习时长；此处不再手工填报。</p>
+        <div class="grid grid-cols-2 gap-2 text-center"><div class="rounded-lg bg-slate-50 dark:bg-slate-700/50 p-3"><div class="text-lg font-bold text-primary-500">{{ formatMinutes(displayStudyMinutes) }}</div><div class="text-[10px] text-slate-400">累计学习</div></div><div class="rounded-lg bg-slate-50 dark:bg-slate-700/50 p-3"><div class="text-lg font-bold text-emerald-500">{{ systemStats.practice_records || 0 }}</div><div class="text-[10px] text-slate-400">已提交练习</div></div></div>
+        <p class="text-[10px] text-slate-400">统计来源：专项练习账本与专注会话，不采纳主观填写。</p>
+      </div>
+      <div v-else class="card space-y-3">
         <div class="section-title">记录本次学习</div>
         <!-- 计时器 -->
         <div class="flex items-center justify-center gap-3 py-2">
@@ -462,11 +486,11 @@ const totalMin = computed(() => subjectRecords.value.reduce((s, r) => s + r.minu
         </div>
         <div>
           <label class="label">知识点 / 备注</label>
-          <input v-model="recNote" class="input" placeholder="例如：洛必达法则错题整理" />
+          <input v-model="recNote" class="input" :placeholder="notePlaceholder" />
         </div>
         <button class="btn-primary w-full" @click="addRecord">保存学习记录</button>
       </div>
-      <div class="card">
+      <div v-if="!isEnglishSystemTracked" class="card">
         <div class="section-title">历史记录</div>
         <div v-if="!subjectRecords.length" class="text-xs text-slate-400 text-center py-3">暂无记录</div>
         <div class="space-y-1.5 max-h-72 overflow-y-auto">
@@ -482,7 +506,13 @@ const totalMin = computed(() => subjectRecords.value.reduce((s, r) => s + r.minu
 
     <!-- 刷题 -->
     <div v-show="tab === 'problems'" class="space-y-3">
-      <div class="card space-y-3">
+      <div v-if="isEnglishSystemTracked" class="card space-y-3">
+        <div class="flex items-center justify-between"><div class="section-title !mb-0">系统刷题统计</div><span class="text-[10px] text-emerald-500">自动统计</span></div>
+        <p class="text-xs text-slate-500 dark:text-slate-300">完成专项训练后，题数、正确数和正确率由答题结果自动写入练习账本。</p>
+        <div class="grid grid-cols-3 gap-2 text-center"><div class="rounded-lg bg-slate-50 dark:bg-slate-700/50 p-2"><div class="font-bold text-primary-500">{{ systemStats.practice_items || 0 }}</div><div class="text-[10px] text-slate-400">累计题数</div></div><div class="rounded-lg bg-slate-50 dark:bg-slate-700/50 p-2"><div class="font-bold text-emerald-500">{{ systemStats.practice_correct || 0 }}</div><div class="text-[10px] text-slate-400">累计答对</div></div><div class="rounded-lg bg-slate-50 dark:bg-slate-700/50 p-2"><div class="font-bold text-amber-500">{{ displayAccuracy }}%</div><div class="text-[10px] text-slate-400">正确率</div></div></div>
+        <p class="text-[10px] text-slate-400">需要做题请进入对应专项、真题或模拟题页面，提交后数据会自动回流。</p>
+      </div>
+      <div v-else class="card space-y-3">
         <div class="section-title">记录本次刷题</div>
         <p class="text-[10px] text-slate-400">填写本次各题型做的题数（没做的题型可留空），点击「保存」后在弹窗中确认做题总数与答对数量</p>
         <div class="grid gap-2" :class="typeDefs.length > 4 ? 'grid-cols-5' : 'grid-cols-4'">
@@ -493,7 +523,7 @@ const totalMin = computed(() => subjectRecords.value.reduce((s, r) => s + r.minu
         </div>
         <button class="btn-primary w-full" @click="openConfirm">保存刷题记录</button>
       </div>
-      <div class="card">
+      <div v-if="!isEnglishSystemTracked" class="card">
         <div class="flex items-center justify-between mb-2">
           <div class="section-title !mb-0">刷题历史</div>
         </div>
@@ -512,7 +542,13 @@ const totalMin = computed(() => subjectRecords.value.reduce((s, r) => s + r.minu
 
     <!-- 真题 -->
     <div v-show="tab === 'exams'" class="space-y-3">
-      <div class="card">
+      <div v-if="isEnglishSystemTracked" class="card space-y-3">
+        <div class="flex items-center justify-between"><div class="section-title !mb-0">系统真题统计</div><span class="text-[10px] text-emerald-500">自动统计</span></div>
+        <p class="text-xs text-slate-500 dark:text-slate-300">仅统计通过来源核验并完成提交的真题；模拟题和 AI 出题不会计入真题。</p>
+        <div class="grid grid-cols-2 gap-2 text-center"><div class="rounded-lg bg-slate-50 dark:bg-slate-700/50 p-3"><div class="text-lg font-bold text-primary-500">{{ systemStats.official_paper_records || 0 }}</div><div class="text-[10px] text-slate-400">已完成真题</div></div><div class="rounded-lg bg-slate-50 dark:bg-slate-700/50 p-3"><div class="text-lg font-bold text-amber-500">{{ systemStats.simulation_records || 0 }}</div><div class="text-[10px] text-slate-400">模拟练习</div></div></div>
+        <RouterLink class="btn-primary w-full" :to="{ path: '/practice/past-papers', query: { exam: props.exam } }">进入真题练习</RouterLink>
+      </div>
+      <div v-else class="card">
         <div class="flex items-center justify-between mb-2">
           <div class="section-title !mb-0">真题成绩趋势（得分率%）</div>
           <button class="btn-primary !py-1.5" @click="showExamModal = true">+ 记录真题</button>

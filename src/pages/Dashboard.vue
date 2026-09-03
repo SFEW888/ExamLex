@@ -11,7 +11,6 @@ import TodoTimeFields from '../components/TodoTimeFields.vue'
 import LearningPathCard from '../components/LearningPathCard.vue'
 import ProfileDiagnosisCard from '../components/ProfileDiagnosisCard.vue'
 import AiTodayPlanCard from '../components/AiTodayPlanCard.vue'
-import AiMasteryRadar from '../components/AiMasteryRadar.vue'
 import { notifyPermission, requestNotifyPermission } from '../services/notify'
 import type { Todo } from '../types'
 import dayjs from 'dayjs'
@@ -293,7 +292,6 @@ onUnmounted(() => {
 
     <!-- 画像由练习、错误和掌握度证据自动生成；不依赖主观自评 -->
     <ProfileDiagnosisCard />
-    <AiMasteryRadar />
     <AiTodayPlanCard />
 
     <!-- 今日概览 -->
